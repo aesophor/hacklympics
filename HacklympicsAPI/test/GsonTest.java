@@ -1,7 +1,5 @@
-import java.util.Map;
 import java.util.HashMap;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 

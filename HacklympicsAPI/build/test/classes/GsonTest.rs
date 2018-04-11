@@ -1,4 +1,0 @@
-GsonTest
-Word
-Sentence
-Paragraph

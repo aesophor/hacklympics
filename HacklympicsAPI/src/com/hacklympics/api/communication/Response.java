@@ -42,4 +42,9 @@ public class Response {
         return content;
     }
     
+    @Override
+    public String toString() {
+        return statusCode.toString();
+    }
+    
 }

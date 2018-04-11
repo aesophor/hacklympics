@@ -1,4 +1,4 @@
-package com.hacklympics.api;
+
 
 import java.io.IOException;
 import com.google.gson.JsonObject;
@@ -8,7 +8,7 @@ import com.hacklympics.api.user.Teacher;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.utility.Utils;
 
-public class Test {
+public class UserTest {
     
     public static String createUser(Profile user) {
         

@@ -28,6 +28,6 @@ urlpatterns = [
     url(r'^user/(?P<username>[\w.@+-]+)$', user.get),
     
     url(r'^course$', course.list),
-    #url(r'^course/create$', course.create),
-    url(r'^course/(?P<c_id>[\w.@+-]+)$)', course.get)
+    url(r'^course/create$', course.create),
+    url(r'^course/(?P<c_id>[\w.@+-]+)$', course.get)
 ]
