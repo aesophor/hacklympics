@@ -5,51 +5,53 @@ import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
 
-public class Exam {
+public class Problem {
     
     private final int courseID;
     private final int examID;
+    private final int problemID;
     private String title;
     private String desc;
-    private int duration;
-    
-    public Exam(int courseID, int examID) {
+
+    public Problem(int courseID, int examID, int problemID) {
         this.courseID = courseID;
         this.examID = examID;
+        this.problemID = problemID;
         
-        initExamData();
+        initProblemData();
     }
     
-    private void initExamData() {
-        String uri = String.format("course/%d/exam/%d", courseID, examID);
+    private void initProblemData() {
+        String uri = String.format("course/%d/exam/%d/problem/%d", 
+                                   courseID, examID, problemID);
         Response response = new Response(Utils.get(uri));
         
         if (response.success()) {
             Map<String, Object> json = response.getContent();
             this.title = json.get("title").toString();
             this.desc = json.get("desc").toString();
-            this.duration = (int) Double.parseDouble(json.get("duration").toString());
         }
     }
     
-    
-    public static Response create(String title, String desc, int duration,
-                                  int courseID) {
-        String uri = String.format("course/%d/exam/create", courseID);
+    // Shouldn't it return a Problem instance after creation (?)
+    public static Response create(String title, String desc, 
+                                  int courseID, int examID) {
+        String uri = String.format("course/%d/exam/%d/problem/create", 
+                                   courseID, examID);
         
         JsonObject json = new JsonObject();
         json.addProperty("title", title);
         json.addProperty("desc", desc);
-        json.addProperty("duration", Integer.toString(duration));
         
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public static Response remove(int courseID, int examID) {
-        String uri = String.format("course/%d/exam/remove", courseID);
+    public static Response remove(int courseID, int examID, int problemID) {
+        String uri = String.format("course/%d/exam/%d/problem/remove",
+                                   courseID, examID);
         
         JsonObject json = new JsonObject();
-        json.addProperty("examID", examID);
+        json.addProperty("problemID", problemID);
         
         return new Response(Utils.post(uri, json.toString()));
     }
@@ -63,16 +65,16 @@ public class Exam {
         return examID;
     }
     
+    public int getProblemID() {
+        return problemID;
+    }
+    
     public String getTitle() {
         return title;
     }
     
     public String getDesc() {
         return desc;
-    }
-    
-    public int getDuration() {
-        return duration;
     }
     
     @Override

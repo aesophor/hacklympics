@@ -13,14 +13,14 @@ public class ExamTest {
                 "Compiler",
                 "Implement a simple compiler.",
                 180,
-                systemSoftwares
+                systemSoftwares.getCourseID()
         );
         
         System.out.println(response);
         */
         
         
-        Response response = Exam.remove(systemSoftwares, 3);
+        Response response = Exam.remove(systemSoftwares.getCourseID(), 3);
         System.out.println(response);
     }
     
