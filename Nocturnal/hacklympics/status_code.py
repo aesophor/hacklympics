@@ -12,4 +12,5 @@ class StatusCode(IntEnum):
     ALREADY_LOGGED_IN = 7
     ALREADY_REGISTERED = 8
 
-    COURSE_DOES_NOT_EXIST = 9
+    MATERIAL_DOES_NOT_EXIST = 9
+

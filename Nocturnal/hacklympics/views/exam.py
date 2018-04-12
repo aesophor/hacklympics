@@ -7,74 +7,70 @@ from hacklympics.models import *
 import json
 
 
-def get(request, c_id):
+def get(request, c_id, e_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
-    course = Course.objects.get(id=c_id)
+    exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
 
     response_data["content"] = {
-        "id": course.id,
-        "name": course.name,
-        "semester": course.semester,
-        "teacher": course.teacher.username,
-        "students": [student.username for student in course.students.all()]
+        "id": exam.id,
+        "title": exam.title,
+        "desc": exam.desc,
+        "duration": exam.duration,
     }
 
     return JsonResponse(response_data)
 
 
-def list(request):
+def list(request, c_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
-    courses = Course.objects.all()
+    exams = Course.objects.get(id=c_id).exam_set.all()
 
     response_data["content"] = {
-        "courses": [{
-            "id": course.id,
-            "name": course.name,
-            "semester": course.semester,
-            "teacher": course.teacher.username,
-            "students": [student.username for student in course.students.all()]
-        } for course in courses]
+        "exams": [{
+            "id": exam.id,
+            "title": exam.title,
+            "desc": exam.desc,
+            "duration": exam.duration,
+        } for exam in exams]
     }
 
     return JsonResponse(response_data)
 
 
-def create(request):
+def create(request, c_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
     try:
         req_body = json.loads(request.body.decode("utf-8"))
         
-        name = req_body["name"]
-        semester = req_body["semester"]
-        teacher = req_body["teacher"]
-        students = req_body["students"]
+        title = req_body["title"]
+        desc = req_body["desc"]
+        duration = req_body["duration"]
         
-        course = Course.objects.create(
-            name = name,
-            semester = semester,
-            teacher_id = teacher,
+        Course.objects.get(id=c_id).exam_set.create(
+            title = title,
+            desc = desc,
+            duration = duration,
         )
-        
-        for student in students:
-            course.students.add(student)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
 
     return JsonResponse(response_data)
 
 
-def remove(request):
+def remove(request, c_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
     try:
         req_body = json.loads(request.body.decode("utf-8"))
         
-        c_id = req_body["id"]
+        e_id = req_body["examID"]
         
-        Course.objects.get(id=c_id).delete()
+        Course.objects.get(id=c_id).exam_set.get(id=e_id).delete()
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:

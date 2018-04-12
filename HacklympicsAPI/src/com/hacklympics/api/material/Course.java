@@ -10,19 +10,20 @@ import com.hacklympics.api.utility.Utils;
 
 public class Course {
     
-    private final int id;
+    private final int courseID;
     private String name;
     private int semester;
     private String teacher;
     private List<String> students;
     
-    public Course(int id) {
-        this.id = id;
+    public Course(int courseID) {
+        this.courseID = courseID;
+        
         initCourseData();
     }
     
     public void initCourseData() {
-        String uri = String.format("course/%d", id);
+        String uri = String.format("course/%d", courseID);
         Response response = new Response(Utils.get(uri));
         
         if (response.success()) {
@@ -36,7 +37,7 @@ public class Course {
     
     
     public static Response create(String name, int semester, String teacher,
-                              List<String> students) {
+                                  List<String> students) {
         String uri = String.format("course/create");
         
         JsonArray s = new JsonArray();
@@ -53,9 +54,39 @@ public class Course {
         return new Response(Utils.post(uri, json.toString()));
     }
     
+    public static Response remove(int courseID) {
+        String uri = String.format("course/remove");
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("id", courseID);
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    
+    public int getCourseID() {
+        return courseID;
+    }
+    
+    public String getName() {
+        return name;
+    }
+    
+    public int getSemester() {
+        return semester;
+    }
+    
+    public String getTeacher() {
+        return teacher;
+    }
+    
+    public List<String> getStudents() {
+        return students;
+    }
+    
     @Override
     public String toString() {
-        return String.format("[%d] %d_%s - %s ", id, semester, name, teacher) + students;
+        return String.format("[%d] %d_%s - %s ", courseID, semester, name, teacher) + students;
     }
     
 }
