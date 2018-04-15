@@ -107,6 +107,7 @@ def logout(request):
         username = req_body["username"]
         
         OnlineUsers.remove(username)
+        OnlineUsers.show()
     except NotLoggedIn:
         response_data["statusCode"] = StatusCode.NOT_LOGGED_IN
     except KeyError:

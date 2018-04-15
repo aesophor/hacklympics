@@ -25,18 +25,13 @@ public class UserTest {
     }
     
     public static void main(String[] args) throws IOException {
-        //Teacher max = new Teacher("max", "password", "Max");
-        //String json = createUser(max);
-        //String response = Utils.post("http://127.0.0.1:8000/user/register", json);
-        //System.out.println(response);
-        
         //Teacher max = new Teacher("max");
         //System.out.println(max);
         
-        String username = "andrey";
-        String password = "hello";
+        String username = "max";
+        String password = "password";
         
-        System.out.print("--> Logging in as andrey... ");
+        System.out.print("--> Logging in as " + username + " ...");
         Response resp = User.login(username, password);
         
         System.out.println(resp.getStatusCode());

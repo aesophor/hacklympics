@@ -4,7 +4,7 @@ import java.io.IOException;
 
 public class Teacher extends User {
     
-    public Teacher(String username) throws IOException {
+    public Teacher(String username) {
         super(username);
     }
     

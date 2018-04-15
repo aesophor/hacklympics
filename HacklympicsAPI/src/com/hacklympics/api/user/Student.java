@@ -7,7 +7,7 @@ import com.hacklympics.api.utility.Utils;
 
 public class Student extends User {
     
-    public Student(String username) throws IOException {
+    public Student(String username) {
         super(username);
     }
     

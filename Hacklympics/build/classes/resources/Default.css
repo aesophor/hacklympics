@@ -29,3 +29,13 @@
 .sidebar {
     -fx-background-color: #333645;
 }
+
+.sidebarButton {
+    -fx-background-radius: 0;
+    -fx-padding: 15 15 15 30;
+    
+    -fx-background-color: #333645;
+    -fx-text-fill: #ffffff;
+    -fx-alignment: center-left;
+    -fx-font-size: 16 px;
+}
