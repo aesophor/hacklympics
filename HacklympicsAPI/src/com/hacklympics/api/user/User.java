@@ -40,22 +40,22 @@ public abstract class User {
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public Response login(String password) {
+    public static Response login(String username, String password) {
         String uri = "user/login";
         
         JsonObject json = new JsonObject();
-        json.addProperty("username", this.profile.getUsername());
+        json.addProperty("username", username);
         json.addProperty("password", Utils.hash(password));
         json.addProperty("loginIP", Utils.getLocalAddress());
         
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public Response logout() {
+    public static Response logout(String username) {
         String uri="user/logout";
         
         JsonObject json = new JsonObject();
-        json.addProperty("username", this.profile.getUsername());
+        json.addProperty("username", username);
         
         return new Response(Utils.post(uri, json.toString()));
     }

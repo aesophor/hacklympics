@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="698.0" prefWidth="1042.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.TeacherController">
+   <children>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="266.0" styleClass="sidebar">
+         <children>
+            <Label alignment="CENTER" prefHeight="60.0" prefWidth="270.0" style="-fx-background-color: #0095d9;" stylesheets="@../../resources/Default.css" text="Hacklympics" textFill="#eaeaea">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <HBox prefHeight="42.0" prefWidth="266.0">
+               <children>
+                  <FontAwesomeIconView fill="#eaeaea" glyphName="DASHBOARD" size="20.0" wrappingWidth="12.0">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="30.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </FontAwesomeIconView>
+                  <Label text="Dashboard" textFill="#eaeaea">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="57.0" prefHeight="42.0" prefWidth="266.0">
+               <children>
+                  <FontAwesomeIconView fill="#eaeaea" glyphName="USERS" size="20.0" wrappingWidth="12.0">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="30.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </FontAwesomeIconView>
+                  <Label text="Students" textFill="#eaeaea">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="118.0" prefHeight="42.0" prefWidth="266.0">
+               <children>
+                  <FontAwesomeIconView fill="#eaeaea" glyphName="BOOK" size="20.0" wrappingWidth="12.0">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="30.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </FontAwesomeIconView>
+                  <Label text="Courses" textFill="#eaeaea">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="179.0" prefHeight="42.0" prefWidth="266.0">
+               <children>
+                  <FontAwesomeIconView fill="#eaeaea" glyphName="CLIPBOARD" size="20.0" wrappingWidth="12.0">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="30.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </FontAwesomeIconView>
+                  <Label text="Exams" textFill="#eaeaea">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="240.0" prefHeight="42.0" prefWidth="266.0">
+               <children>
+                  <FontAwesomeIconView fill="#eaeaea" glyphName="TASKS" size="20.0" wrappingWidth="12.0">
+                     <HBox.margin>
+                        <Insets bottom="20.0" left="30.0" right="20.0" top="20.0" />
+                     </HBox.margin>
+                  </FontAwesomeIconView>
+                  <Label text="Problems" textFill="#eaeaea">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                     <padding>
+                        <Insets bottom="20.0" right="20.0" top="20.0" />
+                     </padding>
+                  </Label>
+               </children>
+            </HBox>
+            <AnchorPane prefHeight="335.0" prefWidth="266.0">
+               <children>
+                  <Label layoutX="14.0" layoutY="304.0" text="Hacklympics Alpha (15042018)" textFill="#aeaeae" />
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+      <AnchorPane layoutX="266.0" layoutY="59.0" prefHeight="639.0" prefWidth="776.0" />
+      <Label alignment="CENTER" layoutX="266.0" layoutY="-1.0" prefHeight="60.0" prefWidth="776.0" styleClass="banner" stylesheets="@../../resources/Default.css" textFill="#eaeaea">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="952.0" layoutY="16.0" text="Logout" textFill="WHITE" />
+      <Label fx:id="bannerMsg" alignment="CENTER_RIGHT" layoutX="719.0" layoutY="21.0" prefHeight="18.0" prefWidth="213.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

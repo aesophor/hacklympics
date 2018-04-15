@@ -2,6 +2,7 @@
 
 import java.io.IOException;
 import com.google.gson.JsonObject;
+import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.user.Profile;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;
@@ -32,12 +33,17 @@ public class UserTest {
         //Teacher max = new Teacher("max");
         //System.out.println(max);
         
+        String username = "andrey";
+        String password = "hello";
         
-        Student andrey = new Student("andrey");
-        System.out.println(andrey);
+        System.out.print("--> Logging in as andrey... ");
+        Response resp = User.login(username, password);
         
-        System.out.println("Logging in as andrey...");
-        System.out.println(andrey.login("hello").success());
+        System.out.println(resp.getStatusCode());
+        
+        if (resp.success()) {
+            System.out.println("--> Role: " + resp.getContent().get("role"));
+        }
         
         //System.out.println("Registering Tim...");
         //System.out.println(User.register("tim", "timmy", "Tim", 108).success());

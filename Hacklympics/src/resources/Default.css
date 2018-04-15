@@ -1,0 +1,31 @@
+.parent {
+    -fx-background-color: #ffffff;
+}
+
+/* Login Panel */
+.titlebar {
+    -fx-background-color: #333645;
+}
+
+.button {
+    -fx-background-color: #0095d9;
+}
+
+.textButton {
+    -fx-background-color: transparent;
+    -fx-foreground-color: #000000;
+}
+
+.textButton:hover {
+    -fx-underline: true;
+}
+
+
+/* Teacher Panel */
+.banner {
+    -fx-background-color: #dadada;
+}
+
+.sidebar {
+    -fx-background-color: #333645;
+}

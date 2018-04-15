@@ -37,6 +37,10 @@ class OnlineUsers:
         return True if OnlineUsers.get(username) else False
 
     @staticmethod
+    def show():
+        print(OnlineUsers.users)
+
+    @staticmethod
     def get(username):
         for user in OnlineUsers.users:
             if user.username == username:

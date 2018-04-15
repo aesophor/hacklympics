@@ -79,11 +79,15 @@ def login(request):
         password = req_body["password"]
         login_ip = req_body["loginIP"]
         
-        OnlineUsers.add( 
-            User.objects.get(username=username, password=password).username
-        )
+        user = User.objects.get(username=username, password=password)
         
+        response_data["content"] = {
+            "role": user.role
+        }
+        
+        OnlineUsers.add(user.username)
         OnlineUsers.update(username=username, last_login_ip=login_ip)
+        OnlineUsers.show()
     except AlreadyLoggedIn:
         response_data["statusCode"] = StatusCode.ALREADY_LOGGED_IN
     except KeyError:

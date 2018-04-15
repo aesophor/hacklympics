@@ -4,15 +4,10 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/utility/Utils.java</file>
-            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/material/Course.java</file>
-            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/material/Exam.java</file>
-            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/material/Problem.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/user/Profile.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/user/User.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/communication/StatusCode.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/communication/Response.java</file>
-            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/test/ExamTest.java</file>
-            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/test/ProblemTest.java</file>
         </group>
     </open-files>
 </project-private>
