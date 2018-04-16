@@ -1,6 +1,8 @@
 package com.hacklympics.api.user;
 
 import java.util.Map;
+import java.util.List;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
@@ -19,12 +21,30 @@ public abstract class User {
         
         if (response.success()) {
             Map<String, Object> json = response.getContent();
-            this.profile = new Profile(username,
-                                       json.get("fullname").toString(),
-                                       json.get("graduationYear").toString());
+            
+            this.profile = new Profile(
+                    username,
+                    json.get("fullname").toString(),
+                    (int) Double.parseDouble(json.get("graduationYear").toString())
+            );
         }
     }
     
+    
+    public static List<String> list() {
+        String uri = String.format("user");
+        Response list = new Response(Utils.get(uri));
+        
+        if (list.success()) {
+            Gson gson = new Gson();
+            
+            String content = list.getContent().toString();
+            JsonObject usernames = gson.fromJson(content, JsonObject.class);
+            return gson.fromJson(usernames.get("users"), List.class);
+        }
+        
+        return null;
+    }
     
     public static Response register(String username, String password,
                                     String fullname, int graduationYear) {

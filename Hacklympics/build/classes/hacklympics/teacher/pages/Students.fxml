@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="639.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.StudentsController">
+   <children>
+      <TableView fx:id="studentsTable" layoutX="34.0" layoutY="38.0" prefHeight="568.0" prefWidth="712.0">
+        <columns>
+            <TableColumn fx:id="gradYearColumn" prefWidth="151.0" text="Graduation Year" />
+          <TableColumn fx:id="usernameColumn" prefWidth="180.0" text="Username" />
+          <TableColumn fx:id="fullnameColumn" prefWidth="135.0" text="Fullname" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

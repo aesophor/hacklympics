@@ -27,16 +27,17 @@ import javafx.scene.Node;
 
 public class TeacherController implements Initializable {
     
-    private Map<AnchorPane, String> pages;
     private Teacher teacher;
     
-    @FXML
-    private AnchorPane holderPane;
+    private static Map<String, String> fxmls;
     private AnchorPane dashboard;
     private AnchorPane students;
     private AnchorPane courses;
     private AnchorPane exams;
     private AnchorPane problems;
+    
+    @FXML
+    private AnchorPane holderPane;
     @FXML
     private Label bannerMsg;
     @FXML
@@ -44,27 +45,25 @@ public class TeacherController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //initPages();
-        //showPage(dashboard);
+        initPages();
+        showDashboard();
     }
     
     
     private void initPages() {
-        pages = new HashMap<>();
-        
-        pages.put(dashboard, "/modules/Dashboard.fxml");
-        pages.put(students, "/modules/Students.fxml");
-        pages.put(courses, "/modules/Courses.fxml");
-        pages.put(exams, "/modules/Exams.fxml");
-        pages.put(problems, "/modules/Problems.fxml");
+        fxmls = new HashMap<>();
+        fxmls.put("dashboard", "/hacklympics/teacher/pages/Dashboard.fxml");
+        fxmls.put("students",  "/hacklympics/teacher/pages/Students.fxml");
+        fxmls.put("courses",   "/hacklympics/teacher/pages/Courses.fxml");
+        fxmls.put("exams",     "/hacklympics/teacher/pages/Exams.fxml");
+        fxmls.put("problems",  "/hacklympics/teacher/pages/Problems.fxml");
         
         try {
-            for (Map.Entry<AnchorPane, String> page : pages.entrySet()) {
-                AnchorPane pane = page.getKey();
-                String fxml = page.getValue();
-                
-                pane = FXMLLoader.load(getClass().getResource(fxml));
-            }
+            dashboard = FXMLLoader.load(getClass().getResource(fxmls.get("dashboard")));
+            students = FXMLLoader.load(getClass().getResource(fxmls.get("students")));
+            courses = FXMLLoader.load(getClass().getResource(fxmls.get("courses")));
+            exams = FXMLLoader.load(getClass().getResource(fxmls.get("exams")));
+            problems = FXMLLoader.load(getClass().getResource(fxmls.get("problems")));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -73,6 +72,27 @@ public class TeacherController implements Initializable {
     private void showPage(Node node) {
         holderPane.getChildren().clear();
         holderPane.getChildren().add((Node) node);
+    }
+    
+    
+    public void showDashboard() {
+        showPage(dashboard);
+    }
+    
+    public void showStudents() {
+        showPage(students);
+    }
+    
+    public void showCourses() {
+        showPage(courses);
+    }
+    
+    public void showExams() {
+        showPage(exams);
+    }
+    
+    public void showProblems() {
+        showPage(problems);
     }
     
     

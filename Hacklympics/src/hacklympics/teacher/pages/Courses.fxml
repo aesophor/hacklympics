@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXProgressBar?>
+<?import java.net.URL?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="639.0" prefWidth="776.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.CoursesController">
+    <stylesheets>
+        <URL value="@/resources/Default.css" />
+    </stylesheets>
+   <children>
+      <JFXProgressBar layoutX="182.0" layoutY="334.0" prefHeight="6.0" prefWidth="412.0" />
+      <Label layoutX="267.0" layoutY="282.0" text="Courses Management Page loading..." />
+   </children>
+</AnchorPane>

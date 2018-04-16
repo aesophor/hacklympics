@@ -31,12 +31,7 @@ def list(request):
     users = User.objects.all()
 
     response_data["content"] = {
-        "users": [{
-            "username": user.username,
-            "fullname": user.fullname,
-            "graduationYear": user.graduation_year,
-            "isStudent": user.is_student
-        } for user in users]
+        "users": [user.username for user in users]
     }
 
     return JsonResponse(response_data)

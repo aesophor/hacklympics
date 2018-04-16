@@ -1,46 +1,63 @@
 package com.hacklympics.api.user;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 public class Profile {
     
-    private String username;
-    private String fullname;
-    private int gradYear;
+    private SimpleStringProperty username;
+    private SimpleStringProperty fullname;
+    private SimpleIntegerProperty gradYear;
     
-    public Profile(String username, String fullname, String gradYear) {
-        this.username = username;
-        this.fullname = fullname;
-        this.gradYear = (int) Double.parseDouble(gradYear);
+    public Profile(String username, String fullname, int gradYear) {
+        this.username = new SimpleStringProperty(username);
+        this.fullname = new SimpleStringProperty(fullname);
+        this.gradYear = new SimpleIntegerProperty(gradYear);
     }
     
     
     public String getUsername() {
-        return username;
+        return username.get();
     }
     
     public String getFullname() {
-        return fullname;
+        return fullname.get();
     }
     
-    public int getGradYear() {
-        return gradYear;
+    public Integer getGradYear() {
+        return gradYear.get();
     }
 
     
     public void setUsername(String username) {
-        this.username = username;
+        this.username.set(username);
     }
     
     public void setFullname(String fullname) {
-        this.fullname = fullname;
+        this.fullname.set(fullname);
     }
     
     public void setGradYear(int gradYear) {
-        this.gradYear = gradYear;
+        this.gradYear.set(gradYear);
     }
+    
+    
+    public SimpleStringProperty usernameProperty() {
+        return username;
+    }
+    
+    public SimpleStringProperty fullnameProperty() {
+        return fullname;
+    }
+    
+    public SimpleIntegerProperty gradYearProperty() {
+        return gradYear;
+    }
+    
     
     @Override
     public String toString() {
-        return String.format("[%s] %s (%s)", username, fullname, gradYear);
+        return String.format("[%s] %s (%s)", getUsername(), getFullname(), getGradYear());
     }
     
 }

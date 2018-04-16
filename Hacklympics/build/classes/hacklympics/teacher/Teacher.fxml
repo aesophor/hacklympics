@@ -23,7 +23,7 @@
             </Label>
             <HBox layoutX="10.0" layoutY="374.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Dashboard" textFill="WHITE">
+                  <JFXButton onAction="#showDashboard" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Dashboard" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="DASHBOARD" size="20.0" wrappingWidth="30.0" />
                      </graphic>
@@ -41,7 +41,7 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Students" textFill="WHITE">
+                  <JFXButton onAction="#showStudents" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Students" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="USERS" size="20.0" wrappingWidth="30.0" />
                      </graphic>
@@ -59,7 +59,7 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Courses" textFill="WHITE">
+                  <JFXButton onAction="#showCourses" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Courses" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="BOOK" size="20.0" wrappingWidth="30.0" />
                      </graphic>
@@ -77,7 +77,7 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Exams" textFill="WHITE">
+                  <JFXButton onAction="#showExams" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Exams" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="CLIPBOARD" size="20.0" wrappingWidth="30.0" />
                      </graphic>
@@ -95,7 +95,7 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="69.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Problems" textFill="WHITE">
+                  <JFXButton onAction="#showProblems" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarButton" text="Problems" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="TASKS" size="20.0" wrappingWidth="30.0" />
                      </graphic>

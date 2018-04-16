@@ -39,3 +39,44 @@
     -fx-alignment: center-left;
     -fx-font-size: 16 px;
 }
+
+
+.table-view {
+    -fx-table-header-border-color: transparent;
+    -fx-table-cell-border-color: -fx-box-border;
+    -fx-background-color: transparent;
+}
+
+.table-view .filler, .table-view .column-header
+{
+    -fx-size: 40;
+    -fx-border-style: null;
+    -fx-border-color: rgb(200.0, 200.0, 200.0);
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+}
+
+.table-view .show-hide-columns-button
+{
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header .label,
+.table-view .column-drag-header .label
+{
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-view .column-header-background
+{
+    -fx-background-color: transparent;
+}
+
+.table-row-cell {
+    -fx-cell-size: 30px;
+}
+
+.table-cell {
+    -fx-border-color: transparent; 
+    -fx-border-width: 1;
+}
