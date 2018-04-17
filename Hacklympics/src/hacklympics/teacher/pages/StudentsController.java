@@ -1,8 +1,11 @@
 package hacklympics.teacher.pages;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.hacklympics.api.communication.Response;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
@@ -18,7 +21,7 @@ public class StudentsController implements Initializable {
     private ObservableList<Profile> records;
 
     @FXML
-    private TableView<Profile> studentsTable;
+    private TableView<Profile> table;
     @FXML
     private TableColumn<Student, Integer> gradYearColumn;
     @FXML
@@ -28,25 +31,40 @@ public class StudentsController implements Initializable {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initStudentTable();
+        initTable();
+        buildTable();
+        showTable();
     }    
     
     
-    private void initStudentTable() {
+    private void initTable() {
         records = FXCollections.observableArrayList();
-        
-        List<String> studentList = Student.list();
-        
-        for (String username: studentList) {
-            records.add(new Student(username).getProfile());
-        }
         
         gradYearColumn.setCellValueFactory(new PropertyValueFactory<>("gradYear"));
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
         fullnameColumn.setCellValueFactory(new PropertyValueFactory<>("fullname"));
+    }
+    
+    private void buildTable() {
+        Response list = Student.list();
         
-        studentsTable.getItems().clear();
-        studentsTable.getItems().addAll(records);
+        if (list.success()) {
+            String json = list.getContent().get("users").toString();
+            JsonArray users = new Gson().fromJson(json, JsonArray.class);
+            
+            for (JsonElement e: users) {
+                records.add(new Profile(
+                        e.getAsJsonObject().get("username").getAsString(),
+                        e.getAsJsonObject().get("fullname").getAsString(),
+                        e.getAsJsonObject().get("graduationYear").getAsInt()
+                ));
+            }
+        }
+    }
+    
+    private void showTable() {
+        table.getItems().clear();
+        table.getItems().addAll(records);
     }
     
 }

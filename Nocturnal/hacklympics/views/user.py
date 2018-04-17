@@ -31,7 +31,12 @@ def list(request):
     users = User.objects.all()
 
     response_data["content"] = {
-        "users": [user.username for user in users]
+        "users": [{
+            "username": user.username,
+            "fullname": user.fullname,
+            "graduationYear": user.graduation_year,
+            "isStudent": user.is_student
+        } for user in users]
     }
 
     return JsonResponse(response_data)
@@ -43,7 +48,12 @@ def list_students(request):
     students = User.objects.all().filter(is_student=True)
 
     response_data["content"] = {
-        "students": [student.username for student in students]
+        "users": [{
+            "username": student.username,
+            "fullname": student.fullname,
+            "graduationYear": student.graduation_year,
+            "isStudent": student.is_student
+        } for student in students]
     }
 
     return JsonResponse(response_data)
@@ -55,7 +65,12 @@ def list_teachers(request):
     teachers = User.objects.all().filter(is_student=False)
 
     response_data["content"] = {
-        "students": [teacher.username for teacher in teachers]
+        "users": [{
+            "username": teacher.username,
+            "fullname": teacher.fullname,
+            "graduationYear": teacher.graduation_year,
+            "isStudent": teacher.is_student
+        } for teacher in teachers]
     }
 
     return JsonResponse(response_data)

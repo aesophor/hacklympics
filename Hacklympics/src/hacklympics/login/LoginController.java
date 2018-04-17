@@ -69,24 +69,23 @@ public class LoginController {
                 }
             } else {
                 statusCode = loginResp.getStatusCode();
-                throw new Exception();
+                
+                switch(statusCode) {
+                    case VALIDATION_ERR:
+                    case NOT_REGISTERED:
+                        warningMsg.setText("Incorrect username or password.");
+                        break;
+                    
+                    case ALREADY_LOGGED_IN:
+                        warningMsg.setText("This account is currently in use.");
+                        break;
+                    
+                    default:
+                        break;
+                }
             }
         } catch (Exception ex) {
-            switch(statusCode) {
-                case VALIDATION_ERR:
-                case NOT_REGISTERED:
-                    warningMsg.setText("Incorrect username or password.");
-                    break;
-                    
-                case ALREADY_LOGGED_IN:
-                    warningMsg.setText("This account is currently in use.");
-                    break;
-                    
-                default:
-                    warningMsg.setText("Unable to connect to the server.");
-                    break;
-            }
-            
+            warningMsg.setText("Unable to connect to the server.");
             ex.printStackTrace();
         }
     }

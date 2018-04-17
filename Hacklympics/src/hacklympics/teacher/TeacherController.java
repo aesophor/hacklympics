@@ -2,9 +2,10 @@ package hacklympics.teacher;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Optional;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,18 +13,19 @@ import javafx.fxml.Initializable;
 import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.Node;
+import javafx.scene.text.Text;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXDialog;
+import com.jfoenix.controls.JFXDialogLayout;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Teacher;
-
-import javafx.scene.Node;
 
 public class TeacherController implements Initializable {
     
@@ -39,6 +41,8 @@ public class TeacherController implements Initializable {
     @FXML
     private AnchorPane holderPane;
     @FXML
+    private StackPane stackPane;
+    @FXML
     private Label bannerMsg;
     @FXML
     private JFXButton logoutBtn;
@@ -46,7 +50,7 @@ public class TeacherController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initPages();
-        showDashboard();
+        showPage(dashboard);
     }
     
     
@@ -74,54 +78,72 @@ public class TeacherController implements Initializable {
         holderPane.getChildren().add((Node) node);
     }
     
+    public void logout(ActionEvent event) {
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("Alert"));
+        content.setBody(new Text("You are about to be logged out. Are you sure?"));
+        
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton confirmBtn = new JFXButton("Yes");
+        JFXButton cancelBtn = new JFXButton("No");
+        
+        List<JFXButton> buttons = new ArrayList<>();
+        buttons.add(cancelBtn);
+        buttons.add(confirmBtn);
+        
+        confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Response logout = User.logout(teacher.getProfile().getUsername());
+        
+                if (logout.success()) {
+                    logoutBtn.getScene().getWindow().hide();
+            
+                    try {
+                        Parent root = FXMLLoader.load(getClass().getResource("/hacklympics/login/Login.fxml"));
+                        Scene scene = new Scene(root);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+        
+        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                dialog.close();
+            }
+        });
+        
+        content.setActions(buttons);
+        dialog.show();
+    }
     
-    public void showDashboard() {
+    
+    public void showDashboard(ActionEvent event) {
         showPage(dashboard);
     }
     
-    public void showStudents() {
+    public void showStudents(ActionEvent event) {
         showPage(students);
     }
     
-    public void showCourses() {
+    public void showCourses(ActionEvent event) {
         showPage(courses);
     }
     
-    public void showExams() {
+    public void showExams(ActionEvent event) {
         showPage(exams);
     }
     
-    public void showProblems() {
+    public void showProblems(ActionEvent event) {
         showPage(problems);
     }
     
-    
-    public void logout(ActionEvent event) {
-        Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Logout Confirm");
-        alert.setHeaderText("You are about to be logged out");
-        alert.setContentText("Are you sure?");
-
-        Optional<ButtonType> result = alert.showAndWait();
-        
-        if (result.get() == ButtonType.OK) {
-            Response logout = User.logout(teacher.getProfile().getUsername());
-        
-            if (logout.success()) {
-                logoutBtn.getScene().getWindow().hide();
-            
-                try {
-                    Parent root = FXMLLoader.load(getClass().getResource("/hacklympics/login/Login.fxml"));
-                    Scene scene = new Scene(root);
-                    Stage stage = new Stage();
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
     
     public Teacher getTeacher() {
         return teacher;
@@ -133,4 +155,5 @@ public class TeacherController implements Initializable {
         String greetMsg = String.format("Welcome, %s", teacher.getProfile().getFullname());
         bannerMsg.setText(greetMsg);
     }
+    
 }

@@ -2,13 +2,20 @@
     -fx-background-color: #ffffff;
 }
 
+.jfx-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #000000;
+}
+
+
 /* Login Panel */
 .titlebar {
     -fx-background-color: #333645;
 }
 
-.button {
+.coloredBtn {
     -fx-background-color: #0095d9;
+    -fx-text-fill: #ffffff;
 }
 
 .textButton {

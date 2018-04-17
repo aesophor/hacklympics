@@ -1,8 +1,6 @@
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.user.User;
@@ -10,18 +8,17 @@ import com.hacklympics.api.user.User;
 public class GsonParse {
     
     public static void main(String[] args) {
-        /*
         Response list = User.list();
         
         if (list.success()) {
-            String json = list.getContent().toString();
+            String json = list.getContent().get("users").toString();
             
-            JsonObject usernames = new Gson().fromJson(json, JsonObject.class);
+            JsonArray users = new Gson().fromJson(json, JsonArray.class);
             
-            List<String> u = new Gson().fromJson(usernames.get("users"), List.class);
-            System.out.println(u);
+            for (JsonElement e: users) {
+                System.out.println(e);
+            }
         }
-        */
     }
     
 }

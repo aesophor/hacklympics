@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import com.google.gson.Gson;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -16,10 +17,12 @@ public class Utils {
     
     private static final MediaType JSON;
     private static final OkHttpClient CLIENT;
+    private static final Gson GSON;
     
     static {
         JSON = MediaType.parse("application/json; charset=utf-8");
         CLIENT = new OkHttpClient();
+        GSON = new Gson();
     }
     
     private Utils() {}
