@@ -21,6 +21,9 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
 
     url(r'^user$', user.list),
+    url(r'^user/students$', user.list_students),
+    url(r'^user/teachers$', user.list_teachers),
+    
     url(r'^user/login$', user.login),
     url(r'^user/logout$', user.logout),
     url(r'^user/register$', user.register),

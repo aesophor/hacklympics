@@ -37,6 +37,30 @@ def list(request):
     return JsonResponse(response_data)
 
 
+def list_students(request):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    students = User.objects.all().filter(is_student=True)
+
+    response_data["content"] = {
+        "students": [student.username for student in students]
+    }
+
+    return JsonResponse(response_data)
+
+
+def list_teachers(request):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    teachers = User.objects.all().filter(is_student=False)
+
+    response_data["content"] = {
+        "students": [teacher.username for teacher in teachers]
+    }
+
+    return JsonResponse(response_data)
+
+
 def register(request):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
