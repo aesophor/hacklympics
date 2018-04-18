@@ -7,6 +7,20 @@
     -fx-text-fill: #000000;
 }
 
+.jfx-text-field {
+    -jfx-focus-color: #0095d9;
+}
+
+.jfx-list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+}
+
+.online-user-label {
+    -fx-text-fill: #ffffff;
+}
+
+
 
 /* Login Panel */
 .titlebar {
@@ -14,6 +28,7 @@
 }
 
 .coloredBtn {
+    -jfx-button-type: RAISED;
     -fx-background-color: #0095d9;
     -fx-text-fill: #ffffff;
 }

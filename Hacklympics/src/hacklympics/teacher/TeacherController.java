@@ -23,6 +23,7 @@ import javafx.event.EventHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Teacher;
@@ -46,9 +47,12 @@ public class TeacherController implements Initializable {
     private Label bannerMsg;
     @FXML
     private JFXButton logoutBtn;
+    @FXML
+    private JFXListView onlineUsersList;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initOnlineUsersList();
         initPages();
         showPage(dashboard);
     }
@@ -76,6 +80,12 @@ public class TeacherController implements Initializable {
     private void showPage(Node node) {
         holderPane.getChildren().clear();
         holderPane.getChildren().add((Node) node);
+    }
+    
+    private void initOnlineUsersList() {
+        Label andrey = new Label("Andrey");
+        andrey.getStyleClass().add("online-user-label");
+        onlineUsersList.getItems().add(andrey);
     }
     
     public void logout(ActionEvent event) {
