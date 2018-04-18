@@ -1,14 +1,14 @@
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.material.Course;
-import com.hacklympics.api.material.Exam;
-import com.hacklympics.api.material.Problem;
+import com.hacklympics.api.materials.Course;
+import com.hacklympics.api.materials.Exam;
+import com.hacklympics.api.materials.Problem;
 
 public class ProblemTest {
     
     
     public static void main(String[] args) {
         Course systemSoftwares = new Course(1);
-        Exam firstPass = new Exam(systemSoftwares.getCourseID(), 1);
+        Exam firstPass = new Exam(systemSoftwares.getData().getCourseID(), 1);
         
         /*
         Response response = Problem.create(
@@ -22,8 +22,8 @@ public class ProblemTest {
         */
         
         
-        Response response = Problem.remove(systemSoftwares.getCourseID(),
-                                           firstPass.getExamID(),
+        Response response = Problem.remove(systemSoftwares.getData().getCourseID(),
+                                           firstPass.getData().getExamID(),
                                            1);
         System.out.println(response);
         

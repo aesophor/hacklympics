@@ -1,4 +1,4 @@
-package com.hacklympics.api.user;
+package com.hacklympics.api.users;
 
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;

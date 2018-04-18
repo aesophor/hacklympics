@@ -1,6 +1,6 @@
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.material.Course;
-import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.materials.Course;
+import com.hacklympics.api.materials.Exam;
 
 public class ExamTest {
     
@@ -20,7 +20,7 @@ public class ExamTest {
         */
         
         
-        Response response = Exam.remove(systemSoftwares.getCourseID(), 3);
+        Response response = Exam.remove(systemSoftwares.getData().getCourseID(), 3);
         System.out.println(response);
     }
     

@@ -14,9 +14,9 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXPasswordField;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
-import com.hacklympics.api.user.User;
-import com.hacklympics.api.user.Student;
-import com.hacklympics.api.user.Teacher;
+import com.hacklympics.api.users.User;
+import com.hacklympics.api.users.Student;
+import com.hacklympics.api.users.Teacher;
 //import hacklympics.student.StudentController;
 import hacklympics.teacher.TeacherController;
 
@@ -67,6 +67,8 @@ public class LoginController {
                     default:
                         break;
                 }
+                
+                // Add ShutdownHook for auto logout upon exit.
             } else {
                 statusCode = loginResp.getStatusCode();
                 
@@ -98,6 +100,7 @@ public class LoginController {
             Parent root = fxmlLoader.load();
             Stage stage = new Stage();
             Scene scene = new Scene(root);
+            stage.setTitle("Hacklympics");
             stage.setScene(scene);
             stage.show();
         } catch (IOException ioe) {

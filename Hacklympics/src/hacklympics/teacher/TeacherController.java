@@ -25,8 +25,8 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.user.User;
-import com.hacklympics.api.user.Teacher;
+import com.hacklympics.api.users.User;
+import com.hacklympics.api.users.Teacher;
 
 public class TeacherController implements Initializable {
     

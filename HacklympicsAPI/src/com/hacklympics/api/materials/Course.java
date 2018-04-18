@@ -1,4 +1,4 @@
-package com.hacklympics.api.material;
+package com.hacklympics.api.materials;
 
 import java.util.Map;
 import java.util.List;
@@ -10,31 +10,34 @@ import com.hacklympics.api.utility.Utils;
 
 public class Course {
     
-    private final int courseID;
-    private String name;
-    private int semester;
-    private String teacher;
-    private List<String> students;
+    private CourseData data;
     
     public Course(int courseID) {
-        this.courseID = courseID;
-        
-        initCourseData();
+        initCourseData(courseID);
     }
     
-    public void initCourseData() {
+    public void initCourseData(int courseID) {
         String uri = String.format("course/%d", courseID);
         Response response = new Response(Utils.get(uri));
         
         if (response.success()) {
             Map<String, Object> json = response.getContent();
-            this.name = json.get("name").toString();
-            this.semester = (int) Double.parseDouble(json.get("semester").toString());
-            this.teacher = json.get("teacher").toString();
-            this.students = new Gson().fromJson(json.get("students").toString(), List.class);
+            
+            this.data = new CourseData(
+                    courseID,
+                    json.get("name").toString(),
+                    (int) Double.parseDouble(json.get("semester").toString()),
+                    json.get("teacher").toString(),
+                    new Gson().fromJson(json.get("students").toString(), List.class)
+            );
         }
     }
     
+    
+    public static Response list() {
+        String uri = String.format("course");
+        return new Response(Utils.get(uri));
+    }
     
     public static Response create(String name, int semester, String teacher,
                                   List<String> students) {
@@ -64,29 +67,13 @@ public class Course {
     }
     
     
-    public int getCourseID() {
-        return courseID;
-    }
-    
-    public String getName() {
-        return name;
-    }
-    
-    public int getSemester() {
-        return semester;
-    }
-    
-    public String getTeacher() {
-        return teacher;
-    }
-    
-    public List<String> getStudents() {
-        return students;
+    public CourseData getData() {
+        return data;
     }
     
     @Override
     public String toString() {
-        return String.format("[%d] %d_%s - %s ", courseID, semester, name, teacher) + students;
+        return data.toString();
     }
     
 }

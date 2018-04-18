@@ -1,4 +1,4 @@
-package com.hacklympics.api.user;
+package com.hacklympics.api.users;
 
 import java.util.Map;
 import com.google.gson.JsonObject;
@@ -7,7 +7,7 @@ import com.hacklympics.api.utility.Utils;
 
 public abstract class User {
     
-    private Profile profile;
+    private UserProfile profile;
     
     public User(String username) {
         initProfile(username);
@@ -20,7 +20,7 @@ public abstract class User {
         if (response.success()) {
             Map<String, Object> json = response.getContent();
             
-            this.profile = new Profile(
+            this.profile = new UserProfile(
                     username,
                     json.get("fullname").toString(),
                     (int) Double.parseDouble(json.get("graduationYear").toString())
@@ -69,7 +69,7 @@ public abstract class User {
     }
     
     
-    public Profile getProfile() {
+    public UserProfile getProfile() {
         return profile;
     }
     

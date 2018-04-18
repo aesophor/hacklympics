@@ -1,4 +1,4 @@
-package com.hacklympics.api.material;
+package com.hacklympics.api.materials;
 
 import java.util.Map;
 import com.google.gson.JsonObject;
@@ -7,28 +7,26 @@ import com.hacklympics.api.utility.Utils;
 
 public class Exam {
     
-    private final int courseID;
-    private final int examID;
-    private String title;
-    private String desc;
-    private int duration;
+    private ExamData data;
     
     public Exam(int courseID, int examID) {
-        this.courseID = courseID;
-        this.examID = examID;
-        
-        initExamData();
+        initExamData(courseID, examID);
     }
     
-    private void initExamData() {
+    private void initExamData(int courseID, int examID) {
         String uri = String.format("course/%d/exam/%d", courseID, examID);
         Response response = new Response(Utils.get(uri));
         
         if (response.success()) {
             Map<String, Object> json = response.getContent();
-            this.title = json.get("title").toString();
-            this.desc = json.get("desc").toString();
-            this.duration = (int) Double.parseDouble(json.get("duration").toString());
+            
+            this.data = new ExamData(
+                    courseID,
+                    examID,
+                    json.get("title").toString(),
+                    json.get("desc").toString(),
+                    (int) Double.parseDouble(json.get("duration").toString())
+            );
         }
     }
     
@@ -55,29 +53,13 @@ public class Exam {
     }
     
     
-    public int getCourseID() {
-        return courseID;
-    }
-    
-    public int getExamID() {
-        return examID;
-    }
-    
-    public String getTitle() {
-        return title;
-    }
-    
-    public String getDesc() {
-        return desc;
-    }
-    
-    public int getDuration() {
-        return duration;
+    public ExamData getData() {
+        return data;
     }
     
     @Override
     public String toString() {
-        return String.format("");
+        return data.toString();
     }
     
 }

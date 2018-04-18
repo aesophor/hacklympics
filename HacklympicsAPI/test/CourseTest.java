@@ -1,7 +1,7 @@
 import java.util.List;
 import java.util.ArrayList;
-import com.hacklympics.api.material.Course;
-import static com.hacklympics.api.material.Course.create;
+import com.hacklympics.api.materials.Course;
+import static com.hacklympics.api.materials.Course.create;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +18,7 @@ public class CourseTest {
         
         //System.out.println(Course.remove(5));
         
-        System.out.println(systemSoftwares.getStudents());
+        System.out.println(systemSoftwares.getData().getStudents());
     }
     
 }

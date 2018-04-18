@@ -1,15 +1,15 @@
-package com.hacklympics.api.user;
+package com.hacklympics.api.users;
 
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Profile {
+public class UserProfile {
     
     private SimpleStringProperty username;
     private SimpleStringProperty fullname;
     private SimpleIntegerProperty gradYear;
     
-    public Profile(String username, String fullname, int gradYear) {
+    public UserProfile(String username, String fullname, int gradYear) {
         this.username = new SimpleStringProperty(username);
         this.fullname = new SimpleStringProperty(fullname);
         this.gradYear = new SimpleIntegerProperty(gradYear);

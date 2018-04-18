@@ -1,4 +1,4 @@
-package com.hacklympics.api.material;
+package com.hacklympics.api.materials;
 
 import java.util.Map;
 import com.google.gson.JsonObject;
@@ -7,34 +7,31 @@ import com.hacklympics.api.utility.Utils;
 
 public class Problem {
     
-    private final int courseID;
-    private final int examID;
-    private final int problemID;
-    private String title;
-    private String desc;
+    private ProblemData data;
 
     public Problem(int courseID, int examID, int problemID) {
-        this.courseID = courseID;
-        this.examID = examID;
-        this.problemID = problemID;
-        
-        initProblemData();
+        initProblemData(courseID, examID, problemID);
     }
     
-    private void initProblemData() {
+    private void initProblemData(int courseID, int examID, int problemID) {
         String uri = String.format("course/%d/exam/%d/problem/%d", 
                                    courseID, examID, problemID);
         Response response = new Response(Utils.get(uri));
         
         if (response.success()) {
             Map<String, Object> json = response.getContent();
-            this.title = json.get("title").toString();
-            this.desc = json.get("desc").toString();
+            
+            this.data = new ProblemData(
+                    courseID,
+                    examID,
+                    problemID,
+                    json.get("title").toString(),
+                    json.get("desc").toString()
+            );
         }
     }
     
     
-    // Shouldn't it return a Problem instance after creation (?)
     public static Response create(String title, String desc, 
                                   int courseID, int examID) {
         String uri = String.format("course/%d/exam/%d/problem/create", 
@@ -58,29 +55,13 @@ public class Problem {
     }
     
     
-    public int getCourseID() {
-        return courseID;
-    }
-    
-    public int getExamID() {
-        return examID;
-    }
-    
-    public int getProblemID() {
-        return problemID;
-    }
-    
-    public String getTitle() {
-        return title;
-    }
-    
-    public String getDesc() {
-        return desc;
+    public ProblemData getData() {
+        return data;
     }
     
     @Override
     public String toString() {
-        return String.format("");
+        return data.toString();
     }
     
 }

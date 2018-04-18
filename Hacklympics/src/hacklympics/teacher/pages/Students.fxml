@@ -10,12 +10,12 @@
    <children>
       <TableView fx:id="table" layoutX="32.0" layoutY="98.0" prefHeight="506.0" prefWidth="712.0">
         <columns>
-            <TableColumn fx:id="gradYearColumn" prefWidth="202.0" text="Graduation Year" />
+          <TableColumn fx:id="gradYearColumn" prefWidth="202.0" text="Graduation Year" />
           <TableColumn fx:id="usernameColumn" prefWidth="175.0" text="Username" />
           <TableColumn fx:id="fullnameColumn" prefWidth="89.0" text="Fullname" />
         </columns>
       </TableView>
       <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="32.0" layoutY="35.0" prefHeight="26.0" prefWidth="602.0" promptText="Keyword" />
-      <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="667.0" layoutY="35.0" onAction="#search" styleClass="coloredBtn" text="Search" />
+      <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="667.0" layoutY="35.0" onAction="#search" styleClass="darkBlueBtn" text="Search" />
    </children>
 </AnchorPane>

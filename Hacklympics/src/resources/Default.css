@@ -1,3 +1,4 @@
+/* Default */
 .parent {
     -fx-background-color: #ffffff;
 }
@@ -16,10 +17,28 @@
     -fx-text-fill: #ffffff;
 }
 
+.jfx-list-cell:focused {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff;
+}
+
 .online-user-label {
     -fx-text-fill: #ffffff;
 }
 
+
+/* General */
+.lightBlueBtn {
+    -jfx-button-type: RAISED;
+    -fx-background-color: #0095d9;
+    -fx-text-fill: #ffffff;
+}
+
+.darkBlueBtn {
+    -jfx-button-type: RAISED;
+    -fx-background-color: #333645;
+    -fx-text-fill: #ffffff;
+}
 
 
 /* Login Panel */
@@ -27,23 +46,17 @@
     -fx-background-color: #333645;
 }
 
-.coloredBtn {
-    -jfx-button-type: RAISED;
-    -fx-background-color: #0095d9;
-    -fx-text-fill: #ffffff;
-}
-
-.textButton {
+.textBtn {
     -fx-background-color: transparent;
     -fx-foreground-color: #000000;
 }
 
-.textButton:hover {
+.textBtn:hover {
     -fx-underline: true;
 }
 
 
-/* Teacher Panel */
+/* Student/Teacher Panels */
 .banner {
     -fx-background-color: #dadada;
 }
@@ -52,7 +65,7 @@
     -fx-background-color: #333645;
 }
 
-.sidebarButton {
+.sidebarBtn {
     -fx-background-radius: 0;
     -fx-padding: 15 15 15 30;
     
@@ -60,6 +73,12 @@
     -fx-text-fill: #ffffff;
     -fx-alignment: center-left;
     -fx-font-size: 16 px;
+}
+
+.addBtn {
+    -fx-background-radius: 500;
+    -fx-background-color: #0095d9;
+    -fx-text-fill: #ffffff;
 }
 
 

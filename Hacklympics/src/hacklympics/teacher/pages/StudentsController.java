@@ -15,17 +15,18 @@ import com.google.gson.JsonElement;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.user.Profile;
-import com.hacklympics.api.user.Student;
+import com.hacklympics.api.users.UserProfile;
+import com.hacklympics.api.users.Student;
 import javafx.event.ActionEvent;
 
 public class StudentsController implements Initializable {
     
-    private ObservableList<Profile> records;
+    private static final Gson GSON = new Gson();
+    private ObservableList<UserProfile> records;
     private String keyword;
 
     @FXML
-    private TableView<Profile> table;
+    private TableView<UserProfile> table;
     @FXML
     private TableColumn<Student, Integer> gradYearColumn;
     @FXML
@@ -59,18 +60,18 @@ public class StudentsController implements Initializable {
         Response list = Student.list();
         
         if (list.success()) {
-            String json = list.getContent().get("users").toString();
-            JsonArray users = new Gson().fromJson(json, JsonArray.class);
+            String json = GSON.toJson(list.getContent().get("users"));
+            JsonArray users = GSON.fromJson(json, JsonArray.class);
             
             keyword = (keyword == null) ? "" : keyword;
             
             for (JsonElement e: users) {
                 String username = e.getAsJsonObject().get("username").getAsString();
-                String fullname = e.getAsJsonObject().get("username").getAsString();
+                String fullname = e.getAsJsonObject().get("fullname").getAsString();
                 int gradYear = e.getAsJsonObject().get("graduationYear").getAsInt();
                 
                 if (username.contains(keyword) | fullname.contains(keyword)) {
-                    records.add(new Profile(username, fullname, gradYear));
+                    records.add(new UserProfile(username, fullname, gradYear));
                 }
             }
         }
