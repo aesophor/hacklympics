@@ -6,12 +6,11 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
 
 ## Features
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
-  > **Hacklympics** - Frontend (Java 8)
-  > **HacklympicsAPI** - RESTful API (Java 8)
-  > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)
+  > **Hacklympics** - Frontend (Java 8)    
+  > **HacklympicsAPI** - RESTful API (Java 8)    
+  > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)    
 * Students can write and submit their codes.
 * Teachers can review students' codes.
-* Teachers can watch
 
 ## Screenshots
 ![login-panel](https://i.imgur.com/MXWv148.png)
