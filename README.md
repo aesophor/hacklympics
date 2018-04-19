@@ -15,4 +15,4 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
 ## Screenshots
 ![login-panel](https://i.imgur.com/MXWv148.png)
 
-![teacher-dashboard](https://i.imgur.com/YMb4ZgI.png)
+![teacher-dashboard](https://i.imgur.com/EuClQir.png)
