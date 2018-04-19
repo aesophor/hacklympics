@@ -9,9 +9,8 @@ public class Student extends User {
         super(username);
     }
     
-    
-    public static Response list() {
-        String uri = String.format("user/students");
-        return new Response(Utils.get(uri));
+    public Student(String username, String fullname, int gradYear) {
+        super(username, fullname, gradYear);
     }
+    
 }

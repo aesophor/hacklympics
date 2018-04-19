@@ -2,31 +2,28 @@ package hacklympics.teacher.pages;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.users.UserProfile;
 import com.hacklympics.api.users.Student;
-import javafx.event.ActionEvent;
+import hacklympics.utility.Utils;
 
 public class StudentsController implements Initializable {
     
     private static final Gson GSON = new Gson();
-    private ObservableList<UserProfile> records;
+    private ObservableList<Student> records;
     private String keyword;
 
     @FXML
-    private TableView<UserProfile> table;
+    private TableView<Student> table;
     @FXML
     private TableColumn<Student, Integer> gradYearColumn;
     @FXML
@@ -36,9 +33,6 @@ public class StudentsController implements Initializable {
     
     @FXML
     private JFXTextField keywordField;
-    @FXML
-    private JFXButton searchBtn;
-    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -57,22 +51,13 @@ public class StudentsController implements Initializable {
     }
     
     private void buildTable() {
-        Response list = Student.list();
+        List<Student> students = Utils.getStudents();
+        keyword = (keyword == null) ? "" : keyword;
         
-        if (list.success()) {
-            String json = GSON.toJson(list.getContent().get("users"));
-            JsonArray users = GSON.fromJson(json, JsonArray.class);
-            
-            keyword = (keyword == null) ? "" : keyword;
-            
-            for (JsonElement e: users) {
-                String username = e.getAsJsonObject().get("username").getAsString();
-                String fullname = e.getAsJsonObject().get("fullname").getAsString();
-                int gradYear = e.getAsJsonObject().get("graduationYear").getAsInt();
-                
-                if (username.contains(keyword) | fullname.contains(keyword)) {
-                    records.add(new UserProfile(username, fullname, gradYear));
-                }
+        for (Student s: students) {
+            if (s.getProfile().getUsername().contains(keyword) |
+                s.getProfile().getFullname().contains(keyword)) {
+                records.add(s);
             }
         }
     }

@@ -2,11 +2,14 @@ package com.hacklympics.api.materials;
 
 import java.util.Map;
 import java.util.List;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
+
 
 public class Course {
     
@@ -69,6 +72,22 @@ public class Course {
     
     public CourseData getData() {
         return data;
+    }
+    
+    public SimpleIntegerProperty courseIDProperty() {
+        return data.courseIDProperty();
+    }
+    
+    public SimpleStringProperty nameProperty() {
+        return data.nameProperty();
+    }
+    
+    public SimpleIntegerProperty semesterProperty() {
+        return data.semesterProperty();
+    }
+    
+    public SimpleStringProperty teacherProperty() {
+        return data.teacherProperty();
     }
     
     @Override

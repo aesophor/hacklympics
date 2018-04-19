@@ -9,9 +9,8 @@ public class Teacher extends User {
         super(username);
     }
     
-
-    public static Response list() {
-        String uri = String.format("user/teachers");
-        return new Response(Utils.get(uri));
+    public Teacher(String username, String fullname, int gradYear) {
+        super(username, fullname, gradYear);
     }
+    
 }

@@ -20,10 +20,11 @@
       </TableView>
       <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="32.0" layoutY="35.0" prefHeight="26.0" prefWidth="629.0" promptText="Keyword" />
       <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="681.0" layoutY="35.0" onAction="#search" styleClass="darkBlueBtn" text="Search" />
-      <JFXButton fx:id="addBtn" buttonType="RAISED" layoutX="690.0" layoutY="557.0" onAction="#add" prefHeight="55.0" prefWidth="40.0" styleClass="addBtn" text="+">
+      <JFXButton fx:id="addBtn" buttonType="RAISED" layoutX="707.0" layoutY="569.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#add" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn" text="+">
          <font>
-            <Font size="28.0" />
-         </font></JFXButton>
-      <StackPane fx:id="stackPane" layoutX="107.0" layoutY="104.0" prefHeight="331.0" prefWidth="448.0" />
+            <Font size="22.0" />
+         </font>
+      </JFXButton>
+      <StackPane fx:id="stackPane" layoutX="163.0" layoutY="184.0" mouseTransparent="true" prefHeight="201.0" prefWidth="305.0" />
    </children>
 </AnchorPane>

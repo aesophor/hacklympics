@@ -53,6 +53,24 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
                <children>
+                  <JFXButton onAction="#showCourses" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Courses &amp; Exams" textFill="WHITE">
+                     <graphic>
+                        <FontAwesomeIconView fill="#eaeaea" glyphName="BOOK" size="20.0" wrappingWidth="30.0" />
+                     </graphic>
+                     <padding>
+                        <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </JFXButton>
+               </children>
+            </HBox>
+            <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
+               <children>
                   <JFXButton onAction="#showStudents" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Students" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="USERS" size="20.0" wrappingWidth="30.0" />
@@ -71,27 +89,9 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton onAction="#showCourses" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Courses" textFill="WHITE">
+                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Messages" textFill="WHITE">
                      <graphic>
-                        <FontAwesomeIconView fill="#eaeaea" glyphName="BOOK" size="20.0" wrappingWidth="30.0" />
-                     </graphic>
-                     <padding>
-                        <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </JFXButton>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
-               <children>
-                  <JFXButton onAction="#showExams" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Exams" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIconView fill="#eaeaea" glyphName="CLIPBOARD" size="20.0" wrappingWidth="30.0" />
+                        <FontAwesomeIconView fill="#eaeaea" glyphName="ENVELOPE" size="20.0" wrappingWidth="30.0" />
                      </graphic>
                      <padding>
                         <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
@@ -107,9 +107,9 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="69.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton onAction="#showProblems" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Problems" textFill="WHITE">
+                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Proctor" textFill="WHITE">
                      <graphic>
-                        <FontAwesomeIconView fill="#eaeaea" glyphName="TASKS" size="20.0" wrappingWidth="30.0" />
+                        <FontAwesomeIconView fill="#eaeaea" glyphName="EYE" size="20.0" wrappingWidth="30.0" />
                      </graphic>
                      <padding>
                         <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
@@ -127,7 +127,7 @@
                <children>
                   <AnchorPane prefHeight="325.0" prefWidth="266.0">
                      <children>
-                        <Label layoutX="14.0" layoutY="313.0" text="Hacklympics Alpha (17042018)" textFill="#aeaeae" />
+                        <Label layoutX="14.0" layoutY="313.0" text="Hacklympics Alpha (19042018)" textFill="#aeaeae" />
                         <JFXListView fx:id="onlineUsersList" layoutX="24.0" layoutY="116.0" prefHeight="184.0" prefWidth="201.0" style="-fx-background-color: transparent;" />
                         <Label layoutX="25.0" layoutY="78.0" text="ONLINE USERS" textFill="#b1b1b1" />
                         <Line endX="100.0" layoutX="125.0" layoutY="69.0" startX="-100.0" stroke="#b1b1b1" />
@@ -152,6 +152,6 @@
       </Label>
       <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="955.0" layoutY="16.0" onAction="#logout" styleClass="lightBlueBtn" text="Logout" textFill="WHITE" />
       <AnchorPane fx:id="holderPane" layoutX="266.0" layoutY="59.0" prefHeight="639.0" prefWidth="776.0" />
-      <StackPane fx:id="stackPane" layoutX="365.0" layoutY="253.0" prefHeight="139.0" prefWidth="395.0" />
+      <StackPane fx:id="stackPane" layoutX="391.0" layoutY="268.0" mouseTransparent="true" prefHeight="133.0" prefWidth="394.0" />
    </children>
 </AnchorPane>

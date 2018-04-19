@@ -21,15 +21,20 @@ import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.materials.CourseData;
 import com.hacklympics.api.materials.Course;
+import com.hacklympics.api.users.Teacher;
 
 import com.hacklympics.api.users.User;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import hacklympics.utility.Utils;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -115,6 +120,71 @@ public class CoursesController implements Initializable {
     }
     
     public void add(ActionEvent event) {
+        records.clear();
+        
+        stackPane.setMouseTransparent(false);
+        VBox vbox = new VBox();
+        vbox.setSpacing(30.0);
+        
+        JFXTextField nameField = new JFXTextField();
+        JFXTextField semesterField = new JFXTextField();
+        JFXComboBox teacherBox = new JFXComboBox();
+        
+        nameField.setLabelFloat(true);
+        nameField.setPromptText("Name");
+        
+        semesterField.setLabelFloat(true);
+        semesterField.setPromptText("Semester");
+        
+        teacherBox.setLabelFloat(true);
+        teacherBox.setPromptText("Teacher");
+        
+        List<Teacher> teachers = Utils.getTeachers();
+        teacherBox.getItems().addAll(teachers);
+        
+        vbox.getChildren().addAll(nameField, semesterField, teacherBox);
+        
+        
+        JFXDialogLayout content = new JFXDialogLayout();
+        content.setHeading(new Text("Add new course"));
+        content.setBody(vbox);
+        
+        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
+        JFXButton confirmBtn = new JFXButton("Add");
+        JFXButton cancelBtn = new JFXButton("Dismiss");
+        confirmBtn.setDefaultButton(true);
+        
+        List<JFXButton> buttons = new ArrayList<>();
+        buttons.add(cancelBtn);
+        buttons.add(confirmBtn);
+        
+        confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                String name = nameField.getText();
+                int semester = Integer.parseInt(semesterField.getText());
+                String teacher = ((Teacher) teacherBox.getSelectionModel().getSelectedItem()).getProfile().getUsername();
+                List<String> students = new ArrayList<>();
+                Course.create(name, semester, teacher, students);
+                
+                buildTable();
+                showTable();
+                
+                stackPane.setMouseTransparent(true);
+                dialog.close();
+            }
+        });
+        
+        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stackPane.setMouseTransparent(true);
+                dialog.close();
+            }
+        });
+        
+        content.setActions(buttons);
+        dialog.show();
     }
     
 }

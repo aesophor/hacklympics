@@ -1,9 +1,12 @@
 package com.hacklympics.api.users;
 
 import java.util.Map;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
+
 
 public abstract class User {
     
@@ -11,6 +14,10 @@ public abstract class User {
     
     public User(String username) {
         initProfile(username);
+    }
+    
+    public User(String username, String fullname, int gradYear) {
+        this.profile = new UserProfile(username, fullname, gradYear);
     }
     
     private void initProfile(String username) {
@@ -31,6 +38,11 @@ public abstract class User {
     
     public static Response list() {
         String uri = String.format("user");
+        return new Response(Utils.get(uri));
+    }
+    
+    public static Response listOnline() {
+        String uri = String.format("user/online");
         return new Response(Utils.get(uri));
     }
     
@@ -73,9 +85,21 @@ public abstract class User {
         return profile;
     }
     
+    public SimpleStringProperty usernameProperty() {
+        return profile.usernameProperty();
+    }
+    
+    public SimpleStringProperty fullnameProperty() {
+        return profile.fullnameProperty();
+    }
+    
+    public SimpleIntegerProperty gradYearProperty() {
+        return profile.gradYearProperty();
+    }
+    
     @Override
     public String toString() {
-        return profile.toString();
+        return profile.getFullname();
     }
     
 }

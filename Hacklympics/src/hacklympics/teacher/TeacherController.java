@@ -89,6 +89,8 @@ public class TeacherController implements Initializable {
     }
     
     public void logout(ActionEvent event) {
+        stackPane.setMouseTransparent(false);
+        
         JFXDialogLayout content = new JFXDialogLayout();
         content.setHeading(new Text("Alert"));
         content.setBody(new Text("You are about to be logged out. Are you sure?"));
@@ -96,6 +98,7 @@ public class TeacherController implements Initializable {
         JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
         JFXButton confirmBtn = new JFXButton("Yes");
         JFXButton cancelBtn = new JFXButton("No");
+        cancelBtn.setDefaultButton(true);
         
         List<JFXButton> buttons = new ArrayList<>();
         buttons.add(cancelBtn);
@@ -125,6 +128,7 @@ public class TeacherController implements Initializable {
         cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                stackPane.setMouseTransparent(true);
                 dialog.close();
             }
         });

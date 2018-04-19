@@ -1,6 +1,8 @@
 package com.hacklympics.api.materials;
 
 import java.util.Map;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
@@ -55,6 +57,26 @@ public class Exam {
     
     public ExamData getData() {
         return data;
+    }
+    
+    public SimpleIntegerProperty courseIDProperty() {
+        return data.courseIDProperty();
+    }
+    
+    public SimpleIntegerProperty examIDProperty() {
+        return data.examIDProperty();
+    }
+    
+    public SimpleStringProperty titleProperty() {
+        return data.titleProperty();
+    }
+    
+    public SimpleStringProperty descProperty() {
+        return data.descProperty();
+    }
+    
+    public SimpleIntegerProperty durationProperty() {
+        return data.durationProperty();
     }
     
     @Override

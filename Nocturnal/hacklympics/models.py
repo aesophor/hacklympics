@@ -31,7 +31,7 @@ class Course(models.Model):
     name = models.CharField(max_length=20)
     semester = models.IntegerField()
     teacher = models.ForeignKey("User", related_name="teacher")
-    students = models.ManyToManyField("User", related_name="students")
+    students = models.ManyToManyField("User", related_name="students", null=True, blank=True)
 
     create_time = models.DateTimeField(editable=False)
     update_time = models.DateTimeField()

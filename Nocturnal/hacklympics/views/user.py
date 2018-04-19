@@ -42,35 +42,14 @@ def list(request):
     return JsonResponse(response_data)
 
 
-def list_students(request):
+def list_online(request):
     response_data = {"statusCode": StatusCode.SUCCESS}
-
-    students = User.objects.all().filter(is_student=True)
 
     response_data["content"] = {
         "users": [{
-            "username": student.username,
-            "fullname": student.fullname,
-            "graduationYear": student.graduation_year,
-            "isStudent": student.is_student
-        } for student in students]
-    }
-
-    return JsonResponse(response_data)
-
-
-def list_teachers(request):
-    response_data = {"statusCode": StatusCode.SUCCESS}
-
-    teachers = User.objects.all().filter(is_student=False)
-
-    response_data["content"] = {
-        "users": [{
-            "username": teacher.username,
-            "fullname": teacher.fullname,
-            "graduationYear": teacher.graduation_year,
-            "isStudent": teacher.is_student
-        } for teacher in teachers]
+            "username": user.username,
+            "role": user.role
+        } for user in OnlineUsers.users]
     }
 
     return JsonResponse(response_data)
