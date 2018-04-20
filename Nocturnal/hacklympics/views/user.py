@@ -125,10 +125,28 @@ def logout(request):
         response_data["statusCode"] = StatusCode.NOT_LOGGED_IN
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
-    except ObjectDoesNotExist:
-        response_data["statusCode"] = StatusCode.VALIDATION_ERR
 
     return JsonResponse(response_data)
+
+
+def update(request):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        req_body = json.loads(request.body.decode("utf-8"))
+
+        username = req_body["username"]
+        fullname = req_body["fullname"]
+        graduation_year = req_body["graduationYear"]
+
+        User.objects.get(username=username).update(
+            fullname = fullname,
+            graduation_year = graduation_year
+        )
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.NOT_REGISTERED
 
 
 # This method probably needs better naming...

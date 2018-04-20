@@ -7,8 +7,11 @@ public class ProblemTest {
     
     
     public static void main(String[] args) {
-        Course systemSoftwares = new Course(1);
-        Exam firstPass = new Exam(systemSoftwares.getData().getCourseID(), 1);
+        Course systemSoftwares = new Course(7);
+        Exam e = new Exam(systemSoftwares.getData().getCourseID(), 4);
+        Problem p = new Problem(e.getData().getCourseID(),
+                                e.getData().getExamID(),
+                                4);
         
         /*
         Response response = Problem.create(
@@ -21,12 +24,15 @@ public class ProblemTest {
         System.out.println(response);
         */
         
-        
+        /*
         Response response = Problem.remove(systemSoftwares.getData().getCourseID(),
                                            firstPass.getData().getExamID(),
                                            1);
         System.out.println(response);
+        */
         
+        Response response = p.update("First pass", "lll?");
+        System.out.println(response);
     }
     
 }

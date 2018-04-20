@@ -13,17 +13,12 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.event.ActionEvent;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
-import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.materials.CourseData;
 import com.hacklympics.api.materials.Course;
 import com.hacklympics.api.users.Teacher;
 
-import com.hacklympics.api.users.User;
+
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
@@ -40,11 +35,11 @@ import javafx.stage.Stage;
 
 public class CoursesController implements Initializable {
     
-    private ObservableList<CourseData> records;
+    private ObservableList<Course> records;
     private String keyword;
 
     @FXML
-    private TableView<CourseData> table;
+    private TableView<Course> table;
     @FXML
     private TableColumn<Course, Integer> courseIDColumn;
     @FXML
@@ -83,24 +78,13 @@ public class CoursesController implements Initializable {
     }
     
     private void buildTable() {
-        Response list = Course.list();
+        List<Course> courses = Course.getCourses();
+        keyword = (keyword == null) ? "" : keyword;
         
-        if (list.success()) {
-            String json = new Gson().toJson(list.getContent().get("courses"));
-            JsonArray courses = new Gson().fromJson(json, JsonArray.class);
-            
-            keyword = (keyword == null) ? "" : keyword;
-            
-            for (JsonElement e: courses) {
-                int courseID = e.getAsJsonObject().get("id").getAsInt();
-                String name = e.getAsJsonObject().get("name").getAsString();
-                int semester = e.getAsJsonObject().get("semester").getAsInt();
-                String teacher = e.getAsJsonObject().get("teacher").getAsString();
-                //List<String> students = new Gson().fromJson(e.getAsJsonObject().get("students"), List.class);
-                
-                if (name.contains(keyword) | teacher.contains(keyword)) {
-                    records.add(new CourseData(courseID, name, semester, teacher, new ArrayList()));
-                }
+        for (Course c: courses) {
+            if (c.getData().getName().contains(keyword) |
+                c.getData().getTeacher().contains(keyword)) {
+                records.add(c);
             }
         }
     }
@@ -122,6 +106,8 @@ public class CoursesController implements Initializable {
     public void add(ActionEvent event) {
         records.clear();
         
+        System.out.println(table.getSelectionModel().getSelectedItem());
+        
         stackPane.setMouseTransparent(false);
         VBox vbox = new VBox();
         vbox.setSpacing(30.0);
@@ -139,7 +125,7 @@ public class CoursesController implements Initializable {
         teacherBox.setLabelFloat(true);
         teacherBox.setPromptText("Teacher");
         
-        List<Teacher> teachers = Utils.getTeachers();
+        List<Teacher> teachers = Teacher.getTeachers();
         teacherBox.getItems().addAll(teachers);
         
         vbox.getChildren().addAll(nameField, semesterField, teacherBox);

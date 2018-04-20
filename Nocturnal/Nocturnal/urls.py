@@ -31,16 +31,19 @@ urlpatterns = [
     
     url(r'^course$', course.list),
     url(r'^course/create$', course.create),
+    url(r'^course/update$', course.update),
     url(r'^course/remove$', course.remove),
     url(r'^course/(?P<c_id>[\w.@+-]+)$', course.get),
 
     url(r'^course/(?P<c_id>\d+)/exam$', exam.list),
     url(r'^course/(?P<c_id>\d+)/exam/create$', exam.create),
+    url(r'^course/(?P<c_id>\d+)/exam/update$', exam.update),
     url(r'^course/(?P<c_id>\d+)/exam/remove$', exam.remove),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)$', exam.get),
 
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem$', problem.list),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/create$', problem.create),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/update$', problem.update),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/remove$', problem.remove),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)$', problem.get)
 ]

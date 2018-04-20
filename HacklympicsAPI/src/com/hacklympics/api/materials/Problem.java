@@ -18,10 +18,10 @@ public class Problem {
     private void initProblemData(int courseID, int examID, int problemID) {
         String uri = String.format("course/%d/exam/%d/problem/%d", 
                                    courseID, examID, problemID);
-        Response response = new Response(Utils.get(uri));
+        Response get = new Response(Utils.get(uri));
         
-        if (response.success()) {
-            Map<String, Object> json = response.getContent();
+        if (get.success()) {
+            Map<String, Object> json = get.getContent();
             
             this.data = new ProblemData(
                     courseID,
@@ -40,6 +40,22 @@ public class Problem {
                                    courseID, examID);
         
         JsonObject json = new JsonObject();
+        json.addProperty("title", title);
+        json.addProperty("desc", desc);
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    public Response update(String title, String desc) {
+        String uri = String.format("course/%d/exam/%d/problem/update", 
+                                   this.data.getCourseID(),
+                                   this.data.getExamID());
+        
+        title = (title != null) ? title : this.data.getTitle();
+        desc = (desc != null) ? desc : this.data.getDesc();
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("problemID", this.data.getProblemID());
         json.addProperty("title", title);
         json.addProperty("desc", desc);
         

@@ -19,49 +19,8 @@ public class Utils {
     }
  
     
-    public static List<Student> getStudents() {
-        List<Student> students = new ArrayList<>();
-        Response list = User.list();
-        
-        if (list.success()) {
-            String json = GSON.toJson(list.getContent().get("users"));
-            JsonArray users = GSON.fromJson(json, JsonArray.class);
-            
-            for (JsonElement e: users) {
-                String username = e.getAsJsonObject().get("username").getAsString();
-                String fullname = e.getAsJsonObject().get("fullname").getAsString();
-                int gradYear = e.getAsJsonObject().get("graduationYear").getAsInt();
-                boolean isStudent = e.getAsJsonObject().get("isStudent").getAsBoolean();
-                
-                if (isStudent) {
-                    students.add(new Student(username, fullname, gradYear));
-                }
-            }
-        }
-        
-        return students;
-    }
     
-    public static List<Teacher> getTeachers() {
-        List<Teacher> teachers = new ArrayList<>();
-        Response list = User.list();
-        
-        if (list.success()) {
-            String json = GSON.toJson(list.getContent().get("users"));
-            JsonArray users = GSON.fromJson(json, JsonArray.class);
-            
-            for (JsonElement e: users) {
-                String username = e.getAsJsonObject().get("username").getAsString();
-                String fullname = e.getAsJsonObject().get("fullname").getAsString();
-                int gradYear = e.getAsJsonObject().get("graduationYear").getAsInt();
-                boolean isStudent = e.getAsJsonObject().get("isStudent").getAsBoolean();
-                
-                if (!isStudent) {
-                    teachers.add(new Teacher(username, fullname, gradYear));
-                }
-            }
-        }
-        
-        return teachers;
-    }
+    
+    
+    
 }

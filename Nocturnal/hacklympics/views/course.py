@@ -56,12 +56,39 @@ def create(request):
             name = name,
             semester = semester,
             teacher_id = teacher,
+            students = students
         )
         
-        for student in students:
-            course.students.add(student)
+        course.students = students
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+
+    return JsonResponse(response_data)
+
+
+def update(request):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        req_body = json.loads(request.body.decode("utf-8"))
+        
+        id = req_body["id"]
+        name = req_body["name"]
+        semester = req_body["semester"]
+        teacher = req_body["teacher"]
+        students = req_body["students"]
+        
+        Course.objects.filter(id=id).update(
+            name = name,
+            semester = semester,
+            teacher_id = teacher,
+        )
+        
+        Course.objects.get(id=id).students = students
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
 
     return JsonResponse(response_data)
 

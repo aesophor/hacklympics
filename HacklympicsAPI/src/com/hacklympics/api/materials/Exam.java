@@ -17,10 +17,10 @@ public class Exam {
     
     private void initExamData(int courseID, int examID) {
         String uri = String.format("course/%d/exam/%d", courseID, examID);
-        Response response = new Response(Utils.get(uri));
+        Response get = new Response(Utils.get(uri));
         
-        if (response.success()) {
-            Map<String, Object> json = response.getContent();
+        if (get.success()) {
+            Map<String, Object> json = get.getContent();
             
             this.data = new ExamData(
                     courseID,
@@ -41,6 +41,22 @@ public class Exam {
         json.addProperty("title", title);
         json.addProperty("desc", desc);
         json.addProperty("duration", Integer.toString(duration));
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    public Response update(String title, String desc, int duration) {
+        String uri = String.format("course/%d/exam/update", this.data.getCourseID());
+        
+        title = (title != null) ? title : this.data.getTitle();
+        desc = (desc != null) ? desc : this.data.getDesc();
+        duration = (duration != 0) ? duration : this.data.getDuration();
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("examID", this.data.getExamID());
+        json.addProperty("title", title);
+        json.addProperty("desc", desc);
+        json.addProperty("duration", duration);
         
         return new Response(Utils.post(uri, json.toString()));
     }

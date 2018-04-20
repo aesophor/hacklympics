@@ -3,13 +3,14 @@ package com.hacklympics.api.users;
 import java.util.Map;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
 
-
 public abstract class User {
     
+    protected static final Gson GSON = new Gson();
     private UserProfile profile;
     
     public User(String username) {
@@ -72,7 +73,7 @@ public abstract class User {
     }
     
     public static Response logout(String username) {
-        String uri="user/logout";
+        String uri = "user/logout";
         
         JsonObject json = new JsonObject();
         json.addProperty("username", username);

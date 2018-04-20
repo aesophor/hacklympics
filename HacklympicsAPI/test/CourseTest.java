@@ -8,7 +8,7 @@ import java.util.Map;
 public class CourseTest {
 
     public static void main(String[] args) {
-        Course systemSoftwares = new Course(1);
+        Course systemSoftwares = new Course(7);
         //System.out.println(systemSoftwares);
         
         //List<String> students = new ArrayList<>();
@@ -18,7 +18,13 @@ public class CourseTest {
         
         //System.out.println(Course.remove(5));
         
-        System.out.println(systemSoftwares.getData().getStudents());
+        //System.out.println(systemSoftwares.getData().getStudents());
+        
+        List<String> s = new ArrayList<>();
+        s.add("1080630201");
+        s.add("1080630205");
+        
+        System.out.println(systemSoftwares.update("System Softwares", 1052, null, s));
     }
     
 }

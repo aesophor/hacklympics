@@ -14,7 +14,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.users.Student;
-import hacklympics.utility.Utils;
 
 public class StudentsController implements Initializable {
     
@@ -51,7 +50,7 @@ public class StudentsController implements Initializable {
     }
     
     private void buildTable() {
-        List<Student> students = Utils.getStudents();
+        List<Student> students = Student.getStudents();
         keyword = (keyword == null) ? "" : keyword;
         
         for (Student s: students) {

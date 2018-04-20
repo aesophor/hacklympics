@@ -62,6 +62,30 @@ def create(request, c_id):
     return JsonResponse(response_data)
 
 
+def update(request, c_id):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        req_body = json.loads(request.body.decode("utf-8"))
+        
+        e_id = req_body["examID"]
+        title = req_body["title"]
+        desc = req_body["desc"]
+        duration = req_body["duration"]
+        
+        Course.objects.get(id=c_id).exam_set.all().filter(id=e_id).update(
+            title = title,
+            desc = desc,
+            duration = duration
+        )
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+
+    return JsonResponse(response_data)
+
+
 def remove(request, c_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 

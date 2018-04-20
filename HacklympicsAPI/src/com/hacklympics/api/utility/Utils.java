@@ -81,4 +81,9 @@ public class Utils {
         return s;
     }
     
+    
+    public static Gson getGson() {
+        return GSON;
+    }
+    
 }

@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" prefHeight="639.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.CoursesController">
    <children>
-      <TableView fx:id="table" layoutX="32.0" layoutY="98.0" prefHeight="506.0" prefWidth="712.0">
+      <TableView fx:id="table" layoutX="32.0" layoutY="98.0" prefHeight="245.0" prefWidth="712.0">
         <columns>
           <TableColumn fx:id="courseIDColumn" prefWidth="68.0" text="ID" />
           <TableColumn fx:id="nameColumn" prefWidth="230.0" text="Name" />
@@ -18,12 +19,31 @@
             <TableColumn fx:id="teacherColumn" prefWidth="209.0" text="Teacher" />
         </columns>
       </TableView>
-      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="32.0" layoutY="35.0" prefHeight="26.0" prefWidth="629.0" promptText="Keyword" />
-      <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="681.0" layoutY="35.0" onAction="#search" styleClass="darkBlueBtn" text="Search" />
-      <JFXButton fx:id="addBtn" buttonType="RAISED" layoutX="707.0" layoutY="569.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#add" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn" text="+">
+      <TableView fx:id="table1" layoutX="32.0" layoutY="367.0" prefHeight="238.0" prefWidth="712.0">
+         <columns>
+            <TableColumn fx:id="courseIDColumn1" prefWidth="68.0" text="ID" />
+            <TableColumn fx:id="nameColumn1" prefWidth="230.0" text="Name" />
+            <TableColumn fx:id="semesterColumn1" prefWidth="168.0" text="Semester" />
+            <TableColumn fx:id="teacherColumn1" prefWidth="209.0" text="Teacher" />
+         </columns>
+      </TableView>
+      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="32.0" layoutY="35.0" prefHeight="26.0" prefWidth="602.0" promptText="Keyword" />
+      <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="667.0" layoutY="35.0" onAction="#search" styleClass="darkBlueBtn" text="Search" />
+      <JFXButton fx:id="addBtn" buttonType="RAISED" layoutX="707.0" layoutY="569.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#add" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
          <font>
             <Font size="22.0" />
          </font>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20" />
+         </graphic>
+      </JFXButton>
+      <JFXButton fx:id="modifyBtn" buttonType="RAISED" layoutX="646.0" layoutY="569.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
+         <font>
+            <Font size="22.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="PENCIL" size="20.0" translateX="2.0" />
+         </graphic>
       </JFXButton>
       <StackPane fx:id="stackPane" layoutX="163.0" layoutY="184.0" mouseTransparent="true" prefHeight="201.0" prefWidth="305.0" />
    </children>
