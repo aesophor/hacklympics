@@ -14,6 +14,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXPasswordField;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
+import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.User;
 import com.hacklympics.api.users.Student;
 import com.hacklympics.api.users.Teacher;
@@ -53,15 +54,17 @@ public class LoginController {
                     case "student":
                         loadStage(STUDENT);
                         loginBtn.getScene().getWindow().hide();
-                        // StudentController stCtrl = LOADER.getController();
-                        // stCtrl.setStudent(new Student(username));
+                        
+                        // CurrentUser.getInstance().setUser(new Student(username));
+                        // ((StudentController) fxmlLoader.getController()).setGreetingMsg();
                         break;
                         
                     case "teacher":
                         loadStage(TEACHER);
                         loginBtn.getScene().getWindow().hide();
-                        TeacherController tchCtrl = fxmlLoader.getController();
-                        tchCtrl.setTeacher(new Teacher(username));
+                        
+                        CurrentUser.getInstance().setUser(new Teacher(username));
+                        ((TeacherController) fxmlLoader.getController()).setGreetingMsg();
                         break;
                         
                     default:

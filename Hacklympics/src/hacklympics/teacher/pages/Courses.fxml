@@ -45,6 +45,6 @@
             <FontAwesomeIconView fill="WHITE" glyphName="PENCIL" size="20.0" translateX="2.0" />
          </graphic>
       </JFXButton>
-      <StackPane fx:id="stackPane" layoutX="163.0" layoutY="184.0" mouseTransparent="true" prefHeight="201.0" prefWidth="305.0" />
+      <StackPane fx:id="addStackPane" layoutX="140.0" layoutY="89.0" mouseTransparent="true" prefHeight="409.0" prefWidth="328.0" />
    </children>
 </AnchorPane>

@@ -11,27 +11,21 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.materials.Course;
+import com.hacklympics.api.session.CurrentUser;
+import com.hacklympics.api.users.Role;
+import com.hacklympics.api.users.Student;
 import com.hacklympics.api.users.Teacher;
-
-
-import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
-import hacklympics.utility.Utils;
-import javafx.event.EventHandler;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import com.hacklympics.api.users.User;
+import hacklympics.utility.DialogForm;
+import hacklympics.utility.UserListView;
 
 public class CoursesController implements Initializable {
     
@@ -55,7 +49,7 @@ public class CoursesController implements Initializable {
     private JFXButton searchBtn;
     
     @FXML
-    private StackPane stackPane;
+    private StackPane addStackPane;
     @FXML
     private JFXButton addBtn;
     
@@ -63,8 +57,7 @@ public class CoursesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTable();
-        buildTable();
-        showTable();
+        refresh();
     }    
     
     
@@ -94,82 +87,73 @@ public class CoursesController implements Initializable {
         table.getItems().addAll(records);
     }
     
+    private void refresh() {
+        buildTable();
+        showTable();
+    }
+    
     
     public void search(ActionEvent event) {
         records.clear();
         keyword = keywordField.getText();
         
-        buildTable();
-        showTable();
+        refresh();
     }
     
     public void add(ActionEvent event) {
         records.clear();
+        addStackPane.setMouseTransparent(false);
         
-        System.out.println(table.getSelectionModel().getSelectedItem());
+        DialogForm dialog = new DialogForm(addStackPane, "Add new course");
+        UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
-        stackPane.setMouseTransparent(false);
-        VBox vbox = new VBox();
-        vbox.setSpacing(30.0);
+        dialog.addField("Name");
+        dialog.addField("Semester");
+        dialog.add("Students", studentsList.getListView());
         
-        JFXTextField nameField = new JFXTextField();
-        JFXTextField semesterField = new JFXTextField();
-        JFXComboBox teacherBox = new JFXComboBox();
+        studentsList.getListView().setOnMouseClicked(new EventHandler<Event>() {
+            @Override
+            public void handle(Event event) {
+                ObservableList<Student> selectedItems =  studentsList.getListView().getSelectionModel().getSelectedItems();
+                
+                for(Student s: selectedItems) {
+                    System.out.println("selected item " + s);
+                }
+            }
+        });
         
-        nameField.setLabelFloat(true);
-        nameField.setPromptText("Name");
-        
-        semesterField.setLabelFloat(true);
-        semesterField.setPromptText("Semester");
-        
-        teacherBox.setLabelFloat(true);
-        teacherBox.setPromptText("Teacher");
-        
-        List<Teacher> teachers = Teacher.getTeachers();
-        teacherBox.getItems().addAll(teachers);
-        
-        vbox.getChildren().addAll(nameField, semesterField, teacherBox);
-        
-        
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text("Add new course"));
-        content.setBody(vbox);
-        
-        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
-        JFXButton confirmBtn = new JFXButton("Add");
-        JFXButton cancelBtn = new JFXButton("Dismiss");
-        confirmBtn.setDefaultButton(true);
-        
-        List<JFXButton> buttons = new ArrayList<>();
-        buttons.add(cancelBtn);
-        buttons.add(confirmBtn);
-        
-        confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
+        dialog.getConfirmBtn().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String name = nameField.getText();
-                int semester = Integer.parseInt(semesterField.getText());
-                String teacher = ((Teacher) teacherBox.getSelectionModel().getSelectedItem()).getProfile().getUsername();
+                JFXTextField nameField = (JFXTextField) dialog.get("Name");
+                JFXTextField semesterField = (JFXTextField) dialog.get("Semester");
+                String teacher = CurrentUser.getInstance().getUser().getProfile().getUsername();
+                List<User> s = studentsList.getSelected();
+                
                 List<String> students = new ArrayList<>();
-                Course.create(name, semester, teacher, students);
+                for (User user: s) {
+                    students.add(user.getProfile().getUsername());
+                }
+                        
+                Course.create(nameField.getText(),
+                              Integer.parseInt(semesterField.getText()),
+                              teacher,
+                              students);
                 
-                buildTable();
-                showTable();
-                
-                stackPane.setMouseTransparent(true);
+                addStackPane.setMouseTransparent(true);
                 dialog.close();
+                refresh();
             }
         });
         
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+        dialog.getCancelBtn().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                stackPane.setMouseTransparent(true);
+                addStackPane.setMouseTransparent(true);
                 dialog.close();
             }
         });
         
-        content.setActions(buttons);
         dialog.show();
     }
     

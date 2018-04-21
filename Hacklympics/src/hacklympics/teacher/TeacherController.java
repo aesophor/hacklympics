@@ -25,12 +25,10 @@ import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.User;
-import com.hacklympics.api.users.Teacher;
 
 public class TeacherController implements Initializable {
-    
-    private Teacher teacher;
     
     private static Map<String, String> fxmls;
     private AnchorPane dashboard;
@@ -88,6 +86,13 @@ public class TeacherController implements Initializable {
         onlineUsersList.getItems().add(andrey);
     }
     
+    public void setGreetingMsg() {
+        User current = CurrentUser.getInstance().getUser();
+        String greetingMsg = String.format("Welcome, %s", current.getProfile().getFullname());
+        bannerMsg.setText(greetingMsg);
+    }
+    
+    
     public void logout(ActionEvent event) {
         stackPane.setMouseTransparent(false);
         
@@ -107,7 +112,7 @@ public class TeacherController implements Initializable {
         confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Response logout = User.logout(teacher.getProfile().getUsername());
+                Response logout = User.logout(CurrentUser.getInstance().getUser().getProfile().getUsername());
         
                 if (logout.success()) {
                     logoutBtn.getScene().getWindow().hide();
@@ -156,18 +161,6 @@ public class TeacherController implements Initializable {
     
     public void showProblems(ActionEvent event) {
         showPage(problems);
-    }
-    
-    
-    public Teacher getTeacher() {
-        return teacher;
-    }
-    
-    public void setTeacher(Teacher teacher) {
-        this.teacher = teacher;
-        
-        String greetMsg = String.format("Welcome, %s", teacher.getProfile().getFullname());
-        bannerMsg.setText(greetMsg);
     }
     
 }

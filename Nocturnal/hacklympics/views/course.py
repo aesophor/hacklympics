@@ -56,7 +56,6 @@ def create(request):
             name = name,
             semester = semester,
             teacher_id = teacher,
-            students = students
         )
         
         course.students = students

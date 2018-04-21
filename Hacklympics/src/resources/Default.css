@@ -26,6 +26,11 @@
     -fx-text-fill: #0095d9;
 }
 
+.jfx-list-cell:selected {
+    -fx-background-color: #0095d9;
+    -fx-text-fill: #ffffff;
+}
+
 .online-user-label {
     -fx-text-fill: #ffffff;
 }
