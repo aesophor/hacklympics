@@ -100,7 +100,7 @@ public abstract class User {
     
     @Override
     public String toString() {
-        return profile.getUsername();
+        return String.format("%s (%s)", profile.getUsername(), profile.getFullname());
     }
     
 }

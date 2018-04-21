@@ -2,8 +2,6 @@ package hacklympics.teacher;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.HashMap;
 import java.io.IOException;
@@ -14,19 +12,17 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Node;
-import javafx.scene.text.Text;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXDialog;
-import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.User;
+import hacklympics.utility.TextDialog;
 
 public class TeacherController implements Initializable {
     
@@ -96,20 +92,11 @@ public class TeacherController implements Initializable {
     public void logout(ActionEvent event) {
         stackPane.setMouseTransparent(false);
         
-        JFXDialogLayout content = new JFXDialogLayout();
-        content.setHeading(new Text("Alert"));
-        content.setBody(new Text("You are about to be logged out. Are you sure?"));
+        TextDialog alert = new TextDialog(stackPane,
+                                          "Alert",
+                                          "You are about to be logged out. Are you sure?");
         
-        JFXDialog dialog = new JFXDialog(stackPane, content, JFXDialog.DialogTransition.CENTER);
-        JFXButton confirmBtn = new JFXButton("Yes");
-        JFXButton cancelBtn = new JFXButton("No");
-        cancelBtn.setDefaultButton(true);
-        
-        List<JFXButton> buttons = new ArrayList<>();
-        buttons.add(cancelBtn);
-        buttons.add(confirmBtn);
-        
-        confirmBtn.setOnAction(new EventHandler<ActionEvent>() {
+        alert.getConfirmBtn().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Response logout = User.logout(CurrentUser.getInstance().getUser().getProfile().getUsername());
@@ -130,16 +117,15 @@ public class TeacherController implements Initializable {
             }
         });
         
-        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+        alert.getCancelBtn().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 stackPane.setMouseTransparent(true);
-                dialog.close();
+                alert.close();
             }
         });
         
-        content.setActions(buttons);
-        dialog.show();
+        alert.show();
     }
     
     

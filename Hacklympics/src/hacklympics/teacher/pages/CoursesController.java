@@ -13,61 +13,85 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.ActionEvent;
-import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.materials.Course;
+import com.hacklympics.api.materials.Exam;
+import com.hacklympics.api.materials.Problem;
 import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.Role;
-import com.hacklympics.api.users.Student;
-import com.hacklympics.api.users.Teacher;
 import com.hacklympics.api.users.User;
-import hacklympics.utility.DialogForm;
+import hacklympics.utility.FormDialog;
 import hacklympics.utility.UserListView;
 
 public class CoursesController implements Initializable {
     
-    private ObservableList<Course> records;
+    private ObservableList<Course> coursesRecords;
+    private ObservableList<Course> examsRecords;
+    private ObservableList<Course> problemsRecords;
+    
     private String keyword;
 
     @FXML
-    private TableView<Course> table;
-    @FXML
-    private TableColumn<Course, Integer> courseIDColumn;
-    @FXML
-    private TableColumn<Course, String> nameColumn;
-    @FXML
-    private TableColumn<Course, Integer> semesterColumn;
-    @FXML
-    private TableColumn<Course, String> teacherColumn;
-    
+    private JFXTabPane tabPane;
     @FXML
     private JFXTextField keywordField;
     @FXML
-    private JFXButton searchBtn;
+    private StackPane stackPane;
     
     @FXML
-    private StackPane addStackPane;
+    private TableView<Course> coursesTable;
     @FXML
-    private JFXButton addBtn;
+    private TableColumn<Course, String> courseSemesterCol;
+    @FXML
+    private TableColumn<Course, Integer> courseNameCol;
+    @FXML
+    private TableColumn<Course, String> courseTeacherCol;
     
+    @FXML
+    private TableView<Exam> examsTable;
+    @FXML
+    private TableColumn<Exam, String> examTitleCol;
+    @FXML
+    private TableColumn<Exam, Integer> examDurationCol;
+    @FXML
+    private TableColumn<Exam, String> examDescCol;
+    
+    @FXML
+    private TableView<Problem> problemsTable;
+    @FXML
+    private TableColumn<Problem, String> probTitleCol;
+    @FXML
+    private TableColumn<Problem, Integer> probDescCol;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initTable();
+        initTables();
         refresh();
     }    
     
     
-    private void initTable() {
-        records = FXCollections.observableArrayList();
+    private void initTables() {
+        coursesRecords = FXCollections.observableArrayList();
+        examsRecords = FXCollections.observableArrayList();
+        problemsRecords = FXCollections.observableArrayList();
         
-        courseIDColumn.setCellValueFactory(new PropertyValueFactory<>("courseID"));
-        nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
-        semesterColumn.setCellValueFactory(new PropertyValueFactory<>("semester"));
-        teacherColumn.setCellValueFactory(new PropertyValueFactory<>("teacher"));
+        // Initialize columns in coursesTable.
+        courseSemesterCol.setCellValueFactory(new PropertyValueFactory<>("semester"));
+        courseNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        courseTeacherCol.setCellValueFactory(new PropertyValueFactory<>("teacher"));
+        
+        // Initialize columns in examsTable.
+        examTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        examDurationCol.setCellValueFactory(new PropertyValueFactory<>("duration"));
+        examDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        
+        // Initialize columns problemsTable.
+        probTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        probDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        
     }
     
     private void buildTable() {
@@ -77,14 +101,14 @@ public class CoursesController implements Initializable {
         for (Course c: courses) {
             if (c.getData().getName().contains(keyword) |
                 c.getData().getTeacher().contains(keyword)) {
-                records.add(c);
+                coursesRecords.add(c);
             }
         }
     }
     
     private void showTable() {
-        table.getItems().clear();
-        table.getItems().addAll(records);
+        coursesTable.getItems().clear();
+        coursesTable.getItems().addAll(coursesRecords);
     }
     
     private void refresh() {
@@ -94,33 +118,23 @@ public class CoursesController implements Initializable {
     
     
     public void search(ActionEvent event) {
-        records.clear();
+        coursesRecords.clear();
         keyword = keywordField.getText();
         
         refresh();
     }
     
     public void add(ActionEvent event) {
-        records.clear();
-        addStackPane.setMouseTransparent(false);
+        coursesRecords.clear();
+        stackPane.setMouseTransparent(false);
         
-        DialogForm dialog = new DialogForm(addStackPane, "Add new course");
+        FormDialog dialog = new FormDialog(stackPane, "Add new course");
         UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
-        dialog.addField("Name");
-        dialog.addField("Semester");
+        dialog.addField("Name", "");
+        dialog.addField("Semester", "");
         dialog.add("Students", studentsList.getListView());
         
-        studentsList.getListView().setOnMouseClicked(new EventHandler<Event>() {
-            @Override
-            public void handle(Event event) {
-                ObservableList<Student> selectedItems =  studentsList.getListView().getSelectionModel().getSelectedItems();
-                
-                for(Student s: selectedItems) {
-                    System.out.println("selected item " + s);
-                }
-            }
-        });
         
         dialog.getConfirmBtn().setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -140,7 +154,7 @@ public class CoursesController implements Initializable {
                               teacher,
                               students);
                 
-                addStackPane.setMouseTransparent(true);
+                stackPane.setMouseTransparent(true);
                 dialog.close();
                 refresh();
             }
@@ -149,12 +163,87 @@ public class CoursesController implements Initializable {
         dialog.getCancelBtn().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                addStackPane.setMouseTransparent(true);
+                stackPane.setMouseTransparent(true);
                 dialog.close();
             }
         });
         
         dialog.show();
+    }
+    
+    public void update(ActionEvent event) {
+        coursesRecords.clear();
+        stackPane.setMouseTransparent(false);
+        
+        Course course = coursesTable.getSelectionModel().getSelectedItem();
+        
+        FormDialog dialog = new FormDialog(stackPane, "Edit course");
+        UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
+        
+        dialog.addField("Name", course.getData().getName());
+        dialog.addField("Semester", course.getData().getSemester().toString());
+        dialog.add("Students", studentsList.getListView());
+        
+        
+        dialog.getConfirmBtn().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                JFXTextField nameField = (JFXTextField) dialog.get("Name");
+                JFXTextField semesterField = (JFXTextField) dialog.get("Semester");
+                String teacher = CurrentUser.getInstance().getUser().getProfile().getUsername();
+                List<User> s = studentsList.getSelected();
+                
+                List<String> students = new ArrayList<>();
+                for (User user: s) {
+                    students.add(user.getProfile().getUsername());
+                }
+                        
+                Course.create(nameField.getText(),
+                              Integer.parseInt(semesterField.getText()),
+                              teacher,
+                              students);
+                
+                stackPane.setMouseTransparent(true);
+                dialog.close();
+                refresh();
+            }
+        });
+        
+        dialog.getCancelBtn().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                stackPane.setMouseTransparent(true);
+                dialog.close();
+            }
+        });
+        
+        dialog.show();
+    }
+    
+    
+    private void addCourse() {
+        
+    }
+    
+    private void addExam() {
+        
+    }
+    
+    private void addProblem() {
+        
+    }
+    
+    
+    private void updateCourse() {
+        
+    }
+    
+    private void updateExam() {
+        
+    }
+    
+    private void updateProblem() {
+        
     }
     
 }

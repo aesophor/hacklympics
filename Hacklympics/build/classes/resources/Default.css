@@ -1,11 +1,11 @@
 /* Default */
 .parent {
-    -fx-background-color: #ffffff;
+    -fx-background-color: white;
 }
 
 .jfx-button {
     -fx-background-color: transparent;
-    -fx-text-fill: #000000;
+    -fx-text-fill: black;
 }
 
 .jfx-text-field {
@@ -16,9 +16,43 @@
     -jfx-focus-color: #0095d9;
 }
 
+.online-user-label {
+    -fx-text-fill: white;
+}
+
+
+/* JFXTabPane */
+.tab {
+    -fx-pref-width: 120;
+    -fx-pref-height: 35;
+}
+
+.jfx-tab-pane .headers-region .tab .tab-container .tab-label {
+    -fx-text-fill: #333645;
+    -fx-font-size: 14;
+}
+
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: #dadada;
+}
+
+.jfx-tab-pane .tab-header-area .jfx-rippler {
+    -jfx-rippler-fill: #d0d0d0c2;
+}
+
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: #0095d9;
+}
+
+.jfx-tab-pane .headers-region .tab:selected .tab-container .tab-label {
+    -fx-text-fill: #0095d9;
+}
+
+
+/* JFXListView */
 .jfx-list-cell {
     -fx-background-color: transparent;
-    -fx-text-fill: #000000;
+    -fx-text-fill: black;
 }
 
 .jfx-list-cell:focused {
@@ -28,31 +62,27 @@
 
 .jfx-list-cell:selected {
     -fx-background-color: #0095d9;
-    -fx-text-fill: #ffffff;
-}
-
-.online-user-label {
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: white;
 }
 
 
-/* General */
+/* Buttons */
 .lightBlueBtn {
     -jfx-button-type: RAISED;
     -fx-background-color: #0095d9;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: white;
 }
 
 .darkBlueBtn {
     -jfx-button-type: RAISED;
     -fx-background-color: #333645;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: white;
 }
 
 .roundBtn {
     -fx-background-radius: 500;
     -fx-background-color: #0095d9;
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: white;
     -fx-font-size: 20;
     
     -fx-min-width: 50px;
@@ -61,19 +91,23 @@
     -fx-max-height: 50px;
 }
 
-
-/* Login Panel */
-.titlebar {
-    -fx-background-color: #333645;
+.textBtn:hover {
+    -fx-underline: true;
 }
 
 .textBtn {
     -fx-background-color: transparent;
-    -fx-foreground-color: #000000;
+    -fx-foreground-color: black;
 }
 
-.textBtn:hover {
-    -fx-underline: true;
+.textBtn-delete {
+    -fx-text-fill: #bc3d3d;
+}
+
+
+/* Login Panel */
+.titlebar {
+    -fx-background-color: #333645;
 }
 
 
