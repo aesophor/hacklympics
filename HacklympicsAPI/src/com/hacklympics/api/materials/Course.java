@@ -10,6 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.users.Teacher;
 import com.hacklympics.api.utility.Utils;
 
 public class Course {
@@ -117,6 +118,34 @@ public class Course {
                                                                  List.class);
                 
                 courses.add(new Course(courseID, name, semester, teacher, students));
+            }
+        }
+        
+        return courses;
+    }
+    
+    public static List<Course> getCourses(Teacher t) {
+        List<Course> courses = new ArrayList<>();
+        Response list = Course.list();
+        
+        if (list.success()) {
+            String raw = Utils.getGson().toJson(list.getContent().get("courses"));
+            JsonArray json = Utils.getGson().fromJson(raw, JsonArray.class);
+            
+            String username = t.getProfile().getUsername();
+            
+            for (JsonElement e: json) {
+                int courseID = e.getAsJsonObject().get("id").getAsInt();
+                String name = e.getAsJsonObject().get("name").getAsString();
+                int semester = e.getAsJsonObject().get("semester").getAsInt();
+                String teacher = e.getAsJsonObject().get("teacher").getAsString();
+                List<String> students = Utils.getGson().fromJson(e.getAsJsonObject().get("students"), 
+                                                                 List.class);
+                
+                if (teacher.equals(username)) {
+                    courses.add(new Course(courseID, name, semester, teacher, students));
+                }
+                
             }
         }
         

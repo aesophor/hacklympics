@@ -25,6 +25,7 @@ import com.hacklympics.api.materials.Problem;
 import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.Role;
 import com.hacklympics.api.users.User;
+import com.hacklympics.api.users.Teacher;
 import hacklympics.utility.FormDialog;
 import hacklympics.utility.TextDialog;
 import hacklympics.utility.UserListView;
@@ -120,7 +121,7 @@ public class CoursesController implements Initializable {
             if (tab == courseTab) {
                 courseRecords.clear();
                 
-                List<Course> courses = Course.getCourses();
+                List<Course> courses = Course.getCourses((Teacher) CurrentUser.getInstance().getUser());
                 for (Course c : courses) {
                     if (c.getData().getName().contains(keyword) |
                         c.getData().getTeacher().contains(keyword)) {
@@ -130,29 +131,33 @@ public class CoursesController implements Initializable {
 
                 courseTable.getItems().clear();
                 courseTable.getItems().addAll(courseRecords);
+                update(examTab);
 
             } else if (tab == examTab) {
                 examRecords.clear();
-                Course selected = courseTable.getSelectionModel().getSelectedItem();
+                Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
                 
-                List<Exam> exams = Exam.getExams(selected.getData().getCourseID());
-                for (Exam e : exams) {
-                    if (e.getData().getTitle().contains(keyword) |
-                        e.getData().getDesc().contains(keyword)) {
-                        examRecords.add(e);
+                if (selectedCourse != null) {
+                    List<Exam> exams = Exam.getExams(selectedCourse);
+                    
+                    for (Exam e : exams) {
+                        if (e.getData().getTitle().contains(keyword) |
+                            e.getData().getDesc().contains(keyword)) {
+                            examRecords.add(e);
+                        }
                     }
                 }
 
                 examTable.getItems().clear();
                 examTable.getItems().addAll(examRecords);
+                update(problemTab);
                 
             } else if (tab == problemTab) {
                 problemRecords.clear();
-                Exam selected = examTable.getSelectionModel().getSelectedItem();
+                Exam selectedExam = examTable.getSelectionModel().getSelectedItem();
                 
-                if (selected != null) {
-                    List<Problem> problems = Problem.getProblems(selected.getData().getCourseID(),
-                                                                 selected.getData().getExamID());
+                if (selectedExam != null) {
+                    List<Problem> problems = Problem.getProblems(selectedExam);
                     for (Problem p : problems) {
                         if (p.getData().getTitle().contains(keyword) |
                             p.getData().getDesc().contains(keyword)) {
@@ -363,7 +368,7 @@ public class CoursesController implements Initializable {
         
             dialog.getConfirmBtn().setOnAction((ActionEvent confirm) -> {
                 exam.remove();
-                update(tabPane.getSelectionModel().getSelectedItem());
+                update(tabPane.getSelectionModel().getSelectedItem(), problemTab);
 
                 dialog.close();
                 form.close();

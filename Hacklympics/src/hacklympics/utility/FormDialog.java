@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 public class FormDialog extends Dialog {

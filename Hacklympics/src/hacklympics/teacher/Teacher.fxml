@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="698.0" prefWidth="1042.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.TeacherController">
+<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="698.0" prefWidth="1042.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.TeacherController">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="266.0" styleClass="sidebar">
          <children>

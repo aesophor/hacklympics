@@ -84,9 +84,9 @@ public class Exam {
     }
     
     
-    public static List<Exam> getExams(int courseID) {
+    public static List<Exam> getExams(Course course) {
         List<Exam> exams = new ArrayList<>();
-        Response list = Exam.list(courseID);
+        Response list = Exam.list(course.getData().getCourseID());
         
         if (list.success()) {
             String raw = Utils.getGson().toJson(list.getContent().get("exams"));
@@ -98,7 +98,7 @@ public class Exam {
                 String desc = e.getAsJsonObject().get("desc").getAsString();
                 int duration = e.getAsJsonObject().get("duration").getAsInt();
                 
-                exams.add(new Exam(courseID, examID, title, desc, duration));
+                exams.add(new Exam(course.getData().getCourseID(), examID, title, desc, duration));
             }
         }
         

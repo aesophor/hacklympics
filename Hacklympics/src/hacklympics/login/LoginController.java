@@ -50,19 +50,21 @@ public class LoginController {
             
                 switch (role) {
                     case "student":
-                        loadStage(FXMLTable.getInstance().get("Student"));
-                        loginBtn.getScene().getWindow().hide();
-                        
                         // CurrentUser.getInstance().setUser(new Student(username));
+                        
+                        loadStage(FXMLTable.getInstance().get("Student"));
                         // ((StudentController) fxmlLoader.getController()).setGreetingMsg();
+                        
+                        loginBtn.getScene().getWindow().hide();
                         break;
                         
                     case "teacher":
-                        loadStage(FXMLTable.getInstance().get("Teacher"));
-                        loginBtn.getScene().getWindow().hide();
-                        
                         CurrentUser.getInstance().setUser(new Teacher(username));
+                        
+                        loadStage(FXMLTable.getInstance().get("Teacher"));
                         ((TeacherController) fxmlLoader.getController()).setGreetingMsg();
+                        
+                        loginBtn.getScene().getWindow().hide();
                         break;
                         
                     default:

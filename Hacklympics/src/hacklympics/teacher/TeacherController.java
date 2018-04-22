@@ -22,6 +22,7 @@ import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.User;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.TextDialog;
+import javafx.scene.effect.BoxBlur;
 
 public class TeacherController implements Initializable {
     
@@ -31,6 +32,8 @@ public class TeacherController implements Initializable {
     private AnchorPane exams;
     private AnchorPane problems;
     
+    @FXML
+    private AnchorPane mainPane;
     @FXML
     private AnchorPane holderPane;
     @FXML
@@ -87,8 +90,6 @@ public class TeacherController implements Initializable {
     
     
     public void logout(ActionEvent event) {
-        stackPane.setMouseTransparent(false);
-        
         TextDialog alert = new TextDialog(stackPane,
                                           "Alert",
                                           "You are about to be logged out. Are you sure?");

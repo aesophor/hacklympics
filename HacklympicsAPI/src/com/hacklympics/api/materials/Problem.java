@@ -87,9 +87,10 @@ public class Problem {
     }
     
     
-    public static List<Problem> getProblems(int courseID, int examID) {
+    public static List<Problem> getProblems(Exam exam) {
         List<Problem> problems = new ArrayList<>();
-        Response list = Problem.list(courseID, examID);
+        Response list = Problem.list(exam.getData().getCourseID(),
+                                     exam.getData().getExamID());
         
         if (list.success()) {
             String raw = Utils.getGson().toJson(list.getContent().get("problems"));
@@ -100,7 +101,11 @@ public class Problem {
                 String title = e.getAsJsonObject().get("title").getAsString();
                 String desc = e.getAsJsonObject().get("desc").getAsString();
                 
-                problems.add(new Problem(courseID, examID, problemID, title, desc));
+                problems.add(new Problem(exam.getData().getCourseID(),
+                                         exam.getData().getExamID(), 
+                                         problemID, 
+                                         title,
+                                         desc));
             }
         }
         
