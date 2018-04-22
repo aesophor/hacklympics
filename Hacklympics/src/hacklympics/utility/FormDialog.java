@@ -3,8 +3,9 @@ package hacklympics.utility;
 import java.util.Map;
 import java.util.HashMap;
 import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
+import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXTextField;
 
 public class FormDialog extends Dialog {
@@ -18,9 +19,8 @@ public class FormDialog extends Dialog {
         super(pane, title);
         
         this.components = new HashMap<>();
-        this.vbox = new VBox();
+        this.vbox = new VBox(VBOX_SPACING);
         
-        this.vbox.setSpacing(VBOX_SPACING);
         this.content.setBody(vbox);
     }
     
@@ -37,12 +37,18 @@ public class FormDialog extends Dialog {
     
     public void addField(String identifier, String content) {
         JFXTextField textField = new JFXTextField();
-        
         textField.setLabelFloat(true);
         textField.setPromptText(identifier);
         textField.setText(content);
         
         add(identifier, textField);
+    }
+    
+    public void addDeleteBtn(String identifier) {
+        Button deleteBtn = new Button("Delete");
+        deleteBtn.getStyleClass().add("textBtn-delete");
+        
+        add(identifier, deleteBtn);
     }
     
 }

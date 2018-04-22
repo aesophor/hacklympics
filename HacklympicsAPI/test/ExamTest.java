@@ -20,7 +20,7 @@ public class ExamTest {
         */
         
         
-        Response response = Exam.remove(systemSoftwares.getData().getCourseID(), 3);
+        Response response = systemSoftwares.remove();
         System.out.println(response);
     }
     

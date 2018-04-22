@@ -76,12 +76,12 @@ public class Problem {
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public static Response remove(int courseID, int examID, int problemID) {
+    public Response remove() {
         String uri = String.format("course/%d/exam/%d/problem/remove",
-                                   courseID, examID);
+                                   data.getCourseID(), data.getExamID());
         
         JsonObject json = new JsonObject();
-        json.addProperty("problemID", problemID);
+        json.addProperty("problemID", data.getProblemID());
         
         return new Response(Utils.post(uri, json.toString()));
     }

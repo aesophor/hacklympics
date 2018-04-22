@@ -90,11 +90,11 @@ public class Course {
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public static Response remove(int courseID) {
+    public Response remove() {
         String uri = String.format("course/remove");
         
         JsonObject json = new JsonObject();
-        json.addProperty("id", courseID);
+        json.addProperty("id", data.getCourseID());
         
         return new Response(Utils.post(uri, json.toString()));
     }

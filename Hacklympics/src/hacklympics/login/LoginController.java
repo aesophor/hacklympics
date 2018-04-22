@@ -20,11 +20,9 @@ import com.hacklympics.api.users.Student;
 import com.hacklympics.api.users.Teacher;
 //import hacklympics.student.StudentController;
 import hacklympics.teacher.TeacherController;
+import hacklympics.utility.FXMLTable;
 
 public class LoginController {
-    
-    private static final String TEACHER = "/hacklympics/teacher/Teacher.fxml";
-    private static final String STUDENT = "/hacklympics/student/Student.fxml";
     
     private FXMLLoader fxmlLoader;
     private Response loginResp;
@@ -52,7 +50,7 @@ public class LoginController {
             
                 switch (role) {
                     case "student":
-                        loadStage(STUDENT);
+                        loadStage(FXMLTable.getInstance().get("Student"));
                         loginBtn.getScene().getWindow().hide();
                         
                         // CurrentUser.getInstance().setUser(new Student(username));
@@ -60,7 +58,7 @@ public class LoginController {
                         break;
                         
                     case "teacher":
-                        loadStage(TEACHER);
+                        loadStage(FXMLTable.getInstance().get("Teacher"));
                         loginBtn.getScene().getWindow().hide();
                         
                         CurrentUser.getInstance().setUser(new Teacher(username));

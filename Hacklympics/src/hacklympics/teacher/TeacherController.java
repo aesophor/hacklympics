@@ -2,13 +2,12 @@ package hacklympics.teacher;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.Map;
-import java.util.HashMap;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Node;
@@ -16,17 +15,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.User;
+import hacklympics.utility.FXMLTable;
 import hacklympics.utility.TextDialog;
 
 public class TeacherController implements Initializable {
     
-    private static Map<String, String> fxmls;
     private AnchorPane dashboard;
     private AnchorPane students;
     private AnchorPane courses;
@@ -53,19 +51,18 @@ public class TeacherController implements Initializable {
     
     
     private void initPages() {
-        fxmls = new HashMap<>();
-        fxmls.put("dashboard", "/hacklympics/teacher/pages/Dashboard.fxml");
-        fxmls.put("students",  "/hacklympics/teacher/pages/Students.fxml");
-        fxmls.put("courses",   "/hacklympics/teacher/pages/Courses.fxml");
-        fxmls.put("exams",     "/hacklympics/teacher/pages/Exams.fxml");
-        fxmls.put("problems",  "/hacklympics/teacher/pages/Problems.fxml");
+        String dashboardFXML = FXMLTable.getInstance().get("Teacher/dashboard");
+        String studentsFXML = FXMLTable.getInstance().get("Teacher/students");
+        String coursesFXML = FXMLTable.getInstance().get("Teacher/courses");
+        String examsFXML = FXMLTable.getInstance().get("Teacher/exams");
+        String problemsFXML = FXMLTable.getInstance().get("Teacher/problems");
         
         try {
-            dashboard = FXMLLoader.load(getClass().getResource(fxmls.get("dashboard")));
-            students = FXMLLoader.load(getClass().getResource(fxmls.get("students")));
-            courses = FXMLLoader.load(getClass().getResource(fxmls.get("courses")));
-            exams = FXMLLoader.load(getClass().getResource(fxmls.get("exams")));
-            problems = FXMLLoader.load(getClass().getResource(fxmls.get("problems")));
+            dashboard = FXMLLoader.load(getClass().getResource(dashboardFXML));
+            students = FXMLLoader.load(getClass().getResource(studentsFXML));
+            courses = FXMLLoader.load(getClass().getResource(coursesFXML));
+            exams = FXMLLoader.load(getClass().getResource(examsFXML));
+            problems = FXMLLoader.load(getClass().getResource(problemsFXML));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -96,32 +93,23 @@ public class TeacherController implements Initializable {
                                           "Alert",
                                           "You are about to be logged out. Are you sure?");
         
-        alert.getConfirmBtn().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Response logout = User.logout(CurrentUser.getInstance().getUser().getProfile().getUsername());
-        
-                if (logout.success()) {
-                    logoutBtn.getScene().getWindow().hide();
+        alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
+            Response logout = User.logout(CurrentUser.getInstance().getUser().getProfile().getUsername());
             
-                    try {
-                        Parent root = FXMLLoader.load(getClass().getResource("/hacklympics/login/Login.fxml"));
-                        Scene scene = new Scene(root);
-                        Stage stage = new Stage();
-                        stage.setScene(scene);
-                        stage.show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+            if (logout.success()) {
+                try {
+                    String loginFXML = FXMLTable.getInstance().get("Login");
+                    Parent root = FXMLLoader.load(getClass().getResource(loginFXML));
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.initStyle(StageStyle.UNDECORATED);
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
-            }
-        });
-        
-        alert.getCancelBtn().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                stackPane.setMouseTransparent(true);
-                alert.close();
+                
+                logoutBtn.getScene().getWindow().hide();
             }
         });
         

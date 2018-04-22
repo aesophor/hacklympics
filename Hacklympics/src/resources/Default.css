@@ -91,17 +91,23 @@
     -fx-max-height: 50px;
 }
 
+.textBtn {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+
 .textBtn:hover {
     -fx-underline: true;
 }
 
-.textBtn {
+.textBtn-delete {
+    -fx-padding: -20 0 -20 0;
     -fx-background-color: transparent;
-    -fx-foreground-color: black;
+    -fx-text-fill: #bc3d3d;
 }
 
-.textBtn-delete {
-    -fx-text-fill: #bc3d3d;
+.textBtn-delete:hover {
+    -fx-underline: true;
 }
 
 

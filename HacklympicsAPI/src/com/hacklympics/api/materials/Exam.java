@@ -74,11 +74,11 @@ public class Exam {
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public static Response remove(int courseID, int examID) {
-        String uri = String.format("course/%d/exam/remove", courseID);
+    public Response remove() {
+        String uri = String.format("course/%d/exam/remove", data.getCourseID());
         
         JsonObject json = new JsonObject();
-        json.addProperty("examID", examID);
+        json.addProperty("examID", data.getExamID());
         
         return new Response(Utils.post(uri, json.toString()));
     }
