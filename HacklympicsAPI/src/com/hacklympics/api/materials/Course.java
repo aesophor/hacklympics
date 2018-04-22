@@ -128,6 +128,27 @@ public class Course {
         return data;
     }
     
+    public int getCourseID() {
+        return data.getCourseID();
+    }
+    
+    public String getName() {
+        return data.getName();
+    }
+    
+    public Integer getSemester() {
+        return data.getSemester();
+    }
+    
+    public String getTeacher() {
+        return data.getTeacher();
+    }
+    
+    public List<String> getStudents() {
+        return data.getStudents();
+    }
+    
+    
     public SimpleIntegerProperty courseIDProperty() {
         return data.courseIDProperty();
     }

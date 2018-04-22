@@ -14,13 +14,13 @@
 
 <AnchorPane id="AnchorPane" prefHeight="639.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.CoursesController">
    <children>
-      <JFXTabPane id="tabPane" prefHeight="639.0" prefWidth="776.0">
+      <JFXTabPane id="tabPane" fx:id="tabPane" prefHeight="639.0" prefWidth="776.0">
           <tabs>
-          <Tab closable="false" text="Courses">
+          <Tab id="coursesTab" fx:id="courseTab" closable="false" text="Courses">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="coursesTable" layoutX="32.0" layoutY="80.0" prefHeight="506.0" prefWidth="712.0">
+                        <TableView fx:id="courseTable" layoutX="32.0" layoutY="80.0" prefHeight="506.0" prefWidth="712.0">
                           <columns>
                             <TableColumn fx:id="courseSemesterCol" prefWidth="128.0" text="Semester" />
                             <TableColumn fx:id="courseNameCol" prefWidth="241.0" text="Name" />
@@ -31,29 +31,29 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab closable="false" text="Exams">
+            <Tab id="examsTab" fx:id="examTab" closable="false" text="Exams">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="examsTable" layoutX="32.0" layoutY="80.0" prefHeight="506.0" prefWidth="712.0">
+                        <TableView fx:id="examTable" layoutX="32.0" layoutY="80.0" prefHeight="506.0" prefWidth="712.0">
                            <columns>
                               <TableColumn fx:id="examTitleCol" prefWidth="256.0" text="Title" />
                               <TableColumn fx:id="examDurationCol" prefWidth="104.0" text="Duration" />
-                              <TableColumn fx:id="examDescCol" prefWidth="351.0" text="Description" />
+                              <TableColumn fx:id="examDescCol" prefWidth="350.0" text="Description" />
                            </columns>
                         </TableView>
                      </children>
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab closable="false" text="Problems">
+            <Tab id="problemsTab" fx:id="problemTab" closable="false" text="Problems">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="problemsTable" layoutX="32.0" layoutY="80.0" prefHeight="506.0" prefWidth="712.0">
+                        <TableView fx:id="problemTable" layoutX="32.0" layoutY="80.0" prefHeight="506.0" prefWidth="712.0">
                            <columns>
                               <TableColumn fx:id="probTitleCol" prefWidth="308.0" text="Title" />
-                              <TableColumn fx:id="probDescCol" prefWidth="403.0" text="Desc" />
+                              <TableColumn fx:id="probDescCol" prefWidth="400.0" text="Desc" />
                            </columns>
                         </TableView>
                      </children>
@@ -74,7 +74,7 @@
             <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="editBtn" buttonType="RAISED" layoutX="630.0" layoutY="565.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#update" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
+      <JFXButton fx:id="editBtn" buttonType="RAISED" layoutX="630.0" layoutY="565.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#edit" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
          <font>
             <Font size="22.0" />
          </font>
@@ -82,6 +82,7 @@
             <FontAwesomeIconView fill="WHITE" glyphName="PENCIL" size="20.0" translateX="2.0" />
          </graphic>
       </JFXButton>
-      <StackPane fx:id="stackPane" layoutX="140.0" layoutY="89.0" mouseTransparent="true" prefHeight="409.0" prefWidth="328.0" />
+      <StackPane fx:id="formPane" layoutX="140.0" layoutY="89.0" mouseTransparent="true" prefHeight="250.0" prefWidth="328.0" />
+      <StackPane fx:id="dialogPane" layoutX="132.0" layoutY="208.0" mouseTransparent="true" prefHeight="147.0" prefWidth="328.0" />
    </children>
 </AnchorPane>

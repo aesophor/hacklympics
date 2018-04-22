@@ -27,7 +27,7 @@ def list(request, c_id, e_id):
     problems = Course.objects.get(id=c_id).exam_set.get(id=e_id).problem_set.all()
 
     response_data["content"] = {
-        "exams": [{
+        "problems": [{
             "id": problem.id,
             "title": problem.title,
             "desc": problem.desc,

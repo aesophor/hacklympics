@@ -86,6 +86,18 @@ public abstract class User {
         return profile;
     }
     
+    public String getUsername() {
+        return profile.getUsername();
+    }
+    
+    public String getFullname() {
+        return profile.getFullname();
+    }
+    
+    public Integer getGradYear() {
+        return profile.getGradYear();
+    }
+    
     public SimpleStringProperty usernameProperty() {
         return profile.usernameProperty();
     }

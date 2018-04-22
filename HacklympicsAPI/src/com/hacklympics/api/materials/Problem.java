@@ -1,11 +1,16 @@
 package com.hacklympics.api.materials;
 
 import java.util.Map;
+import java.util.List;
+import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonElement;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
+
 
 public class Problem {
     
@@ -13,6 +18,10 @@ public class Problem {
 
     public Problem(int courseID, int examID, int problemID) {
         initProblemData(courseID, examID, problemID);
+    }
+    
+    public Problem(int courseID, int examID, int problemID, String title, String desc) {
+        this.data = new ProblemData(courseID, examID, problemID, title, desc);
     }
     
     private void initProblemData(int courseID, int examID, int problemID) {
@@ -33,6 +42,11 @@ public class Problem {
         }
     }
     
+    
+    public static Response list(int courseID, int examID) {
+        String uri = String.format("course/%d/exam/%d/problem", courseID, examID);
+        return new Response(Utils.get(uri));
+    }
     
     public static Response create(String title, String desc, 
                                   int courseID, int examID) {
@@ -73,9 +87,51 @@ public class Problem {
     }
     
     
+    public static List<Problem> getProblems(int courseID, int examID) {
+        List<Problem> problems = new ArrayList<>();
+        Response list = Problem.list(courseID, examID);
+        
+        if (list.success()) {
+            String raw = Utils.getGson().toJson(list.getContent().get("problems"));
+            JsonArray json = Utils.getGson().fromJson(raw, JsonArray.class);
+            
+            for (JsonElement e: json) {
+                int problemID = e.getAsJsonObject().get("id").getAsInt();
+                String title = e.getAsJsonObject().get("title").getAsString();
+                String desc = e.getAsJsonObject().get("desc").getAsString();
+                
+                problems.add(new Problem(courseID, examID, problemID, title, desc));
+            }
+        }
+        
+        return problems;
+    }
+    
+    
     public ProblemData getData() {
         return data;
     }
+    
+    public Integer getCourseID() {
+        return data.getCourseID();
+    }
+    
+    public Integer getExamID() {
+        return data.getExamID();
+    }
+    
+    public Integer getProblemID() {
+        return data.getProblemID();
+    }
+    
+    public String getTitle() {
+        return data.getTitle();
+    }
+    
+    public String getDesc() {
+        return data.getDesc();
+    }
+    
     
     public SimpleIntegerProperty courseIDProperty() {
         return data.courseIDProperty();
