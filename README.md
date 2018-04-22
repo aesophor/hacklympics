@@ -30,12 +30,12 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
 
 ## Screenshots
 <p align="center">
-	<img src="https://i.imgur.com/MXWv148.png" alt="login-panel-scrot"> <br>
+    <img src="https://i.imgur.com/MXWv148.png" alt="login-panel-scrot">
     <h5 align="center">▲ Login Panel</h5> <br><br>
-    <img src="https://i.imgur.com/7lmcEDr.png" alt="teacher-scrot"><br>
+    <img src="https://i.imgur.com/7lmcEDr.png" alt="teacher-scrot">
     <h5 align="center">▲  Teachers can create/edit/remove their courses/exams/problems.</h5> <br><br>
-    <img src="https://i.imgur.com/WN8heIh.png" alt="edit"><br>
+    <img src="https://i.imgur.com/WN8heIh.png" alt="edit">
     <h5 align="center">▲  Teacher editing an existing course. Hold shift to enable multiple selection.</h5> <br><br>
-    <img src="https://i.imgur.com/yT58bNq.png" alt="edit"><br>
+    <img src="https://i.imgur.com/yT58bNq.png" alt="edit">
     <h5 align="center">▲ Material Design</h5> <br><br>
 </p>
