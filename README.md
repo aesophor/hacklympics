@@ -18,15 +18,15 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
   > **Hacklympics** - Frontend (Java 8)    
   > **HacklympicsAPI** - RESTful API (Java 8)    
-  > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)
+  > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)    
 
 * Library used
-  > **[JFoenix](https://github.com/jfoenixadmin/JFoenix)** - JavaFX Material Design Library
-  > **[GSON](https://github.com/google/gson)** -  JSON Library. Used for passing data between Django and HacklympicsAPI
-  > **[FontawesomeFX](https://bitbucket.org/Jerady/fontawesomefx)** - Icon Library
+  > **[JFoenix](https://github.com/jfoenixadmin/JFoenix)** - JavaFX Material Design Library    
+  > **[GSON](https://github.com/google/gson)** -  JSON Library. Used for passing data between Django and HacklympicsAPI    
+  > **[FontawesomeFX](https://bitbucket.org/Jerady/fontawesomefx)** - Icon Library    
 
  * Design Pattern used
-   > Singleton Pattern
+   > Singleton Pattern    
 
 ## Screenshots
 <p align="center">
