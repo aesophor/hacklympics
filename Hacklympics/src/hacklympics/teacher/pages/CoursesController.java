@@ -233,7 +233,7 @@ public class CoursesController implements Initializable {
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
         });
-
+        
         form.show();
     }
 
@@ -314,7 +314,7 @@ public class CoursesController implements Initializable {
         });
         
         
-        ((Button) form.get("deleteBtn")).setOnAction((ActionEvent e) -> {
+        form.getAsButton("deleteBtn").setOnAction((ActionEvent e) -> {
             TextDialog dialog = new TextDialog(dialogPane,
                                                "Delete course",
                                                "Do you want to delete this course?");

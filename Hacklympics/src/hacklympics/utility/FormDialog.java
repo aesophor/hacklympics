@@ -6,6 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
 public class FormDialog extends Dialog {
@@ -29,8 +30,13 @@ public class FormDialog extends Dialog {
         return components.get(identifier);
     }
     
-    public void add(String identifier, Node n) {
-        components.put(identifier, n);
+    public Button getAsButton(String identifier) {
+        return ((Button) components.get(identifier));
+    }
+    
+    
+    public void add(String identifier, Node node) {
+        components.put(identifier, node);
         
         vbox.getChildren().add(components.get(identifier));
     }

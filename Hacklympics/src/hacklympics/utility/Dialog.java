@@ -1,8 +1,10 @@
 package hacklympics.utility;
 
-import java.util.List;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
+import javafx.scene.Node;
 import javafx.scene.text.Text;
 import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
@@ -11,30 +13,26 @@ import com.jfoenix.controls.JFXDialogLayout;
 
 public abstract class Dialog {
     
-    private static final int CANCEL_BTN = 0;
-    private static final int CONFIRM_BTN = 1;
-    
     protected final StackPane pane;
     protected final JFXDialog dialog;
     protected final JFXDialogLayout content;
-    
-    protected final List<JFXButton> buttons;
+    protected final Map<String, Node> buttons;
     
     public Dialog(StackPane pane, String title) {
         this.pane = pane;
-        this.buttons = new ArrayList<>();
+        this.buttons = new HashMap<>();
         this.content = new JFXDialogLayout();
         this.dialog = new JFXDialog(pane,
                                     content,
                                     JFXDialog.DialogTransition.CENTER);
         
-        this.buttons.add(new JFXButton("Dismiss"));
-        this.buttons.add(new JFXButton("OK"));
+        this.buttons.put("cancelBtn", new JFXButton("Dismiss"));
+        this.buttons.put("confirmBtn", new JFXButton("OK"));
         
         this.content.setHeading(new Text(title));
-        this.content.setActions(buttons);
+        this.content.setActions(new ArrayList<>(buttons.values()));
         
-        this.buttons.get(CANCEL_BTN).setOnAction((ActionEvent e) -> {
+        getCancelBtn().setOnAction((ActionEvent e) -> {
             close();
         });
     }
@@ -52,11 +50,11 @@ public abstract class Dialog {
     
     
     public JFXButton getConfirmBtn() {
-        return buttons.get(CONFIRM_BTN);
+        return ((JFXButton) buttons.get("confirmBtn"));
     }
     
     public JFXButton getCancelBtn() {
-        return buttons.get(CANCEL_BTN);
+        return ((JFXButton) buttons.get("cancelBtn"));
     }
     
 }
