@@ -16,7 +16,7 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
 
 ## Features
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
-  > **Hacklympics** - Frontend (Java 8)
+  > **Hacklympics** - Frontend (Java 8)    
   > **HacklympicsAPI** - RESTful API (Java 8)    
   > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)
 
