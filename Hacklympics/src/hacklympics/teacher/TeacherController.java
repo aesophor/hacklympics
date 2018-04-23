@@ -22,7 +22,6 @@ import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.User;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.TextDialog;
-import javafx.scene.effect.BoxBlur;
 
 public class TeacherController implements Initializable {
     
@@ -50,6 +49,8 @@ public class TeacherController implements Initializable {
         initOnlineUsersList();
         initPages();
         showPage(dashboard);
+        
+        setGreetingMsg();
     }
     
     

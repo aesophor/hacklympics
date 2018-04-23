@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="405.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.login.LoginController">
+<AnchorPane id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="405.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.login.LoginController">
    <children>
       <VBox styleClass="titlebar">
          <children>
@@ -28,15 +28,15 @@
          <font>
             <Font size="14.0" />
          </font></JFXPasswordField>
-      <JFXButton fx:id="loginBtn" buttonType="RAISED" defaultButton="true" layoutX="83.0" layoutY="229.0" onAction="#login" prefHeight="43.0" prefWidth="98.0" styleClass="lightBlueBtn" text="Login" textFill="WHITE">
+      <JFXButton fx:id="loginBtn" buttonType="RAISED" defaultButton="true" layoutX="80.0" layoutY="229.0" onAction="#login" prefHeight="43.0" prefWidth="98.0" styleClass="lightBlueBtn" text="Login" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font></JFXButton>
-      <JFXButton buttonType="RAISED" cancelButton="true" layoutX="218.0" layoutY="229.0" onAction="#exit" prefHeight="43.0" prefWidth="98.0" styleClass="lightBlueBtn" text="Exit" textFill="WHITE">
+      <JFXButton buttonType="RAISED" cancelButton="true" layoutX="215.0" layoutY="229.0" onAction="#exit" prefHeight="43.0" prefWidth="98.0" styleClass="lightBlueBtn" text="Exit" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font></JFXButton>
-      <Button layoutX="57.0" layoutY="296.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="146.0" styleClass="textBtn" text="Not a member yet?" />
+      <Button layoutX="57.0" layoutY="296.0" mnemonicParsing="false" onAction="#register" prefHeight="26.0" prefWidth="146.0" styleClass="textBtn" text="Not a member yet?" />
       <Button layoutX="207.0" layoutY="296.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="137.0" styleClass="textBtn" text="Forget Password?" />
       <Label alignment="CENTER" layoutX="-22.0" layoutY="334.0" prefHeight="16.0" prefWidth="441.0" text="Copyright © 2018 MISLab, National Defense University" textFill="#979797">
          <font>

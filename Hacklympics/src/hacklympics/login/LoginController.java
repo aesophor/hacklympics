@@ -1,14 +1,11 @@
 package hacklympics.login;
 
-import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.stage.Stage;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.event.ActionEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Label;
+import javafx.event.ActionEvent;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXPasswordField;
@@ -21,13 +18,12 @@ import com.hacklympics.api.users.Teacher;
 //import hacklympics.student.StudentController;
 import hacklympics.teacher.TeacherController;
 import hacklympics.utility.FXMLTable;
+import hacklympics.utility.Utils;
 
 public class LoginController {
     
-    private FXMLLoader fxmlLoader;
-    private Response loginResp;
-    private StatusCode statusCode;
-
+    @FXML
+    private AnchorPane anchorPane;
     @FXML
     private Label warningMsg;
     @FXML
@@ -38,42 +34,35 @@ public class LoginController {
     private JFXButton loginBtn;
     
     
-    public void login(ActionEvent event) {
+    @FXML
+    public void login(ActionEvent e) {
         String username = usernameField.getText();
         String password = passwordField.getText();
         
         try {
-            loginResp = User.login(username, password);
+            Response login = User.login(username, password);
             
-            if (loginResp.success()) {
-                String role = loginResp.getContent().get("role").toString();
+            if (login.success()) {
+                String role = login.getContent().get("role").toString();
             
                 switch (role) {
                     case "student":
-                        // CurrentUser.getInstance().setUser(new Student(username));
-                        
-                        loadStage(FXMLTable.getInstance().get("Student"));
-                        // ((StudentController) fxmlLoader.getController()).setGreetingMsg();
-                        
-                        loginBtn.getScene().getWindow().hide();
+                        CurrentUser.getInstance().setUser(new Student(username));
+                        //Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Student"), StudentController.class);
                         break;
-                        
                     case "teacher":
                         CurrentUser.getInstance().setUser(new Teacher(username));
-                        
-                        loadStage(FXMLTable.getInstance().get("Teacher"));
-                        ((TeacherController) fxmlLoader.getController()).setGreetingMsg();
-                        
-                        loginBtn.getScene().getWindow().hide();
+                        Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Teacher"), TeacherController.class);
                         break;
-                        
                     default:
                         break;
                 }
                 
+                loginBtn.getScene().getWindow().hide();
+                
                 // Add ShutdownHook for auto logout upon exit.
             } else {
-                statusCode = loginResp.getStatusCode();
+                StatusCode statusCode = login.getStatusCode();
                 
                 switch(statusCode) {
                     case VALIDATION_ERR:
@@ -95,29 +84,20 @@ public class LoginController {
         }
     }
     
-    private void loadStage(String fxml) {
-        try {
-            fxmlLoader = new FXMLLoader();
-            fxmlLoader.setLocation(getClass().getResource(fxml));
-            
-            Parent root = fxmlLoader.load();
-            Stage stage = new Stage();
-            Scene scene = new Scene(root);
-            stage.setTitle("Hacklympics");
-            stage.setScene(scene);
-            stage.show();
-        } catch (IOException ioe) {
-            warningMsg.setText("Unable to get FXML resource(s).");
-            ioe.printStackTrace();
-        }
+    @FXML
+    public void register(ActionEvent e) {
+        Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Register"), RegisterController.class);
+        loginBtn.getScene().getWindow().hide();
     }
     
-    public void clearWarningMsg(KeyEvent event) {
-        warningMsg.setText("");
-    }
-    
-    public void exit(ActionEvent event) {
+    @FXML
+    public void exit(ActionEvent e) {
         System.exit(0);
+    }
+    
+    @FXML
+    public void clearWarningMsg(KeyEvent e) {
+        warningMsg.setText("");
     }
     
 }

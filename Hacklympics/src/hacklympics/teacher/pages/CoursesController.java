@@ -24,6 +24,7 @@ import com.hacklympics.api.materials.Exam;
 import com.hacklympics.api.materials.Problem;
 import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.Role;
+import com.hacklympics.api.users.Student;
 import com.hacklympics.api.users.User;
 import com.hacklympics.api.users.Teacher;
 import hacklympics.utility.FormDialog;
@@ -192,7 +193,7 @@ public class CoursesController implements Initializable {
         } else if (current == problemTab) {
             addProblem();
         } else {
-
+            
         }
     }
 
@@ -200,13 +201,19 @@ public class CoursesController implements Initializable {
         Tab current = tabPane.getSelectionModel().getSelectedItem();
 
         if (current == courseTab) {
-            editCourse();
+            Course c = courseTable.getSelectionModel().getSelectedItem();
+            if (c != null) editCourse(c);
+            
         } else if (current == examTab) {
-            editExam();
+            Exam e = examTable.getSelectionModel().getSelectedItem();
+            if (e != null) editExam(e);
+            
         } else if (current == problemTab) {
-            editProblem();
+            Problem p = problemTable.getSelectionModel().getSelectedItem();
+            if (p != null) editProblem(p);
+            
         } else {
-
+            
         }
     }
     
@@ -288,8 +295,7 @@ public class CoursesController implements Initializable {
         form.show();
     }
 
-    private void editCourse() {
-        Course course = courseTable.getSelectionModel().getSelectedItem();
+    private void editCourse(Course course) {
         UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
         FormDialog form = new FormDialog(formPane, "Edit course");
@@ -297,6 +303,14 @@ public class CoursesController implements Initializable {
         form.addField("Semester", course.getData().getSemester().toString());
         form.add("Students", studentsList.getListView());
         form.addDeleteBtn("deleteBtn");
+        
+        for (String username : course.getStudents()) {
+            for (User user : studentsList.getAllItems()) {
+                if (username.equals(user.getProfile().getUsername())) {
+                    studentsList.getListView().getSelectionModel().select(user);
+                }
+            }
+        }
 
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField nameField = (JFXTextField) form.get("Name");
@@ -338,9 +352,7 @@ public class CoursesController implements Initializable {
         form.show();
     }
 
-    private void editExam() {
-        Exam exam = examTable.getSelectionModel().getSelectedItem();
-        
+    private void editExam(Exam exam) {    
         FormDialog form = new FormDialog(formPane, "Edit exam");
         form.addField("Title", exam.getData().getTitle());
         form.addField("Duration", exam.getData().getDuration().toString());
@@ -380,9 +392,7 @@ public class CoursesController implements Initializable {
         form.show();
     }
 
-    private void editProblem() {
-        Problem problem = problemTable.getSelectionModel().getSelectedItem();
-
+    private void editProblem(Problem problem) {
         FormDialog form = new FormDialog(formPane, "Edit problem");
         form.addField("Title", problem.getData().getTitle());
         form.addField("Description", problem.getData().getDesc());

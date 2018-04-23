@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="360.0" prefWidth="405.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.login.RegisterController">
+   <children>
+      <VBox styleClass="titlebar">
+         <children>
+            <Label alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="50.0" prefWidth="405.0" text="Hacklympics Sign Up" textFill="WHITE">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+         </children>
+      </VBox>
+      <JFXTextField fx:id="usernameField" focusColor="#0095d9" labelFloat="true" layoutX="58.0" layoutY="105.0" onKeyPressed="#clearWarningMsg" prefHeight="26.0" prefWidth="282.0" promptText="Student ID / Teacher WebMail">
+         <font>
+            <Font size="14.0" />
+         </font></JFXTextField>
+      <JFXTextField fx:id="fullnameField" focusColor="#0095d9" labelFloat="true" layoutX="58.0" layoutY="155.0" onKeyPressed="#clearWarningMsg" prefHeight="28.0" prefWidth="169.0" promptText="Fullname">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </JFXTextField>
+      <JFXComboBox fx:id="gradYearBox" layoutX="242.0" layoutY="157.0" prefHeight="26.0" prefWidth="98.0" promptText="Class of" />
+      <JFXPasswordField fx:id="passwordField" focusColor="#0095d9" labelFloat="true" layoutX="58.0" layoutY="212.0" onKeyPressed="#clearWarningMsg" prefHeight="26.0" prefWidth="282.0" promptText="Password">
+         <font>
+            <Font size="14.0" />
+         </font></JFXPasswordField>
+      <JFXButton fx:id="registerBtn" buttonType="RAISED" defaultButton="true" layoutX="80.0" layoutY="271.0" onAction="#register" prefHeight="43.0" prefWidth="98.0" styleClass="lightBlueBtn" text="Sign Up" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font></JFXButton>
+      <JFXButton buttonType="RAISED" cancelButton="true" layoutX="215.0" layoutY="271.0" onAction="#back" prefHeight="43.0" prefWidth="98.0" styleClass="lightBlueBtn" text="Back" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font></JFXButton>
+      <Label alignment="CENTER" layoutX="-22.0" layoutY="334.0" prefHeight="16.0" prefWidth="441.0" text="Copyright © 2018 MISLab, National Defense University" textFill="#979797">
+         <font>
+            <Font size="10.0" />
+         </font></Label>
+      <Label fx:id="warningMsg" alignment="CENTER" layoutX="-19.0" layoutY="62.0" prefHeight="16.0" prefWidth="441.0" textFill="#bc3d3d" />
+   </children>
+</AnchorPane>

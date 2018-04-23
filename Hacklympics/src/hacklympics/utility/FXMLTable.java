@@ -12,6 +12,7 @@ public class FXMLTable {
         table = new HashMap<>();
         
         table.put("Login",             "/hacklympics/login/Login.fxml");
+        table.put("Register",          "/hacklympics/login/Register.fxml");
         
         table.put("Student",           "/hacklympics/student/Student.fxml");
         

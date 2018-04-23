@@ -1,14 +1,14 @@
 package hacklympics.utility;
 
 import java.util.List;
+import javafx.scene.control.SelectionMode;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.users.Role;
 import com.hacklympics.api.users.User;
 import com.hacklympics.api.users.Student;
 import com.hacklympics.api.users.Teacher;
-import com.jfoenix.controls.JFXListView;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.SelectionMode;
 
 public class UserListView {
     
@@ -53,6 +53,10 @@ public class UserListView {
     
     public JFXListView getListView() {
         return listView;
+    }
+    
+    public List<User> getAllItems() {
+        return users;
     }
     
 }
