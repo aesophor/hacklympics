@@ -24,7 +24,6 @@ import com.hacklympics.api.materials.Exam;
 import com.hacklympics.api.materials.Problem;
 import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.Role;
-import com.hacklympics.api.users.Student;
 import com.hacklympics.api.users.User;
 import com.hacklympics.api.users.Teacher;
 import hacklympics.utility.FormDialog;

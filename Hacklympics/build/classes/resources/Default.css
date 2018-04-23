@@ -79,6 +79,12 @@
     -fx-text-fill: white;
 }
 
+.redBtn {
+    -jfx-button-type: RAISED;
+    -fx-background-color: #df5b66;
+    -fx-text-fill: white;
+}
+
 .roundBtn {
     -fx-background-radius: 500;
     -fx-background-color: #0095d9;

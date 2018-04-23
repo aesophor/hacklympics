@@ -1,0 +1,47 @@
+* {
+    -fx-black: #141414;
+    -fx-darkgrey: #505965;
+    -fx-lightgrey: #bebebe;
+    -fx-red: #df5b66;
+    -fx-green: #718c00;
+    -fx-yellow: #c99e00;
+    -fx-blue: #4271ae;
+    -fx-purple: #9469af;
+    -fx-cyan: #3e999f;
+}
+
+.keyword {
+    -fx-fill: -fx-red;
+    -fx-font-weight: bold;
+}
+
+.semicolon {
+    -fx-font-weight: bold;
+}
+
+.paren {
+    -fx-fill: -fx-purple;
+    -fx-font-weight: bold;
+}
+
+.bracket {
+    -fx-fill: -fx-black;
+    -fx-font-weight: bold;
+}
+
+.brace {
+    -fx-fill: -fx-black;
+    -fx-font-weight: bold;
+}
+
+.string {
+    -fx-fill: -fx-green;
+}
+
+.comment {
+    -fx-fill: -fx-lightgrey;
+}
+
+.paragraph-box:has-caret {
+    -fx-background-color: #dddddd;
+}

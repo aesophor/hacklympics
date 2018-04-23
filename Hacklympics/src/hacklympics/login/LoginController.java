@@ -15,7 +15,7 @@ import com.hacklympics.api.session.CurrentUser;
 import com.hacklympics.api.users.User;
 import com.hacklympics.api.users.Student;
 import com.hacklympics.api.users.Teacher;
-//import hacklympics.student.StudentController;
+import hacklympics.student.StudentController;
 import hacklympics.teacher.TeacherController;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.Utils;
@@ -48,7 +48,7 @@ public class LoginController {
                 switch (role) {
                     case "student":
                         CurrentUser.getInstance().setUser(new Student(username));
-                        //Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Student"), StudentController.class);
+                        Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Student"), StudentController.class);
                         break;
                     case "teacher":
                         CurrentUser.getInstance().setUser(new Teacher(username));

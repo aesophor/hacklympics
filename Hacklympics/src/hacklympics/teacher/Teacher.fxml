@@ -89,7 +89,7 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Messages" textFill="WHITE">
+                  <JFXButton onAction="#showMessages" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Messages" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="ENVELOPE" size="20.0" wrappingWidth="30.0" />
                      </graphic>
@@ -107,7 +107,7 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="69.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Proctor" textFill="WHITE">
+                  <JFXButton onAction="#showProctor" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Proctor" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="EYE" size="20.0" wrappingWidth="30.0" />
                      </graphic>

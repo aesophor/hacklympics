@@ -26,10 +26,10 @@ import hacklympics.utility.TextDialog;
 public class TeacherController implements Initializable {
     
     private AnchorPane dashboard;
-    private AnchorPane students;
     private AnchorPane courses;
-    private AnchorPane exams;
-    private AnchorPane problems;
+    private AnchorPane students;
+    private AnchorPane messages;
+    private AnchorPane proctor;
     
     @FXML
     private AnchorPane mainPane;
@@ -56,17 +56,17 @@ public class TeacherController implements Initializable {
     
     private void initPages() {
         String dashboardFXML = FXMLTable.getInstance().get("Teacher/dashboard");
-        String studentsFXML = FXMLTable.getInstance().get("Teacher/students");
         String coursesFXML = FXMLTable.getInstance().get("Teacher/courses");
-        String examsFXML = FXMLTable.getInstance().get("Teacher/exams");
-        String problemsFXML = FXMLTable.getInstance().get("Teacher/problems");
+        String studentsFXML = FXMLTable.getInstance().get("Teacher/students");
+        String messagesFXML = FXMLTable.getInstance().get("Teacher/messages");
+        String proctorFXML = FXMLTable.getInstance().get("Teacher/proctor");
         
         try {
             dashboard = FXMLLoader.load(getClass().getResource(dashboardFXML));
-            students = FXMLLoader.load(getClass().getResource(studentsFXML));
             courses = FXMLLoader.load(getClass().getResource(coursesFXML));
-            exams = FXMLLoader.load(getClass().getResource(examsFXML));
-            problems = FXMLLoader.load(getClass().getResource(problemsFXML));
+            students = FXMLLoader.load(getClass().getResource(studentsFXML));
+            //messages = FXMLLoader.load(getClass().getResource(messagesFXML));
+            //proctor = FXMLLoader.load(getClass().getResource(proctorFXML));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -123,20 +123,20 @@ public class TeacherController implements Initializable {
         showPage(dashboard);
     }
     
-    public void showStudents(ActionEvent event) {
-        showPage(students);
-    }
-    
     public void showCourses(ActionEvent event) {
         showPage(courses);
     }
     
-    public void showExams(ActionEvent event) {
-        showPage(exams);
+    public void showStudents(ActionEvent event) {
+        showPage(students);
     }
     
-    public void showProblems(ActionEvent event) {
-        showPage(problems);
+    public void showMessages(ActionEvent event) {
+        showPage(messages);
+    }
+    
+    public void showProctor(ActionEvent event) {
+        showPage(proctor);
     }
     
 }
