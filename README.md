@@ -12,7 +12,7 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
 - [ ] Teachers can **proctor** any exams, watching the students write their code LIVE.
 - [ ] Teachers can set up input/output data for each problems (Online Judge)
 - [ ]  Students can write and sumbit their codes to the server.
-- [ ]  Students can compile and execute their codes (without the need to fire up a terminal).
+- [x]  Students can compile and execute their codes (without the need to fire up a terminal).
 
 ## Features
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
