@@ -1,16 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXProgressBar?>
-<?import java.net.URL?>
+<?import com.jfoenix.controls.JFXButton?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="639.0" prefWidth="776.0" styleClass="mainFxmlClass" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8.0.162" fx:controller="hacklympics.teacher.pages.DashboardController">
-    <stylesheets>
-        <URL value="@/resources/Default.css" />
-    </stylesheets>
+<AnchorPane id="AnchorPane" prefHeight="639.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.DashboardController">
    <children>
-      <JFXProgressBar layoutX="182.0" layoutY="334.0" prefHeight="6.0" prefWidth="412.0" />
-      <Label layoutX="320.0" layoutY="293.0" text="Dashboard loading..." />
+      <ImageView fitHeight="639.0" fitWidth="776.0" pickOnBounds="true">
+         <image>
+            <Image url="@../../../resources/Images/Wall.png" />
+         </image>
+         <effect>
+            <ColorAdjust brightness="-0.09" contrast="-0.24" saturation="-0.22" />
+         </effect>
+      </ImageView>
+      <Label layoutX="165.0" layoutY="201.0" text="HACK LYMPICS" textFill="WHITE">
+         <font>
+            <Font name="Lucida Sans Demibold" size="60.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" layoutX="168.0" layoutY="294.0" prefHeight="26.0" prefWidth="440.0" text="The leading platform in Online Code Exam" textFill="WHITE">
+         <font>
+            <Font name="Lucida Sans Regular" size="20.0" />
+         </font>
+      </Label>
+      <JFXButton buttonType="RAISED" layoutX="331.0" layoutY="464.0" prefHeight="41.0" prefWidth="117.0" styleClass="lightBlueBtn" text="Get Started" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="80.0" layoutX="156.0" layoutY="194.0" stroke="WHITE" strokeType="INSIDE" strokeWidth="5.0" width="196.0" />
    </children>
 </AnchorPane>

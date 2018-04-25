@@ -237,9 +237,9 @@ public class CoursesController implements Initializable {
             }
             
             Course.create(nameField.getText(),
-                    Integer.parseInt(semesterField.getText()),
-                    teacher,
-                    students);
+                          Integer.parseInt(semesterField.getText()),
+                          teacher,
+                          students);
             
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -261,9 +261,9 @@ public class CoursesController implements Initializable {
             Course selected = courseTable.getSelectionModel().getSelectedItem();
             
             Exam.create(titleField.getText(),
-                    descField.getText(),
-                    Integer.parseInt(durationField.getText()),
-                    selected.getData().getCourseID());
+                        descField.getText(),
+                        Integer.parseInt(durationField.getText()),
+                        selected.getData().getCourseID());
             
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -283,9 +283,9 @@ public class CoursesController implements Initializable {
             Exam selected = examTable.getSelectionModel().getSelectedItem();
             
             Problem.create(titleField.getText(),
-                    descField.getText(),
-                    selected.getCourseID(),
-                    selected.getExamID());
+                           descField.getText(),
+                           selected.getCourseID(),
+                           selected.getExamID());
             
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();

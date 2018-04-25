@@ -24,6 +24,8 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
   > **[JFoenix](https://github.com/jfoenixadmin/JFoenix)** - JavaFX Material Design Library    
   > **[GSON](https://github.com/google/gson)** -  JSON Library. Used for passing data between Django and HacklympicsAPI    
   > **[FontawesomeFX](https://bitbucket.org/Jerady/fontawesomefx)** - Icon Library    
+  > **[RichTextFX](https://github.com/FXMisc/RichTextFX)** - RichText Area for JavaFX. Used for code areas    
+  > **[TerminalFX](https://github.com/javaterminal/TerminalFX)** - A Terminal Emulator written in JavaFX 8    
 
  * Design Pattern used
    > Singleton Pattern    
