@@ -12,7 +12,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.TabPane;
 import org.fxmisc.richtext.CodeArea;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.kodedu.terminalfx.TerminalTab;
 import com.kodedu.terminalfx.TerminalBuilder;
@@ -36,15 +35,6 @@ public class CodeController implements Initializable {
     @FXML
     private CodeArea codeArea;
     
-    @FXML
-    private JFXButton saveBtn;
-    @FXML
-    private JFXButton compileBtn;
-    @FXML
-    private JFXButton execBtn;
-    @FXML
-    private JFXButton submitBtn;
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         this.codeAreaBox = new CodeAreaBox(codeArea);
@@ -59,7 +49,7 @@ public class CodeController implements Initializable {
     
     public void save(ActionEvent e) {
         FormDialog form = new FormDialog(stackPane, "Save the file as ...");
-        form.addField("Filename", "Program.java");
+        form.addTextField("Filename", "Program.java");
         
         form.getConfirmBtn().setOnAction((ActionEvent save) -> {
             JFXTextField filenameField = (JFXTextField) form.get("Filename");
@@ -69,8 +59,6 @@ public class CodeController implements Initializable {
                 BufferedWriter code = new BufferedWriter(new FileWriter(this.filename));
                 code.write(codeArea.getText());
                 code.flush();
-                
-                compileBtn.setDisable(false);
             } catch (IOException ioe) {
                 
             }
@@ -85,7 +73,6 @@ public class CodeController implements Initializable {
         terminal.onTerminalFxReady(() -> {
             terminal.command(String.join(" ", "javac", filename, "\r"));
         });
-        execBtn.setDisable(false);
     }
     
     public void execute(ActionEvent event) {

@@ -5,7 +5,6 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -52,8 +51,10 @@
                      <children>
                         <TableView fx:id="problemTable" layoutX="32.0" layoutY="80.0" prefHeight="506.0" prefWidth="712.0">
                            <columns>
-                              <TableColumn fx:id="probTitleCol" prefWidth="308.0" text="Title" />
-                              <TableColumn fx:id="probDescCol" prefWidth="400.0" text="Desc" />
+                              <TableColumn fx:id="probTitleCol" prefWidth="160.0" text="Title" />
+                              <TableColumn fx:id="probDescCol" prefWidth="245.0" text="Desc" />
+                              <TableColumn fx:id="probInputCol" minWidth="0.0" prefWidth="150.0" text="Input" />
+                              <TableColumn fx:id="probOutputCol" minWidth="0.0" prefWidth="150.0" text="Output" />
                            </columns>
                         </TableView>
                      </children>

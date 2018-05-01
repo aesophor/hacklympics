@@ -96,7 +96,7 @@ public class StudentController implements Initializable {
                                           "You are about to be logged out. Are you sure?");
         
         alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            Response logout = User.logout(CurrentUser.getInstance().getUser().getProfile().getUsername());
+            Response logout = CurrentUser.getInstance().getUser().logout();
             
             if (logout.success()) {
                 try {

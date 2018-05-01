@@ -46,8 +46,7 @@ public class Exam {
         return new Response(Utils.get(uri));
     }
     
-    public static Response create(String title, String desc, int duration,
-                                  int courseID) {
+    public static Response create(int courseID, String title, String desc, int duration) {
         String uri = String.format("course/%d/exam/create", courseID);
         
         JsonObject json = new JsonObject();
@@ -84,25 +83,32 @@ public class Exam {
     }
     
     
-    public static List<Exam> getExams(Course course) {
-        List<Exam> exams = new ArrayList<>();
-        Response list = Exam.list(course.getData().getCourseID());
+    public List<Problem> getProblems() {
+        List<Problem> problems = new ArrayList<>();
+        Response list = Problem.list(getData().getCourseID(), getData().getExamID());
         
         if (list.success()) {
-            String raw = Utils.getGson().toJson(list.getContent().get("exams"));
+            String raw = Utils.getGson().toJson(list.getContent().get("problems"));
             JsonArray json = Utils.getGson().fromJson(raw, JsonArray.class);
             
             for (JsonElement e: json) {
-                int examID = e.getAsJsonObject().get("id").getAsInt();
+                int problemID = e.getAsJsonObject().get("id").getAsInt();
                 String title = e.getAsJsonObject().get("title").getAsString();
                 String desc = e.getAsJsonObject().get("desc").getAsString();
-                int duration = e.getAsJsonObject().get("duration").getAsInt();
+                String input = e.getAsJsonObject().get("input").getAsString();
+                String output = e.getAsJsonObject().get("output").getAsString();
                 
-                exams.add(new Exam(course.getData().getCourseID(), examID, title, desc, duration));
+                problems.add(new Problem(getData().getCourseID(),
+                                         getData().getExamID(), 
+                                         problemID, 
+                                         title,
+                                         desc,
+                                         input,
+                                         output));
             }
         }
         
-        return exams;
+        return problems;
     }
     
     

@@ -72,11 +72,11 @@ public abstract class User {
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public static Response logout(String username) {
+    public Response logout() {
         String uri = "user/logout";
         
         JsonObject json = new JsonObject();
-        json.addProperty("username", username);
+        json.addProperty("username", getProfile().getUsername());
         
         return new Response(Utils.post(uri, json.toString()));
     }

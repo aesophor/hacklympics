@@ -7,6 +7,7 @@ public class ExamData {
     
     private final SimpleIntegerProperty courseID;
     private final SimpleIntegerProperty examID;
+    
     private SimpleStringProperty title;
     private SimpleStringProperty desc;
     private SimpleIntegerProperty duration;
@@ -14,6 +15,7 @@ public class ExamData {
     public ExamData(int courseID, int examID, String title, String desc, int duration) {
         this.courseID = new SimpleIntegerProperty(courseID);
         this.examID = new SimpleIntegerProperty(examID);
+        
         this.title = new SimpleStringProperty(title);
         this.desc = new SimpleStringProperty(desc);
         this.duration = new SimpleIntegerProperty(duration);

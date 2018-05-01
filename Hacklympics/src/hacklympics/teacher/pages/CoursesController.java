@@ -18,6 +18,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.jfoenix.controls.JFXTabPane;
+import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.materials.Course;
 import com.hacklympics.api.materials.Exam;
@@ -78,6 +79,10 @@ public class CoursesController implements Initializable {
     private TableColumn<Problem, String> probTitleCol;
     @FXML
     private TableColumn<Problem, Integer> probDescCol;
+    @FXML
+    private TableColumn<Problem, String> probInputCol;
+    @FXML
+    private TableColumn<Problem, Integer> probOutputCol;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -103,6 +108,8 @@ public class CoursesController implements Initializable {
         // Initialize columns problemsTable.
         probTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         probDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        probInputCol.setCellValueFactory(new PropertyValueFactory<>("input"));
+        probOutputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
 
         courseTable.setOnMouseClicked((Event e) -> {
             update(examTab, problemTab);
@@ -121,7 +128,7 @@ public class CoursesController implements Initializable {
             if (tab == courseTab) {
                 courseRecords.clear();
                 
-                List<Course> courses = Course.getCourses((Teacher) CurrentUser.getInstance().getUser());
+                List<Course> courses = ((Teacher) CurrentUser.getInstance().getUser()).getCourses();
                 for (Course c : courses) {
                     if (c.getData().getName().contains(keyword) |
                         c.getData().getTeacher().contains(keyword)) {
@@ -138,7 +145,7 @@ public class CoursesController implements Initializable {
                 Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
                 
                 if (selectedCourse != null) {
-                    List<Exam> exams = Exam.getExams(selectedCourse);
+                    List<Exam> exams = selectedCourse.getExams();
                     
                     for (Exam e : exams) {
                         if (e.getData().getTitle().contains(keyword) |
@@ -157,7 +164,7 @@ public class CoursesController implements Initializable {
                 Exam selectedExam = examTable.getSelectionModel().getSelectedItem();
                 
                 if (selectedExam != null) {
-                    List<Problem> problems = Problem.getProblems(selectedExam);
+                    List<Problem> problems = selectedExam.getProblems();
                     for (Problem p : problems) {
                         if (p.getData().getTitle().contains(keyword) |
                             p.getData().getDesc().contains(keyword)) {
@@ -221,8 +228,8 @@ public class CoursesController implements Initializable {
         UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
         FormDialog form = new FormDialog(formPane, "Add new course");
-        form.addField("Name", "");
-        form.addField("Semester", "");
+        form.addTextField("Name", "");
+        form.addTextField("Semester", "");
         form.add("Students", studentsList.getListView());
 
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
@@ -250,9 +257,9 @@ public class CoursesController implements Initializable {
 
     private void addExam() {
         FormDialog form = new FormDialog(formPane, "Add new exam");
-        form.addField("Title", "");
-        form.addField("Duration", "");
-        form.addField("Description", "");
+        form.addTextField("Title", "");
+        form.addTextField("Duration", "");
+        form.addTextField("Description", "");
 
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField titleField = (JFXTextField) form.get("Title");
@@ -260,10 +267,10 @@ public class CoursesController implements Initializable {
             JFXTextField descField = (JFXTextField) form.get("Description");
             Course selected = courseTable.getSelectionModel().getSelectedItem();
             
-            Exam.create(titleField.getText(),
+            Exam.create(selected.getData().getCourseID(),
+                        titleField.getText(),
                         descField.getText(),
-                        Integer.parseInt(durationField.getText()),
-                        selected.getData().getCourseID());
+                        Integer.parseInt(durationField.getText()));
             
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -274,18 +281,24 @@ public class CoursesController implements Initializable {
 
     private void addProblem() {
         FormDialog form = new FormDialog(formPane, "Add new problem");
-        form.addField("Title", "");
-        form.addField("Description", "");
+        form.addTextField("Title", "");
+        form.addTextField("Description", "");
+        form.addTextArea("Input", "");
+        form.addTextArea("Output", "");
         
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField titleField = (JFXTextField) form.get("Title");
             JFXTextField descField = (JFXTextField) form.get("Description");
+            JFXTextArea inputArea = (JFXTextArea) form.get("Input");
+            JFXTextArea outputArea = (JFXTextArea) form.get("Output");
             Exam selected = examTable.getSelectionModel().getSelectedItem();
             
-            Problem.create(titleField.getText(),
+            Problem.create(selected.getCourseID(),
+                           selected.getExamID(),
+                           titleField.getText(),
                            descField.getText(),
-                           selected.getCourseID(),
-                           selected.getExamID());
+                           inputArea.getText(),
+                           outputArea.getText());
             
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -298,8 +311,8 @@ public class CoursesController implements Initializable {
         UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
         FormDialog form = new FormDialog(formPane, "Edit course");
-        form.addField("Name", course.getData().getName());
-        form.addField("Semester", course.getData().getSemester().toString());
+        form.addTextField("Name", course.getData().getName());
+        form.addTextField("Semester", course.getData().getSemester().toString());
         form.add("Students", studentsList.getListView());
         form.addDeleteBtn("deleteBtn");
         
@@ -353,9 +366,9 @@ public class CoursesController implements Initializable {
 
     private void editExam(Exam exam) {    
         FormDialog form = new FormDialog(formPane, "Edit exam");
-        form.addField("Title", exam.getData().getTitle());
-        form.addField("Duration", exam.getData().getDuration().toString());
-        form.addField("Description", exam.getData().getDesc());
+        form.addTextField("Title", exam.getData().getTitle());
+        form.addTextField("Duration", exam.getData().getDuration().toString());
+        form.addTextField("Description", exam.getData().getDesc());
         form.addDeleteBtn("deleteBtn");
 
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
@@ -393,16 +406,22 @@ public class CoursesController implements Initializable {
 
     private void editProblem(Problem problem) {
         FormDialog form = new FormDialog(formPane, "Edit problem");
-        form.addField("Title", problem.getData().getTitle());
-        form.addField("Description", problem.getData().getDesc());
+        form.addTextField("Title", problem.getData().getTitle());
+        form.addTextField("Description", problem.getData().getDesc());
+        form.addTextArea("Input", problem.getData().getInput());
+        form.addTextArea("Output", problem.getData().getOutput());
         form.addDeleteBtn("deleteBtn");
 
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField titleField = (JFXTextField) form.get("Title");
             JFXTextField descField = (JFXTextField) form.get("Description");
+            JFXTextArea inputArea = (JFXTextArea) form.get("Input");
+            JFXTextArea outputArea = (JFXTextArea) form.get("Output");
 
             problem.update(titleField.getText(),
-                           descField.getText());
+                           descField.getText(),
+                           inputArea.getText(),
+                           outputArea.getText());
 
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();

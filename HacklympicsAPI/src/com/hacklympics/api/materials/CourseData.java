@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class CourseData {
     
     private final SimpleIntegerProperty courseID;
+    
     private SimpleStringProperty name;
     private SimpleIntegerProperty semester;
     private SimpleStringProperty teacher;
@@ -15,6 +16,7 @@ public class CourseData {
     public CourseData(int courseID, String name, int semester, String teacher,
                       List<String> students) {
         this.courseID = new SimpleIntegerProperty(courseID);
+        
         this.name = new SimpleStringProperty(name);
         this.semester = new SimpleIntegerProperty(semester);
         this.teacher = new SimpleStringProperty(teacher);

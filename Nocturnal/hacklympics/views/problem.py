@@ -16,6 +16,8 @@ def get(request, c_id, e_id, p_id):
         "id": problem.id,
         "title": problem.title,
         "desc": problem.desc,
+        "input": problem.input,
+        "output": problem.output
     }
 
     return JsonResponse(response_data)
@@ -31,6 +33,8 @@ def list(request, c_id, e_id):
             "id": problem.id,
             "title": problem.title,
             "desc": problem.desc,
+            "input": problem.input,
+            "output": problem.output
         } for problem in problems]
     }
 
@@ -45,10 +49,14 @@ def create(request, c_id, e_id):
         
         title = req_body["title"]
         desc = req_body["desc"]
+        input = req_body["input"]
+        output = req_body["output"]
         
         Course.objects.get(id=c_id).exam_set.get(id=e_id).problem_set.create(
             title = title,
             desc = desc,
+            input = input,
+            output = output
         )
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
@@ -67,10 +75,14 @@ def update(request, c_id, e_id):
         p_id = req_body["problemID"]
         title = req_body["title"]
         desc = req_body["desc"]
+        input = req_body["input"]
+        output = req_body["output"]
         
         Course.objects.get(id=c_id).exam_set.get(id=e_id).problem_set.all().filter(id=p_id).update(
             title = title,
-            desc = desc
+            desc = desc,
+            input = input,
+            output = output
         )
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS

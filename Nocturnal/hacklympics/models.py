@@ -28,10 +28,10 @@ class User(models.Model):
 
 
 class Course(models.Model):
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=50)
     semester = models.IntegerField()
     teacher = models.ForeignKey("User", related_name="teacher")
-    students = models.ManyToManyField("User", related_name="students", null=True, blank=True)
+    students = models.ManyToManyField("User", related_name="students", blank=True)
 
     create_time = models.DateTimeField(editable=False)
     update_time = models.DateTimeField()
@@ -47,7 +47,7 @@ class Course(models.Model):
 
 
 class Exam(models.Model):
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=50)
     desc = models.CharField(max_length=256)
     duration = models.IntegerField()
     course = models.ForeignKey("Course")
@@ -66,8 +66,10 @@ class Exam(models.Model):
 
 
 class Problem(models.Model):
-    title = models.CharField(max_length=20)
+    title = models.CharField(max_length=50)
     desc = models.CharField(max_length=256)
+    input = models.CharField(max_length=256)
+    output = models.CharField(max_length=256)
     exam = models.ForeignKey("Exam")
 
     create_time = models.DateTimeField(editable=False)
@@ -81,21 +83,6 @@ class Problem(models.Model):
 
     def __str__(self):
         return self.title
-
-
-class TestData(models.Model):
-    stdin = models.CharField(max_length=256)
-    stdout = models.CharField(max_length=256)
-    problem = models.ForeignKey("Problem")
-
-    create_time = models.DateTimeField(editable=False)
-    update_time = models.DateTimeField()
-
-    def save(self, *args, **kwargs):
-        if not self.create_time:
-            self.create_time = timezone.now()
-        self.update_time = timezone.now()
-        super().save(*args, **kwargs)
 
 
 class Answer(models.Model):

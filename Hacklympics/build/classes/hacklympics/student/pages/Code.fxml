@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -15,52 +17,51 @@
          <children>
             <VBox prefHeight="652.0" prefWidth="809.0" style="-fx-background-color: #f4f4f4;">
                <children>
-                  <VBox alignment="CENTER_RIGHT" prefHeight="45.0" prefWidth="776.0">
-                     <children>
-                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="776.0" style="-fx-background-color: #dadada;">
-                           <children>
-                              <JFXButton fx:id="saveBtn" alignment="CENTER" layoutX="513.0" layoutY="19.0" onAction="#save" prefHeight="26.0" prefWidth="91.0" styleClass="darkBlueBtn" text="Save As ...">
-                                 <HBox.margin>
-                                    <Insets right="15.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                              <JFXButton fx:id="compileBtn" alignment="CENTER" disable="true" layoutX="604.0" layoutY="19.0" onAction="#compile" prefHeight="26.0" prefWidth="74.0" styleClass="darkBlueBtn" text="Compile">
-                                 <HBox.margin>
-                                    <Insets right="15.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                              <JFXButton fx:id="execBtn" alignment="CENTER" disable="true" onAction="#execute" prefHeight="26.0" prefWidth="76.0" styleClass="darkBlueBtn" text="Run">
-                                 <HBox.margin>
-                                    <Insets right="30.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                              <JFXButton fx:id="submitBtn" alignment="CENTER" prefHeight="26.0" prefWidth="66.0" styleClass="darkBlueBtn" text="Submit" wrapText="true">
-                                 <HBox.margin>
-                                    <Insets right="22.0" />
-                                 </HBox.margin>
-                              </JFXButton>
-                           </children>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <CodeArea fx:id="codeArea" prefHeight="351.0" prefWidth="766.0" style="-fx-background-color: #f4f4f4;" stylesheets="@../../../resources/JavaKeywords.css">
+                  <MenuBar prefHeight="29.0" prefWidth="888.0">
+                    <menus>
+                      <Menu mnemonicParsing="false" text="File">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="New " />
+                              <MenuItem mnemonicParsing="false" text="Open..." />
+                              <MenuItem mnemonicParsing="false" text="Save" />
+                              <MenuItem mnemonicParsing="false" onAction="#save" text="Save As..." />
+                              <MenuItem mnemonicParsing="false" text="Close" />
+                        </items>
+                      </Menu>
+                        <Menu mnemonicParsing="false" text="Code">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#compile" text="Compile" />
+                              <MenuItem mnemonicParsing="false" onAction="#execute" text="Run" />
+                           </items>
+                        </Menu>
+                      <Menu mnemonicParsing="false" text="Exam">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="Submit" />
+                        </items>
+                      </Menu>
+                      <Menu mnemonicParsing="false" text="Help">
+                        <items>
+                          <MenuItem mnemonicParsing="false" text="About" />
+                        </items>
+                      </Menu>
+                    </menus>
+                  </MenuBar>
+                  <CodeArea fx:id="codeArea" prefHeight="351.0" prefWidth="776.0" style="-fx-background-color: #f4f4f4;" stylesheets="@../../../resources/JavaKeywords.css">
                      <VBox.margin>
-                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                     </VBox.margin></CodeArea>
-                  <VBox prefHeight="231.0" prefWidth="776.0">
-                     <children>
-                        <JFXTabPane fx:id="terminalPane" prefHeight="232.0" prefWidth="766.0" tabClosingPolicy="UNAVAILABLE">
-                           <VBox.margin>
-                              <Insets bottom="8.0" top="8.0" />
-                           </VBox.margin>
-                           <padding>
-                              <Insets top="-5.0" />
-                           </padding>
-                           <opaqueInsets>
-                              <Insets />
-                           </opaqueInsets></JFXTabPane>
-                     </children>
-                  </VBox>
+                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+                     </VBox.margin>
+                  </CodeArea>
+                  <JFXTabPane fx:id="terminalPane" prefHeight="232.0" prefWidth="766.0" tabClosingPolicy="UNAVAILABLE">
+                     <VBox.margin>
+                        <Insets bottom="8.0" top="8.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets top="-5.0" />
+                     </padding>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </JFXTabPane>
                </children>
             </VBox>
          </children>

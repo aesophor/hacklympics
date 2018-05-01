@@ -12,6 +12,10 @@
     -jfx-focus-color: #0095d9;
 }
 
+.jfx-text-area {
+    -jfx-focus-color: #0095d9;
+}
+
 .jfx-combo-box {
     -jfx-focus-color: #0095d9;
 }
