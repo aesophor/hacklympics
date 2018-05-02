@@ -1,16 +1,14 @@
 package com.hacklympics.api.materials;
 
 import java.util.Map;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
 
-
 public class Problem {
     
-    private ProblemData problemData;
+    private ProblemData data;
 
     public Problem(int courseID, int examID, int problemID) {
         initProblemData(courseID, examID, problemID);
@@ -18,7 +16,7 @@ public class Problem {
     
     public Problem(int courseID, int examID, int problemID,
                    String title, String desc, String input, String output) {
-        this.problemData = new ProblemData(courseID, examID, problemID,
+        this.data = new ProblemData(courseID, examID, problemID,
                                            title, desc, input, output);
     }
     
@@ -30,7 +28,7 @@ public class Problem {
         if (get.success()) {
             Map<String, Object> json = get.getContent();
             
-            this.problemData = new ProblemData(
+            this.data = new ProblemData(
                     courseID,
                     examID,
                     problemID,
@@ -64,14 +62,14 @@ public class Problem {
     
     public Response update(String title, String desc, String input, String output) {
         String uri = String.format("course/%d/exam/%d/problem/update", 
-                                   this.problemData.getCourseID(),
-                                   this.problemData.getExamID());
+                                   this.data.getCourseID(),
+                                   this.data.getExamID());
         
-        title = (title != null) ? title : this.problemData.getTitle();
-        desc = (desc != null) ? desc : this.problemData.getDesc();
+        title = (title != null) ? title : this.data.getTitle();
+        desc = (desc != null) ? desc : this.data.getDesc();
         
         JsonObject json = new JsonObject();
-        json.addProperty("problemID", this.problemData.getProblemID());
+        json.addProperty("problemID", this.data.getProblemID());
         json.addProperty("title", title);
         json.addProperty("desc", desc);
         json.addProperty("input", input);
@@ -82,79 +80,68 @@ public class Problem {
     
     public Response remove() {
         String uri = String.format("course/%d/exam/%d/problem/remove",
-                                   problemData.getCourseID(), problemData.getExamID());
+                                   data.getCourseID(),
+                                   data.getExamID());
         
         JsonObject json = new JsonObject();
-        json.addProperty("problemID", problemData.getProblemID());
+        json.addProperty("problemID", data.getProblemID());
         
         return new Response(Utils.post(uri, json.toString()));
     }
     
     
     public ProblemData getData() {
-        return problemData;
+        return data;
     }
     
     public Integer getCourseID() {
-        return problemData.getCourseID();
+        return data.getCourseID();
     }
     
     public Integer getExamID() {
-        return problemData.getExamID();
+        return data.getExamID();
     }
     
     public Integer getProblemID() {
-        return problemData.getProblemID();
+        return data.getProblemID();
     }
     
     public String getTitle() {
-        return problemData.getTitle();
+        return data.getTitle();
     }
     
     public String getDesc() {
-        return problemData.getDesc();
+        return data.getDesc();
     }
     
     public String getInput() {
-        return problemData.getInput();
+        return data.getInput();
     }
     
     public String getOutput() {
-        return problemData.getOutput();
+        return data.getOutput();
     }
     
-    
-    public SimpleIntegerProperty courseIDProperty() {
-        return problemData.courseIDProperty();
-    }
-    
-    public SimpleIntegerProperty examIDProperty() {
-        return problemData.examIDProperty();
-    }
-    
-    public SimpleIntegerProperty problemIDProperty() {
-        return problemData.problemIDProperty();
-    }
     
     public SimpleStringProperty titleProperty() {
-        return problemData.titleProperty();
+        return data.titleProperty();
     }
     
     public SimpleStringProperty descProperty() {
-        return problemData.descProperty();
+        return data.descProperty();
     }
     
     public SimpleStringProperty inputProperty() {
-        return problemData.inputProperty();
+        return data.inputProperty();
     }
     
     public SimpleStringProperty outputProperty() {
-        return problemData.outputProperty();
+        return data.outputProperty();
     }
     
     @Override
     public String toString() {
-        return problemData.toString();
+        return data.toString();
     }
     
 }

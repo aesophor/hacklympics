@@ -5,7 +5,6 @@ import com.hacklympics.api.materials.Problem;
 
 public class ProblemTest {
     
-    
     public static void main(String[] args) {
         Course systemSoftwares = new Course(7);
         Exam e = new Exam(systemSoftwares.getData().getCourseID(), 4);

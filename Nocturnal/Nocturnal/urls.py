@@ -15,7 +15,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from hacklympics.views import user, course, exam, problem
+from hacklympics.views import user, course, exam, problem, answer
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -45,5 +45,12 @@ urlpatterns = [
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/create$', problem.create),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/update$', problem.update),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/remove$', problem.remove),
-    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)$', problem.get)
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)$', problem.get),
+    
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)/answer$', answer.list),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)/answer/create$', answer.create),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)/answer/update$', answer.update),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)/answer/remove$', answer.remove),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)/answer/validate$', answer.validate),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/(?P<p_id>\d+)/answer/(?P<a_id>\d+)$', answer.get)
 ]

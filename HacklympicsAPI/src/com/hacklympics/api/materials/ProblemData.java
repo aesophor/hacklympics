@@ -73,18 +73,6 @@ public class ProblemData {
     }
     
     
-    public SimpleIntegerProperty courseIDProperty() {
-        return courseID;
-    }
-    
-    public SimpleIntegerProperty examIDProperty() {
-        return examID;
-    }
-    
-    public SimpleIntegerProperty problemIDProperty() {
-        return problemID;
-    }
-    
     public SimpleStringProperty titleProperty() {
         return title;
     }
