@@ -79,6 +79,6 @@ public class ExamData {
     
     @Override
     public String toString() {
-        return String.format("");
+        return title.get();
     }
 }

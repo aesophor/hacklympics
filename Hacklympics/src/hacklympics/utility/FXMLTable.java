@@ -17,7 +17,7 @@ public class FXMLTable {
         table.put("Student",            "/hacklympics/student/Student.fxml");
         table.put("Student/dashboard",  "/hacklympics/student/pages/Dashboard.fxml");
         table.put("Student/courses",    "/hacklympics/student/pages/Courses.fxml");
-        table.put("Student/scoreboard", "/hacklympics/student/pages/Courses.fxml");
+        table.put("Student/scoreboard", "/hacklympics/student/pages/Scoreboard.fxml");
         table.put("Student/messages",   "/hacklympics/student/pages/Messages.fxml");
         table.put("Student/code",       "/hacklympics/student/pages/Code.fxml");
         

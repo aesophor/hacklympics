@@ -23,7 +23,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.materials.Course;
 import com.hacklympics.api.materials.Exam;
 import com.hacklympics.api.materials.Problem;
-import com.hacklympics.api.session.CurrentUser;
+import com.hacklympics.api.session.Session;
 import com.hacklympics.api.users.Role;
 import com.hacklympics.api.users.User;
 import com.hacklympics.api.users.Teacher;
@@ -128,7 +128,7 @@ public class CoursesController implements Initializable {
             if (tab == courseTab) {
                 courseRecords.clear();
                 
-                List<Course> courses = ((Teacher) CurrentUser.getInstance().getUser()).getCourses();
+                List<Course> courses = ((Teacher) Session.getInstance().getCurrentUser()).getCourses();
                 for (Course c : courses) {
                     if (c.getData().getName().contains(keyword) |
                         c.getData().getTeacher().contains(keyword)) {
@@ -235,7 +235,7 @@ public class CoursesController implements Initializable {
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField nameField = (JFXTextField) form.get("Name");
             JFXTextField semesterField = (JFXTextField) form.get("Semester");
-            String teacher = CurrentUser.getInstance().getUser().getProfile().getUsername();
+            String teacher = Session.getInstance().getCurrentUser().getProfile().getUsername();
             List<User> selectedStudents = studentsList.getSelected();
             
             List<String> students = new ArrayList<>();
@@ -282,13 +282,13 @@ public class CoursesController implements Initializable {
     private void addProblem() {
         FormDialog form = new FormDialog(formPane, "Add new problem");
         form.addTextField("Title", "");
-        form.addTextField("Description", "");
+        form.addTextArea("Description", "");
         form.addTextArea("Input", "");
         form.addTextArea("Output", "");
         
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField titleField = (JFXTextField) form.get("Title");
-            JFXTextField descField = (JFXTextField) form.get("Description");
+            JFXTextArea descField = (JFXTextArea) form.get("Description");
             JFXTextArea inputArea = (JFXTextArea) form.get("Input");
             JFXTextArea outputArea = (JFXTextArea) form.get("Output");
             Exam selected = examTable.getSelectionModel().getSelectedItem();
@@ -327,7 +327,7 @@ public class CoursesController implements Initializable {
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField nameField = (JFXTextField) form.get("Name");
             JFXTextField semesterField = (JFXTextField) form.get("Semester");
-            String teacher = CurrentUser.getInstance().getUser().getProfile().getUsername();
+            String teacher = Session.getInstance().getCurrentUser().getProfile().getUsername();
             List<User> s = studentsList.getSelected();
 
             List<String> students = new ArrayList<>();
@@ -407,14 +407,14 @@ public class CoursesController implements Initializable {
     private void editProblem(Problem problem) {
         FormDialog form = new FormDialog(formPane, "Edit problem");
         form.addTextField("Title", problem.getData().getTitle());
-        form.addTextField("Description", problem.getData().getDesc());
+        form.addTextArea("Description", problem.getData().getDesc());
         form.addTextArea("Input", problem.getData().getInput());
         form.addTextArea("Output", problem.getData().getOutput());
         form.addDeleteBtn("deleteBtn");
 
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField titleField = (JFXTextField) form.get("Title");
-            JFXTextField descField = (JFXTextField) form.get("Description");
+            JFXTextArea descField = (JFXTextArea) form.get("Description");
             JFXTextArea inputArea = (JFXTextArea) form.get("Input");
             JFXTextArea outputArea = (JFXTextArea) form.get("Output");
 

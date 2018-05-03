@@ -2,7 +2,6 @@ package hacklympics.login;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
@@ -11,19 +10,15 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXPasswordField;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
-import com.hacklympics.api.session.CurrentUser;
+import com.hacklympics.api.session.Session;
 import com.hacklympics.api.users.User;
 import com.hacklympics.api.users.Student;
 import com.hacklympics.api.users.Teacher;
-import hacklympics.student.StudentController;
-import hacklympics.teacher.TeacherController;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.Utils;
 
 public class LoginController {
     
-    @FXML
-    private AnchorPane anchorPane;
     @FXML
     private Label warningMsg;
     @FXML
@@ -47,12 +42,14 @@ public class LoginController {
             
                 switch (role) {
                     case "student":
-                        CurrentUser.getInstance().setUser(new Student(username));
-                        Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Student"), StudentController.class);
+                        Session.getInstance().setCurrentUser(new Student(username));
+                        String studentFXML = FXMLTable.getInstance().get("Student");
+                        Utils.loadStage(new FXMLLoader(getClass().getResource(studentFXML)));
                         break;
                     case "teacher":
-                        CurrentUser.getInstance().setUser(new Teacher(username));
-                        Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Teacher"), TeacherController.class);
+                        Session.getInstance().setCurrentUser(new Teacher(username));
+                        String teacherFXML = FXMLTable.getInstance().get("Teacher");
+                        Utils.loadStage(new FXMLLoader(getClass().getResource(teacherFXML)));
                         break;
                     default:
                         break;
@@ -86,7 +83,9 @@ public class LoginController {
     
     @FXML
     public void register(ActionEvent e) {
-        Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Register"), RegisterController.class);
+        String registerFXML = FXMLTable.getInstance().get("Register");
+        Utils.loadStage(new FXMLLoader(getClass().getResource(registerFXML)));
+        
         loginBtn.getScene().getWindow().hide();
     }
     

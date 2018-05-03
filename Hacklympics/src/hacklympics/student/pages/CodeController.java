@@ -7,9 +7,9 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.geometry.Insets;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import org.fxmisc.richtext.CodeArea;
 import com.jfoenix.controls.JFXTextField;
@@ -24,28 +24,28 @@ public class CodeController implements Initializable {
     private CodeAreaBox codeAreaBox;
     private String filename;
     
-    private TerminalConfig defaultConfig;
     private TerminalBuilder terminalBuilder;
     private TerminalTab terminal;
 
     @FXML
+    private Label filenameLabel;
+    @FXML
+    private Label examLabel;
+    @FXML
     private StackPane stackPane;
     @FXML
-    private TabPane terminalPane;
-    @FXML
     private CodeArea codeArea;
+    @FXML
+    private TabPane terminalPane;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.codeAreaBox = new CodeAreaBox(codeArea);
+        codeAreaBox = new CodeAreaBox(codeArea);
         
-        this.defaultConfig = new TerminalConfig();
-        this.terminalBuilder = new TerminalBuilder(defaultConfig);
-        this.terminal = this.terminalBuilder.newTerminal();
-        this.terminalPane.setPadding(new Insets(3, 0, 3, 0));
-        this.terminalPane.getTabs().add(this.terminal);
+        terminalBuilder = new TerminalBuilder(new TerminalConfig());
+        terminal = terminalBuilder.newTerminal();
+        terminalPane.getTabs().add(terminal);
     }
-    
     
     public void save(ActionEvent e) {
         FormDialog form = new FormDialog(stackPane, "Save the file as ...");
@@ -53,12 +53,14 @@ public class CodeController implements Initializable {
         
         form.getConfirmBtn().setOnAction((ActionEvent save) -> {
             JFXTextField filenameField = (JFXTextField) form.get("Filename");
-            this.filename = filenameField.getText();
+            filename = filenameField.getText();
             
             try {
-                BufferedWriter code = new BufferedWriter(new FileWriter(this.filename));
+                BufferedWriter code = new BufferedWriter(new FileWriter(filename));
                 code.write(codeArea.getText());
                 code.flush();
+                
+                filenameLabel.setText(filename);
             } catch (IOException ioe) {
                 
             }
@@ -80,6 +82,15 @@ public class CodeController implements Initializable {
         terminal.onTerminalFxReady(() -> {
             terminal.command(String.join(" ", "java", className, "\r"));
         });
+    }
+    
+    public void submit(ActionEvent event) {
+        
+    }
+    
+    
+    public void setExamLabel(String s) {
+        examLabel.setText(s);
     }
     
 }

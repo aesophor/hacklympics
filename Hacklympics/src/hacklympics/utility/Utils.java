@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import com.hacklympics.api.session.Session;
 
 public class Utils {
 
@@ -14,11 +15,11 @@ public class Utils {
     }
     
     
-    public static void loadStage(FXMLLoader loader, String fxml, Class controller) {
+    public static void loadStage(FXMLLoader loader) {
         try {
-            loader.setLocation(controller.getClass().getResource(fxml));
-            
             Parent root = loader.load();
+            Session.getInstance().setMainController(loader.getController());
+            
             Stage stage = new Stage();
             Scene scene = new Scene(root);
             stage.initStyle(StageStyle.UNDECORATED);

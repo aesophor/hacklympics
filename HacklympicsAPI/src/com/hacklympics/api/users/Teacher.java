@@ -57,13 +57,11 @@ public class Teacher extends User {
                 String name = e.getAsJsonObject().get("name").getAsString();
                 int semester = e.getAsJsonObject().get("semester").getAsInt();
                 String teacher = e.getAsJsonObject().get("teacher").getAsString();
-                List<String> students = Utils.getGson().fromJson(e.getAsJsonObject().get("students"), 
-                                                                 List.class);
+                List<String> students = Utils.getGson().fromJson(e.getAsJsonObject().get("students"), List.class);
                 
                 if (teacher.equals(username)) {
                     courses.add(new Course(courseID, name, semester, teacher, students));
                 }
-                
             }
         }
         

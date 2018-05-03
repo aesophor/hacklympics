@@ -77,7 +77,8 @@ public class RegisterController implements Initializable {
     
     @FXML
     public void back(ActionEvent e) {
-        Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Login"), LoginController.class);
+        String registerFXML = FXMLTable.getInstance().get("Login");
+        Utils.loadStage(new FXMLLoader(getClass().getResource(registerFXML)));
         registerBtn.getScene().getWindow().hide();
     }
     

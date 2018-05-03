@@ -1,8 +1,10 @@
 package hacklympics.teacher;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,25 +20,20 @@ import javafx.event.ActionEvent;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.session.CurrentUser;
+import com.hacklympics.api.session.Session;
 import com.hacklympics.api.users.User;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.TextDialog;
 
 public class TeacherController implements Initializable {
     
-    private AnchorPane dashboard;
-    private AnchorPane courses;
-    private AnchorPane students;
-    private AnchorPane messages;
-    private AnchorPane proctor;
+    private Map<String, AnchorPane> pages;
+    private Map<String, Object> controllers;
     
-    @FXML
-    private AnchorPane mainPane;
     @FXML
     private AnchorPane holderPane;
     @FXML
-    private StackPane stackPane;
+    private StackPane dialogPane;
     @FXML
     private Label bannerMsg;
     @FXML
@@ -48,13 +45,16 @@ public class TeacherController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initOnlineUsersList();
         initPages();
-        showPage(dashboard);
+        showPage(pages.get("dashboard"));
         
         setGreetingMsg();
     }
     
     
     private void initPages() {
+        pages = new HashMap<>();
+        controllers = new HashMap<>();
+        
         String dashboardFXML = FXMLTable.getInstance().get("Teacher/dashboard");
         String coursesFXML = FXMLTable.getInstance().get("Teacher/courses");
         String studentsFXML = FXMLTable.getInstance().get("Teacher/students");
@@ -62,19 +62,26 @@ public class TeacherController implements Initializable {
         String proctorFXML = FXMLTable.getInstance().get("Teacher/proctor");
         
         try {
-            dashboard = FXMLLoader.load(getClass().getResource(dashboardFXML));
-            courses = FXMLLoader.load(getClass().getResource(coursesFXML));
-            students = FXMLLoader.load(getClass().getResource(studentsFXML));
-            //messages = FXMLLoader.load(getClass().getResource(messagesFXML));
-            //proctor = FXMLLoader.load(getClass().getResource(proctorFXML));
+            FXMLLoader dashboardLoader = new FXMLLoader(getClass().getResource(dashboardFXML));
+            FXMLLoader coursesLoader = new FXMLLoader(getClass().getResource(coursesFXML));
+            FXMLLoader studentsLoader = new FXMLLoader(getClass().getResource(studentsFXML));
+            //FXMLLoader messagesLoader = new FXMLLoader(getClass().getResource(messagesFXML));
+            //FXMLLoader proctorLoader = new FXMLLoader(getClass().getResource(proctorFXML));
+            
+            pages.put("dashboard", dashboardLoader.load());
+            pages.put("courses", coursesLoader.load());
+            pages.put("students", studentsLoader.load());
+            //pages.put("messages", messagesLoader.load());
+            //pages.put("proctor", proctorLoader.load());
+            
+            controllers.put("dashboard", dashboardLoader.getController());
+            controllers.put("courses", coursesLoader.getController());
+            controllers.put("students", studentsLoader.getController());
+            //controllers.put("messages", messagesLoader.getController());
+            //controllers.put("proctor", proctorLoader.getController());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-    }
-    
-    private void showPage(Node node) {
-        holderPane.getChildren().clear();
-        holderPane.getChildren().add((Node) node);
     }
     
     private void initOnlineUsersList() {
@@ -83,20 +90,46 @@ public class TeacherController implements Initializable {
         onlineUsersList.getItems().add(andrey);
     }
     
-    public void setGreetingMsg() {
-        User current = CurrentUser.getInstance().getUser();
+    private void setGreetingMsg() {
+        User current = Session.getInstance().getCurrentUser();
         String greetingMsg = String.format("Welcome, %s", current.getProfile().getFullname());
         bannerMsg.setText(greetingMsg);
     }
     
     
+    private void showPage(Node node) {
+        holderPane.getChildren().clear();
+        holderPane.getChildren().add((Node) node);
+    }
+    
+    public void showDashboard(ActionEvent event) {
+        showPage(pages.get("dashboard"));
+    }
+    
+    public void showCourses(ActionEvent event) {
+        showPage(pages.get("courses"));
+    }
+    
+    public void showStudents(ActionEvent event) {
+        showPage(pages.get("students"));
+    }
+    
+    public void showMessages(ActionEvent event) {
+        showPage(pages.get("messages"));
+    }
+    
+    public void showProctor(ActionEvent event) {
+        showPage(pages.get("proctor"));
+    }
+    
+    
     public void logout(ActionEvent event) {
-        TextDialog alert = new TextDialog(stackPane,
+        TextDialog alert = new TextDialog(dialogPane,
                                           "Alert",
                                           "You are about to be logged out. Are you sure?");
         
         alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            Response logout = CurrentUser.getInstance().getUser().logout();
+            Response logout = Session.getInstance().getCurrentUser().logout();
             
             if (logout.success()) {
                 try {
@@ -119,24 +152,8 @@ public class TeacherController implements Initializable {
     }
     
     
-    public void showDashboard(ActionEvent event) {
-        showPage(dashboard);
-    }
-    
-    public void showCourses(ActionEvent event) {
-        showPage(courses);
-    }
-    
-    public void showStudents(ActionEvent event) {
-        showPage(students);
-    }
-    
-    public void showMessages(ActionEvent event) {
-        showPage(messages);
-    }
-    
-    public void showProctor(ActionEvent event) {
-        showPage(proctor);
+    public Map<String, Object> getControllers() {
+        return controllers;
     }
     
 }

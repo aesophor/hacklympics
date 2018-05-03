@@ -44,7 +44,6 @@ public abstract class Dialog {
     }
     
     public void close() {
-        this.pane.setEffect(null);
         this.pane.setMouseTransparent(true);
         dialog.close();
     }

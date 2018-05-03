@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^user/register$', user.register),
     url(r'^user/reset$', user.reset),
     url(r'^user/(?P<username>[\w.@+-]+)$', user.get),
-    
+
     url(r'^course$', course.list),
     url(r'^course/create$', course.create),
     url(r'^course/update$', course.update),

@@ -2,6 +2,7 @@
 
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
@@ -9,6 +10,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import org.fxmisc.richtext.CodeArea?>
 
 <AnchorPane id="AnchorPane" prefHeight="639.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.pages.CodeController">
@@ -36,7 +38,7 @@
                         </Menu>
                       <Menu mnemonicParsing="false" text="Exam">
                         <items>
-                          <MenuItem mnemonicParsing="false" text="Submit" />
+                          <MenuItem mnemonicParsing="false" onAction="#submit" text="Submit" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">
@@ -51,12 +53,12 @@
                         <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
                      </VBox.margin>
                   </CodeArea>
-                  <JFXTabPane fx:id="terminalPane" prefHeight="232.0" prefWidth="766.0" tabClosingPolicy="UNAVAILABLE">
+                  <JFXTabPane fx:id="terminalPane" prefHeight="249.0" prefWidth="760.0" style="-fx-background-color: #f4f4f4" tabClosingPolicy="UNAVAILABLE">
                      <VBox.margin>
-                        <Insets bottom="8.0" top="8.0" />
+                        <Insets left="8.0" right="8.0" top="1.0" />
                      </VBox.margin>
                      <padding>
-                        <Insets top="-5.0" />
+                        <Insets bottom="15.0" />
                      </padding>
                      <opaqueInsets>
                         <Insets />
@@ -64,6 +66,29 @@
                   </JFXTabPane>
                </children>
             </VBox>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" layoutY="-1.0" mouseTransparent="true" prefHeight="29.0" prefWidth="776.0">
+         <children>
+            <Label fx:id="filenameLabel" alignment="CENTER_RIGHT" prefHeight="29.0" text="[Untitled]">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+            </Label>
+            <Label fx:id="examLabel" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="29.0" text="No Exam Selected">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
+               <font>
+                  <Font name="System Bold" size="13.0" />
+               </font>
+            </Label>
          </children>
       </HBox>
       <StackPane fx:id="stackPane" layoutX="138.0" layoutY="225.0" prefHeight="106.0" prefWidth="308.0" />

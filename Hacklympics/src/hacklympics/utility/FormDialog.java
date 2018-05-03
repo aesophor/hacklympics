@@ -52,6 +52,8 @@ public class FormDialog extends Dialog {
     
     public void addTextArea(String identifier, String content) {
         JFXTextArea textArea = new JFXTextArea();
+        textArea.setMinHeight(50);
+        textArea.setMaxHeight(50);
         textArea.setLabelFloat(true);
         textArea.setPromptText(identifier);
         textArea.setText(content);

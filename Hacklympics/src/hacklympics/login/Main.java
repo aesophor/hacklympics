@@ -10,8 +10,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        
-        Utils.loadStage(new FXMLLoader(), FXMLTable.getInstance().get("Login"), LoginController.class);
+        String loginFXML = FXMLTable.getInstance().get("Login");
+        Utils.loadStage(new FXMLLoader(getClass().getResource(loginFXML)));
     }
 
     public static void main(String[] args) {

@@ -1,8 +1,10 @@
 package hacklympics.student;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.io.IOException;
+import java.util.Map;
+import java.util.HashMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,25 +20,20 @@ import javafx.event.ActionEvent;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.session.CurrentUser;
+import com.hacklympics.api.session.Session;
 import com.hacklympics.api.users.User;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.TextDialog;
 
 public class StudentController implements Initializable {
     
-    private AnchorPane dashboard;
-    private AnchorPane courses;
-    private AnchorPane scoreboard;
-    private AnchorPane messages;
-    private AnchorPane code;
+    private Map<String, AnchorPane> pages;
+    private Map<String, Object> controllers;
     
-    @FXML
-    private AnchorPane mainPane;
     @FXML
     private AnchorPane holderPane;
     @FXML
-    private StackPane stackPane;
+    private StackPane dialogPane;
     @FXML
     private Label bannerMsg;
     @FXML
@@ -48,13 +45,15 @@ public class StudentController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         initOnlineUsersList();
         initPages();
-        showPage(dashboard);
+        showPage(pages.get("dashboard"));
         
         setGreetingMsg();
     }
     
-    
     private void initPages() {
+        pages = new HashMap<>();
+        controllers = new HashMap<>();
+        
         String dashboardFXML = FXMLTable.getInstance().get("Student/dashboard");
         String coursesFXML = FXMLTable.getInstance().get("Student/courses");
         String scoreboardFXML = FXMLTable.getInstance().get("Student/scoreboard");
@@ -62,19 +61,26 @@ public class StudentController implements Initializable {
         String codeFXML = FXMLTable.getInstance().get("Student/code");
         
         try {
-            dashboard = FXMLLoader.load(getClass().getResource(dashboardFXML));
-            //courses = FXMLLoader.load(getClass().getResource(coursesFXML));
-            //scoreboard = FXMLLoader.load(getClass().getResource(scoreboardFXML));
-            //messages = FXMLLoader.load(getClass().getResource(messagesFXML));
-            code = FXMLLoader.load(getClass().getResource(codeFXML));
+            FXMLLoader dashboardLoader = new FXMLLoader(getClass().getResource(dashboardFXML));
+            FXMLLoader coursesLoader = new FXMLLoader(getClass().getResource(coursesFXML));
+            //FXMLLoader scoreboardLoader = new FXMLLoader(getClass().getResource(coursesFXML));
+            //FXMLLoader messagesLoader = new FXMLLoader(getClass().getResource(messagesFXML));
+            FXMLLoader codeLoader = new FXMLLoader(getClass().getResource(codeFXML));
+            
+            pages.put("dashboard", dashboardLoader.load());
+            pages.put("courses", coursesLoader.load());
+            //pages.put("scoreboard", scoreboardLoader.load());
+            //pages.put("messages", messagesLoader.load());
+            pages.put("code", codeLoader.load());
+            
+            controllers.put("dashboard", dashboardLoader.getController());
+            controllers.put("courses", coursesLoader.getController());
+            //controllers.put("scoreboard", scoreboardLoader.getController());
+            //controllers.put("messages", messagesLoader.getController());
+            controllers.put("code", codeLoader.getController());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
-    }
-    
-    private void showPage(Node node) {
-        holderPane.getChildren().clear();
-        holderPane.getChildren().add((Node) node);
     }
     
     private void initOnlineUsersList() {
@@ -83,25 +89,52 @@ public class StudentController implements Initializable {
         onlineUsersList.getItems().add(andrey);
     }
     
-    public void setGreetingMsg() {
-        User current = CurrentUser.getInstance().getUser();
+    private void setGreetingMsg() {
+        User current = Session.getInstance().getCurrentUser();
         String greetingMsg = String.format("Welcome, %s", current.getProfile().getFullname());
         bannerMsg.setText(greetingMsg);
     }
     
     
+    private void showPage(Node node) {
+        holderPane.getChildren().clear();
+        holderPane.getChildren().add((Node) node);
+    }
+    
+    public void showDashboard(ActionEvent event) {
+        showPage(pages.get("dashboard"));
+    }
+    
+    public void showCourses(ActionEvent event) {
+        showPage(pages.get("courses"));
+    }
+    
+    public void showScoreboard(ActionEvent event) {
+        showPage(pages.get("scoreboard"));
+    }
+    
+    public void showMessages(ActionEvent event) {
+        showPage(pages.get("messages"));
+    }
+    
+    public void showCode(ActionEvent event) {
+        showPage(pages.get("code"));
+    }
+    
+    
     public void logout(ActionEvent event) {
-        TextDialog alert = new TextDialog(stackPane,
+        TextDialog alert = new TextDialog(dialogPane,
                                           "Alert",
                                           "You are about to be logged out. Are you sure?");
         
         alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            Response logout = CurrentUser.getInstance().getUser().logout();
+            Response logout = Session.getInstance().getCurrentUser().logout();
             
             if (logout.success()) {
                 try {
                     String loginFXML = FXMLTable.getInstance().get("Login");
                     Parent root = FXMLLoader.load(getClass().getResource(loginFXML));
+                    
                     Scene scene = new Scene(root);
                     Stage stage = new Stage();
                     stage.initStyle(StageStyle.UNDECORATED);
@@ -119,24 +152,8 @@ public class StudentController implements Initializable {
     }
     
     
-    public void showDashboard(ActionEvent event) {
-        showPage(dashboard);
-    }
-    
-    public void showCourses(ActionEvent event) {
-        showPage(courses);
-    }
-    
-    public void showScoreboard(ActionEvent event) {
-        showPage(scoreboard);
-    }
-    
-    public void showMessages(ActionEvent event) {
-        showPage(messages);
-    }
-    
-    public void showCode(ActionEvent event) {
-        showPage(code);
+    public Map<String, Object> getControllers() {
+        return controllers;
     }
     
 }
