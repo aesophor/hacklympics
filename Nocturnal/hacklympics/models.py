@@ -87,7 +87,7 @@ class Problem(models.Model):
 
 
 class Answer(models.Model):
-    filepath = models.CharField(max_length=32)
+    filepath = models.CharField(max_length=200)
     source_code = models.CharField(max_length=5000)
     problem = models.ForeignKey("Problem")
     student = models.ForeignKey("User")

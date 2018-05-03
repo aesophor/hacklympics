@@ -17,7 +17,7 @@ public class AnswerTest {
         Answer a = new Answer(p.getData().getCourseID(),
                               p.getData().getExamID(),
                               p.getData().getProblemID(),
-                              18);
+                              19);
         
         
         /*
@@ -31,20 +31,21 @@ public class AnswerTest {
                 p.getCourseID(),
                 p.getExamID(),
                 p.getProblemID(),
-                "/home/aesophor/Temp/Test.java",
+                "Test.java",
                 "public class Test { public static void main(String[] args) {} }",
                 "1080630201"
         );
         
         System.out.println(response);
         */
-               
         
-        //Response response = a.remove();
-        //System.out.println(response);
+        // Response response = a.update("Test.java", "import sys");
+        
+        // Response response = a.remove();
+        // System.out.println(response);
         
         
-        Response response = a.update("/home/aesophor/Temp/Wow.java", "import sys", "1080630212");
+        Response response = a.validate();
         System.out.println(response);
     }
     

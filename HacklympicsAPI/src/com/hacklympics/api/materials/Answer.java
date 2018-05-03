@@ -27,7 +27,6 @@ public class Answer {
                     examID,
                     problemID,
                     answerID,
-                    json.get("filepath").toString(),
                     json.get("className").toString(),
                     json.get("sourceCode").toString(),
                     json.get("student").toString()
@@ -40,33 +39,31 @@ public class Answer {
         return new Response(Utils.get(uri));
     }
     
-    public static Response create(int courseID, int examID, int problemID,
-                                  String filepath, String sourceCode, String student) {
+    public static Response create(int courseID, int examID, int problemID, 
+                                  String filename, String sourceCode, String student) {
         String uri = String.format("course/%d/exam/%d/problem/%d/answer/create", 
                                    courseID, examID, problemID);
         
         JsonObject json = new JsonObject();
-        json.addProperty("filepath", filepath);
+        json.addProperty("filename", filename);
         json.addProperty("sourceCode", sourceCode);
         json.addProperty("student", student);
         
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public Response update(String filepath, String sourceCode, String student) {
+    public Response update(String filename, String sourceCode) {
         String uri = String.format("course/%d/exam/%d/problem/%d/answer/update", 
                                    this.data.getCourseID(),
                                    this.data.getExamID(),
                                    this.data.getProblemID());
         
-        filepath = (filepath != null) ? filepath : this.data.getFilepath();
         sourceCode = (sourceCode != null) ? sourceCode : this.data.getSourceCode();
         
         JsonObject json = new JsonObject();
         json.addProperty("answerID", this.data.getAnswerID());
-        json.addProperty("filepath", filepath);
+        json.addProperty("filename", filename);
         json.addProperty("sourceCode", sourceCode);
-        json.addProperty("student", student);
         
         return new Response(Utils.post(uri, json.toString()));
     }
@@ -116,9 +113,6 @@ public class Answer {
         return data.getAnswerID();
     }
     
-    public String getFilepath() {
-        return data.getFilepath();
-    }
     
     public String getClassName() {
         return data.getClassName();
@@ -132,10 +126,6 @@ public class Answer {
         return data.getStudent();
     }
     
-    
-    public SimpleStringProperty filepathProperty() {
-        return data.filepathProperty();
-    }
     
     public SimpleStringProperty classNameProperty() {
         return data.classNameProperty();

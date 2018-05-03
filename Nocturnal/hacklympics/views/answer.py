@@ -16,7 +16,7 @@ def get(request, c_id, e_id, p_id, a_id):
     response_data["content"] = {
         "id": answer.id,
         "filepath": answer.filepath,
-        "className": answer.class_name,
+        "className": answer.classname,
         "sourceCode": answer.source_code,
         "student": answer.student_id
     }
@@ -33,7 +33,7 @@ def list(request, c_id, e_id, p_id):
         "answers": [{
             "id": answer.id,
             "filepath": answer.filepath,
-            "className": answer.class_name,
+            "className": answer.classname,
             "sourceCode": answer.source_code,
             "student": answer.student_id
         } for answer in answers]
@@ -48,11 +48,16 @@ def create(request, c_id, e_id, p_id):
     try:
         req_body = json.loads(request.body.decode("utf-8"))
         
-        filepath = req_body["filepath"]
+        filename = req_body["filename"]
         source_code = req_body["sourceCode"]
         student = req_body["student"]
         
-        Course.objects.get(id=c_id).exam_set.get(id=e_id).problem_set.get(id=p_id).answer_set.create(
+        course = Course.objects.get(id=c_id)
+        exam = course.exam_set.get(id=e_id)
+        problem = exam.problem_set.get(id=p_id)
+        filepath = "/".join([".", "data", course.teacher_id, course.name, exam.title, problem.title, student, filename])
+        
+        problem.answer_set.create(
             filepath = filepath,
             source_code = source_code,
             student_id = student
@@ -72,14 +77,18 @@ def update(request, c_id, e_id, p_id):
         req_body = json.loads(request.body.decode("utf-8"))
         
         a_id = req_body["answerID"]
-        filepath = req_body["filepath"]
+        filename = req_body["filename"]
         source_code = req_body["sourceCode"]
-        student = req_body["student"]
         
-        Course.objects.get(id=c_id).exam_set.get(id=e_id).problem_set.get(id=p_id).answer_set.all().filter(id=a_id).update(
+        course = Course.objects.get(id=c_id)
+        exam = course.exam_set.get(id=e_id)
+        problem = exam.problem_set.get(id=p_id)
+        student = Answer.objects.get(id=a_id).student_id
+        filepath = "/".join([".", "data", course.teacher_id, course.name, exam.title, problem.title, student, filename])
+        
+        problem.answer_set.all().filter(id=a_id).update(
             filepath = filepath,
-            source_code = source_code,
-            student_id = student
+            source_code = source_code
         )
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS

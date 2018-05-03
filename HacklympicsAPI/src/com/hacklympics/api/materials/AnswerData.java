@@ -10,19 +10,17 @@ public class AnswerData {
     private final SimpleIntegerProperty problemID;
     private final SimpleIntegerProperty answerID;
     
-    private SimpleStringProperty filepath;
     private SimpleStringProperty className;
     private SimpleStringProperty sourceCode;
     private SimpleStringProperty student;
     
     public AnswerData(int courseID, int examID, int problemID, int answerID,
-                      String filepath, String className, String sourceCode, String student) {
+                      String className, String sourceCode, String student) {
         this.courseID = new SimpleIntegerProperty(courseID);
         this.examID = new SimpleIntegerProperty(examID);
         this.problemID = new SimpleIntegerProperty(problemID);
         this.answerID = new SimpleIntegerProperty(answerID);
         
-        this.filepath = new SimpleStringProperty(filepath);
         this.className = new SimpleStringProperty(className);
         this.sourceCode = new SimpleStringProperty(sourceCode);
         this.student = new SimpleStringProperty(student);
@@ -45,10 +43,6 @@ public class AnswerData {
         return answerID.get();
     }
     
-    public String getFilepath() {
-        return filepath.get();
-    }
-    
     public String getClassName() {
         return className.get();
     }
@@ -62,10 +56,6 @@ public class AnswerData {
     }
     
     
-    public void setFilepath(String filepath) {
-        this.filepath.set(filepath);
-    }
-    
     public void setClassName(String className) {
         this.className.set(className);
     }
@@ -74,10 +64,6 @@ public class AnswerData {
         this.sourceCode.set(sourceCode);
     }
     
-    
-    public SimpleStringProperty filepathProperty() {
-        return filepath;
-    }
     
     public SimpleStringProperty classNameProperty() {
         return className;
