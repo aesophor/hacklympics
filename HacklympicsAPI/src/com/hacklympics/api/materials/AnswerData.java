@@ -80,6 +80,6 @@ public class AnswerData {
     
     @Override
     public String toString() {
-        return String.format("");
+        return className.get();
     }
 }

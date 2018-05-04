@@ -28,7 +28,7 @@ import com.hacklympics.api.users.Role;
 import com.hacklympics.api.users.User;
 import com.hacklympics.api.users.Teacher;
 import hacklympics.utility.FormDialog;
-import hacklympics.utility.TextDialog;
+import hacklympics.utility.ConfirmDialog;
 import hacklympics.utility.UserListView;
 
 public class CoursesController implements Initializable {
@@ -146,7 +146,6 @@ public class CoursesController implements Initializable {
                 
                 if (selectedCourse != null) {
                     List<Exam> exams = selectedCourse.getExams();
-                    
                     for (Exam e : exams) {
                         if (e.getData().getTitle().contains(keyword) |
                             e.getData().getDesc().contains(keyword)) {
@@ -346,9 +345,9 @@ public class CoursesController implements Initializable {
         
         
         form.getAsButton("deleteBtn").setOnAction((ActionEvent e) -> {
-            TextDialog dialog = new TextDialog(dialogPane,
-                                               "Delete course",
-                                               "Do you want to delete this course?");
+            ConfirmDialog dialog = new ConfirmDialog(dialogPane,
+                                                     "Delete course",
+                                                     "Do you want to delete this course?");
         
             dialog.getConfirmBtn().setOnAction((ActionEvent confirm) -> {
                 course.remove();
@@ -386,7 +385,7 @@ public class CoursesController implements Initializable {
         
         
         ((Button) form.get("deleteBtn")).setOnAction((ActionEvent e) -> {
-            TextDialog dialog = new TextDialog(dialogPane,
+            ConfirmDialog dialog = new ConfirmDialog(dialogPane,
                                                "Delete exam",
                                                "Do you want to delete this exam?");
         
@@ -429,9 +428,9 @@ public class CoursesController implements Initializable {
         
         
         ((Button) form.get("deleteBtn")).setOnAction((ActionEvent e) -> {
-            TextDialog dialog = new TextDialog(dialogPane,
-                                               "Delete problem",
-                                               "Do you want to delete this problem?");
+            ConfirmDialog dialog = new ConfirmDialog(dialogPane,
+                                                     "Delete problem",
+                                                     "Do you want to delete this problem?");
         
             dialog.getConfirmBtn().setOnAction((ActionEvent confirm) -> {
                 problem.remove();

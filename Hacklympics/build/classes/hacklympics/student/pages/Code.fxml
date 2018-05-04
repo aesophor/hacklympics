@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -13,20 +17,20 @@
 <?import javafx.scene.text.Font?>
 <?import org.fxmisc.richtext.CodeArea?>
 
-<AnchorPane id="AnchorPane" prefHeight="639.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.pages.CodeController">
+<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.pages.CodeController">
    <children>
-      <HBox prefHeight="652.0" prefWidth="776.0">
+      <HBox prefHeight="674.0" prefWidth="776.0">
          <children>
-            <VBox prefHeight="652.0" prefWidth="809.0" style="-fx-background-color: #f4f4f4;">
+            <VBox prefHeight="671.0" prefWidth="776.0" style="-fx-background-color: #f4f4f4;">
                <children>
-                  <MenuBar prefHeight="29.0" prefWidth="888.0">
+                  <MenuBar prefHeight="29.0" prefWidth="776.0" style="-fx-background-color: #f5f6f7;">
                     <menus>
                       <Menu mnemonicParsing="false" text="File">
                         <items>
-                          <MenuItem mnemonicParsing="false" text="New " />
+                          <MenuItem mnemonicParsing="false" onAction="#newFile" text="New " />
                               <MenuItem mnemonicParsing="false" text="Open..." />
                               <MenuItem mnemonicParsing="false" text="Save" />
-                              <MenuItem mnemonicParsing="false" onAction="#save" text="Save As..." />
+                              <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save As..." />
                               <MenuItem mnemonicParsing="false" text="Close" />
                         </items>
                       </Menu>
@@ -47,50 +51,80 @@
                         </items>
                       </Menu>
                     </menus>
-                  </MenuBar>
-                  <CodeArea fx:id="codeArea" prefHeight="351.0" prefWidth="776.0" style="-fx-background-color: #f4f4f4;" stylesheets="@../../../resources/JavaKeywords.css">
                      <VBox.margin>
-                        <Insets bottom="7.0" left="7.0" right="7.0" top="7.0" />
+                        <Insets left="-3.0" />
                      </VBox.margin>
-                  </CodeArea>
-                  <JFXTabPane fx:id="terminalPane" prefHeight="249.0" prefWidth="760.0" style="-fx-background-color: #f4f4f4" tabClosingPolicy="UNAVAILABLE">
+                  </MenuBar>
+                  <TabPane fx:id="codeTabPane" prefHeight="756.0" prefWidth="776.0" tabClosingPolicy="ALL_TABS">
+                    <tabs>
+                      <Tab styleClass="file-tab" text="Code">
+                        <content>
+                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="542.0" prefWidth="776.0" styleClass="code-anchor">
+                                 <children>
+                                    <VBox prefHeight="605.0" prefWidth="776.0" styleClass="code-vbox">
+                                       <children>
+                                          <CodeArea fx:id="codeArea" onKeyPressed="#markAsUnsaved" prefHeight="594.0" prefWidth="766.0" styleClass="codearea" stylesheets="@../../../resources/JavaKeywords.css">
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                             <VBox.margin>
+                                                <Insets />
+                                             </VBox.margin>
+                                          </CodeArea>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                    </tabs>
                      <VBox.margin>
-                        <Insets left="8.0" right="8.0" top="1.0" />
+                        <Insets />
                      </VBox.margin>
                      <padding>
-                        <Insets bottom="15.0" />
+                        <Insets top="-7.0" />
                      </padding>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </JFXTabPane>
+                  </TabPane>
                </children>
+               <HBox.margin>
+                  <Insets top="7.0" />
+               </HBox.margin>
             </VBox>
          </children>
       </HBox>
-      <HBox alignment="CENTER_RIGHT" layoutY="-1.0" mouseTransparent="true" prefHeight="29.0" prefWidth="776.0">
+      <JFXTabPane fx:id="terminalPane" layoutY="467.0" mouseTransparent="true" opacity="0.0" prefHeight="207.0" prefWidth="776.0" style="-fx-background-color: #f4f4f4" tabClosingPolicy="UNAVAILABLE">
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </JFXTabPane>
+      <HBox alignment="CENTER_RIGHT" layoutX="327.0" layoutY="25.0" prefHeight="52.0" prefWidth="449.0">
          <children>
-            <Label fx:id="filenameLabel" alignment="CENTER_RIGHT" prefHeight="29.0" text="[Untitled]">
+            <Label fx:id="examLabel" alignment="CENTER_RIGHT" prefHeight="29.0" text="No Exam Selected">
                <opaqueInsets>
                   <Insets />
                </opaqueInsets>
                <padding>
-                  <Insets right="10.0" />
-               </padding>
-            </Label>
-            <Label fx:id="examLabel" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="29.0" text="No Exam Selected">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <padding>
-                  <Insets right="10.0" />
+                  <Insets right="20.0" />
                </padding>
                <font>
                   <Font name="System Bold" size="13.0" />
                </font>
             </Label>
+            <JFXComboBox fx:id="problemBox" minHeight="-Infinity" prefHeight="21.0" prefWidth="161.0" promptText="Pick a problem ...">
+               <padding>
+                  <Insets right="10.0" top="-3.0" />
+               </padding>
+            </JFXComboBox>
+            <JFXButton onAction="#showHint" prefHeight="26.0" prefWidth="55.0" styleClass="darkBlueBtn" text="Hint">
+               <HBox.margin>
+                  <Insets left="10.0" right="15.0" />
+               </HBox.margin>
+            </JFXButton>
          </children>
       </HBox>
-      <StackPane fx:id="stackPane" layoutX="138.0" layoutY="225.0" prefHeight="106.0" prefWidth="308.0" />
+      <StackPane fx:id="dialogPane" layoutX="154.0" layoutY="237.0" prefHeight="123.0" prefWidth="291.0" />
    </children>
 </AnchorPane>

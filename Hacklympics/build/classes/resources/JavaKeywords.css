@@ -1,7 +1,7 @@
 * {
     -fx-black: #141414;
     -fx-darkgrey: #505965;
-    -fx-lightgrey: #bebebe;
+    -fx-lightgrey: #adadad;
     -fx-red: #df5b66;
     -fx-green: #718c00;
     -fx-yellow: #c99e00;
@@ -11,7 +11,7 @@
 }
 
 .keyword {
-    -fx-fill: -fx-red;
+    -fx-fill: -fx-blue;
     -fx-font-weight: bold;
 }
 
@@ -43,5 +43,5 @@
 }
 
 .paragraph-box:has-caret {
-    -fx-background-color: #dddddd;
+    -fx-background-color: #e1e5ea;
 }

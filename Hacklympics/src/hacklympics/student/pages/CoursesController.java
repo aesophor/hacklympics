@@ -23,7 +23,7 @@ import com.hacklympics.api.materials.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.users.Student;
 import hacklympics.student.StudentController;
-import hacklympics.utility.TextDialog;
+import hacklympics.utility.ConfirmDialog;
 
 public class CoursesController implements Initializable {
 
@@ -73,10 +73,6 @@ public class CoursesController implements Initializable {
     private TableColumn<Problem, String> probTitleCol;
     @FXML
     private TableColumn<Problem, Integer> probDescCol;
-    @FXML
-    private TableColumn<Problem, String> probInputCol;
-    @FXML
-    private TableColumn<Problem, Integer> probOutputCol;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -102,8 +98,6 @@ public class CoursesController implements Initializable {
         // Initialize columns problemsTable.
         probTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         probDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
-        probInputCol.setCellValueFactory(new PropertyValueFactory<>("input"));
-        probOutputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
 
         courseTable.setOnMouseClicked((Event e) -> {
             update(examTab, problemTab);
@@ -190,14 +184,15 @@ public class CoursesController implements Initializable {
         if (selected == null) return;
         Session.getInstance().setCurrentExam(selected);
         
-        TextDialog alert = new TextDialog(dialogPane,
-                                          "Attend Exam",
-                                          "You have selected the exam: " + selected + "\n\n"
-                                        + "Attend the exam now?");
+        ConfirmDialog alert = new ConfirmDialog(dialogPane,
+                                                "Attend Exam",
+                                                "You have selected the exam: " + selected + "\n\n"
+                                                + "Attend the exam now?");
         
         alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
             StudentController sc = (StudentController) Session.getInstance().getMainController();
             ((CodeController) sc.getControllers().get("code")).setExamLabel(selected.toString());
+            ((CodeController) sc.getControllers().get("code")).setProblemBox(selected.getProblems());
             ((StudentController) Session.getInstance().getMainController()).showCode(event);
             
             alert.close();

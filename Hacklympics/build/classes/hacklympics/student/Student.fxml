@@ -14,6 +14,12 @@
 
 <AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="698.0" prefWidth="1042.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.StudentController">
    <children>
+      <Label alignment="CENTER" layoutX="266.0" prefHeight="60.0" prefWidth="776.0" styleClass="banner" stylesheets="@../../resources/Default.css" textFill="#eaeaea">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <AnchorPane fx:id="holderPane" layoutX="266.0" layoutY="24.0" prefHeight="674.0" prefWidth="776.0" />
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="266.0" styleClass="sidebar">
          <children>
             <Label alignment="CENTER" prefHeight="58.0" prefWidth="266.0" style="-fx-background-color: #0095d9;" stylesheets="@../../resources/Default.css" text="Hacklympics" textFill="#eaeaea">
@@ -140,18 +146,12 @@
             </VBox>
          </children>
       </VBox>
-      <Label alignment="CENTER" layoutX="266.0" prefHeight="60.0" prefWidth="776.0" styleClass="banner" stylesheets="@../../resources/Default.css" textFill="#eaeaea">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
       <Label fx:id="bannerMsg" alignment="CENTER_RIGHT" layoutX="719.0" layoutY="21.0" prefHeight="18.0" prefWidth="213.0">
          <font>
             <Font size="14.0" />
          </font>
       </Label>
       <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="955.0" layoutY="16.0" onAction="#logout" styleClass="lightBlueBtn" text="Logout" textFill="WHITE" />
-      <AnchorPane fx:id="holderPane" layoutX="266.0" layoutY="59.0" prefHeight="639.0" prefWidth="776.0" />
       <StackPane fx:id="dialogPane" layoutX="391.0" layoutY="268.0" mouseTransparent="true" prefHeight="133.0" prefWidth="394.0" />
    </children>
 </AnchorPane>

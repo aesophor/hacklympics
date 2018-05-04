@@ -92,6 +92,6 @@ public class ProblemData {
     
     @Override
     public String toString() {
-        return String.format("");
+        return title.get();
     }
 }

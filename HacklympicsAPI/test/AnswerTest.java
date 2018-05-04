@@ -13,12 +13,12 @@ public class AnswerTest {
                                 e.getData().getExamID(),
                                 7);
         
-        
+        /*
         Answer a = new Answer(p.getData().getCourseID(),
                               p.getData().getExamID(),
                               p.getData().getProblemID(),
                               19);
-        
+        */
         
         /*
         Response response = Answer.list(p.getData().getCourseID(),
@@ -26,18 +26,18 @@ public class AnswerTest {
                                         p.getData().getProblemID());
         */
         
-        /*
+        
         Response response = Answer.create(
                 p.getCourseID(),
                 p.getExamID(),
                 p.getProblemID(),
                 "Test.java",
                 "public class Test { public static void main(String[] args) {} }",
-                "1080630201"
+                "1080630212"
         );
         
         System.out.println(response);
-        */
+        
         
         //Response response = a.update("Test.java", "import sys");
         
@@ -45,8 +45,8 @@ public class AnswerTest {
         // System.out.println(response);
         
         
-        Response response = a.validate();
-        System.out.println(response);
+        //Response response = a.validate();
+        //System.out.println(response);
     }
     
 }

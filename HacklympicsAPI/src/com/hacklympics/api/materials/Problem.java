@@ -17,7 +17,7 @@ public class Problem {
     public Problem(int courseID, int examID, int problemID,
                    String title, String desc, String input, String output) {
         this.data = new ProblemData(courseID, examID, problemID,
-                                           title, desc, input, output);
+                                    title, desc, input, output);
     }
     
     private void initProblemData(int courseID, int examID, int problemID) {

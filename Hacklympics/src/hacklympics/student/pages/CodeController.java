@@ -2,37 +2,57 @@ package hacklympics.student.pages;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import org.fxmisc.richtext.CodeArea;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
 import com.kodedu.terminalfx.TerminalTab;
 import com.kodedu.terminalfx.TerminalBuilder;
 import com.kodedu.terminalfx.config.TerminalConfig;
+import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.materials.Answer;
+import com.hacklympics.api.materials.Exam;
+import com.hacklympics.api.materials.Problem;
+import com.hacklympics.api.session.Session;
+import com.hacklympics.api.users.Student;
+import hacklympics.utility.AlertDialog;
 import hacklympics.utility.CodeAreaBox;
 import hacklympics.utility.FormDialog;
+import hacklympics.utility.ConfirmDialog;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 
 public class CodeController implements Initializable {
     
     private CodeAreaBox codeAreaBox;
     private String filename;
     
+    private TerminalConfig terminalConfig;
     private TerminalBuilder terminalBuilder;
     private TerminalTab terminal;
-
+    
     @FXML
-    private Label filenameLabel;
+    private TabPane codeTabPane;
+
+    //@FXML
+    //private Label filenameLabel;
     @FXML
     private Label examLabel;
     @FXML
-    private StackPane stackPane;
+    private JFXComboBox problemBox;
+    @FXML
+    private StackPane dialogPane;
     @FXML
     private CodeArea codeArea;
     @FXML
@@ -42,13 +62,132 @@ public class CodeController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         codeAreaBox = new CodeAreaBox(codeArea);
         
-        terminalBuilder = new TerminalBuilder(new TerminalConfig());
+        terminalConfig = new TerminalConfig();
+        terminalConfig.setBackgroundColor("#eff1f5");
+        terminalBuilder = new TerminalBuilder(terminalConfig);
         terminal = terminalBuilder.newTerminal();
         terminalPane.getTabs().add(terminal);
+        
+        filename = "Untitled File";
+        //markAsUnsaved();
     }
     
-    public void save(ActionEvent e) {
-        FormDialog form = new FormDialog(stackPane, "Save the file as ...");
+    
+    
+    
+    
+    
+    public void submit(ActionEvent event) {
+        Student student = (Student) Session.getInstance().getCurrentUser();
+        Exam selectedExam = Session.getInstance().getCurrentExam();
+        Problem selectedProblem = (Problem) problemBox.getSelectionModel().getSelectedItem();
+        
+        ConfirmDialog confirm = new ConfirmDialog(dialogPane,
+                                                  "Submit Code",
+                                                  "Once submitted, you will NOT be able to revise it.\n\n"
+                                                + "Submit your code now?");
+        
+        confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
+            Response create = Answer.create(selectedExam.getCourseID(),
+                                            selectedExam.getExamID(),
+                                            selectedProblem.getProblemID(),
+                                            filename,
+                                            codeArea.getText(),
+                                            student.getUsername());
+            confirm.close();
+            
+            switch (create.getStatusCode()) {
+                case SUCCESS:
+                    validate(new Answer(selectedExam.getCourseID(), 
+                                        selectedExam.getExamID(),
+                                        selectedProblem.getProblemID(),
+                                        (int) Double.parseDouble(create.getContent().get("id").toString())));
+                    break;
+                case ALREADY_SUBMITTED:
+                    AlertDialog submitted = new AlertDialog(dialogPane,
+                                                            "Tips",
+                                                            "You have already submitted your code for this problem.");
+                    submitted.show();
+                    break;
+                default:
+                    AlertDialog error = new AlertDialog(dialogPane,
+                                                        "Error",
+                                                        "ErrorCode: " + create.getStatusCode());
+                    error.show();
+                    break;
+            }
+        });
+        
+        confirm.show();
+    }
+    
+    private void validate(Answer answer) {
+        Response validate = answer.validate();
+        
+        switch (validate.getStatusCode()) {
+            case SUCCESS:
+                AlertDialog correct = new AlertDialog(dialogPane,
+                                                      "Congratulations",
+                                                      "Your code works correctly!");
+                correct.show();
+                break;
+            case INCORRECT_ANSWER:
+                AlertDialog failed = new AlertDialog(dialogPane,
+                                                     "Sorry",
+                                                     "Your code doesn't work out...");
+                failed.show();
+                break;
+            default:
+                AlertDialog error = new AlertDialog(dialogPane,
+                                                    "Error",
+                                                    "ErrorCode: " + validate.getStatusCode());
+                error.show();
+                break;
+        }
+    }
+    
+    public void showHint(ActionEvent e) {
+        Problem selectedProblem = (Problem) problemBox.getSelectionModel().getSelectedItem();
+        if (selectedProblem == null) return;
+        
+        AlertDialog submitted = new AlertDialog(dialogPane,
+                                                selectedProblem.getTitle(),
+                                                selectedProblem.getDesc());
+        submitted.show();
+    }
+    
+    
+    
+    
+    
+    public void newFile(ActionEvent e) {
+        Tab t = new Tab("Untitled");
+        t.getStyleClass().add("file-tab");
+        codeTabPane.getTabs().add(t);
+        
+        CodeArea c = new CodeArea();
+        c.getStyleClass().add("codearea");
+        codeAreaBox = new CodeAreaBox(c);
+        
+        VBox vbox = new VBox();
+        vbox.getStyleClass().add("code-vbox");
+        vbox.getChildren().add(c);
+        
+        AnchorPane anchorPane = new AnchorPane();
+        anchorPane.getStyleClass().add("code-anchor");
+        anchorPane.getChildren().add(vbox);
+        
+        t.setContent(anchorPane);
+        
+        codeTabPane.getSelectionModel().select(t);
+    }
+    
+    public void openFile(ActionEvent e) {
+        
+    }
+    
+    public void saveFile(ActionEvent e) {
+        FormDialog form = new FormDialog(dialogPane, "Save the file as ...");
         form.addTextField("Filename", "Program.java");
         
         form.getConfirmBtn().setOnAction((ActionEvent save) -> {
@@ -59,8 +198,7 @@ public class CodeController implements Initializable {
                 BufferedWriter code = new BufferedWriter(new FileWriter(filename));
                 code.write(codeArea.getText());
                 code.flush();
-                
-                filenameLabel.setText(filename);
+                //markAsSaved();
             } catch (IOException ioe) {
                 
             }
@@ -70,6 +208,13 @@ public class CodeController implements Initializable {
         
         form.show();
     }
+    
+    public void closeFile(ActionEvent e) {
+        
+    }
+    
+    
+    
     
     public void compile(ActionEvent event) throws IOException {
         terminal.onTerminalFxReady(() -> {
@@ -84,13 +229,31 @@ public class CodeController implements Initializable {
         });
     }
     
-    public void submit(ActionEvent event) {
-        
+    
+    
+    
+    
+    
+    public void markAsUnsaved(KeyEvent e) {
+        markAsUnsaved();
+    }
+    
+    private void markAsUnsaved() {
+        //filenameLabel.setText(String.format("* [%s]", filename));
+    }
+    
+    private void markAsSaved() {
+        //filenameLabel.setText(String.format("%s", filename));
     }
     
     
     public void setExamLabel(String s) {
         examLabel.setText(s);
+    }
+    
+    public void setProblemBox(List<Problem> problems) {
+        problemBox.getItems().clear();
+        problemBox.getItems().addAll(problems);
     }
     
 }

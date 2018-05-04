@@ -77,6 +77,6 @@ public class CourseData {
     
     @Override
     public String toString() {
-        return String.format("[%d] %d_%s - %s ", courseID.get(), semester.get(), name.get(), teacher.get()) + students;
+        return name.get();
     }
 }

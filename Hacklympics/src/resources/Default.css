@@ -1,27 +1,44 @@
+/* Colors */
+* {
+    -fx-black: #141414;
+    -fx-white: #eff1f5;
+    -fx-lightgrey: #f5f6f7;
+    
+    -fx-darkblue: #333645;
+    -fx-lightblue: #0095d9;
+    -fx-red: #df5b66;
+    
+    -fx-green: #718c00;
+    -fx-yellow: #c99e00;
+    -fx-blue: #4271ae;
+    -fx-purple: #9469af;
+    -fx-cyan: #3e999f;
+}
+
 /* Default */
 .parent {
-    -fx-background-color: white;
+    -fx-background-color: -fx-white;
 }
 
 .jfx-button {
     -fx-background-color: transparent;
-    -fx-text-fill: black;
+    -fx-text-fill: -fx-black;
 }
 
 .jfx-text-field {
-    -jfx-focus-color: #0095d9;
+    -jfx-focus-color: -fx-lightblue;
 }
 
 .jfx-text-area {
-    -jfx-focus-color: #0095d9;
+    -jfx-focus-color: -fx-lightblue;
 }
 
 .jfx-combo-box {
-    -jfx-focus-color: #0095d9;
+    -jfx-focus-color: -fx-lightblue;
 }
 
 .online-user-label {
-    -fx-text-fill: white;
+    -fx-text-fill: -fx-white;
 }
 
 
@@ -29,15 +46,45 @@
 .tab {
     -fx-pref-width: 120;
     -fx-pref-height: 35;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-background-radius: 0;
 }
 
+.tab .tab-close-button {
+    -fx-background-color: -fx-black;
+}
+
+.tab:selected .tab-close-button {
+    -fx-background-color: -fx-lightgrey;
+}
+
+.tab-pane *.tab-header-area *.tab-header-background {
+    -fx-background-color: -fx-lightgrey;
+}
+
+.file-tab {
+    -fx-pref-width: 120;
+    -fx-pref-height: 35;
+    -fx-background-color: #dddddd;
+}
+
+.file-tab:selected {
+    -fx-background-color: #333645;
+}
+
+.file-tab:selected .tab-label {
+    -fx-text-fill: white;
+}
+
+
 .jfx-tab-pane .headers-region .tab .tab-container .tab-label {
-    -fx-text-fill: #333645;
+    -fx-text-fill: -fx-darkblue;
     -fx-font-size: 14;
 }
 
 .jfx-tab-pane .tab-header-background {
-    -fx-background-color: #dadada;
+    -fx-background-color: -fx-lightgrey;
 }
 
 .jfx-tab-pane .tab-header-area .jfx-rippler {
@@ -45,11 +92,11 @@
 }
 
 .jfx-tab-pane .tab-selected-line {
-    -fx-background-color: #0095d9;
+    -fx-background-color: -fx-lightblue;
 }
 
 .jfx-tab-pane .headers-region .tab:selected .tab-container .tab-label {
-    -fx-text-fill: #0095d9;
+    -fx-text-fill: -fx-lightblue;
 }
 
 
@@ -61,11 +108,11 @@
 
 .jfx-list-cell:focused {
     -fx-background-color: transparent;
-    -fx-text-fill: #0095d9;
+    -fx-text-fill: -fx-lightblue;
 }
 
 .jfx-list-cell:selected {
-    -fx-background-color: #0095d9;
+    -fx-background-color: -fx-lightblue;
     -fx-text-fill: white;
 }
 
@@ -73,13 +120,13 @@
 /* Buttons */
 .lightBlueBtn {
     -jfx-button-type: RAISED;
-    -fx-background-color: #0095d9;
+    -fx-background-color: -fx-lightblue;
     -fx-text-fill: white;
 }
 
 .darkBlueBtn {
     -jfx-button-type: RAISED;
-    -fx-background-color: #333645;
+    -fx-background-color: -fx-darkblue;
     -fx-text-fill: white;
 }
 
@@ -91,7 +138,7 @@
 
 .roundBtn {
     -fx-background-radius: 500;
-    -fx-background-color: #0095d9;
+    -fx-background-color: -fx-lightblue;
     -fx-text-fill: white;
     -fx-font-size: 20;
     
@@ -123,24 +170,24 @@
 
 /* Login Panel */
 .titlebar {
-    -fx-background-color: #333645;
+    -fx-background-color: -fx-darkblue;
 }
 
 
 /* Student/Teacher Panels */
 .banner {
-    -fx-background-color: #dadada;
+    -fx-background-color: -fx-lightgrey;
 }
 
 .sidebar {
-    -fx-background-color: #333645;
+    -fx-background-color: -fx-darkblue;
 }
 
 .sidebarBtn {
     -fx-background-radius: 0;
     -fx-padding: 15 15 15 30;
     
-    -fx-background-color: #333645;
+    -fx-background-color: -fx-darkblue;
     -fx-text-fill: #ffffff;
     -fx-alignment: center-left;
     -fx-font-size: 16 px;
@@ -187,4 +234,23 @@
 .table-cell {
     -fx-border-color: transparent; 
     -fx-border-width: 1;
+}
+
+
+/* Code */
+.code-anchor {
+    -fx-pref-width: 776;
+    -fx-pref-height: 542;
+}
+
+.code-vbox {
+    -fx-pref-width: 776;
+    -fx-pref-height: 605;
+    -fx-padding: 5px;
+}
+
+.codearea {
+    -fx-pref-width: 776;
+    -fx-pref-height: 594;
+    -fx-background-color: -fx-white;
 }

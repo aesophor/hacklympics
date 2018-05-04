@@ -23,7 +23,7 @@ import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.users.User;
 import hacklympics.utility.FXMLTable;
-import hacklympics.utility.TextDialog;
+import hacklympics.utility.ConfirmDialog;
 
 public class TeacherController implements Initializable {
     
@@ -124,11 +124,11 @@ public class TeacherController implements Initializable {
     
     
     public void logout(ActionEvent event) {
-        TextDialog alert = new TextDialog(dialogPane,
-                                          "Alert",
-                                          "You are about to be logged out. Are you sure?");
+        ConfirmDialog confirm = new ConfirmDialog(dialogPane,
+                                                  "Logout",
+                                                  "You are about to be logged out. Are you sure?");
         
-        alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response logout = Session.getInstance().getCurrentUser().logout();
             
             if (logout.success()) {
@@ -148,7 +148,7 @@ public class TeacherController implements Initializable {
             }
         });
         
-        alert.show();
+        confirm.show();
     }
     
     

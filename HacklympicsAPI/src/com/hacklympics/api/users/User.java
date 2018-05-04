@@ -112,7 +112,7 @@ public abstract class User {
     
     @Override
     public String toString() {
-        return String.format("%s (%s)", profile.getUsername(), profile.getFullname());
+        return profile.toString();
     }
     
 }

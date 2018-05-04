@@ -1,6 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
+from hacklympics.exceptions import AlreadySubmitted
 from hacklympics.status_code import StatusCode
 from hacklympics.models import *
 from hacklympics.judge import *
@@ -55,18 +56,28 @@ def create(request, c_id, e_id, p_id):
         course = Course.objects.get(id=c_id)
         exam = course.exam_set.get(id=e_id)
         problem = exam.problem_set.get(id=p_id)
-        filepath = "/".join([".", "data", course.teacher_id, course.name, exam.title, problem.title, student, filename])
+        answers = problem.answer_set
         
-        problem.answer_set.create(
+        if len(answers.all().filter(student_id=student)) > 0:
+            raise AlreadySubmitted('Student' + student + 'has already submitted an answer!')
+        
+        filepath = "/".join([".", "data", course.teacher_id, course.name, exam.title, problem.title, student, filename])
+        answer = answers.create(
             filepath = filepath,
             source_code = source_code,
             student_id = student
         )
+        
+        response_data["content"] = {
+            "id": answer.id
+        }
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
-
+    except AlreadySubmitted:
+        response_data["statusCode"] = StatusCode.ALREADY_SUBMITTED
+    
     return JsonResponse(response_data)
 
 
@@ -83,10 +94,12 @@ def update(request, c_id, e_id, p_id):
         course = Course.objects.get(id=c_id)
         exam = course.exam_set.get(id=e_id)
         problem = exam.problem_set.get(id=p_id)
+        answers = problem.answer_set
         student = Answer.objects.get(id=a_id).student_id
+        
         filepath = "/".join([".", "data", course.teacher_id, course.name, exam.title, problem.title, student, filename])
         
-        problem.answer_set.all().filter(id=a_id).update(
+        answers.all().filter(id=a_id).update(
             filepath = filepath,
             source_code = source_code
         )

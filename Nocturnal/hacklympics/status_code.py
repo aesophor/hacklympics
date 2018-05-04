@@ -13,4 +13,6 @@ class StatusCode(IntEnum):
     ALREADY_REGISTERED = 8
 
     MATERIAL_DOES_NOT_EXIST = 9
+    
     INCORRECT_ANSWER = 10
+    ALREADY_SUBMITTED = 11
