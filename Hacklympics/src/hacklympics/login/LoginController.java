@@ -46,11 +46,13 @@ public class LoginController {
                         String studentFXML = FXMLTable.getInstance().get("Student");
                         Utils.loadStage(new FXMLLoader(getClass().getResource(studentFXML)));
                         break;
+                        
                     case "teacher":
                         Session.getInstance().setCurrentUser(new Teacher(username));
                         String teacherFXML = FXMLTable.getInstance().get("Teacher");
                         Utils.loadStage(new FXMLLoader(getClass().getResource(teacherFXML)));
                         break;
+                        
                     default:
                         break;
                 }

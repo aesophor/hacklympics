@@ -98,13 +98,7 @@ public class Exam {
                 String input = e.getAsJsonObject().get("input").getAsString();
                 String output = e.getAsJsonObject().get("output").getAsString();
                 
-                problems.add(new Problem(getData().getCourseID(),
-                                         getData().getExamID(), 
-                                         problemID, 
-                                         title,
-                                         desc,
-                                         input,
-                                         output));
+                problems.add(new Problem(getCourseID(), getExamID(), problemID, title, desc, input, output));
             }
         }
         

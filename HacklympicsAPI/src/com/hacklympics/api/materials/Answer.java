@@ -15,8 +15,9 @@ public class Answer {
     }
     
     private void initAnswerData(int courseID, int examID, int problemID, int answerID) {
-        String uri = String.format("course/%d/exam/%d/problem/%d/answer/%d", 
-                                   courseID, examID, problemID, answerID);
+        String uri = String.format("course/%d/exam/%d/problem/%d/answer/%d",
+                courseID, examID, problemID, answerID);
+        
         Response get = new Response(Utils.get(uri));
         
         if (get.success()) {
@@ -36,14 +37,16 @@ public class Answer {
     
     
     public static Response list(int courseID, int examID, int answerID) {
-        String uri = String.format("course/%d/exam/%d/problem/%d/answer", courseID, examID, answerID);
+        String uri = String.format("course/%d/exam/%d/problem/%d/answer", 
+                courseID, examID, answerID);
+        
         return new Response(Utils.get(uri));
     }
     
     public static Response create(int courseID, int examID, int problemID, 
                                   String filename, String sourceCode, String student) {
-        String uri = String.format("course/%d/exam/%d/problem/%d/answer/create", 
-                                   courseID, examID, problemID);
+        String uri = String.format("course/%d/exam/%d/problem/%d/answer/create",
+                courseID, examID, problemID);
         
         JsonObject json = new JsonObject();
         json.addProperty("filename", filename);
@@ -55,9 +58,7 @@ public class Answer {
     
     public Response update(String filename, String sourceCode) {
         String uri = String.format("course/%d/exam/%d/problem/%d/answer/update", 
-                                   this.data.getCourseID(),
-                                   this.data.getExamID(),
-                                   this.data.getProblemID());
+                getCourseID(), getExamID(), getProblemID());
         
         sourceCode = (sourceCode != null) ? sourceCode : this.data.getSourceCode();
         
@@ -71,9 +72,7 @@ public class Answer {
     
     public Response remove() {
         String uri = String.format("course/%d/exam/%d/problem/%d/answer/remove",
-                                   this.data.getCourseID(),
-                                   this.data.getExamID(),
-                                   this.data.getProblemID());
+                getCourseID(), getExamID(), getProblemID());
         
         JsonObject json = new JsonObject();
         json.addProperty("answerID", data.getAnswerID());
@@ -83,9 +82,7 @@ public class Answer {
     
     public Response validate() {
         String uri = String.format("course/%d/exam/%d/problem/%d/answer/validate",
-                                   this.data.getCourseID(),
-                                   this.data.getExamID(),
-                                   this.data.getProblemID());
+                getCourseID(), getExamID(), getProblemID());
         
         JsonObject json = new JsonObject();
         json.addProperty("answerID", data.getAnswerID());

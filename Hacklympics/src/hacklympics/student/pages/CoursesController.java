@@ -184,16 +184,20 @@ public class CoursesController implements Initializable {
         if (selected == null) return;
         Session.getInstance().setCurrentExam(selected);
         
-        ConfirmDialog alert = new ConfirmDialog(dialogPane,
-                                                "Attend Exam",
-                                                "You have selected the exam: " + selected + "\n\n"
-                                                + "Attend the exam now?");
+        ConfirmDialog alert = new ConfirmDialog(
+                dialogPane,
+                "Attend Exam",
+                "You have selected the exam: " + selected + "\n\n"
+              + "Attend the exam now?"
+        );
         
         alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
             StudentController sc = (StudentController) Session.getInstance().getMainController();
-            ((CodeController) sc.getControllers().get("code")).setExamLabel(selected.toString());
-            ((CodeController) sc.getControllers().get("code")).setProblemBox(selected.getProblems());
-            ((StudentController) Session.getInstance().getMainController()).showCode(event);
+            CodeController cc = (CodeController) sc.getControllers().get("code");
+            
+            cc.setExamLabel(selected.toString());
+            cc.setProblemBox(selected.getProblems());
+            sc.showCode(event);
             
             alert.close();
         });

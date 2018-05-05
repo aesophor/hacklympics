@@ -20,8 +20,7 @@ public class Course {
         initCourseData(courseID);
     }
     
-    public Course(int courseID, String name, int semester, String teacher,
-                  List<String> students) {
+    public Course(int courseID, String name, int semester, String teacher, List<String> students) {
         this.data = new CourseData(courseID, name, semester, teacher, students);
     }
     
@@ -48,8 +47,7 @@ public class Course {
         return new Response(Utils.get(uri));
     }
     
-    public static Response create(String name, int semester, String teacher,
-                                  List<String> students) {
+    public static Response create(String name, int semester, String teacher, List<String> students) {
         String uri = String.format("course/create");
         
         JsonArray s = new JsonArray();
@@ -66,8 +64,7 @@ public class Course {
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public Response update(String name, int semester, String teacher, 
-                           List<String> students) {
+    public Response update(String name, int semester, String teacher, List<String> students) {
         String uri = String.format("course/update");
         
         name = (name != null) ? name : this.data.getName();

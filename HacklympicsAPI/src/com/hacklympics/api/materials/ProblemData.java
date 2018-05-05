@@ -15,7 +15,8 @@ public class ProblemData {
     private SimpleStringProperty output;
     
     public ProblemData(int courseID, int examID, int problemID, 
-                       String title, String desc, String input, String output) {
+            String title, String desc, String input, String output) {
+        
         this.courseID = new SimpleIntegerProperty(courseID);
         this.examID = new SimpleIntegerProperty(examID);
         this.problemID = new SimpleIntegerProperty(problemID);

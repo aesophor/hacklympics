@@ -2,7 +2,7 @@
 * {
     -fx-black: #141414;
     -fx-white: #eff1f5;
-    -fx-lightgrey: #f5f6f7;
+    -fx-lightgrey: #dfdfdf;
     
     -fx-darkblue: #333645;
     -fx-lightblue: #0095d9;
@@ -51,30 +51,8 @@
     -fx-background-radius: 0;
 }
 
-.tab .tab-close-button {
-    -fx-background-color: -fx-black;
-}
-
-.tab:selected .tab-close-button {
-    -fx-background-color: -fx-lightgrey;
-}
-
 .tab-pane *.tab-header-area *.tab-header-background {
     -fx-background-color: -fx-lightgrey;
-}
-
-.file-tab {
-    -fx-pref-width: 120;
-    -fx-pref-height: 35;
-    -fx-background-color: #dddddd;
-}
-
-.file-tab:selected {
-    -fx-background-color: #333645;
-}
-
-.file-tab:selected .tab-label {
-    -fx-text-fill: white;
 }
 
 
@@ -237,20 +215,45 @@
 }
 
 
-/* Code */
+/* FileTab / CodeArea Related */
+.file-tab {
+    -fx-pref-width: 120;
+    -fx-pref-height: 35;
+    -fx-border-width: 2px;
+    -fx-border-color: #cacaca;
+    -fx-background-color: #cacaca;
+}
+
+.file-tab:selected {
+    -fx-border-color: -fx-white;
+    -fx-background-color: #f4f4f4;
+}
+
+.file-tab:selected .tab-label {
+    -fx-text-fill: -fx-black;
+}
+
+.file-tab .tab-close-button {
+    -fx-background-color: -fx-black;
+}
+
+.file-tab:selected .tab-close-button {
+    -fx-background-color: -fx-black;
+}
+
 .code-anchor {
     -fx-pref-width: 776;
-    -fx-pref-height: 542;
+    -fx-pref-height: 500;
 }
 
 .code-vbox {
     -fx-pref-width: 776;
-    -fx-pref-height: 605;
+    -fx-pref-height: 555;
     -fx-padding: 5px;
 }
 
-.codearea {
+.code-area {
     -fx-pref-width: 776;
-    -fx-pref-height: 594;
+    -fx-pref-height: 555;
     -fx-background-color: -fx-white;
 }

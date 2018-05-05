@@ -242,10 +242,12 @@ public class CoursesController implements Initializable {
                 students.add(user.getProfile().getUsername());
             }
             
-            Course.create(nameField.getText(),
-                          Integer.parseInt(semesterField.getText()),
-                          teacher,
-                          students);
+            Course.create(
+                    nameField.getText(),
+                    Integer.parseInt(semesterField.getText()),
+                    teacher,
+                    students
+            );
             
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -266,10 +268,12 @@ public class CoursesController implements Initializable {
             JFXTextField descField = (JFXTextField) form.get("Description");
             Course selected = courseTable.getSelectionModel().getSelectedItem();
             
-            Exam.create(selected.getData().getCourseID(),
-                        titleField.getText(),
-                        descField.getText(),
-                        Integer.parseInt(durationField.getText()));
+            Exam.create(
+                    selected.getData().getCourseID(),
+                    titleField.getText(),
+                    descField.getText(),
+                    Integer.parseInt(durationField.getText())
+            );
             
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -292,12 +296,14 @@ public class CoursesController implements Initializable {
             JFXTextArea outputArea = (JFXTextArea) form.get("Output");
             Exam selected = examTable.getSelectionModel().getSelectedItem();
             
-            Problem.create(selected.getCourseID(),
-                           selected.getExamID(),
-                           titleField.getText(),
-                           descField.getText(),
-                           inputArea.getText(),
-                           outputArea.getText());
+            Problem.create(
+                    selected.getCourseID(),
+                    selected.getExamID(),
+                    titleField.getText(),
+                    descField.getText(),
+                    inputArea.getText(),
+                    outputArea.getText()
+            );
             
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -334,10 +340,12 @@ public class CoursesController implements Initializable {
                 students.add(user.getProfile().getUsername());
             }
 
-            course.update(nameField.getText(),
-                          Integer.parseInt(semesterField.getText()),
-                          teacher,
-                          students);
+            course.update(
+                    nameField.getText(),
+                    Integer.parseInt(semesterField.getText()),
+                    teacher,
+                    students
+            );
 
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -345,9 +353,11 @@ public class CoursesController implements Initializable {
         
         
         form.getAsButton("deleteBtn").setOnAction((ActionEvent e) -> {
-            ConfirmDialog dialog = new ConfirmDialog(dialogPane,
-                                                     "Delete course",
-                                                     "Do you want to delete this course?");
+            ConfirmDialog dialog = new ConfirmDialog(
+                    dialogPane,
+                    "Delete course",
+                    "Do you want to delete this course?"
+            );
         
             dialog.getConfirmBtn().setOnAction((ActionEvent confirm) -> {
                 course.remove();
@@ -375,9 +385,11 @@ public class CoursesController implements Initializable {
             JFXTextField durationField = (JFXTextField) form.get("Duration");
             JFXTextField descField = (JFXTextField) form.get("Description");
 
-            exam.update(titleField.getText(),
-                        descField.getText(),
-                        Integer.parseInt(durationField.getText()));
+            exam.update(
+                    titleField.getText(),
+                    descField.getText(),
+                    Integer.parseInt(durationField.getText())
+            );
 
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -385,9 +397,11 @@ public class CoursesController implements Initializable {
         
         
         ((Button) form.get("deleteBtn")).setOnAction((ActionEvent e) -> {
-            ConfirmDialog dialog = new ConfirmDialog(dialogPane,
-                                               "Delete exam",
-                                               "Do you want to delete this exam?");
+            ConfirmDialog dialog = new ConfirmDialog(
+                    dialogPane,
+                    "Delete exam",
+                    "Do you want to delete this exam?"
+            );
         
             dialog.getConfirmBtn().setOnAction((ActionEvent confirm) -> {
                 exam.remove();
@@ -417,10 +431,12 @@ public class CoursesController implements Initializable {
             JFXTextArea inputArea = (JFXTextArea) form.get("Input");
             JFXTextArea outputArea = (JFXTextArea) form.get("Output");
 
-            problem.update(titleField.getText(),
-                           descField.getText(),
-                           inputArea.getText(),
-                           outputArea.getText());
+            problem.update(
+                    titleField.getText(),
+                    descField.getText(),
+                    inputArea.getText(),
+                    outputArea.getText()
+            );
 
             update(tabPane.getSelectionModel().getSelectedItem());
             form.close();
@@ -428,9 +444,11 @@ public class CoursesController implements Initializable {
         
         
         ((Button) form.get("deleteBtn")).setOnAction((ActionEvent e) -> {
-            ConfirmDialog dialog = new ConfirmDialog(dialogPane,
-                                                     "Delete problem",
-                                                     "Do you want to delete this problem?");
+            ConfirmDialog dialog = new ConfirmDialog(
+                    dialogPane,
+                    "Delete problem",
+                    "Do you want to delete this problem?"
+            );
         
             dialog.getConfirmBtn().setOnAction((ActionEvent confirm) -> {
                 problem.remove();

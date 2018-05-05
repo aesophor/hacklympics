@@ -20,11 +20,14 @@ public abstract class Dialog {
     
     public Dialog(StackPane pane, String title) {
         this.pane = pane;
+        
         this.buttons = new HashMap<>();
         this.content = new JFXDialogLayout();
-        this.dialog = new JFXDialog(pane,
-                                    content,
-                                    JFXDialog.DialogTransition.CENTER);
+        this.dialog = new JFXDialog(
+                pane,
+                content,
+                JFXDialog.DialogTransition.CENTER
+        );
         
         this.buttons.put("cancelBtn", new JFXButton("Dismiss"));
         this.buttons.put("confirmBtn", new JFXButton("OK"));

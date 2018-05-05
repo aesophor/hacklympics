@@ -13,8 +13,7 @@ public class CourseData {
     private SimpleStringProperty teacher;
     private List<String> students;
     
-    public CourseData(int courseID, String name, int semester, String teacher,
-                      List<String> students) {
+    public CourseData(int courseID, String name, int semester, String teacher, List<String> students) {
         this.courseID = new SimpleIntegerProperty(courseID);
         
         this.name = new SimpleStringProperty(name);

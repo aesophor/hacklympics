@@ -14,15 +14,15 @@ public class Problem {
         initProblemData(courseID, examID, problemID);
     }
     
-    public Problem(int courseID, int examID, int problemID,
-                   String title, String desc, String input, String output) {
-        this.data = new ProblemData(courseID, examID, problemID,
-                                    title, desc, input, output);
+    public Problem(int courseID, int examID, int problemID, 
+            String title, String desc, String input, String output) {
+        
+        this.data = new ProblemData(courseID, examID, problemID, title, desc, input, output);
     }
     
     private void initProblemData(int courseID, int examID, int problemID) {
-        String uri = String.format("course/%d/exam/%d/problem/%d", 
-                                   courseID, examID, problemID);
+        String uri = String.format("course/%d/exam/%d/problem/%d", courseID, examID, problemID);
+        
         Response get = new Response(Utils.get(uri));
         
         if (get.success()) {
@@ -46,10 +46,10 @@ public class Problem {
         return new Response(Utils.get(uri));
     }
     
-    public static Response create(int courseID, int examID,
-                                  String title, String desc, String input, String output) {
-        String uri = String.format("course/%d/exam/%d/problem/create", 
-                                   courseID, examID);
+    public static Response create(int courseID, int examID, 
+            String title, String desc, String input, String output) {
+        
+        String uri = String.format("course/%d/exam/%d/problem/create", courseID, examID);
         
         JsonObject json = new JsonObject();
         json.addProperty("title", title);
@@ -61,9 +61,7 @@ public class Problem {
     }
     
     public Response update(String title, String desc, String input, String output) {
-        String uri = String.format("course/%d/exam/%d/problem/update", 
-                                   this.data.getCourseID(),
-                                   this.data.getExamID());
+        String uri = String.format("course/%d/exam/%d/problem/update", getCourseID(), getExamID());
         
         title = (title != null) ? title : this.data.getTitle();
         desc = (desc != null) ? desc : this.data.getDesc();
@@ -79,9 +77,7 @@ public class Problem {
     }
     
     public Response remove() {
-        String uri = String.format("course/%d/exam/%d/problem/remove",
-                                   data.getCourseID(),
-                                   data.getExamID());
+        String uri = String.format("course/%d/exam/%d/problem/remove", getCourseID(), getExamID());
         
         JsonObject json = new JsonObject();
         json.addProperty("problemID", data.getProblemID());

@@ -124,9 +124,11 @@ public class TeacherController implements Initializable {
     
     
     public void logout(ActionEvent event) {
-        ConfirmDialog confirm = new ConfirmDialog(dialogPane,
-                                                  "Logout",
-                                                  "You are about to be logged out. Are you sure?");
+        ConfirmDialog confirm = new ConfirmDialog(
+                dialogPane,
+                "Logout",
+                "You are about to be logged out. Are you sure?"
+        );
         
         confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response logout = Session.getInstance().getCurrentUser().logout();

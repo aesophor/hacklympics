@@ -14,8 +14,9 @@ public class AnswerData {
     private SimpleStringProperty sourceCode;
     private SimpleStringProperty student;
     
-    public AnswerData(int courseID, int examID, int problemID, int answerID,
-                      String className, String sourceCode, String student) {
+    public AnswerData(int courseID, int examID, int problemID, int answerID, 
+            String className, String sourceCode, String student) {
+        
         this.courseID = new SimpleIntegerProperty(courseID);
         this.examID = new SimpleIntegerProperty(examID);
         this.problemID = new SimpleIntegerProperty(problemID);
