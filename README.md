@@ -30,6 +30,7 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
  * Design Pattern used
    > Singleton Pattern
 
+
 ## Screenshots
 <p align="center">
 	<img src="https://i.imgur.com/MXWv148.png" alt="login-panel-scrot"> <br>
@@ -43,3 +44,8 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
     <img src="https://i.imgur.com/b5J1JoX.png" alt="edit"><br>
     <h5 align="center">▲  Teacher editing an existing problem.</h5> <br><br>
 </p>
+
+
+## License
+<img src="https://i.imgur.com/sWzVHFt.png" alt="login-panel-scrot"> <br>
+Available under [Mozilla Public License 2.0](https://github.com/aesophor/hacklympics/blob/master/LICENSE).
