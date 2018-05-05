@@ -26,11 +26,16 @@
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#newFile" text="New " />
                               <MenuItem mnemonicParsing="false" onAction="#openFile" text="Open..." />
-                              <MenuItem mnemonicParsing="false" text="Save" />
-                              <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save As..." />
+                              <MenuItem mnemonicParsing="false" onAction="#saveFile" text="Save" />
+                              <MenuItem mnemonicParsing="false" onAction="#saveFileAs" text="Save As..." />
                               <MenuItem mnemonicParsing="false" onAction="#closeFile" text="Close" />
                         </items>
                       </Menu>
+                        <Menu mnemonicParsing="false" text="View">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#toggleTerminal" text="Toggle Terminal" />
+                           </items>
+                        </Menu>
                         <Menu mnemonicParsing="false" text="Code">
                            <items>
                               <MenuItem mnemonicParsing="false" onAction="#compile" text="Compile" />
@@ -44,6 +49,7 @@
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">
                         <items>
+                              <MenuItem mnemonicParsing="false" text="Hint" />
                           <MenuItem mnemonicParsing="false" text="About" />
                         </items>
                       </Menu>
@@ -83,7 +89,7 @@
                               <Font size="11.0" />
                            </font>
                         </JFXButton>
-                        <JFXButton layoutX="716.0" layoutY="19.0" onAction="#showHint" prefHeight="9.0" prefWidth="63.0" styleClass="lightBlueBtn" text="Submit">
+                        <JFXButton layoutX="716.0" layoutY="19.0" onAction="#submit" prefHeight="9.0" prefWidth="63.0" styleClass="lightBlueBtn" text="Submit">
                            <font>
                               <Font size="11.0" />
                            </font>
@@ -100,15 +106,15 @@
             </VBox>
          </children>
       </HBox>
-      <Label fx:id="filenameLabel" layoutY="630.0" prefHeight="44.0" prefWidth="335.0" text="Untitled">
+      <Label fx:id="absolutePathLabel" layoutY="630.0" prefHeight="44.0" prefWidth="303.0" text="Untitled">
          <padding>
-            <Insets left="10.0" />
+            <Insets left="10.0" top="3.0" />
          </padding>
          <font>
-            <Font size="12.0" />
+            <Font size="11.0" />
          </font>
       </Label>
-      <TabPane fx:id="terminalPane" mouseTransparent="true" opacity="0.0" prefHeight="294.0" prefWidth="379.0" tabClosingPolicy="UNAVAILABLE" />
-      <StackPane fx:id="dialogPane" layoutX="154.0" layoutY="237.0" prefHeight="123.0" prefWidth="291.0" />
+      <TabPane fx:id="terminalPane" layoutY="394.0" mouseTransparent="true" opacity="0.0" prefHeight="237.0" prefWidth="776.0" style="-fx-background-color: #dfdfdf;" tabClosingPolicy="UNAVAILABLE" />
+      <StackPane fx:id="dialogPane" layoutX="149.0" layoutY="244.0" prefHeight="124.0" prefWidth="303.0" />
    </children>
 </AnchorPane>

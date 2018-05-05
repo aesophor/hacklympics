@@ -3,17 +3,19 @@ package hacklympics.student.pages;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
+import java.io.File;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
-import org.fxmisc.richtext.CodeArea;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXTextField;
 import com.kodedu.terminalfx.TerminalTab;
 import com.kodedu.terminalfx.TerminalBuilder;
 import com.kodedu.terminalfx.config.TerminalConfig;
@@ -23,13 +25,9 @@ import com.hacklympics.api.materials.Exam;
 import com.hacklympics.api.materials.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.users.Student;
-import com.jfoenix.controls.JFXTextArea;
-import hacklympics.utility.AlertDialog;
 import hacklympics.utility.CodeTab;
-import hacklympics.utility.FormDialog;
+import hacklympics.utility.AlertDialog;
 import hacklympics.utility.ConfirmDialog;
-import java.io.File;
-import javafx.event.Event;
 
 public class CodeController implements Initializable {
     
@@ -45,7 +43,7 @@ public class CodeController implements Initializable {
     private StackPane dialogPane;
 
     @FXML
-    private Label filenameLabel;
+    private Label absolutePathLabel;
     @FXML
     private Label examLabel;
     @FXML
@@ -57,10 +55,12 @@ public class CodeController implements Initializable {
         terminalConfig.setBackgroundColor("#eff1f5");
         terminalBuilder = new TerminalBuilder(terminalConfig);
         terminal = terminalBuilder.newTerminal();
+        terminal.getStyleClass().add("minimal-tab");
         terminalPane.getTabs().add(terminal);
         
         codeTabPane.setOnMouseClicked((Event event) -> {
-            updateFilenameLabel();
+            updateAbsolutePathLabel();
+            closeTerminal();
         });
         
         newCodeTab();
@@ -69,51 +69,39 @@ public class CodeController implements Initializable {
     
     public void newFile(ActionEvent event) {
         newCodeTab();
-        updateFilenameLabel();
+        updateAbsolutePathLabel();
     }
     
     public void openFile(ActionEvent event) {
-        FormDialog form = new FormDialog(dialogPane, "Open File");
-        form.addTextField("Path to the file", "");
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open File...");
+        fileChooser.getExtensionFilters().addAll(
+                new ExtensionFilter("Java Source Code", "*.java"),
+                new ExtensionFilter("All Files", "*.*"));
         
-        form.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            JFXTextField filepathField = (JFXTextField) form.get("Path to the file");
-            String filepath = filepathField.getText();
-            
-            form.close();
-            
+        File selectedFile = fileChooser.showOpenDialog(codeTabPane.getScene().getWindow());
+        
+        if (selectedFile != null) {
             try {
-                newCodeTab(filepath).open();
-                updateFilenameLabel();
+                newCodeTab(selectedFile).open();
+                updateAbsolutePathLabel();
             } catch (IOException ioe) {
                 AlertDialog alert = new AlertDialog(
                         dialogPane,
                         "Error",
-                        "The specified file doesn't exist."
+                        "Unable to open the selected file."
                 );
                 
                 alert.show();
                 codeTabPane.getTabs().remove(getCurrentTab());
             }
-        });
-
-        form.show();
+        }
     }
     
     public void saveFile(ActionEvent event) {
-        FormDialog form = new FormDialog(dialogPane, "Save As");
-        form.addTextField("Filename", "Program.java");
-        
-        form.getConfirmBtn().setOnAction((ActionEvent save) -> {
-            JFXTextField filenameField = (JFXTextField) form.get("Filename");
-            String filename = filenameField.getText();
-            
-            form.close();
-            
+        if (getCurrentTab().getFile() != null) {
             try {
-                getCurrentTab().setFile(new File(filename));
                 getCurrentTab().save();
-                updateFilenameLabel();
             } catch (IOException ioe) {
                 AlertDialog alert = new AlertDialog(
                         dialogPane,
@@ -123,51 +111,85 @@ public class CodeController implements Initializable {
                 
                 alert.show();
             }
-        });
+        } else {
+            saveFileAs(new ActionEvent());
+        }
+    }
+    
+    public void saveFileAs(ActionEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save As...");
+        fileChooser.getExtensionFilters().addAll(
+                new ExtensionFilter("Java Source Code", "*.java"),
+                new ExtensionFilter("All Files", "*.*"));
         
-        form.show();
-
+        File selectedFile = fileChooser.showSaveDialog(codeTabPane.getScene().getWindow());
+        
+        if (selectedFile != null) {
+            getCurrentTab().setFile(selectedFile);
+            saveFile(new ActionEvent());
+        }
     }
     
     public void closeFile(ActionEvent e) {
         codeTabPane.getTabs().remove(getCurrentTab());
-        updateFilenameLabel();
+        updateAbsolutePathLabel();
+    }
+    
+    
+    public void toggleTerminal(ActionEvent event) {
+        if (terminalPane.getOpacity() == 0) {
+            showTerminal();
+        } else {
+            closeTerminal();
+        }
     }
     
     
     public void compile(ActionEvent event) throws IOException {
-        /*
+        showTerminal();
+        
         terminal.onTerminalFxReady(() -> {
-            terminal.command(String.join(" ", "javac", filename, "\r"));
+            terminal.command(String.join(" ", "javac", getCurrentTab().getFilename(), "\r"));
         });
-        */
     }
     
     public void execute(ActionEvent event) {
-        /*
-        String className = filename.split("[.]")[0];
+        showTerminal();
+        
+        String className = getCurrentTab().getFilename().split("[.]")[0];
         terminal.onTerminalFxReady(() -> {
             terminal.command(String.join(" ", "java", className, "\r"));
         });
-*/
     }
     
     
-    
-    
-    
-    
     public void submit(ActionEvent event) {
-        /*
         Student student = (Student) Session.getInstance().getCurrentUser();
         Exam selectedExam = Session.getInstance().getCurrentExam();
         Problem selectedProblem = (Problem) problemBox.getSelectionModel().getSelectedItem();
         
+        if (selectedExam == null | selectedProblem == null) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Tips",
+                    "Please make sure both Exam and Problem are selected."
+            );
+            
+            alert.show();
+            return;
+        }
+        
         ConfirmDialog confirm = new ConfirmDialog(
                 dialogPane,
-                "Submit Code",
-                "Once submitted, you will NOT be able to revise it.\n\n"
-              + "Submit your code now?"
+                "Submit Answer",
+                String.format(
+                        "Submitting \"%s\" for \"%s\".\n\n"
+                      + "Once submitted, you will NOT be able to revise it.\n"
+                      + "Submit your code now?",
+                        getCurrentTab().getFilename(),
+                        selectedProblem
+                )
         );
         
         confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
@@ -175,8 +197,8 @@ public class CodeController implements Initializable {
                     selectedExam.getCourseID(),
                     selectedExam.getExamID(),
                     selectedProblem.getProblemID(),
-                    filename,
-                    codeArea.getText(),
+                    getCurrentTab().getFilename(),
+                    getCurrentTab().getCodeArea().getText(),
                     student.getUsername()
             );
             
@@ -217,7 +239,6 @@ public class CodeController implements Initializable {
         });
         
         confirm.show();
-*/
     }
     
     private void validate(Answer answer) {
@@ -228,7 +249,7 @@ public class CodeController implements Initializable {
                 AlertDialog correct = new AlertDialog(
                         dialogPane,
                         "Congratulations",
-                        "Your code works correctly!"
+                        "Your code works correctly. Nice work!"
                 );
                 
                 correct.show();
@@ -237,7 +258,8 @@ public class CodeController implements Initializable {
                 AlertDialog failed = new AlertDialog(
                         dialogPane,
                         "Sorry",
-                        "Your code doesn't work out..."
+                        "It seems that your code doesn't work out,"
+                      + "keep going!"
                 );
                 
                 failed.show();
@@ -280,24 +302,34 @@ public class CodeController implements Initializable {
         return c;
     }
     
-    private CodeTab newCodeTab(String filepath) {
-        CodeTab c = new CodeTab(filepath);
+    private CodeTab newCodeTab(File file) {
+        CodeTab c = new CodeTab(file);
         codeTabPane.getTabs().add(c);
         codeTabPane.getSelectionModel().select(c);
         
         return c;
     }
     
-    private void updateFilenameLabel() {
+    private void updateAbsolutePathLabel() {
         CodeTab current = getCurrentTab();
         String filename = (current == null) ? "" : current.getAbsolutePath();
-        filenameLabel.setText(filename);
+        absolutePathLabel.setText(filename);
     }
     
     private CodeTab getCurrentTab() {
         return ((CodeTab) codeTabPane.getSelectionModel().getSelectedItem());
     }
     
+    
+    private void showTerminal() {
+        terminalPane.setOpacity(100);
+        terminalPane.setMouseTransparent(false);
+    }
+    
+    private void closeTerminal() {
+        terminalPane.setOpacity(0);
+        terminalPane.setMouseTransparent(true);
+    }
     
     
     public void markAsUnsaved(KeyEvent e) {

@@ -96,14 +96,14 @@ public class CodeTab extends Tab {
         anchorPane.getChildren().add(vbox);
         
         
-        getStyleClass().add("file-tab");
+        getStyleClass().add("minimal-tab");
         setContent(anchorPane);
     }
     
-    public CodeTab(String filepath) {
+    public CodeTab(File file) {
         this();
         
-        this.file = new File(filepath);
+        this.file = file;
         this.setText(getFilename());
     }
     
@@ -163,10 +163,6 @@ public class CodeTab extends Tab {
     }
     
     
-    public CodeArea getCodeArea() {
-        return codeArea;
-    }
-    
     public String getFilename() {
         if (file == null) {
             return "Untitled";
@@ -180,8 +176,16 @@ public class CodeTab extends Tab {
         return (file == null) ? "Untitled" : file.getAbsolutePath();
     }
     
+    public File getFile() {
+        return file;
+    }
+    
     public void setFile(File file) {
         this.file = file;
+    }
+    
+    public CodeArea getCodeArea() {
+        return codeArea;
     }
     
 }

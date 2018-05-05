@@ -216,7 +216,7 @@
 
 
 /* FileTab / CodeArea Related */
-.file-tab {
+.minimal-tab {
     -fx-pref-width: 135;
     -fx-pref-height: 35;
     -fx-border-width: 2px;
@@ -224,20 +224,20 @@
     -fx-background-color: #cacaca;
 }
 
-.file-tab:selected {
+.minimal-tab:selected {
     -fx-border-color: -fx-white;
     -fx-background-color: #f4f4f4;
 }
 
-.file-tab:selected .tab-label {
+.minimal-tab:selected .tab-label {
     -fx-text-fill: -fx-black;
 }
 
-.file-tab .tab-close-button {
+.minimal-tab .tab-close-button {
     -fx-background-color: -fx-black;
 }
 
-.file-tab:selected .tab-close-button {
+.minimal-tab:selected .tab-close-button {
     -fx-background-color: -fx-black;
 }
 
