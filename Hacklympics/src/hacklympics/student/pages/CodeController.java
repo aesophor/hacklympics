@@ -3,10 +3,6 @@ package hacklympics.student.pages;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -14,7 +10,6 @@ import javafx.event.ActionEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import org.fxmisc.richtext.CodeArea;
 import com.jfoenix.controls.JFXComboBox;
@@ -33,6 +28,8 @@ import hacklympics.utility.AlertDialog;
 import hacklympics.utility.CodeTab;
 import hacklympics.utility.FormDialog;
 import hacklympics.utility.ConfirmDialog;
+import java.io.File;
+import javafx.event.Event;
 
 public class CodeController implements Initializable {
     
@@ -48,6 +45,8 @@ public class CodeController implements Initializable {
     private StackPane dialogPane;
 
     @FXML
+    private Label filenameLabel;
+    @FXML
     private Label examLabel;
     @FXML
     private JFXComboBox problemBox;
@@ -60,29 +59,17 @@ public class CodeController implements Initializable {
         terminal = terminalBuilder.newTerminal();
         terminalPane.getTabs().add(terminal);
         
+        codeTabPane.setOnMouseClicked((Event event) -> {
+            updateFilenameLabel();
+        });
+        
         newCodeTab();
-    }
-    
-    
-    private CodeArea getCurrentCodeArea() {
-        return getCurrentTab().getCodeArea();
-    }
-    
-    private CodeTab getCurrentTab() {
-        return ((CodeTab) codeTabPane.getSelectionModel().getSelectedItem());
     }
     
     
     public void newFile(ActionEvent event) {
         newCodeTab();
-    }
-    
-    private CodeTab newCodeTab() {
-        CodeTab c = new CodeTab("Untitled");
-        codeTabPane.getTabs().add(c);
-        codeTabPane.getSelectionModel().select(c);
-        
-        return c;
+        updateFilenameLabel();
     }
     
     public void openFile(ActionEvent event) {
@@ -96,22 +83,17 @@ public class CodeController implements Initializable {
             form.close();
             
             try {
-                BufferedReader file = new BufferedReader(new FileReader(filepath));
-                
-                StringBuilder content = new StringBuilder();
-                String line = file.readLine();
-                
-                while (line != null) {
-                    content.append(line);
-                    content.append(System.lineSeparator());
-                    line = file.readLine();
-                }
-                
-                newCodeTab().getCodeArea().replaceText(0, 0, content.toString());
-                getCurrentTab().setFilename(filepath);
-                
+                newCodeTab(filepath).open();
+                updateFilenameLabel();
             } catch (IOException ioe) {
+                AlertDialog alert = new AlertDialog(
+                        dialogPane,
+                        "Error",
+                        "The specified file doesn't exist."
+                );
                 
+                alert.show();
+                codeTabPane.getTabs().remove(getCurrentTab());
             }
         });
 
@@ -119,36 +101,38 @@ public class CodeController implements Initializable {
     }
     
     public void saveFile(ActionEvent event) {
-        /*
-        FormDialog form = new FormDialog(dialogPane, "Save the file as ...");
+        FormDialog form = new FormDialog(dialogPane, "Save As");
         form.addTextField("Filename", "Program.java");
         
         form.getConfirmBtn().setOnAction((ActionEvent save) -> {
             JFXTextField filenameField = (JFXTextField) form.get("Filename");
-            filename = filenameField.getText();
-            
-            try {
-                BufferedWriter code = new BufferedWriter(new FileWriter(filename));
-                code.write(codeArea.getText());
-                code.flush();
-                //markAsSaved();
-            } catch (IOException ioe) {
-                
-            }
+            String filename = filenameField.getText();
             
             form.close();
+            
+            try {
+                getCurrentTab().setFile(new File(filename));
+                getCurrentTab().save();
+                updateFilenameLabel();
+            } catch (IOException ioe) {
+                AlertDialog alert = new AlertDialog(
+                        dialogPane,
+                        "Error",
+                        "Unable to write to the specified file."
+                );
+                
+                alert.show();
+            }
         });
         
         form.show();
-*/
+
     }
     
     public void closeFile(ActionEvent e) {
-        Tab selected = codeTabPane.getSelectionModel().getSelectedItem();
-        codeTabPane.getTabs().remove(selected);
+        codeTabPane.getTabs().remove(getCurrentTab());
+        updateFilenameLabel();
     }
-    
-    
     
     
     public void compile(ActionEvent event) throws IOException {
@@ -288,9 +272,31 @@ public class CodeController implements Initializable {
     
     
     
+    private CodeTab newCodeTab() {
+        CodeTab c = new CodeTab();
+        codeTabPane.getTabs().add(c);
+        codeTabPane.getSelectionModel().select(c);
+        
+        return c;
+    }
     
+    private CodeTab newCodeTab(String filepath) {
+        CodeTab c = new CodeTab(filepath);
+        codeTabPane.getTabs().add(c);
+        codeTabPane.getSelectionModel().select(c);
+        
+        return c;
+    }
     
+    private void updateFilenameLabel() {
+        CodeTab current = getCurrentTab();
+        String filename = (current == null) ? "" : current.getAbsolutePath();
+        filenameLabel.setText(filename);
+    }
     
+    private CodeTab getCurrentTab() {
+        return ((CodeTab) codeTabPane.getSelectionModel().getSelectedItem());
+    }
     
     
     

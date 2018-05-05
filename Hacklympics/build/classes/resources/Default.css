@@ -217,7 +217,7 @@
 
 /* FileTab / CodeArea Related */
 .file-tab {
-    -fx-pref-width: 120;
+    -fx-pref-width: 135;
     -fx-pref-height: 35;
     -fx-border-width: 2px;
     -fx-border-color: #cacaca;

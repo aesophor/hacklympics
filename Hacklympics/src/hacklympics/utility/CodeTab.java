@@ -1,5 +1,11 @@
 package hacklympics.utility;
 
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.Collections;
@@ -63,13 +69,10 @@ public class CodeTab extends Tab {
     private final AnchorPane anchorPane;
     private final VBox vbox;
     private final CodeArea codeArea;
+    private File file;
     
-    private String filepath;
-    private String filename;
-    
-    public CodeTab(String filepath) {
-        super(filepath);
-        this.filename = filepath;
+    public CodeTab() {
+        super("Untitled");
         
         codeArea = new CodeArea();
         codeArea.getStyleClass().add("code-area");
@@ -95,6 +98,13 @@ public class CodeTab extends Tab {
         
         getStyleClass().add("file-tab");
         setContent(anchorPane);
+    }
+    
+    public CodeTab(String filepath) {
+        this();
+        
+        this.file = new File(filepath);
+        this.setText(getFilename());
     }
     
     
@@ -123,21 +133,55 @@ public class CodeTab extends Tab {
     }
     
     
+    public void open() throws IOException {
+        if (file != null) {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+        
+            StringBuilder content = new StringBuilder();
+            String line = br.readLine();
+                
+            while (line != null) {
+                content.append(line);
+                content.append(System.lineSeparator());
+                line = br.readLine();
+            }
+            
+            codeArea.replaceText(content.toString());
+            br.close();
+        }
+    }
+    
+    public void save() throws IOException {
+        if (file != null) {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+            bw.write(codeArea.getText());
+            bw.flush();
+            bw.close();
+            
+            setText(getFilename());
+        }
+    }
+    
+    
     public CodeArea getCodeArea() {
         return codeArea;
     }
     
-    public String getFilepath() {
-        return filepath;
-    }
-    
     public String getFilename() {
-        return filename;
+        if (file == null) {
+            return "Untitled";
+        } else {
+            String[] parts = file.getAbsolutePath().split("[/]");
+            return parts[parts.length-1];
+        }
     }
     
-    public void setFilename(String filename) {
-        this.filename = filename;
-        this.setText(filename);
+    public String getAbsolutePath() {
+        return (file == null) ? "Untitled" : file.getAbsolutePath();
+    }
+    
+    public void setFile(File file) {
+        this.file = file;
     }
     
 }
