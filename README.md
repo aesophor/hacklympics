@@ -16,14 +16,16 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
 
 ## Features
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
-  > **Hacklympics** - Frontend (Java 8)
+  > **Hacklympics** - Frontend (Java 8)    
   > **HacklympicsAPI** - RESTful API (Java 8)    
-  > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)
+  > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)    
 
 * Library used
-  > **[JFoenix](https://github.com/jfoenixadmin/JFoenix)** - JavaFX Material Design Library
-  > **[GSON](https://github.com/google/gson)** -  JSON Library. Used for passing data between Django and HacklympicsAPI
-  > **[FontawesomeFX](https://bitbucket.org/Jerady/fontawesomefx)** - Icon Library
+  > **[JFoenix](https://github.com/jfoenixadmin/JFoenix)** - JavaFX Material Design Library    
+  > **[GSON](https://github.com/google/gson)** -  JSON Library. Used for passing data between Django and HacklympicsAPI    
+  > **[FontawesomeFX](https://bitbucket.org/Jerady/fontawesomefx)** - Icon Library    
+  > **[RichTextFX](https://github.com/FXMisc/RichTextFX)** - RichText Area for JavaFX. Used for code areas    
+  > **[TerminalFX](https://github.com/javaterminal/TerminalFX)** - A Terminal Emulator written in JavaFX 8    
 
  * Design Pattern used
    > Singleton Pattern
