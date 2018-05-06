@@ -217,11 +217,12 @@
 
 /* FileTab / CodeArea Related */
 .minimal-tab {
-    -fx-pref-width: 135;
+    -fx-pref-width: 160;
     -fx-pref-height: 35;
     -fx-border-width: 2px;
     -fx-border-color: #cacaca;
     -fx-background-color: #cacaca;
+    -fx-font-size: 12px;
 }
 
 .minimal-tab:selected {

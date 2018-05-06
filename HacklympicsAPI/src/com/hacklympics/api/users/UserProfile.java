@@ -57,7 +57,7 @@ public class UserProfile {
     
     @Override
     public String toString() {
-        return String.format("<UserProfile: %s>", getFullname());
+        return String.format("%s", getFullname());
     }
     
 }

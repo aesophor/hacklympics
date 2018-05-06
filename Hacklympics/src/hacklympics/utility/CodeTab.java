@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.control.Tab;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.fxmisc.richtext.CodeArea;
@@ -70,6 +71,7 @@ public class CodeTab extends Tab {
     private final VBox vbox;
     private final CodeArea codeArea;
     private File file;
+    private boolean unsaved;
     
     public CodeTab() {
         super("Untitled");
@@ -85,6 +87,10 @@ public class CodeTab extends Tab {
         
         codeArea.replaceText(0, 0, SAMPLE_CODE);
         
+        codeArea.setOnKeyPressed((KeyEvent event) -> {
+            markAsUnsaved();
+        });
+        
         
         vbox = new VBox();
         vbox.getStyleClass().add("code-vbox");
@@ -98,6 +104,9 @@ public class CodeTab extends Tab {
         
         getStyleClass().add("minimal-tab");
         setContent(anchorPane);
+        
+        
+        markAsUnsaved();
     }
     
     public CodeTab(File file) {
@@ -147,6 +156,7 @@ public class CodeTab extends Tab {
             }
             
             codeArea.replaceText(content.toString());
+            unsaved = false;
             br.close();
         }
     }
@@ -159,6 +169,16 @@ public class CodeTab extends Tab {
             bw.close();
             
             setText(getFilename());
+            unsaved = false;
+        }
+    }
+    
+    
+    private void markAsUnsaved() {
+        if (unsaved == false) {
+            unsaved = true;
+            String title = getText();
+            setText(String.format("* %s", title));
         }
     }
     

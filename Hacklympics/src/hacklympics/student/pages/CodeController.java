@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
@@ -89,7 +88,7 @@ public class CodeController implements Initializable {
                 AlertDialog alert = new AlertDialog(
                         dialogPane,
                         "Error",
-                        "Unable to open the selected file."
+                        "Unable to open the specified file."
                 );
                 
                 alert.show();
@@ -220,7 +219,7 @@ public class CodeController implements Initializable {
                     AlertDialog submitted = new AlertDialog(
                             dialogPane,
                             "Tips",
-                            "You have already submitted your code for this problem."
+                            "You've already submitted your code for this problem."
                     );
                     
                     submitted.show();
@@ -285,13 +284,10 @@ public class CodeController implements Initializable {
                 selectedProblem.getTitle(),
                 selectedProblem.getDesc()
         );
-        
+        dialogPane.setMaxWidth(124.0);
+        dialogPane.setPrefWidth(124.0);
         submitted.show();
     }
-    
-    
-    
-    
     
     
     private CodeTab newCodeTab() {
@@ -329,19 +325,6 @@ public class CodeController implements Initializable {
     private void closeTerminal() {
         terminalPane.setOpacity(0);
         terminalPane.setMouseTransparent(true);
-    }
-    
-    
-    public void markAsUnsaved(KeyEvent e) {
-        markAsUnsaved();
-    }
-    
-    private void markAsUnsaved() {
-        //filenameLabel.setText(String.format("* [%s]", filename));
-    }
-    
-    private void markAsSaved() {
-        //filenameLabel.setText(String.format("%s", filename));
     }
     
     
