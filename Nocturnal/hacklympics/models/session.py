@@ -1,5 +1,5 @@
 from hacklympics.exceptions import AlreadyLoggedIn, NotLoggedIn
-from hacklympics.models import *
+from hacklympics.models.models import *
 
 class OnlineUsers:
     users = []

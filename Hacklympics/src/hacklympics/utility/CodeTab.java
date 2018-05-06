@@ -183,6 +183,10 @@ public class CodeTab extends Tab {
     }
     
     
+    public String getFilepath() {
+        return (file == null) ? "Untitled" : file.getAbsolutePath();
+    }
+    
     public String getFilename() {
         if (file == null) {
             return "Untitled";
@@ -192,9 +196,10 @@ public class CodeTab extends Tab {
         }
     }
     
-    public String getAbsolutePath() {
-        return (file == null) ? "Untitled" : file.getAbsolutePath();
+    public String getLocation() {
+        return file.getAbsoluteFile().getParent().toString();
     }
+    
     
     public File getFile() {
         return file;

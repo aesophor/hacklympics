@@ -1,5 +1,5 @@
-from hacklympics.models import *
 from subprocess import call, check_output, CalledProcessError
+from hacklympics.models.models import *
 
 import os
 

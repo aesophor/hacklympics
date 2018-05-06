@@ -2,7 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
 from hacklympics.status_code import StatusCode
-from hacklympics.models import *
+from hacklympics.models.models import *
 
 import json
 

@@ -3,8 +3,8 @@ from django.http import JsonResponse
 
 from hacklympics.exceptions import AlreadySubmitted
 from hacklympics.status_code import StatusCode
-from hacklympics.models import *
-from hacklympics.judge import *
+from hacklympics.models.models import *
+from hacklympics.views.judge import *
 
 import json
 

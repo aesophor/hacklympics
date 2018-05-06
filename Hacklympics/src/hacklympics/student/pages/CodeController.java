@@ -148,17 +148,24 @@ public class CodeController implements Initializable {
     public void compile(ActionEvent event) throws IOException {
         showTerminal();
         
+        CodeTab current = getCurrentTab();
+        String location = current.getLocation();
+        String filepath = current.getFilepath();
+        
         terminal.onTerminalFxReady(() -> {
-            terminal.command(String.join(" ", "javac", getCurrentTab().getFilename(), "\r"));
+            terminal.command(String.join(" ", "javac", "-cp", location, filepath, "\r"));
         });
     }
     
     public void execute(ActionEvent event) {
         showTerminal();
         
-        String className = getCurrentTab().getFilename().split("[.]")[0];
+        CodeTab current = getCurrentTab();
+        String location = current.getLocation();
+        String className = current.getFilename().split("[.]")[0];
+        
         terminal.onTerminalFxReady(() -> {
-            terminal.command(String.join(" ", "java", className, "\r"));
+            terminal.command(String.join(" ", "java", "-cp", location, className, "\r"));
         });
     }
     
@@ -308,7 +315,7 @@ public class CodeController implements Initializable {
     
     private void updateAbsolutePathLabel() {
         CodeTab current = getCurrentTab();
-        String filename = (current == null) ? "" : current.getAbsolutePath();
+        String filename = (current == null) ? "" : current.getFilepath();
         absolutePathLabel.setText(filename);
     }
     

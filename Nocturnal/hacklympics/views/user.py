@@ -4,8 +4,8 @@ from django.http import JsonResponse
 
 from hacklympics.exceptions import AlreadyLoggedIn, NotLoggedIn
 from hacklympics.status_code import StatusCode
-from hacklympics.session import OnlineUsers
-from hacklympics.models import *
+from hacklympics.models.session import OnlineUsers
+from hacklympics.models.models import *
 
 import json
 
