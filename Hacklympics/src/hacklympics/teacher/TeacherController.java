@@ -21,11 +21,12 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.users.User;
+import com.hacklympics.api.session.UserController;
+import com.hacklympics.api.user.User;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.ConfirmDialog;
 
-public class TeacherController implements Initializable {
+public class TeacherController implements Initializable, UserController {
     
     private Map<String, AnchorPane> pages;
     private Map<String, Object> controllers;
@@ -39,11 +40,11 @@ public class TeacherController implements Initializable {
     @FXML
     private JFXButton logoutBtn;
     @FXML
-    private JFXListView onlineUsersList;
+    private JFXListView onlineUserList;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initOnlineUsersList();
+        initOnlineUserList();
         initPages();
         showPage(pages.get("dashboard"));
         
@@ -84,10 +85,14 @@ public class TeacherController implements Initializable {
         }
     }
     
-    private void initOnlineUsersList() {
-        Label andrey = new Label("Andrey");
-        andrey.getStyleClass().add("online-user-label");
-        onlineUsersList.getItems().add(andrey);
+    private void initOnlineUserList() {
+        onlineUserList.getStyleClass().add("online-user-list");
+        updateOnlineUserList();
+    }
+    
+    public void updateOnlineUserList() {
+        onlineUserList.getItems().clear();
+        onlineUserList.getItems().addAll(User.getOnlineUsers());
     }
     
     private void setGreetingMsg() {

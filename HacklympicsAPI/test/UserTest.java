@@ -3,10 +3,10 @@
 import java.io.IOException;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.users.UserProfile;
-import com.hacklympics.api.users.Student;
-import com.hacklympics.api.users.Teacher;
-import com.hacklympics.api.users.User;
+import com.hacklympics.api.user.UserProfile;
+import com.hacklympics.api.user.Student;
+import com.hacklympics.api.user.Teacher;
+import com.hacklympics.api.user.User;
 import com.hacklympics.api.utility.Utils;
 
 public class UserTest {

@@ -1,8 +1,8 @@
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.materials.Course;
-import com.hacklympics.api.materials.Exam;
-import com.hacklympics.api.materials.Problem;
-import com.hacklympics.api.materials.Answer;
+import com.hacklympics.api.material.Course;
+import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.material.Problem;
+import com.hacklympics.api.material.Answer;
 
 public class AnswerTest {
     

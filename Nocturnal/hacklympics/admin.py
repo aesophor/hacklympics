@@ -1,5 +1,5 @@
 from django.contrib import admin
-from hacklympics.models.models import *
+from hacklympics.models import *
 
 # Register your models here.
 admin.site.register(User)

@@ -128,7 +128,7 @@
                   <AnchorPane prefHeight="325.0" prefWidth="266.0">
                      <children>
                         <Label layoutX="14.0" layoutY="313.0" text="Hacklympics Alpha (22042018)" textFill="#aeaeae" />
-                        <JFXListView fx:id="onlineUsersList" layoutX="24.0" layoutY="116.0" prefHeight="184.0" prefWidth="201.0" style="-fx-background-color: transparent;" />
+                        <JFXListView fx:id="onlineUserList" layoutX="24.0" layoutY="116.0" prefHeight="184.0" prefWidth="201.0" style="-fx-background-color: transparent;" />
                         <Label layoutX="25.0" layoutY="78.0" text="ONLINE USERS" textFill="#b1b1b1" />
                         <Line endX="100.0" layoutX="125.0" layoutY="69.0" startX="-100.0" stroke="#b1b1b1" />
                      </children>

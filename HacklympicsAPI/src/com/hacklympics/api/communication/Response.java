@@ -45,7 +45,10 @@ public class Response {
     
     @Override
     public String toString() {
-        return statusCode.toString();
+        JsonObject json = new JsonObject();
+        json.addProperty("statusCode", statusCode.ordinal());
+        json.add("content", new Gson().toJsonTree(content));
+        return json.toString();
     }
     
 }

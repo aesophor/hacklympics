@@ -5,14 +5,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.materials.Course;
-import com.hacklympics.api.users.User;
+import com.hacklympics.api.material.Course;
+import com.hacklympics.api.user.User;
 
 public class GsonParse {
     
     public static void main(String[] args) {
         
-        
+        /*
         Response list = User.list();
         
         if (list.success()) {
@@ -23,15 +23,16 @@ public class GsonParse {
                 System.out.println(e);
             }
         }
+        */
         
         
-        /*
+        
         Response list = Course.list();
         
         if (list.success()) {
-            String raw = new Gson().toJson(list.getContent().get("courses"));
-            System.out.println(raw);
+            System.out.println(list.getContent().get("courses").toString()); // Json Malformed Exception.
             
+            String raw = new Gson().toJson(list.getContent().get("courses"));
             JsonArray courses = new Gson().fromJson(raw, JsonArray.class);
             System.out.println(courses);
             
@@ -39,7 +40,7 @@ public class GsonParse {
                 System.out.println(e);
             }
         }
-        */
+        
     }
     
 }

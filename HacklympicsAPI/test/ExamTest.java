@@ -1,6 +1,6 @@
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.materials.Course;
-import com.hacklympics.api.materials.Exam;
+import com.hacklympics.api.material.Course;
+import com.hacklympics.api.material.Exam;
 
 public class ExamTest {
     

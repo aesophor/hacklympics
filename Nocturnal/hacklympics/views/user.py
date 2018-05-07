@@ -4,8 +4,10 @@ from django.http import JsonResponse
 
 from hacklympics.exceptions import AlreadyLoggedIn, NotLoggedIn
 from hacklympics.status_code import StatusCode
-from hacklympics.models.session import OnlineUsers
-from hacklympics.models.models import *
+from hacklympics.events.event_type import EventType
+from hacklympics.events.dispatcher import *
+from hacklympics.sessions import OnlineUsers
+from hacklympics.models import *
 
 import json
 
@@ -48,7 +50,9 @@ def list_online(request):
     response_data["content"] = {
         "users": [{
             "username": user.username,
-            "role": user.role
+            "fullname": user.fullname,
+            "graduationYear": user.graduation_year,
+            "isStudent": user.is_student
         } for user in OnlineUsers.users]
     }
 
@@ -101,12 +105,23 @@ def login(request):
         OnlineUsers.add(user.username)
         OnlineUsers.update(username=username, last_login_ip=login_ip)
         OnlineUsers.show()
+        
+        event = {"eventType": EventType.LOGIN}
+        event["content"] = {
+            "username": user.username,
+            "fullname": user.fullname,
+            "graduationYear": user.graduation_year,
+            "isStudent": user.is_student
+        }
+        dispatch(json.dumps(event), OnlineUsers.users)
     except AlreadyLoggedIn:
         response_data["statusCode"] = StatusCode.ALREADY_LOGGED_IN
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.VALIDATION_ERR
+    except Exception as e:
+        print(e)
 
     return JsonResponse(response_data)
 

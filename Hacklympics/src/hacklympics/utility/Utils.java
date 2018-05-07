@@ -14,14 +14,12 @@ public class Utils {
         
     }
     
-    
     public static void loadStage(FXMLLoader loader) {
         try {
             Parent root = loader.load();
-            Session.getInstance().setMainController(loader.getController());
-            
             Stage stage = new Stage();
             Scene scene = new Scene(root);
+            
             stage.initStyle(StageStyle.UNDECORATED);
             stage.setTitle("Hacklympics");
             stage.setScene(scene);
@@ -29,6 +27,11 @@ public class Utils {
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
+    }
+    
+    public static void loadUserStage(FXMLLoader loader) {
+        loadStage(loader);
+        Session.getInstance().setMainController(loader.getController());
     }
     
 }

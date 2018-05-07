@@ -3,8 +3,8 @@ from django.http import JsonResponse
 
 from hacklympics.exceptions import AlreadySubmitted
 from hacklympics.status_code import StatusCode
-from hacklympics.models.models import *
-from hacklympics.views.judge import *
+from hacklympics.models import *
+from hacklympics.judge import *
 
 import json
 
@@ -61,7 +61,7 @@ def create(request, c_id, e_id, p_id):
         if len(answers.all().filter(student_id=student)) > 0:
             raise AlreadySubmitted('Student' + student + 'has already submitted an answer!')
         
-        filepath = "/".join([".", "data", course.teacher_id, course.name, exam.title, problem.title, student, filename])
+        filepath = "/".join([".", "answers", course.teacher_id, course.name, exam.title, problem.title, student, filename])
         answer = answers.create(
             filepath = filepath,
             source_code = source_code,

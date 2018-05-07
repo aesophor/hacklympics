@@ -17,11 +17,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
-import com.hacklympics.api.materials.Course;
-import com.hacklympics.api.materials.Exam;
-import com.hacklympics.api.materials.Problem;
+import com.hacklympics.api.material.Course;
+import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.users.Student;
+import com.hacklympics.api.user.Student;
 import hacklympics.student.StudentController;
 import hacklympics.utility.ConfirmDialog;
 

@@ -37,10 +37,6 @@
     -jfx-focus-color: -fx-lightblue;
 }
 
-.online-user-label {
-    -fx-text-fill: -fx-white;
-}
-
 
 /* JFXTabPane */
 .tab {
@@ -81,7 +77,7 @@
 /* JFXListView */
 .jfx-list-cell {
     -fx-background-color: transparent;
-    -fx-text-fill: black;
+    -fx-text-fill: -fx-black;
 }
 
 .jfx-list-cell:focused {
@@ -92,6 +88,25 @@
 .jfx-list-cell:selected {
     -fx-background-color: -fx-lightblue;
     -fx-text-fill: white;
+}
+
+
+.online-user-list .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-white;
+}
+.online-user-list .list-cell .jfx-rippler {
+    -jfx-rippler-fill: -fx-darkblue;
+}
+
+.online-user-list:focused .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-white;
+}
+
+.online-user-list:selected .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-white;
 }
 
 

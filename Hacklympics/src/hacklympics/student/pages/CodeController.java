@@ -19,11 +19,11 @@ import com.kodedu.terminalfx.TerminalTab;
 import com.kodedu.terminalfx.TerminalBuilder;
 import com.kodedu.terminalfx.config.TerminalConfig;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.materials.Answer;
-import com.hacklympics.api.materials.Exam;
-import com.hacklympics.api.materials.Problem;
+import com.hacklympics.api.material.Answer;
+import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.users.Student;
+import com.hacklympics.api.user.Student;
 import hacklympics.utility.CodeTab;
 import hacklympics.utility.AlertDialog;
 import hacklympics.utility.ConfirmDialog;
@@ -282,6 +282,7 @@ public class CodeController implements Initializable {
         }
     }
     
+    // Still buggy. DialogTextWrapper needed.
     public void showHint(ActionEvent e) {
         Problem selectedProblem = (Problem) problemBox.getSelectionModel().getSelectedItem();
         if (selectedProblem == null) return;

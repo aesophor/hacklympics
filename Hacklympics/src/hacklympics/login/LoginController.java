@@ -1,5 +1,7 @@
 package hacklympics.login;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyEvent;
@@ -10,10 +12,11 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXPasswordField;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
+import com.hacklympics.api.event.EventListener;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.users.User;
-import com.hacklympics.api.users.Student;
-import com.hacklympics.api.users.Teacher;
+import com.hacklympics.api.user.User;
+import com.hacklympics.api.user.Student;
+import com.hacklympics.api.user.Teacher;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.Utils;
 
@@ -44,18 +47,21 @@ public class LoginController {
                     case "student":
                         Session.getInstance().setCurrentUser(new Student(username));
                         String studentFXML = FXMLTable.getInstance().get("Student");
-                        Utils.loadStage(new FXMLLoader(getClass().getResource(studentFXML)));
+                        Utils.loadUserStage(new FXMLLoader(getClass().getResource(studentFXML)));
                         break;
                         
                     case "teacher":
                         Session.getInstance().setCurrentUser(new Teacher(username));
                         String teacherFXML = FXMLTable.getInstance().get("Teacher");
-                        Utils.loadStage(new FXMLLoader(getClass().getResource(teacherFXML)));
+                        Utils.loadUserStage(new FXMLLoader(getClass().getResource(teacherFXML)));
                         break;
                         
                     default:
                         break;
                 }
+                
+                // Logout ... shutdown EventListener! Place it in Session?
+                
                 
                 loginBtn.getScene().getWindow().hide();
                 

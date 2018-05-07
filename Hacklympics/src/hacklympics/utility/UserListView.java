@@ -5,10 +5,10 @@ import javafx.scene.control.SelectionMode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import com.jfoenix.controls.JFXListView;
-import com.hacklympics.api.users.Role;
-import com.hacklympics.api.users.User;
-import com.hacklympics.api.users.Student;
-import com.hacklympics.api.users.Teacher;
+import com.hacklympics.api.user.Role;
+import com.hacklympics.api.user.User;
+import com.hacklympics.api.user.Student;
+import com.hacklympics.api.user.Teacher;
 
 public class UserListView {
     

@@ -13,7 +13,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import com.google.gson.Gson;
 import com.jfoenix.controls.JFXTextField;
-import com.hacklympics.api.users.Student;
+import com.hacklympics.api.user.Student;
 
 public class StudentsController implements Initializable {
     
