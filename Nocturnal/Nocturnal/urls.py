@@ -15,7 +15,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from hacklympics.views import user, course, exam, problem, answer
+from hacklympics.views import user, course, exam, problem, answer, message
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -28,6 +28,10 @@ urlpatterns = [
     url(r'^user/register$', user.register),
     url(r'^user/reset$', user.reset),
     url(r'^user/(?P<username>[\w.@+-]+)$', user.get),
+
+    url(r'^user/(?P<username>[\w.@+-]+)/message$', message.list),
+    url(r'^user/(?P<username>[\w.@+-]+)/message/create$', message.create),
+    url(r'^user/(?P<username>[\w.@+-]+)/message/(?P<m_id>\d+)$', message.get),
 
     url(r'^course$', course.list),
     url(r'^course/create$', course.create),

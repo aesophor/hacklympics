@@ -136,7 +136,7 @@ class Report(models.Model):
         return self.score
 
 
-class ChatMsg(models.Model):
+class Message(models.Model):
     source_ip = models.CharField(max_length=16)
     content = models.CharField(max_length=256)
     user = models.ForeignKey("User")
@@ -149,7 +149,7 @@ class ChatMsg(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.content
+        return ": ".join((self.user.fullname, self.content))
 
 
 class Snapshot(models.Model):
