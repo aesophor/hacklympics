@@ -41,7 +41,6 @@ public class RegisterController implements Initializable {
     }
 
     
-    @FXML
     public void register(ActionEvent e) {
         if (!isFormValid()) {
             warningMsg.setText("Please fill out all the required fields.");
@@ -75,14 +74,12 @@ public class RegisterController implements Initializable {
         }
     }
     
-    @FXML
     public void back(ActionEvent e) {
         String registerFXML = FXMLTable.getInstance().get("Login");
         Utils.loadStage(new FXMLLoader(getClass().getResource(registerFXML)));
         registerBtn.getScene().getWindow().hide();
     }
     
-    @FXML
     private void clearWarningMsg(KeyEvent event) {
         warningMsg.setText("");
     }

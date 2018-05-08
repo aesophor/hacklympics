@@ -14,12 +14,6 @@ public class EventListener implements Runnable {
     
     private EventListener(int port) {
         this.port = port;
-        
-        try {
-            serverSocket = new ServerSocket(port);
-        } catch (IOException ioe) {
-            System.out.println("[-] Unable to start EventListener: " + ioe);
-        }
     }
 
     public static EventListener getInstance() {
@@ -36,6 +30,8 @@ public class EventListener implements Runnable {
         System.out.printf("[*] Started Event Listener on port %d\n", port);
         
         try {
+            serverSocket = new ServerSocket(port);
+            
             while (true) {
                 client = serverSocket.accept();
                 
@@ -48,18 +44,17 @@ public class EventListener implements Runnable {
                 client.close();
             }
         } catch (IOException ioe) {
-            System.out.println("Shutting down...");
-            ioe.printStackTrace();
+            
         }
     }
     
-    
-    public ServerSocket getServerSocket() {
-        return serverSocket;
-    }
-    
-    public Socket getClient() {
-        return client;
+    public void close() {
+        try {
+            System.out.println("[*] Shutting down Event Listener...");
+            serverSocket.close();
+        } catch (IOException ioe) {
+            System.out.println("[-] Failed to shutdown Event Listener.");
+        }
     }
 
 }

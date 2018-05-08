@@ -1,5 +1,6 @@
 package hacklympics.teacher;
 
+import com.hacklympics.api.event.EventListener;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -8,10 +9,6 @@ import java.util.HashMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
@@ -21,12 +18,13 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.session.UserController;
+import com.hacklympics.api.session.Session.MainController;
 import com.hacklympics.api.user.User;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.ConfirmDialog;
+import hacklympics.utility.Utils;
 
-public class TeacherController implements Initializable, UserController {
+public class TeacherController implements Initializable, MainController {
     
     private Map<String, AnchorPane> pages;
     private Map<String, Object> controllers;
@@ -45,10 +43,10 @@ public class TeacherController implements Initializable, UserController {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initOnlineUserList();
+        setGreetingMsg();
+        
         initPages();
         showPage(pages.get("dashboard"));
-        
-        setGreetingMsg();
     }
     
     
@@ -92,13 +90,7 @@ public class TeacherController implements Initializable, UserController {
     
     public void updateOnlineUserList() {
         onlineUserList.getItems().clear();
-        onlineUserList.getItems().addAll(User.getOnlineUsers());
-    }
-    
-    private void setGreetingMsg() {
-        User current = Session.getInstance().getCurrentUser();
-        String greetingMsg = String.format("Welcome, %s", current.getProfile().getFullname());
-        bannerMsg.setText(greetingMsg);
+        onlineUserList.getItems().addAll(Session.getInstance().getOnlineUsers());
     }
     
     
@@ -139,25 +131,22 @@ public class TeacherController implements Initializable, UserController {
             Response logout = Session.getInstance().getCurrentUser().logout();
             
             if (logout.success()) {
-                try {
-                    String loginFXML = FXMLTable.getInstance().get("Login");
-                    Parent root = FXMLLoader.load(getClass().getResource(loginFXML));
-                    Scene scene = new Scene(root);
-                    Stage stage = new Stage();
-                    stage.initStyle(StageStyle.UNDECORATED);
-                    stage.setScene(scene);
-                    stage.show();
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                
+                String loginFXML = FXMLTable.getInstance().get("Login");
+                Utils.loadStage(new FXMLLoader(getClass().getResource(loginFXML)));
                 logoutBtn.getScene().getWindow().hide();
+                
+                EventListener.getInstance().close();
             }
         });
         
         confirm.show();
     }
     
+    private void setGreetingMsg() {
+        User current = Session.getInstance().getCurrentUser();
+        String greetingMsg = String.format("Welcome, %s", current.getFullname());
+        bannerMsg.setText(greetingMsg);
+    }
     
     public Map<String, Object> getControllers() {
         return controllers;

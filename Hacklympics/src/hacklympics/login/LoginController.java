@@ -1,7 +1,5 @@
 package hacklympics.login;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.input.KeyEvent;
@@ -19,8 +17,12 @@ import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.Utils;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class LoginController {
+    
+    private User user;
     
     @FXML
     private Label warningMsg;
@@ -32,7 +34,6 @@ public class LoginController {
     private JFXButton loginBtn;
     
     
-    @FXML
     public void login(ActionEvent e) {
         String username = usernameField.getText();
         String password = passwordField.getText();
@@ -45,27 +46,32 @@ public class LoginController {
             
                 switch (role) {
                     case "student":
-                        Session.getInstance().setCurrentUser(new Student(username));
+                        user = new Student(username);
+                        Session.getInstance().clear();
+                        Session.getInstance().setCurrentUser(user);
+                        
                         String studentFXML = FXMLTable.getInstance().get("Student");
                         Utils.loadUserStage(new FXMLLoader(getClass().getResource(studentFXML)));
+                        loginBtn.getScene().getWindow().hide();
                         break;
                         
                     case "teacher":
-                        Session.getInstance().setCurrentUser(new Teacher(username));
+                        user = new Teacher(username);
+                        Session.getInstance().clear();
+                        Session.getInstance().setCurrentUser(user);
+                        
                         String teacherFXML = FXMLTable.getInstance().get("Teacher");
                         Utils.loadUserStage(new FXMLLoader(getClass().getResource(teacherFXML)));
+                        loginBtn.getScene().getWindow().hide();
                         break;
                         
                     default:
                         break;
                 }
+                // TODO: Shutdown eventListener upon logout.
+                //ExecutorService executor = Executors.newCachedThreadPool();
+                //executor.execute(EventListener.getInstance());
                 
-                // Logout ... shutdown EventListener! Place it in Session?
-                
-                
-                loginBtn.getScene().getWindow().hide();
-                
-                // Add ShutdownHook for auto logout upon exit.
             } else {
                 StatusCode statusCode = login.getStatusCode();
                 
@@ -89,7 +95,7 @@ public class LoginController {
         }
     }
     
-    @FXML
+    
     public void register(ActionEvent e) {
         String registerFXML = FXMLTable.getInstance().get("Register");
         Utils.loadStage(new FXMLLoader(getClass().getResource(registerFXML)));
@@ -97,12 +103,10 @@ public class LoginController {
         loginBtn.getScene().getWindow().hide();
     }
     
-    @FXML
     public void exit(ActionEvent e) {
         System.exit(0);
     }
     
-    @FXML
     public void clearWarningMsg(KeyEvent e) {
         warningMsg.setText("");
     }

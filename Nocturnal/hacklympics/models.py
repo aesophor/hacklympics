@@ -139,7 +139,7 @@ class Report(models.Model):
 class ChatMsg(models.Model):
     source_ip = models.CharField(max_length=16)
     content = models.CharField(max_length=256)
-    username = models.ForeignKey("User")
+    user = models.ForeignKey("User")
 
     create_time = models.DateTimeField(editable=False)
 

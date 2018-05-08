@@ -2,24 +2,25 @@ package com.hacklympics.api.session;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ListChangeListener;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.user.User;
-import javafx.collections.ListChangeListener;
 
 public class Session {
+    
+    public interface MainController {
+        public void updateOnlineUserList();
+    }
     
     private static Session session;
     
     private ObservableList<User> onlineUsers;
-    private UserController mainController;
+    private MainController mainController;
     private User currentUser;
     private Exam currentExam;
     
     private Session() {
-        onlineUsers = FXCollections.observableArrayList();
-        onlineUsers.addListener((ListChangeListener.Change<? extends User> c) -> {
-            mainController.updateOnlineUserList();
-        });
+        clear();
     }
     
     public static Session getInstance() {
@@ -30,12 +31,21 @@ public class Session {
         return session;
     }
     
+    public void clear() {
+        onlineUsers = FXCollections.observableArrayList();
+        onlineUsers.setAll(User.getOnlineUsers());
+        
+        onlineUsers.addListener((ListChangeListener.Change<? extends User> c) -> {
+            mainController.updateOnlineUserList();
+        });
+    }
+    
     
     public ObservableList<User> getOnlineUsers() {
         return onlineUsers;
     }
     
-    public UserController getMainController() {
+    public MainController getMainController() {
         return mainController;
     }
     
@@ -48,7 +58,7 @@ public class Session {
     }
     
     
-    public void setMainController(UserController mainController) {
+    public void setMainController(MainController mainController) {
         this.mainController = mainController;
     }
     

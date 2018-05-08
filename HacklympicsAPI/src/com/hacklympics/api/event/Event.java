@@ -36,8 +36,10 @@ public class Event {
     @Override
     public String toString() {
         JsonObject json = new JsonObject();
+        
         json.addProperty("eventType", eventType.ordinal());
         json.add("content", new Gson().toJsonTree(content));
+        
         return json.toString();
     }
     

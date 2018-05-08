@@ -113,6 +113,7 @@ def login(request):
             "graduationYear": user.graduation_year,
             "isStudent": user.is_student
         }
+        print(json.dumps(event))
         dispatch(json.dumps(event), OnlineUsers.users)
     except AlreadyLoggedIn:
         response_data["statusCode"] = StatusCode.ALREADY_LOGGED_IN

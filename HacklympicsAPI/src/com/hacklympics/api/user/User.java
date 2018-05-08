@@ -11,6 +11,7 @@ import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class User {
     
@@ -52,7 +53,8 @@ public abstract class User {
     }
     
     public static Response register(String username, String password,
-                                    String fullname, int graduationYear) {
+            String fullname, int graduationYear) {
+        
         String uri = String.format("user/register");
         
         JsonObject json = new JsonObject();
@@ -138,6 +140,25 @@ public abstract class User {
     
     public SimpleIntegerProperty gradYearProperty() {
         return profile.gradYearProperty();
+    }
+    
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) return true;
+        if (!(o instanceof User)) return false;
+        
+        User that = (User) o;
+        return this.hashCode() == that.hashCode();
+    }
+    
+    @Override
+    public int hashCode() {
+        int hash = 17;
+        hash = 37*hash + Objects.hashCode(getUsername());
+        hash = 37*hash + Objects.hashCode(getFullname());
+        hash = 37*hash + Objects.hashCode(getGradYear());
+        return hash;
     }
     
     @Override

@@ -96,7 +96,7 @@
     -fx-text-fill: -fx-white;
 }
 .online-user-list .list-cell .jfx-rippler {
-    -jfx-rippler-fill: -fx-darkblue;
+    -jfx-rippler-fill: transparent;
 }
 
 .online-user-list:focused .list-cell {
