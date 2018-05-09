@@ -1,13 +1,15 @@
 from hacklympics.events.event_type import EventType
+from hacklympics.events.events import *
 
 import socket
 import json
 
 
-def dispatch(json: str, users: list):    
+def dispatch(event: Event, users: list):
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
+    
+    print("--> dispatching ev: ", event, " to ", users)
     for user in users:
-        json += "\n"
+        evmsg = event + "\n"
         s.connect((user.last_login_ip, 8001))
-        s.send(json.encode("utf-8"))
+        s.send(evmsg.encode("utf-8"))

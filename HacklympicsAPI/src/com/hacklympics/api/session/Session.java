@@ -5,6 +5,8 @@ import javafx.collections.ObservableList;
 import javafx.collections.ListChangeListener;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.user.User;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class Session {
     
@@ -14,12 +16,14 @@ public class Session {
     
     private static Session session;
     
+    private ExecutorService executor;
     private ObservableList<User> onlineUsers;
     private MainController mainController;
     private User currentUser;
     private Exam currentExam;
     
     private Session() {
+        executor = Executors.newCachedThreadPool();
         clear();
     }
     
@@ -40,6 +44,10 @@ public class Session {
         });
     }
     
+    
+    public ExecutorService getExecutor() {
+        return executor;
+    }
     
     public ObservableList<User> getOnlineUsers() {
         return onlineUsers;

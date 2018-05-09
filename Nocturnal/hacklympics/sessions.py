@@ -1,4 +1,6 @@
 from hacklympics.exceptions import AlreadyLoggedIn, NotLoggedIn
+from hacklympics.events.events import *
+from hacklympics.events.dispatcher import *
 from hacklympics.models import *
 
 class OnlineUsers:
@@ -7,16 +9,22 @@ class OnlineUsers:
     @staticmethod
     def add(username):
         if not OnlineUsers.has(username):
-            OnlineUsers.users.append( User.objects.get(username=username) )
+            user = User.objects.get(username=username)
+            
+            dispatch(LoginEvent(user), OnlineUsers.users)
+            OnlineUsers.users.append(user)
         else:
             raise AlreadyLoggedIn("This user has already logged in.")
 
     @staticmethod
     def remove(username):
         if OnlineUsers.has(username):
-            OnlineUsers.users.remove( OnlineUsers.get(username) )
+            user = User.objects.get(username=username)
+            
+            OnlineUsers.users.remove(user)
+            dispatch(LogoutEvent(user), OnlineUsers.users)
         else:
-            raise NotLoggedIn("This user has not logged in yet.")
+            raise NotLoggedIn("This user has already logged out.")
 
     @staticmethod
     def update(**kwargs):

@@ -4,8 +4,6 @@ from django.http import JsonResponse
 
 from hacklympics.exceptions import AlreadyLoggedIn, NotLoggedIn
 from hacklympics.status_code import StatusCode
-from hacklympics.events.event_type import EventType
-from hacklympics.events.dispatcher import *
 from hacklympics.sessions import OnlineUsers
 from hacklympics.models import *
 
@@ -105,24 +103,12 @@ def login(request):
         OnlineUsers.add(user.username)
         OnlineUsers.update(username=username, last_login_ip=login_ip)
         OnlineUsers.show()
-        
-        event = {"eventType": EventType.LOGIN}
-        event["content"] = {
-            "username": user.username,
-            "fullname": user.fullname,
-            "graduationYear": user.graduation_year,
-            "isStudent": user.is_student
-        }
-        print(json.dumps(event))
-        dispatch(json.dumps(event), OnlineUsers.users)
     except AlreadyLoggedIn:
         response_data["statusCode"] = StatusCode.ALREADY_LOGGED_IN
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.VALIDATION_ERR
-    except Exception as e:
-        print(e)
 
     return JsonResponse(response_data)
 
@@ -134,6 +120,8 @@ def logout(request):
         req_body = json.loads(request.body.decode("utf-8"))
         
         username = req_body["username"]
+        
+        user = User.objects.get(username=username)
         
         OnlineUsers.remove(username)
         OnlineUsers.show()
@@ -163,6 +151,8 @@ def update(request):
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.NOT_REGISTERED
+
+    return JsonResponse(response_data)
 
 
 # This method probably needs better naming...

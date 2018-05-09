@@ -42,8 +42,9 @@ public class LoginController {
             Response login = User.login(username, password);
             
             if (login.success()) {
+                Session.getInstance().getExecutor().execute(EventListener.getInstance());
+                
                 String role = login.getContent().get("role").toString();
-            
                 switch (role) {
                     case "student":
                         user = new Student(username);
@@ -69,9 +70,6 @@ public class LoginController {
                         break;
                 }
                 // TODO: Shutdown eventListener upon logout.
-                //ExecutorService executor = Executors.newCachedThreadPool();
-                //executor.execute(EventListener.getInstance());
-                
             } else {
                 StatusCode statusCode = login.getStatusCode();
                 
