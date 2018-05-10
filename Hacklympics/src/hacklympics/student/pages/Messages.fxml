@@ -9,9 +9,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="592.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.pages.MessagesController">
+<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" style="-fx-background-color: #dfdfdf;" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.pages.MessagesController">
    <children>
-      <VBox layoutY="35.0" prefHeight="639.0" prefWidth="776.0">
+      <VBox layoutY="35.0" prefHeight="639.0" prefWidth="776.0" style="-fx-background-color: #eff1f5;">
          <children>
             <TextArea fx:id="messageBoard" editable="false" prefHeight="533.0" prefWidth="726.0">
                <VBox.margin>

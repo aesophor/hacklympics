@@ -47,7 +47,7 @@ public class Event {
                | NoSuchMethodException
                | SecurityException
                | ClassNotFoundException ex) {
-        } 
+        }
         
         return event;
     }

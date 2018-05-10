@@ -82,19 +82,19 @@ public class TeacherController implements Initializable, MainController {
             FXMLLoader coursesLoader = new FXMLLoader(getClass().getResource(coursesFXML));
             FXMLLoader studentsLoader = new FXMLLoader(getClass().getResource(studentsFXML));
             FXMLLoader messagesLoader = new FXMLLoader(getClass().getResource(messagesFXML));
-            //FXMLLoader proctorLoader = new FXMLLoader(getClass().getResource(proctorFXML));
+            FXMLLoader proctorLoader = new FXMLLoader(getClass().getResource(proctorFXML));
             
             pages.put("dashboard", dashboardLoader.load());
             pages.put("courses", coursesLoader.load());
             pages.put("students", studentsLoader.load());
             pages.put("messages", messagesLoader.load());
-            //pages.put("proctor", proctorLoader.load());
+            pages.put("proctor", proctorLoader.load());
             
             controllers.put("dashboard", dashboardLoader.getController());
             controllers.put("courses", coursesLoader.getController());
             controllers.put("students", studentsLoader.getController());
             controllers.put("messages", messagesLoader.getController());
-            //controllers.put("proctor", proctorLoader.getController());
+            controllers.put("proctor", proctorLoader.getController());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
