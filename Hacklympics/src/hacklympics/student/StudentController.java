@@ -59,13 +59,13 @@ public class StudentController implements Initializable, MainController {
         showPage(pages.get("dashboard"));
         
         this.setOnLogin((Event e) -> {
-            LoginEvent login = new LoginEvent(e.toString());
-            onlineUsers.add(login.getLoggedInUser());
+            LoginEvent loginEvent = new LoginEvent(e.toString());
+            onlineUsers.add(loginEvent.getLoggedInUser());
         });
         
         this.setOnLogout((Event e) -> {
-            LogoutEvent logout = new LogoutEvent(e.toString());
-            onlineUsers.remove(logout.getLoggedOutUser());
+            LogoutEvent logoutEvent = new LogoutEvent(e.toString());
+            onlineUsers.remove(logoutEvent.getLoggedOutUser());
         });
     }
 

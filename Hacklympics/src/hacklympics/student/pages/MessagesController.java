@@ -25,8 +25,8 @@ public class MessagesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setOnNewMessage((Event e) -> {
-            NewMessageEvent newMessage = new NewMessageEvent(e.toString());
-            messageBoard.appendText(newMessage.getMessage() + "\n");
+            NewMessageEvent newMessageEvent = new NewMessageEvent(e.toString());
+            messageBoard.appendText(newMessageEvent.getMessage() + "\n");
         });
     }
     
