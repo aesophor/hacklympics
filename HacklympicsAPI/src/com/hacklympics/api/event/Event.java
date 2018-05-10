@@ -13,8 +13,6 @@ public class Event {
     public Event(JsonObject raw) {
         eventType = EventType.values()[raw.get("eventType").getAsInt()];
         
-        // Get the "content" section from json as a JsonObject,
-        // and map it to a HashMap.
         JsonObject rawContent = raw.getAsJsonObject("content");
         content = new Gson().fromJson(rawContent, HashMap.class);
     }

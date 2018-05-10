@@ -7,8 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.ActionEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
@@ -99,12 +99,12 @@ public class CoursesController implements Initializable {
         probTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         probDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
 
-        courseTable.setOnMouseClicked((Event e) -> {
+        courseTable.setOnMouseClicked((MouseEvent e) -> {
             update(examTab, problemTab);
             this.attendExamBtn.setDisable(true);
         });
         
-        examTable.setOnMouseClicked((Event e) -> {
+        examTable.setOnMouseClicked((MouseEvent e) -> {
             update(problemTab);
             this.attendExamBtn.setDisable(false);
         });

@@ -3,10 +3,9 @@ package com.hacklympics.api.user;
 import java.util.Map;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.Utils;
 import java.util.ArrayList;
@@ -15,7 +14,6 @@ import java.util.Objects;
 
 public abstract class User {
     
-    protected static final Gson GSON = new Gson();
     private UserProfile profile;
     
     public User(String username) {

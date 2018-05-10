@@ -55,7 +55,7 @@ class NewMessageEvent(Event):
         event = {"eventType": self.event_type}
         
         event["content"] = {
-            "content": content,
+            "content": self.content,
             "user": {
                 "username": self.user.username,
                 "fullname": self.user.fullname,

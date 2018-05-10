@@ -8,6 +8,9 @@ import java.util.HashMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
@@ -16,7 +19,13 @@ import javafx.event.ActionEvent;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.communication.SocketServer;
+import com.hacklympics.api.event.Event;
+import com.hacklympics.api.event.EventType;
+import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventListener;
+import com.hacklympics.api.event.LoginEvent;
+import com.hacklympics.api.event.LogoutEvent;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.session.Session.MainController;
 import com.hacklympics.api.user.User;
@@ -28,6 +37,7 @@ public class StudentController implements Initializable, MainController {
     
     private Map<String, AnchorPane> pages;
     private Map<String, Object> controllers;
+    private ObservableList<User> onlineUsers;
     
     @FXML
     private AnchorPane holderPane;
@@ -38,16 +48,27 @@ public class StudentController implements Initializable, MainController {
     @FXML
     private JFXButton logoutBtn;
     @FXML
-    private JFXListView onlineUserList;
+    private JFXListView onlineUserListView;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setGreetingMsg();
-        initOnlineUserList();
+        initOnlineUserListView();
         
         initPages();
         showPage(pages.get("dashboard"));
+        
+        this.setOnLogin((Event e) -> {
+            LoginEvent login = new LoginEvent(e.toString());
+            onlineUsers.add(login.getLoggedInUser());
+        });
+        
+        this.setOnLogout((Event e) -> {
+            LogoutEvent logout = new LogoutEvent(e.toString());
+            onlineUsers.remove(logout.getLoggedOutUser());
+        });
     }
+
     
     private void initPages() {
         pages = new HashMap<>();
@@ -82,14 +103,21 @@ public class StudentController implements Initializable, MainController {
         }
     }
     
-    private void initOnlineUserList() {
-        onlineUserList.getStyleClass().add("online-user-list");
-        updateOnlineUserList();
+    private void initOnlineUserListView() {
+        onlineUsers = FXCollections.observableArrayList();
+        onlineUsers.setAll(User.getOnlineUsers());
+        
+        onlineUsers.addListener((ListChangeListener.Change<? extends User> c) -> {
+            updateOnlineUserListView();
+        });
+        
+        onlineUserListView.getStyleClass().add("online-user-list");
+        updateOnlineUserListView();
     }
     
-    public void updateOnlineUserList() {
-        onlineUserList.getItems().clear();
-        onlineUserList.getItems().addAll(Session.getInstance().getOnlineUsers());
+    public void updateOnlineUserListView() {
+        onlineUserListView.getItems().clear();
+        onlineUserListView.getItems().setAll(onlineUsers);
     }
     
     
@@ -103,6 +131,9 @@ public class StudentController implements Initializable, MainController {
     }
     
     public void showCourses(ActionEvent event) {
+        String raw = "{\"content\": {\"isStudent\": true, \"graduationYear\": 108, \"fullname\": \"Jimmy Xie\", \"username\": \"1080630212\"}, \"eventType\": 0}";
+        EventManager.getInstance().fireEvent(new Event(raw));
+        
         showPage(pages.get("courses"));
     }
     
@@ -115,6 +146,9 @@ public class StudentController implements Initializable, MainController {
     }
     
     public void showCode(ActionEvent event) {
+        String raw = "{\"content\": {\"isStudent\": true, \"graduationYear\": 108, \"fullname\": \"Jimmy Xie\", \"username\": \"1080630212\"}, \"eventType\": 1}";
+        EventManager.getInstance().fireEvent(new Event(raw));
+        
         showPage(pages.get("code"));
     }
     
@@ -134,7 +168,7 @@ public class StudentController implements Initializable, MainController {
                 Utils.loadStage(new FXMLLoader(getClass().getResource(loginFXML)));
                 logoutBtn.getScene().getWindow().hide();
                 
-                EventListener.getInstance().close();
+                SocketServer.getInstance().close();
             }
         });
         
@@ -145,6 +179,14 @@ public class StudentController implements Initializable, MainController {
         User current = Session.getInstance().getCurrentUser();
         String greetingMsg = String.format("Welcome, %s", current.getProfile().getFullname());
         bannerMsg.setText(greetingMsg);
+    }
+    
+    private void setOnLogin(EventListener listener) {
+        EventManager.getInstance().addEventListener(EventType.LOGIN, listener);
+    }
+    
+    private void setOnLogout(EventListener listener) {
+        EventManager.getInstance().addEventListener(EventType.LOGOUT, listener);
     }
     
     public Map<String, Object> getControllers() {

@@ -80,7 +80,7 @@ public class RegisterController implements Initializable {
         registerBtn.getScene().getWindow().hide();
     }
     
-    private void clearWarningMsg(KeyEvent event) {
+    public void clearWarningMsg(KeyEvent event) {
         warningMsg.setText("");
     }
 

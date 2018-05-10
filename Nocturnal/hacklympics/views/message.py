@@ -1,6 +1,9 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
+from hacklympics.events.dispatcher import *
+from hacklympics.events.events import *
+from hacklympics.sessions import OnlineUsers
 from hacklympics.status_code import StatusCode
 from hacklympics.models import *
 
@@ -47,14 +50,19 @@ def create(request, username):
         content = req_body["content"]
         source_ip = User.objects.get(username=username).last_login_ip
         
-        Message.objects.get(username=username).message_set.create(
+        user = User.objects.get(username=username)
+        
+        user.message_set.create(
             source_ip = source_ip,
             content = content,
-            user_id = username
         )
+        
+        dispatch(NewMessageEvent(user, content), OnlineUsers.users)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
-        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+        response_data["statusCode"] = StatusCode.NOT_REGISTERED
+    except Exception as e:
+        print(e)
 
     return JsonResponse(response_data)

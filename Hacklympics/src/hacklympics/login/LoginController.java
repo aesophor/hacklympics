@@ -10,15 +10,13 @@ import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXPasswordField;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
-import com.hacklympics.api.event.EventListener;
+import com.hacklympics.api.communication.SocketServer;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.Utils;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class LoginController {
     
@@ -42,13 +40,12 @@ public class LoginController {
             Response login = User.login(username, password);
             
             if (login.success()) {
-                Session.getInstance().getExecutor().execute(EventListener.getInstance());
+                Session.getInstance().getExecutor().execute(SocketServer.getInstance());
                 
                 String role = login.getContent().get("role").toString();
                 switch (role) {
                     case "student":
                         user = new Student(username);
-                        Session.getInstance().clear();
                         Session.getInstance().setCurrentUser(user);
                         
                         String studentFXML = FXMLTable.getInstance().get("Student");
@@ -58,7 +55,6 @@ public class LoginController {
                         
                     case "teacher":
                         user = new Teacher(username);
-                        Session.getInstance().clear();
                         Session.getInstance().setCurrentUser(user);
                         
                         String teacherFXML = FXMLTable.getInstance().get("Teacher");

@@ -8,8 +8,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
 import javafx.event.ActionEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Tab;
@@ -111,11 +111,11 @@ public class CoursesController implements Initializable {
         probInputCol.setCellValueFactory(new PropertyValueFactory<>("input"));
         probOutputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
 
-        courseTable.setOnMouseClicked((Event e) -> {
+        courseTable.setOnMouseClicked((MouseEvent e) -> {
             update(examTab, problemTab);
         });
         
-        examTable.setOnMouseClicked((Event e) -> {
+        examTable.setOnMouseClicked((MouseEvent e) -> {
             update(problemTab);
         });
     }
@@ -261,7 +261,7 @@ public class CoursesController implements Initializable {
         form.addTextField("Title", "");
         form.addTextField("Duration", "");
         form.addTextField("Description", "");
-
+        
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField titleField = (JFXTextField) form.get("Title");
             JFXTextField durationField = (JFXTextField) form.get("Duration");

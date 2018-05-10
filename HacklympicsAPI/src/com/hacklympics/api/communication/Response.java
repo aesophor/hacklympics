@@ -14,8 +14,6 @@ public class Response {
         statusCode = StatusCode.values()[raw.get("statusCode").getAsInt()];
         
         if (statusCode == StatusCode.SUCCESS) {
-            // Get the "content" section from json as a JsonObject,
-            // and map it to a HashMap.
             JsonObject rawContent = raw.getAsJsonObject("content");
             content = new Gson().fromJson(rawContent, HashMap.class);
         }

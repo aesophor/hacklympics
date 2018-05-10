@@ -1,37 +1,46 @@
 package com.hacklympics.api.message;
 
-import java.util.Map;
-import java.util.List;
-import java.util.ArrayList;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonElement;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.user.User;
 import com.hacklympics.api.utility.Utils;
 
 public class Message {
     
-    private MessageData data;
+    private final MessageData data;
     
-    public Message(String username, int messageID) {
-        initMessageData(username, messageID);
+    public Message(User user, String content) {
+        this.data = new MessageData(user, content);
     }
     
-    public Message(String username, int messageID, String content) {
-        //this.data = new MessageData(username, messageID, content);
-    }
     
-    private void initMessageData(String username, int messageID) {
-        String uri = String.format("user/%s/message/%d", username, messageID);
-        Response get = new Response(Utils.get(uri));
+    public static Response create(String username, String content) {
+        String uri = String.format("user/%s/message/create", username);
         
-        if (get.success()) {
-            Map<String, Object> json = get.getContent();
-            
-            this.data = new MessageData();
-        }
+        JsonObject json = new JsonObject();
+        json.addProperty("user", username);
+        json.addProperty("content", content);
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    
+    public MessageData getData() {
+        return data;
+    }
+    
+    public User getUser() {
+        return data.getUser();
+    }
+    
+    public String getContent() {
+        return data.getContent();
+    }
+    
+    
+    @Override
+    public String toString() {
+        return data.toString();
     }
     
 }
