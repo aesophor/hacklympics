@@ -7,18 +7,22 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
     <img src="https://i.imgur.com/GtwwIaW.png" alt="Screenshot">
 </p>
 
-- [ ] Online chatting room for all users.
+- [x] Online chatting room for all users.
 - [x] Teachers can create/edit/remove their courses/exams/problems.
 - [ ] Teachers can **proctor** any exams, watching the students write their code LIVE.
 - [x] Teachers can set up input/output data for each problems (Online Judge)
 - [x]  Students can write and sumbit their codes to the server.
-- [x]  Students can compile and execute their codes (without the need to fire up a terminal).
+- [x]  Students can compile and execute their codes locally (without the need to fire up an extra terminal emulator).
 
 ## Features
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
   > **Hacklympics** - Frontend (Java 8)    
   > **HacklympicsAPI** - RESTful API (Java 8)    
   > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)    
+
+ * Design Pattern used
+   > Singleton Pattern    
+   > Observer Pattern (event-driven)    
 
 * Library used
   > **[JFoenix](https://github.com/jfoenixadmin/JFoenix)** - JavaFX Material Design Library    
@@ -27,8 +31,7 @@ Attempting to recreate [this project](https://github.com/Max-Projects) from scra
   > **[RichTextFX](https://github.com/FXMisc/RichTextFX)** - RichText Area for JavaFX. Used for code areas    
   > **[TerminalFX](https://github.com/javaterminal/TerminalFX)** - A Terminal Emulator written in JavaFX 8    
 
- * Design Pattern used
-   > Singleton Pattern
+
 
 
 ## Screenshots
