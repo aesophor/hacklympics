@@ -1,4 +1,4 @@
-package hacklympics.student.pages;
+package hacklympics.teacher.pages;
 
 import java.net.URL;
 import java.util.ResourceBundle;

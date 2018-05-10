@@ -10,11 +10,11 @@ public class Response {
     private final StatusCode statusCode;
     private Map<String, Object> content;
     
-    public Response(JsonObject raw) {
-        statusCode = StatusCode.values()[raw.get("statusCode").getAsInt()];
+    public Response(JsonObject json) {
+        statusCode = StatusCode.values()[json.get("statusCode").getAsInt()];
         
         if (statusCode == StatusCode.SUCCESS) {
-            JsonObject rawContent = raw.getAsJsonObject("content");
+            JsonObject rawContent = json.getAsJsonObject("content");
             content = new Gson().fromJson(rawContent, HashMap.class);
         }
     }

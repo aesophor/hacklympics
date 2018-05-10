@@ -1,7 +1,7 @@
 package com.hacklympics.api.event;
 
-public interface EventListener {
+public interface EventListener<T extends Event> {
     
-    public void handle(Event e);
+    public void handle(T e);
     
 }

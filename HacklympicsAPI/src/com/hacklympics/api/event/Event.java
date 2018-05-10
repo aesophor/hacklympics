@@ -4,16 +4,17 @@ import java.util.Map;
 import java.util.HashMap;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import java.lang.reflect.InvocationTargetException;
 
 public class Event {
     
     private final EventType eventType;
     private Map<String, Object> content;
     
-    public Event(JsonObject raw) {
-        eventType = EventType.values()[raw.get("eventType").getAsInt()];
+    public Event(JsonObject json) {
+        eventType = EventType.values()[json.get("eventType").getAsInt()];
         
-        JsonObject rawContent = raw.getAsJsonObject("content");
+        JsonObject rawContent = json.getAsJsonObject("content");
         content = new Gson().fromJson(rawContent, HashMap.class);
     }
     
@@ -30,6 +31,26 @@ public class Event {
         return content;
     }
     
+    
+    public Event toCorrectForm() {
+        Event event = null;
+        
+        try {
+            event = (Event) Class.forName(eventType.toString())
+                                 .getConstructor(String.class)
+                                 .newInstance(toString());
+            
+        } catch (InstantiationException
+               | IllegalAccessException
+               | IllegalArgumentException
+               | InvocationTargetException
+               | NoSuchMethodException
+               | SecurityException
+               | ClassNotFoundException ex) {
+        } 
+        
+        return event;
+    }
     
     @Override
     public String toString() {

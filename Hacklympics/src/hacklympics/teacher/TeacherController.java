@@ -20,7 +20,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.SocketServer;
-import com.hacklympics.api.event.Event;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventListener;
@@ -58,14 +57,12 @@ public class TeacherController implements Initializable, MainController {
         initPages();
         showPage(pages.get("dashboard"));
         
-        this.setOnLogin((Event e) -> {
-            LoginEvent login = new LoginEvent(e.toString());
-            onlineUsers.add(login.getLoggedInUser());
+        this.setOnLogin((LoginEvent event) -> {
+            onlineUsers.add(event.getLoggedInUser());
         });
         
-        this.setOnLogout((Event e) -> {
-            LogoutEvent logout = new LogoutEvent(e.toString());
-            onlineUsers.remove(logout.getLoggedOutUser());
+        this.setOnLogout((LogoutEvent event) -> {
+            onlineUsers.remove(event.getLoggedOutUser());
         });
     }
     
@@ -84,19 +81,19 @@ public class TeacherController implements Initializable, MainController {
             FXMLLoader dashboardLoader = new FXMLLoader(getClass().getResource(dashboardFXML));
             FXMLLoader coursesLoader = new FXMLLoader(getClass().getResource(coursesFXML));
             FXMLLoader studentsLoader = new FXMLLoader(getClass().getResource(studentsFXML));
-            //FXMLLoader messagesLoader = new FXMLLoader(getClass().getResource(messagesFXML));
+            FXMLLoader messagesLoader = new FXMLLoader(getClass().getResource(messagesFXML));
             //FXMLLoader proctorLoader = new FXMLLoader(getClass().getResource(proctorFXML));
             
             pages.put("dashboard", dashboardLoader.load());
             pages.put("courses", coursesLoader.load());
             pages.put("students", studentsLoader.load());
-            //pages.put("messages", messagesLoader.load());
+            pages.put("messages", messagesLoader.load());
             //pages.put("proctor", proctorLoader.load());
             
             controllers.put("dashboard", dashboardLoader.getController());
             controllers.put("courses", coursesLoader.getController());
             controllers.put("students", studentsLoader.getController());
-            //controllers.put("messages", messagesLoader.getController());
+            controllers.put("messages", messagesLoader.getController());
             //controllers.put("proctor", proctorLoader.getController());
         } catch (IOException ioe) {
             ioe.printStackTrace();
@@ -174,11 +171,11 @@ public class TeacherController implements Initializable, MainController {
         bannerMsg.setText(greetingMsg);
     }
     
-    private void setOnLogin(EventListener listener) {
+    private void setOnLogin(EventListener<LoginEvent> listener) {
         EventManager.getInstance().addEventListener(EventType.LOGIN, listener);
     }
     
-    private void setOnLogout(EventListener listener) {
+    private void setOnLogout(EventListener<LogoutEvent> listener) {
         EventManager.getInstance().addEventListener(EventType.LOGOUT, listener);
     }
     

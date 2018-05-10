@@ -30,23 +30,20 @@ public class SocketServer implements Runnable {
     
     @Override
     public void run() {
-        System.out.printf("[*] Started Event Listener on port %d\n", port);
-        
         try {
+            System.out.printf("[*] Started Event Listener on port %d\n", port);
             serverSocket = new ServerSocket(port);
             
             while (true) {
                 client = serverSocket.accept();
                 
                 BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
-                String raw = br.readLine();
-                
-                System.out.printf("[event] %s\n", raw);
-                eventManager.fireEvent(new Event(raw));
+                String e = br.readLine();
+                eventManager.fireEvent(new Event(e).toCorrectForm());
                 
                 client.close();
             }
-        } catch (IOException ioe) {
+        } catch (IOException ex) {
             
         }
     }

@@ -9,7 +9,7 @@ public class EventManager {
     
     public static EventManager eventManager;
     
-    private final Map<EventType, List<EventListener>> listeners;
+    private final Map<EventType, List<EventListener<Event>>> listeners;
     
     private EventManager() {
         this.listeners = new HashMap<>();
@@ -44,7 +44,7 @@ public class EventManager {
     public void fireEvent(Event event) {
         EventType eventType = event.getEventType();
         
-        for (EventListener listener : this.listeners.get(eventType)) {
+        for (EventListener<Event> listener : this.listeners.get(eventType)) {
             listener.handle(event);
         }
     }

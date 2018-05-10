@@ -20,7 +20,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.SocketServer;
-import com.hacklympics.api.event.Event;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventListener;
@@ -58,14 +57,12 @@ public class StudentController implements Initializable, MainController {
         initPages();
         showPage(pages.get("dashboard"));
         
-        this.setOnLogin((Event e) -> {
-            LoginEvent loginEvent = new LoginEvent(e.toString());
-            onlineUsers.add(loginEvent.getLoggedInUser());
+        this.setOnLogin((LoginEvent event) -> {
+            onlineUsers.add(event.getLoggedInUser());
         });
         
-        this.setOnLogout((Event e) -> {
-            LogoutEvent logoutEvent = new LogoutEvent(e.toString());
-            onlineUsers.remove(logoutEvent.getLoggedOutUser());
+        this.setOnLogout((LogoutEvent event) -> {
+            onlineUsers.remove(event.getLoggedOutUser());
         });
     }
 
@@ -131,6 +128,9 @@ public class StudentController implements Initializable, MainController {
     }
     
     public void showCourses(ActionEvent event) {
+        String raw = "{\"content\": {\"isStudent\": true, \"graduationYear\": 108, \"fullname\": \"Jimmy Xie\", \"username\": \"1080630212\"}, \"eventType\": 0}";
+        EventManager.getInstance().fireEvent(new LoginEvent(raw));
+        
         showPage(pages.get("courses"));
     }
     
@@ -143,6 +143,9 @@ public class StudentController implements Initializable, MainController {
     }
     
     public void showCode(ActionEvent event) {
+        String raw = "{\"content\": {\"isStudent\": true, \"graduationYear\": 108, \"fullname\": \"Jimmy Xie\", \"username\": \"1080630212\"}, \"eventType\": 1}";
+        EventManager.getInstance().fireEvent(new LogoutEvent(raw));
+        
         showPage(pages.get("code"));
     }
     
@@ -175,11 +178,11 @@ public class StudentController implements Initializable, MainController {
         bannerMsg.setText(greetingMsg);
     }
     
-    private void setOnLogin(EventListener listener) {
+    private void setOnLogin(EventListener<LoginEvent> listener) {
         EventManager.getInstance().addEventListener(EventType.LOGIN, listener);
     }
     
-    private void setOnLogout(EventListener listener) {
+    private void setOnLogout(EventListener<LogoutEvent> listener) {
         EventManager.getInstance().addEventListener(EventType.LOGOUT, listener);
     }
     
