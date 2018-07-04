@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="698.0" prefWidth="1042.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.TeacherController">
+<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="698.0" prefWidth="1042.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.TeacherController">
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="266.0" styleClass="sidebar">
          <children>
@@ -152,6 +152,6 @@
          </font>
       </Label>
       <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="955.0" layoutY="16.0" onAction="#logout" styleClass="lightBlueBtn" text="Logout" textFill="WHITE" />
-      <StackPane fx:id="dialogPane" layoutX="391.0" layoutY="268.0" mouseTransparent="true" prefHeight="133.0" prefWidth="394.0" />
+      <StackPane fx:id="dialogPane" layoutX="368.0" layoutY="252.0" mouseTransparent="true" prefHeight="135.0" prefWidth="367.0" />
    </children>
 </AnchorPane>

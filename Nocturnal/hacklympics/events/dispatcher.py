@@ -13,3 +13,4 @@ def dispatch(event: Event, users: list):
         evmsg = str(event) + "\n"
         s.connect((user.last_login_ip, 8001))
         s.send(evmsg.encode("utf-8"))
+        s.close()

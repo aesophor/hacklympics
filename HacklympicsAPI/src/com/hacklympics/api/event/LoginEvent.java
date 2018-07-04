@@ -24,6 +24,10 @@ public class LoginEvent extends Event {
     }
     
     
+    /**
+     * Returns the user that just logged in.
+     * @return the user that just logged in.
+     */
     public User getLoggedInUser() {
         return loggedInUser;
     }

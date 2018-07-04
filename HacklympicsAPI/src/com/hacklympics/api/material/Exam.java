@@ -83,6 +83,10 @@ public class Exam {
     }
     
     
+    /**
+     * Returns all Problems under this Exam.
+     * @return a list of Problems.
+     */
     public List<Problem> getProblems() {
         List<Problem> problems = new ArrayList<>();
         Response list = Problem.list(getData().getCourseID(), getData().getExamID());

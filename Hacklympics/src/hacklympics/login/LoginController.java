@@ -32,6 +32,7 @@ public class LoginController {
     private JFXButton loginBtn;
     
     
+    @FXML
     public void login(ActionEvent e) {
         String username = usernameField.getText();
         String password = passwordField.getText();
@@ -90,6 +91,7 @@ public class LoginController {
     }
     
     
+    @FXML
     public void register(ActionEvent e) {
         String registerFXML = FXMLTable.getInstance().get("Register");
         Utils.loadStage(new FXMLLoader(getClass().getResource(registerFXML)));
@@ -97,10 +99,12 @@ public class LoginController {
         loginBtn.getScene().getWindow().hide();
     }
     
+    @FXML
     public void exit(ActionEvent e) {
         System.exit(0);
     }
     
+    @FXML
     public void clearWarningMsg(KeyEvent e) {
         warningMsg.setText("");
     }

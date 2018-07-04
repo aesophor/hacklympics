@@ -24,6 +24,10 @@ public class LogoutEvent extends Event {
     }
     
     
+    /**
+     * Returns the user that just logged out.
+     * @return the user that just logged out.
+     */
     public User getLoggedOutUser() {
         return loggedOutUser;
     }

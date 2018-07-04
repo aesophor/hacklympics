@@ -31,7 +31,7 @@ public class SocketServer implements Runnable {
     @Override
     public void run() {
         try {
-            System.out.printf("[*] Started Event Listener on port %d\n", port);
+            System.out.printf("[*] Started listening for events on port %d\n", port);
             serverSocket = new ServerSocket(port);
             
             while (true) {
@@ -39,7 +39,7 @@ public class SocketServer implements Runnable {
                 
                 BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 String e = br.readLine();
-                eventManager.fireEvent(new Event(e).toCorrectForm());
+                eventManager.fireEvent(new Event(e).toConcreteObj());
                 
                 client.close();
             }
@@ -50,10 +50,10 @@ public class SocketServer implements Runnable {
     
     public void close() {
         try {
-            System.out.println("[*] Shutting down Event Listener...");
+            System.out.println("[*] Stopped listening for events.");
             serverSocket.close();
         } catch (IOException ioe) {
-            System.out.println("[-] Failed to shutdown Event Listener.");
+            System.out.println("[-] Failed to stop listening for events.");
         }
     }
     

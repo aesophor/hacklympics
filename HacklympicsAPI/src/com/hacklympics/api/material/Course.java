@@ -97,6 +97,10 @@ public class Course {
     }
     
     
+    /**
+     * Returns all Exams under this Course.
+     * @return a list of Exams.
+     */
     public List<Exam> getExams() {
         List<Exam> exams = new ArrayList<>();
         Response list = Exam.list(getData().getCourseID());

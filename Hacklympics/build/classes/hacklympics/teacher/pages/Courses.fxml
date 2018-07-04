@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.CoursesController">
+<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.CoursesController">
    <children>
       <JFXTabPane id="tabPane" fx:id="tabPane" prefHeight="674.0" prefWidth="776.0">
           <tabs>
@@ -75,7 +75,7 @@
             <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="editBtn" buttonType="RAISED" layoutX="630.0" layoutY="595.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#edit" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
+      <JFXButton fx:id="editBtn" buttonType="RAISED" layoutX="695.0" layoutY="530.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#edit" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
          <font>
             <Font size="22.0" />
          </font>

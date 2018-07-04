@@ -29,7 +29,7 @@ public class EventManager {
     
     
     /**
-     * Add a EventListener that subscribes to a specific type of Event.
+     * Adds a EventListener that subscribes to a specific type of Event.
      * @param eventType the type of the Event to listen for.
      * @param listener the EventListener to be added.
      */
@@ -38,14 +38,14 @@ public class EventManager {
     }
     
     /**
-     * Fire a Event to all of its EventListeners.
-     * @param event the Event to be dispatched.
+     * Fires the specified Events to all of its EventListeners.
+     * @param event the Event to fire.
      */
     public void fireEvent(Event event) {
         EventType eventType = event.getEventType();
         
         for (EventListener listener : this.listeners.get(eventType)) {
-            listener.handle(event);
+            listener.fireEvent(event);
         }
     }
     

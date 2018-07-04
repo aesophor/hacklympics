@@ -128,9 +128,6 @@ public class StudentController implements Initializable, MainController {
     }
     
     public void showCourses(ActionEvent event) {
-        String raw = "{\"content\": {\"isStudent\": true, \"graduationYear\": 108, \"fullname\": \"Jimmy Xie\", \"username\": \"1080630212\"}, \"eventType\": 0}";
-        EventManager.getInstance().fireEvent(new LoginEvent(raw));
-        
         showPage(pages.get("courses"));
     }
     
@@ -143,8 +140,8 @@ public class StudentController implements Initializable, MainController {
     }
     
     public void showCode(ActionEvent event) {
-        String raw = "{\"content\": {\"isStudent\": true, \"graduationYear\": 108, \"fullname\": \"Jimmy Xie\", \"username\": \"1080630212\"}, \"eventType\": 1}";
-        EventManager.getInstance().fireEvent(new LogoutEvent(raw));
+        // String raw = "{\"content\": {\"isStudent\": true, \"graduationYear\": 108, \"fullname\": \"Jimmy Xie\", \"username\": \"1080630212\"}, \"eventType\": 1}";
+        // EventManager.getInstance().fireEvent(new Event(raw).toCorrectForm());
         
         showPage(pages.get("code"));
     }

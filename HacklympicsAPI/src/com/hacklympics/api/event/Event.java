@@ -18,28 +18,39 @@ public class Event {
         content = new Gson().fromJson(rawContent, HashMap.class);
     }
     
-    public Event(String raw) {
-        this(new Gson().fromJson(raw, JsonObject.class));
+    public Event(String rawJson) {
+        this(new Gson().fromJson(rawJson, JsonObject.class));
     }
     
     
+    /**
+     * Returns the EventType of this Event..
+     * @return the event type.
+     */
     public EventType getEventType() {
         return eventType;
     }
     
+    /**
+     * Returns the content of this Event.
+     * @return the event.
+     */
     public Map<String, Object> getContent() {
         return content;
     }
     
     
-    public Event toCorrectForm() {
+    /**
+     * Converts this Event instance to its correct subtype.
+     * @return the effective subtype of this Event.
+     */
+    public Event toConcreteObj() {
         Event event = null;
         
         try {
             event = (Event) Class.forName(eventType.toString())
                                  .getConstructor(String.class)
                                  .newInstance(toString());
-            
         } catch (InstantiationException
                | IllegalAccessException
                | IllegalArgumentException

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.text.Text;
 import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
@@ -32,7 +31,7 @@ public abstract class Dialog {
         this.buttons.put("cancelBtn", new JFXButton("Dismiss"));
         this.buttons.put("confirmBtn", new JFXButton("OK"));
         
-        this.content.setHeading(new Text(title));
+        this.content.setHeading(new WrappingText(title, pane.getWidth()));
         this.content.setActions(new ArrayList<>(buttons.values()));
         
         getCancelBtn().setOnAction((ActionEvent e) -> {

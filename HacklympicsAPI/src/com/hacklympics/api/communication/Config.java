@@ -8,6 +8,7 @@ public final class Config {
     
     private Config() {}
     
+    
     public static String getURL() {
         return String.format("http://%s:%s", serverHost, serverPort);
     }

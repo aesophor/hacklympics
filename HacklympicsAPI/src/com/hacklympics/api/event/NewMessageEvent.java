@@ -13,19 +13,19 @@ public class NewMessageEvent extends Event {
     
     private final Message message;
     
-    public NewMessageEvent(String raw) {
-        super(raw);
+    public NewMessageEvent(String rawJson) {
+        super(rawJson);
         
         Map<String, Object> newMessageEvent = this.getContent();
         String msgContent = newMessageEvent.get("content").toString();
-                
-        String userJson = Utils.getGson().toJson(newMessageEvent.get("user"));
-        JsonObject user = Utils.getGson().fromJson(userJson, JsonObject.class);
+        
+        String rawUserJson = Utils.getGson().toJson(newMessageEvent.get("user"));
+        JsonObject userJson = Utils.getGson().fromJson(rawUserJson, JsonObject.class);
             
-        String username = user.get("username").getAsString();
-        String fullname = user.get("fullname").getAsString();
-        int gradYear = user.get("graduationYear").getAsInt();
-        boolean isStudent = user.get("isStudent").getAsBoolean();
+        String username = userJson.get("username").getAsString();
+        String fullname = userJson.get("fullname").getAsString();
+        int gradYear = userJson.get("graduationYear").getAsInt();
+        boolean isStudent = userJson.get("isStudent").getAsBoolean();
         
         User msgCreator = (isStudent) ? new Student(username, fullname, gradYear)
                                       : new Teacher(username, fullname, gradYear);
@@ -34,6 +34,10 @@ public class NewMessageEvent extends Event {
     }
     
     
+    /**
+     * Returns the new message that has just been sent.
+     * @return the message.
+     */
     public Message getMessage() {
         return message;
     }

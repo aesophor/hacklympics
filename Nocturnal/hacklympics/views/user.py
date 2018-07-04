@@ -138,11 +138,11 @@ def update(request):
 
     try:
         req_body = json.loads(request.body.decode("utf-8"))
-
+        
         username = req_body["username"]
         fullname = req_body["fullname"]
         graduation_year = req_body["graduationYear"]
-
+        
         User.objects.get(username=username).update(
             fullname = fullname,
             graduation_year = graduation_year

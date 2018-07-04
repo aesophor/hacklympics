@@ -20,7 +20,7 @@ import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
 
-public class CodeTab extends Tab {
+public class FileTab extends Tab {
     
     private static final String COLORSCHEME = "/resources/JavaKeywords.css";
     
@@ -73,7 +73,7 @@ public class CodeTab extends Tab {
     private File file;
     private boolean unsaved;
     
-    public CodeTab() {
+    public FileTab() {
         super("Untitled");
         
         codeArea = new CodeArea();
@@ -92,36 +92,27 @@ public class CodeTab extends Tab {
         });
         
         
+        // Add the code area I just created into a VBox.
         vbox = new VBox();
         vbox.getStyleClass().add("code-vbox");
         vbox.getChildren().add(codeArea);
         
-        
+        // Add the vbox into the AnchorPane.
         anchorPane = new AnchorPane();
         anchorPane.getStyleClass().add("code-anchor");
         anchorPane.getChildren().add(vbox);
-        
-        
-        getStyleClass().add("minimal-tab");
         setContent(anchorPane);
         
-        
+        getStyleClass().add("minimal-tab");
         markAsUnsaved();
-    }
-    
-    public CodeTab(File file) {
-        this();
-        
-        this.file = file;
-        this.setText(getFilename());
     }
     
     
     public static StyleSpans<Collection<String>> computeHighlighting(String text) {
         Matcher matcher = PATTERN.matcher(text);
         int lastKwEnd = 0;
-        StyleSpansBuilder<Collection<String>> spansBuilder
-                = new StyleSpansBuilder<>();
+        StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
+        
         while(matcher.find()) {
             String styleClass =
                     matcher.group("KEYWORD") != null ? "keyword" :
@@ -137,15 +128,24 @@ public class CodeTab extends Tab {
             spansBuilder.add(Collections.singleton(styleClass), matcher.end() - matcher.start());
             lastKwEnd = matcher.end();
         }
+        
         spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
         return spansBuilder.create();
     }
     
     
-    public void open() throws IOException {
+    /**
+     * Opens the specified file in the tab.
+     * @throws IOException if an input or output exception occurred.
+     */
+    public void open(File file) throws IOException {
+        // Associate the file with this tab, and set up the tab title.
+        this.file = file;
+        this.setText(getFilename());
+                
+        // Now read the content of file into the CodeArea.
         if (file != null) {
             BufferedReader br = new BufferedReader(new FileReader(file));
-        
             StringBuilder content = new StringBuilder();
             String line = br.readLine();
                 
@@ -161,6 +161,10 @@ public class CodeTab extends Tab {
         }
     }
     
+    /**
+     * Saves the content in the tab into a file.
+     * @throws IOException if an input or output exception occurred.
+     */
     public void save() throws IOException {
         if (file != null) {
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
@@ -174,6 +178,10 @@ public class CodeTab extends Tab {
     }
     
     
+    /**
+     * Marks current file as unsaved, prepending the title of this tab
+     * with a "*" character.
+     */
     private void markAsUnsaved() {
         if (unsaved == false) {
             unsaved = true;
@@ -182,11 +190,19 @@ public class CodeTab extends Tab {
         }
     }
     
-    
-    public String getFilepath() {
-        return (file == null) ? "Untitled" : file.getAbsolutePath();
+    /**
+     * Gets whether this file has unsaved changes.
+     * @return whether this file is unsaved.
+     */
+    public boolean unsaved() {
+        return unsaved;
     }
     
+    
+    /**
+     * Gets the filename of the file opened in this tab.
+     * @return filename (with extension).
+     */
     public String getFilename() {
         if (file == null) {
             return "Untitled";
@@ -196,10 +212,26 @@ public class CodeTab extends Tab {
         }
     }
     
-    public String getLocation() {
-        return file.getAbsoluteFile().getParent().toString();
+    /**
+     * Gets the absolute path of the file opened in this tab.
+     * @return absolute path of the file.
+     */
+    public String getFilepath() {
+        return (file == null) ? "Unsaved file" : file.getAbsolutePath();
     }
     
+    /**
+     * Gets the location of the file opened in this tab.
+     * @return the directory in which the file is saved.
+     */
+    public String getLocation() {
+        return file.getAbsoluteFile().getParent();
+    }
+    
+    
+    public CodeArea getCodeArea() {
+        return codeArea;
+    }
     
     public File getFile() {
         return file;
@@ -207,10 +239,6 @@ public class CodeTab extends Tab {
     
     public void setFile(File file) {
         this.file = file;
-    }
-    
-    public CodeArea getCodeArea() {
-        return codeArea;
     }
     
 }
