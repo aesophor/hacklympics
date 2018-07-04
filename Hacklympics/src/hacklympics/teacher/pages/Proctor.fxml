@@ -21,9 +21,9 @@
                      <children>
                         <TableView fx:id="courseTable" layoutX="32.0" layoutY="80.0" prefHeight="530.0" prefWidth="712.0">
                           <columns>
-                            <TableColumn fx:id="courseSemesterCol" prefWidth="128.0" text="Semester" />
-                            <TableColumn fx:id="courseNameCol" prefWidth="241.0" text="Course" />
-                              <TableColumn fx:id="examNameCol" prefWidth="340.0" text="Exam" />
+                            <TableColumn fx:id="examHostCol" prefWidth="203.0" text="Host" />
+                            <TableColumn fx:id="courseNameCol" prefWidth="223.0" text="Course" />
+                              <TableColumn fx:id="examNameCol" prefWidth="283.0" text="Exam" />
                           </columns>
                         </TableView>
                      </children>

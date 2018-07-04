@@ -8,7 +8,6 @@ import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
@@ -80,6 +79,15 @@ public class CoursesController implements Initializable {
         update(courseTab);
     }
 
+    /**
+     * Initializes the three primary tables: Course, Exam and Problem.
+     * Whenever the user clicks on the courseTab/examTab, the relevant
+     * subtables will be refreshed.
+     * In addition, the button to attend exam will be made available
+     * once an exam has been selected. However, if the user selects
+     * another course, the button will be disabled again
+     * (i.e., the user will have to re-select an exam).
+     */
     private void initTables() {
         courseRecords = FXCollections.observableArrayList();
         examRecords = FXCollections.observableArrayList();
@@ -99,17 +107,29 @@ public class CoursesController implements Initializable {
         probTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         probDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
 
-        courseTable.setOnMouseClicked((MouseEvent e) -> {
-            update(examTab, problemTab);
-            this.attendExamBtn.setDisable(true);
+        
+        // Update examTab and problemTab if the user clicks on courseTab.
+        // Disables the attendExamBtn since a different course has been selected.
+        courseTable.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldSelection, newSelection) -> {
+                    update(examTab, problemTab);
+                    this.attendExamBtn.setDisable(true);
         });
         
-        examTable.setOnMouseClicked((MouseEvent e) -> {
-            update(problemTab);
-            this.attendExamBtn.setDisable(false);
+        // Update problemTab if the user clicks on examTab.
+        // Enables the attendExamBtn since an exam has been selected.
+        examTable.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldSelection, newSelection) -> {
+                    update(problemTab);
+                    this.attendExamBtn.setDisable(false);
         });
     }
 
+    /**
+     * Updates the contents of the tables. It also checks if each record
+     * contains the keyword provided by the user.
+     * @param tabs the tables that you wish to update.
+     */
     private void update(Tab... tabs) {
         keyword = (keyword == null) ? "" : keyword;
 
@@ -173,12 +193,23 @@ public class CoursesController implements Initializable {
         }
     }
     
-
+    /**
+     * Invoked when the search button is clicked.
+     * @param event emitted by JavaFX.
+     */
     public void search(ActionEvent event) {
         keyword = keywordField.getText();
         update(tabPane.getSelectionModel().getSelectedItem());
     }
     
+    
+    /**
+     * Invoked when the attend exam button is clicked.
+     * Asks the user for confirmation for attending the exam.
+     * If the user answers yes, then he/she will be taken to the code page.
+     * @param event emitted by JavaFX.
+     */
+    @FXML
     public void attendExam(ActionEvent event) {
         Exam selected = examTable.getSelectionModel().getSelectedItem();
         if (selected == null) return;

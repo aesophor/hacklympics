@@ -91,11 +91,18 @@ public class CodeController implements Initializable {
 
         File selected = fileChooser.showOpenDialog(fileTabPane.getScene().getWindow());
 
+        // If the user selects nothing (e.g., clicking the cancel button),
+        // return immediately.
+        if (selected == null) {
+            return;
+        }
+
+        // Try to open the file in a new tab.
         try {
             createFileTab().open(selected);
         } catch (IOException ioe) {
             fileTabPane.getTabs().remove(getCurrentFileTab());
-            
+
             AlertDialog alert = new AlertDialog(
                     dialogPane,
                     "Error",
@@ -139,7 +146,7 @@ public class CodeController implements Initializable {
         );
 
         File selected = fileChooser.showSaveDialog(fileTabPane.getScene().getWindow());
-        
+
         getCurrentFileTab().setFile(selected);
         saveFile(event);
     }
@@ -205,8 +212,7 @@ public class CodeController implements Initializable {
             terminal.command(String.join(" ", "java", "-cp", location, className, "\r"));
         });
     }
-    
-    
+
     @FXML
     public void showHint(ActionEvent e) {
         Problem selectedProblem = (Problem) problemBox.getSelectionModel().getSelectedItem();
@@ -338,7 +344,6 @@ public class CodeController implements Initializable {
         }
     }
 
-    
     /**
      * Creates a new tab in FileTabPane.
      *

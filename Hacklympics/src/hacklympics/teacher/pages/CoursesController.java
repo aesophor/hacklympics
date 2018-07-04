@@ -10,6 +10,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Tab;
@@ -90,6 +91,13 @@ public class CoursesController implements Initializable {
         update(courseTab);
     }
 
+    /**
+     * Initializes the three primary tables: Course, Exam and Problem.
+     * Whenever the user clicks on the courseTab/examTab, the relevant
+     * subtables will be refreshed.
+     * In addition, it sets up the mouse behavior which allows the user
+     * to launch an exam upon which is double clicked.
+     */
     private void initTables() {
         courseRecords = FXCollections.observableArrayList();
         examRecords = FXCollections.observableArrayList();
@@ -110,16 +118,37 @@ public class CoursesController implements Initializable {
         probDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
         probInputCol.setCellValueFactory(new PropertyValueFactory<>("input"));
         probOutputCol.setCellValueFactory(new PropertyValueFactory<>("output"));
-
-        courseTable.setOnMouseClicked((MouseEvent e) -> {
-            update(examTab, problemTab);
+        
+        
+        // Update examTab and problemTab if the user clicks on courseTab.
+        courseTable.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldSelection, newSelection) -> {
+                    update(examTab, problemTab);
         });
         
-        examTable.setOnMouseClicked((MouseEvent e) -> {
-            update(problemTab);
+        // Update problemTab if the user clicks on examTab.
+        examTable.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldSelection, newSelection) -> {
+                    update(problemTab);
+        });
+        
+        // Double clicking on an exam to launch the exam.
+        examTable.setOnMouseClicked((MouseEvent event) -> {
+            if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                Exam selected = examTable.getSelectionModel().getSelectedItem();
+                if (selected == null) return;
+                Session.getInstance().setCurrentExam(selected);
+                
+                launch(selected);
+            }
         });
     }
 
+    /**
+     * Updates the contents of the tables. It also checks if each record
+     * contains the keyword provided by the user.
+     * @param tabs the tables that you wish to update.
+     */
     private void update(Tab... tabs) {
         keyword = (keyword == null) ? "" : keyword;
 
@@ -182,12 +211,22 @@ public class CoursesController implements Initializable {
         }
     }
     
-
+    /**
+     * Called when the search button is clicked.
+     * @param event emitted by JavaFX.
+     */
+    @FXML
     public void search(ActionEvent event) {
         keyword = keywordField.getText();
         update(tabPane.getSelectionModel().getSelectedItem());
     }
+    
 
+    /**
+     * Called when the add button is clicked.
+     * @param event emitted by JavaFX.
+     */
+    @FXML
     public void add(ActionEvent event) {
         Tab current = tabPane.getSelectionModel().getSelectedItem();
 
@@ -202,6 +241,10 @@ public class CoursesController implements Initializable {
         }
     }
 
+    /**
+     * Called when the edit button is clicked.
+     * @param event emitted by JavaFX.
+     */
     public void edit(ActionEvent event) {
         Tab current = tabPane.getSelectionModel().getSelectedItem();
 
@@ -222,7 +265,36 @@ public class CoursesController implements Initializable {
         }
     }
     
+    /**
+     * Launches the specified exam.
+     * Asks the user for confirmation for launching the exam.
+     * If the user answers yes, then he/she will be taken to the proctor page.
+     */
+    private void launch(Exam exam) {
+        Exam selected = examTable.getSelectionModel().getSelectedItem();
+        if (selected == null) return;
+        Session.getInstance().setCurrentExam(selected);
+        
+        ConfirmDialog alert = new ConfirmDialog(
+                dialogPane,
+                "Launch Exam",
+                "You have selected the exam: " + selected + "\n\n"
+              + "Launch the exam now? (Other teachers will also be able to"
+              + "proctor your exam.)"
+        );
+        
+        alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
+            System.out.println("Started an exam!");
+            alert.close();
+        });
+        
+        alert.show();
+    }
+    
 
+    /**
+     * Popups a FormDialog which allows the user to add a course.
+     */
     private void addCourse() {
         UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
@@ -256,6 +328,9 @@ public class CoursesController implements Initializable {
         form.show();
     }
 
+    /**
+     * Popups a FormDialog which allows the user to add an exam.
+     */
     private void addExam() {
         FormDialog form = new FormDialog(formPane, "Add new exam");
         form.addTextField("Title", "");
@@ -282,6 +357,9 @@ public class CoursesController implements Initializable {
         form.show();
     }
 
+    /**
+     * Popups a FormDialog which allows the user to add a problem.
+     */
     private void addProblem() {
         FormDialog form = new FormDialog(formPane, "Add new problem");
         form.addTextField("Title", "");
@@ -312,6 +390,9 @@ public class CoursesController implements Initializable {
         form.show();
     }
 
+    /**
+     * Popups a FormDialog which allows the user to edit an existing course.
+     */
     private void editCourse(Course course) {
         UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
@@ -373,6 +454,9 @@ public class CoursesController implements Initializable {
         form.show();
     }
 
+    /**
+     * Popups a FormDialog which allows the user to edit an existing exam.
+     */
     private void editExam(Exam exam) {    
         FormDialog form = new FormDialog(formPane, "Edit exam");
         form.addTextField("Title", exam.getData().getTitle());
@@ -417,6 +501,9 @@ public class CoursesController implements Initializable {
         form.show();
     }
 
+    /**
+     * Popups a FormDialog which allows the user to edit an existing problem.
+     */
     private void editProblem(Problem problem) {
         FormDialog form = new FormDialog(formPane, "Edit problem");
         form.addTextField("Title", problem.getData().getTitle());

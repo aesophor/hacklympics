@@ -82,6 +82,12 @@ public class Exam {
         return new Response(Utils.post(uri, json.toString()));
     }
     
+    /*
+    public Response launch() {
+        
+    }
+    */
+    
     
     /**
      * Returns all Problems under this Exam.
