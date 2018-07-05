@@ -8,6 +8,7 @@ import java.util.HashMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -58,11 +59,18 @@ public class TeacherController implements Initializable, MainController {
         showPage(pages.get("dashboard"));
         
         this.setOnLogin((LoginEvent event) -> {
-            onlineUsers.add(event.getLoggedInUser());
+            // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
+            // The following lines of code runs the specified Runnable on the 
+            // JavaFX Application Thread at some unspecified time in the future.
+            Platform.runLater(() -> {
+                onlineUsers.add(event.getLoggedInUser());
+            });
         });
-        
+                
         this.setOnLogout((LogoutEvent event) -> {
-            onlineUsers.remove(event.getLoggedOutUser());
+            Platform.runLater(() -> {
+                onlineUsers.remove(event.getLoggedOutUser());
+            });
         });
     }
     

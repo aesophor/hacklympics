@@ -41,10 +41,10 @@ public class Event {
     
     
     /**
-     * Converts this Event instance to its correct subtype.
-     * @return the effective subtype of this Event.
+     * Converts this Event instance to its concrete event type.
+     * @return the effective event type of this Event.
      */
-    public Event toConcreteObj() {
+    public Event toConcreteEvent() {
         Event event = null;
         
         try {

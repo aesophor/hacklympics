@@ -39,7 +39,8 @@ public class SocketServer implements Runnable {
                 
                 BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
                 String e = br.readLine();
-                eventManager.fireEvent(new Event(e).toConcreteObj());
+                System.out.println("Received: " + e);
+                eventManager.fireEvent(new Event(e).toConcreteEvent());
                 
                 client.close();
             }

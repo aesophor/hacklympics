@@ -11,6 +11,12 @@ class OnlineUsers:
         if not OnlineUsers.has(username):
             user = User.objects.get(username=username)
             
+            # The SocketServer which listens for events will start
+            # only after the user has SUCCESSFULLY logged in!
+            # Hence, the order of the following two lines of code
+            # DOES matter. If we reverse their order, the dispatcher
+            # will get a connection refused error
+            # (since the SocketServer has not yet started) :)
             dispatch(LoginEvent(user), OnlineUsers.users)
             OnlineUsers.users.append(user)
         else:
@@ -21,6 +27,10 @@ class OnlineUsers:
         if OnlineUsers.has(username):
             user = User.objects.get(username=username)
             
+            # Remove the user from OnlineUsers list first,
+            # so that the server will not dispatch this event to 
+            # the logging out user whose SocketServer
+            # has already shutdown.
             OnlineUsers.users.remove(user)
             dispatch(LogoutEvent(user), OnlineUsers.users)
         else:
@@ -28,10 +38,13 @@ class OnlineUsers:
 
     @staticmethod
     def update(**kwargs):
+        # Fetch the username from the varargs.
         username = [value[1] for value in kwargs.items() if value[0] == "username"][0]
         
+        # Now get the real user object from DB.
         user = OnlineUsers.get(username)
         
+        # Update that user's data.
         for value in kwargs.items():
             if value[0] == "username":
                 pass

@@ -279,7 +279,7 @@ public class CoursesController implements Initializable {
                 dialogPane,
                 "Launch Exam",
                 "You have selected the exam: " + selected + "\n\n"
-              + "Launch the exam now? (Other teachers will also be able to"
+              + "Launch the exam now? (Other teachers will also be able to "
               + "proctor your exam.)"
         );
         

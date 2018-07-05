@@ -359,6 +359,7 @@ public class CodeController implements Initializable {
         // Overrides the default behavior of the close button on each tab by
         // consuming the original event, and then call my own closing method.
         c.setOnCloseRequest((Event event) -> {
+            // Buggy here.
             event.consume();
             closeFile(null);
         });

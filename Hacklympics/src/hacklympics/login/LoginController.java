@@ -41,6 +41,8 @@ public class LoginController {
             Response login = User.login(username, password);
             
             if (login.success()) {
+                // Note that the SocketServer will only start after the user has
+                // SUCCESSFULLY logged in.
                 Session.getInstance().getExecutor().execute(SocketServer.getInstance());
                 
                 String role = login.getContent().get("role").toString();
@@ -66,7 +68,7 @@ public class LoginController {
                     default:
                         break;
                 }
-                // TODO: Shutdown eventListener upon logout.
+                // TODO: Shutdown eventListener upon abnormal client shutdown.
             } else {
                 StatusCode statusCode = login.getStatusCode();
                 
