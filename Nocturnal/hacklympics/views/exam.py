@@ -101,3 +101,19 @@ def remove(request, c_id):
         response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
 
     return JsonResponse(response_data)
+
+
+def launch(request, c_id):
+    pass
+
+
+def halt(request, c_id):
+    pass
+
+
+def attend(request, c_id):
+    pass
+
+
+def finish(request, c_id):
+    pass

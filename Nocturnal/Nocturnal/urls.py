@@ -44,6 +44,10 @@ urlpatterns = [
     url(r'^course/(?P<c_id>\d+)/exam/update$', exam.update),
     url(r'^course/(?P<c_id>\d+)/exam/remove$', exam.remove),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)$', exam.get),
+    url(r'^course/(?P<c_id>\d+)/exam/launch$', exam.launch),
+    url(r'^course/(?P<c_id>\d+)/exam/halt$', exam.halt),
+    url(r'^course/(?P<c_id>\d+)/exam/attend$', exam.attend),
+    url(r'^course/(?P<c_id>\d+)/exam/finish$', exam.finish),
 
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem$', problem.list),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/create$', problem.create),

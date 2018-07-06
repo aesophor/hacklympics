@@ -380,7 +380,8 @@ public class CodeController implements Initializable {
      * Updates the filepath label on the bottom left.
      */
     private void updateFilepathLabel() {
-        filepathLabel.setText(getCurrentFileTab().getFilepath());
+        FileTab current = getCurrentFileTab();
+        filepathLabel.setText((current == null) ? "" : current.getFilepath());
     }
 
     /**

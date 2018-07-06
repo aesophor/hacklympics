@@ -70,3 +70,7 @@ class OnlineUsers:
     @staticmethod
     def get_all(role: str):
         return [user for user in OnlineUsers.users if user.role == role] 
+
+
+class OngoingExams:
+    exams = {}
