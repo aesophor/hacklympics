@@ -28,6 +28,7 @@ import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Role;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Teacher;
+import hacklympics.teacher.TeacherController;
 import hacklympics.utility.FormDialog;
 import hacklympics.utility.ConfirmDialog;
 import hacklympics.utility.UserListView;
@@ -137,7 +138,6 @@ public class CoursesController implements Initializable {
             if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
                 Exam selected = examTable.getSelectionModel().getSelectedItem();
                 if (selected == null) return;
-                Session.getInstance().setCurrentExam(selected);
                 
                 launch(selected);
             }
@@ -271,20 +271,23 @@ public class CoursesController implements Initializable {
      * If the user answers yes, then he/she will be taken to the proctor page.
      */
     private void launch(Exam exam) {
-        Exam selected = examTable.getSelectionModel().getSelectedItem();
-        if (selected == null) return;
-        Session.getInstance().setCurrentExam(selected);
-        
         ConfirmDialog alert = new ConfirmDialog(
                 dialogPane,
                 "Launch Exam",
-                "You have selected the exam: " + selected + "\n\n"
+                "You have selected the exam: " + exam + "\n\n"
               + "Launch the exam now? (Other teachers will also be able to "
               + "proctor your exam.)"
         );
         
         alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            System.out.println("Started an exam!");
+            Session.getInstance().setCurrentExam(exam);
+            
+            TeacherController tc = (TeacherController) Session.getInstance().getMainController();
+            ProctorController cc = (ProctorController) tc.getControllers().get("Proctor");
+            
+            exam.launch();
+            tc.showProctor(e);
+            
             alert.close();
         });
         

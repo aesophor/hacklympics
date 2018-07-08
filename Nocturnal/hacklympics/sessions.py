@@ -1,4 +1,4 @@
-from hacklympics.exceptions import AlreadyLoggedIn, NotLoggedIn
+from hacklympics.exceptions import *
 from hacklympics.events.events import *
 from hacklympics.events.dispatcher import *
 from hacklympics.models import *
@@ -48,11 +48,13 @@ class OnlineUsers:
 
     @staticmethod
     def has(user):
-        return True if OnlineUsers.get(user) else False
+        return user in OnlineUsers.users
  
     @staticmethod
     def get(user: User):
-        return [u for u in OnlineUsers.users if u == user]
+        for u in OnlingUsers.users:
+            if u == user:
+                return u
     
     @staticmethod
     def get_all(role: str):
@@ -76,7 +78,7 @@ class OngoingExams:
             dispatch(LaunchExamEvent(exam), OnlineUsers.users)
             
             # Create an empty student list for this exam.
-            OngoingExams[exam] = ExamParticipants()
+            OngoingExams.exams[exam] = ExamParticipants()
         else:
             raise AlreadyLaunched("This exam has already been launched.")
 
@@ -93,12 +95,12 @@ class OngoingExams:
 
     @staticmethod
     def has(exam: Exam):
-        return OngoingExams.exams.has_key(exam)
+        return exam in OngoingExams.exams
 
     @staticmethod
     def get(exam: Exam):
         if OngoingExams.has(exam):
-            return OngoingExams.exams[e]
+            return OngoingExams.exams[exam]
         else:
             raise NotLaunched("This exam has not been launched or already ended.")
 
@@ -125,3 +127,6 @@ class ExamParticipants:
             self.students.remove(user)
         else:
             self.teachers.remove(user)
+
+    def __str__(self):
+        return str(self.students) + ", " + str(self.teachers)

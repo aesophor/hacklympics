@@ -23,7 +23,6 @@ import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.SocketServer;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.EventManager;
-import com.hacklympics.api.event.EventListener;
 import com.hacklympics.api.event.user.LoginEvent;
 import com.hacklympics.api.event.user.LogoutEvent;
 import com.hacklympics.api.session.Session;
@@ -32,6 +31,7 @@ import com.hacklympics.api.user.User;
 import hacklympics.utility.FXMLTable;
 import hacklympics.utility.ConfirmDialog;
 import hacklympics.utility.Utils;
+import com.hacklympics.api.event.EventHandler;
 
 public class StudentController implements Initializable, MainController {
     
@@ -139,8 +139,8 @@ public class StudentController implements Initializable, MainController {
         showPage(pages.get("Courses"));
     }
     
-    public void showScoreboard(ActionEvent event) {
-        showPage(pages.get("Scoreboard"));
+    public void showOngoingExams(ActionEvent event) {
+        showPage(pages.get("OngoingExams"));
     }
     
     public void showMessages(ActionEvent event) {
@@ -180,12 +180,12 @@ public class StudentController implements Initializable, MainController {
         bannerMsg.setText(greetingMsg);
     }
     
-    private void setOnLogin(EventListener<LoginEvent> listener) {
-        EventManager.getInstance().addEventListener(EventType.LOGIN, listener);
+    private void setOnLogin(EventHandler<LoginEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.LOGIN, listener);
     }
     
-    private void setOnLogout(EventListener<LogoutEvent> listener) {
-        EventManager.getInstance().addEventListener(EventType.LOGOUT, listener);
+    private void setOnLogout(EventHandler<LogoutEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.LOGOUT, listener);
     }
     
     public Map<String, Object> getControllers() {

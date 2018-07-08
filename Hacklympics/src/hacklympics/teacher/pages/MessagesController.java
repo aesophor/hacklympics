@@ -9,10 +9,10 @@ import javafx.scene.control.TextArea;
 import com.jfoenix.controls.JFXTextArea;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.EventManager;
-import com.hacklympics.api.event.EventListener;
 import com.hacklympics.api.event.message.NewMessageEvent;
 import com.hacklympics.api.message.Message;
 import com.hacklympics.api.session.Session;
+import com.hacklympics.api.event.EventHandler;
 
 public class MessagesController implements Initializable {
 
@@ -28,8 +28,8 @@ public class MessagesController implements Initializable {
         });
     }
     
-    public void setOnNewMessage(EventListener<NewMessageEvent> listener) {
-        EventManager.getInstance().addEventListener(EventType.NEW_MESSAGE, listener);
+    public void setOnNewMessage(EventHandler<NewMessageEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.NEW_MESSAGE, listener);
     }
     
     

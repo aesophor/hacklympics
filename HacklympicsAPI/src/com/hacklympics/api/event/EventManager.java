@@ -7,16 +7,25 @@ import java.util.ArrayList;
 
 public class EventManager {
     
-    public static EventManager eventManager;
+    private static EventManager eventManager;
     
-    private final Map<EventType, List<EventListener>> listeners;
+    private final Map<EventType, List<EventHandler>> handlers;
     
     private EventManager() {
-        this.listeners = new HashMap<>();
+        this.handlers = new HashMap<>();
         
-        this.listeners.put(EventType.LOGIN, new ArrayList<>());
-        this.listeners.put(EventType.LOGOUT, new ArrayList<>());
-        this.listeners.put(EventType.NEW_MESSAGE, new ArrayList<>());
+        // List of handlers for events of user login/logout.
+        this.handlers.put(EventType.LOGIN, new ArrayList<>());
+        this.handlers.put(EventType.LOGOUT, new ArrayList<>());
+        
+        // List of handlers for events of new messages arrival.
+        this.handlers.put(EventType.NEW_MESSAGE, new ArrayList<>());
+        
+        // List of handlers for exam-related events.
+        this.handlers.put(EventType.LAUNCH_EXAM, new ArrayList<>());
+        this.handlers.put(EventType.HALT_EXAM, new ArrayList<>());
+        this.handlers.put(EventType.ATTEND_EXAM, new ArrayList<>());
+        this.handlers.put(EventType.LEAVE_EXAM, new ArrayList<>());
     }
     
     public static EventManager getInstance() {
@@ -29,23 +38,23 @@ public class EventManager {
     
     
     /**
-     * Adds a EventListener that subscribes to a specific type of Event.
-     * @param eventType the type of the Event to listen for.
-     * @param listener the EventListener to be added.
+     * Adds a EventHandler which subscribes to a specific type of Event.
+     * @param eventType the type of the Event which the handler will handle.
+     * @param handler the EventHandler to be added.
      */
-    public void addEventListener(EventType eventType, EventListener listener) {
-        this.listeners.get(eventType).add(listener);
+    public void addEventHandler(EventType eventType, EventHandler handler) {
+        this.handlers.get(eventType).add(handler);
     }
     
     /**
-     * Fires the specified Events to all of its EventListeners.
+     * Fires the specified Events to all of its EventHandlers.
      * @param event the Event to fire.
      */
     public void fireEvent(Event event) {
         EventType eventType = event.getEventType();
         
-        for (EventListener listener : this.listeners.get(eventType)) {
-            listener.fireEvent(event);
+        for (EventHandler handler : this.handlers.get(eventType)) {
+            handler.handle(event);
         }
     }
     

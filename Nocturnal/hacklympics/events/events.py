@@ -69,7 +69,7 @@ class NewMessageEvent(Event):
 
 class LaunchExamEvent(Event):
     def __init__(self, exam: Exam):
-        super(NewMessageEvent, self).__init__(EventType.LAUNCH_EXAM)
+        super(LaunchExamEvent, self).__init__(EventType.LAUNCH_EXAM)
         self.exam = exam
         self.teacher = exam.course.teacher
 
@@ -78,7 +78,7 @@ class LaunchExamEvent(Event):
         
         event["content"] = {
             "exam": {
-                "course": self.exam.course.id,
+                "courseID": self.exam.course.id,
                 "examID": self.exam.id,
                 "title": self.exam.title,
                 "desc": self.exam.desc,
@@ -96,7 +96,7 @@ class LaunchExamEvent(Event):
 
 class HaltExamEvent(Event):
     def __init__(self, exam: Exam):
-        super(NewMessageEvent, self).__init__(EventType.HALT_EXAM)
+        super(HaltExamEvent, self).__init__(EventType.HALT_EXAM)
         self.exam = exam
         self.teacher = exam.course.teacher
 
@@ -126,7 +126,7 @@ class HaltExamEvent(Event):
 # Teacher: proctor the exam.
 class AttendExamEvent(Event):
     def __init__(self, exam: Exam, user: User):
-        super(NewMessageEvent, self).__init__(EventType.ATTEND_EXAM)
+        super(AttendExamEvent, self).__init__(EventType.ATTEND_EXAM)
         self.exam = exam
         self.user = user
 
@@ -154,7 +154,7 @@ class AttendExamEvent(Event):
 
 class LeaveExamEvent(Event):
     def __init__(self, exam: Exam, user: User):
-        super(NewMessageEvent, self).__init__(EventType.LEAVE_EXAM)
+        super(LeaveExamEvent, self).__init__(EventType.LEAVE_EXAM)
         self.exam = exam
         self.user = user
 

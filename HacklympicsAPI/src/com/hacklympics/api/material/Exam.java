@@ -152,6 +152,32 @@ public class Exam {
         return problems;
     }
     
+    /**
+     * Gets all ongoing exams.
+     * @return ongoing exams.
+     */
+    public static List<Exam> getOngoingExams() {
+        List<Exam> exams = new ArrayList<>();
+        Response list = Exam.listOngoing();
+        
+        if (list.success()) {
+            String raw = Utils.getGson().toJson(list.getContent().get("exams"));
+            JsonArray json = Utils.getGson().fromJson(raw, JsonArray.class);
+            
+            for (JsonElement e: json) {
+                int courseID = e.getAsJsonObject().get("courseID").getAsInt();
+                int examID = e.getAsJsonObject().get("examID").getAsInt();
+                String title = e.getAsJsonObject().get("title").getAsString();
+                String desc = e.getAsJsonObject().get("desc").getAsString();
+                int duration = e.getAsJsonObject().get("duration").getAsInt();
+                
+                exams.add(new Exam(courseID, examID, title, desc, duration));
+            }
+        }
+        
+        return exams;
+    }
+    
     
     public ExamData getData() {
         return data;

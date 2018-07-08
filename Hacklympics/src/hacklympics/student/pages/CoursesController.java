@@ -21,8 +21,6 @@ import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Student;
-import hacklympics.student.StudentController;
-import hacklympics.utility.ConfirmDialog;
 
 public class CoursesController implements Initializable {
 
@@ -200,40 +198,6 @@ public class CoursesController implements Initializable {
     public void search(ActionEvent event) {
         keyword = keywordField.getText();
         update(tabPane.getSelectionModel().getSelectedItem());
-    }
-    
-    
-    /**
-     * Invoked when the attend exam button is clicked.
-     * Asks the user for confirmation for attending the exam.
-     * If the user answers yes, then he/she will be taken to the code page.
-     * @param event emitted by JavaFX.
-     */
-    @FXML
-    public void attendExam(ActionEvent event) {
-        Exam selected = examTable.getSelectionModel().getSelectedItem();
-        if (selected == null) return;
-        Session.getInstance().setCurrentExam(selected);
-        
-        ConfirmDialog alert = new ConfirmDialog(
-                dialogPane,
-                "Attend Exam",
-                "You have selected the exam: " + selected + "\n\n"
-              + "Attend the exam now?"
-        );
-        
-        alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            StudentController sc = (StudentController) Session.getInstance().getMainController();
-            CodeController cc = (CodeController) sc.getControllers().get("Code");
-            
-            cc.setExamLabel(selected.toString());
-            cc.setProblemBox(selected.getProblems());
-            sc.showCode(event);
-            
-            alert.close();
-        });
-        
-        alert.show();
     }
     
 }

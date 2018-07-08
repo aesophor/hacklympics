@@ -6,13 +6,13 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.OngoingExamsController">
+<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.OngoingExamsController">
    <children>
       <TableView fx:id="table" layoutX="32.0" layoutY="112.0" prefHeight="530.0" prefWidth="712.0">
         <columns>
-          <TableColumn fx:id="gradYearColumn" prefWidth="202.0" text="Graduation Year" />
-          <TableColumn fx:id="usernameColumn" prefWidth="175.0" text="Username" />
-          <TableColumn fx:id="fullnameColumn" prefWidth="89.0" text="Fullname" />
+          <TableColumn fx:id="examTitleCol" prefWidth="219.0" text="Title" />
+          <TableColumn fx:id="examDurationCol" prefWidth="132.0" text="Duration" />
+          <TableColumn fx:id="examDescCol" prefWidth="355.0" text="Description" />
         </columns>
       </TableView>
       <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" prefHeight="27.0" prefWidth="609.0" promptText="Keyword" />

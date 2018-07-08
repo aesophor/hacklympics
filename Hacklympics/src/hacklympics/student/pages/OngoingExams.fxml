@@ -2,20 +2,32 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.pages.OngoingExamsController">
+<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.pages.OngoingExamsController">
    <children>
       <TableView fx:id="table" layoutX="32.0" layoutY="112.0" prefHeight="530.0" prefWidth="712.0">
         <columns>
-          <TableColumn fx:id="gradYearColumn" prefWidth="202.0" text="Graduation Year" />
-          <TableColumn fx:id="usernameColumn" prefWidth="175.0" text="Username" />
-          <TableColumn fx:id="fullnameColumn" prefWidth="89.0" text="Fullname" />
+          <TableColumn fx:id="examTitleCol" prefWidth="219.0" text="Title" />
+          <TableColumn fx:id="examDurationCol" prefWidth="132.0" text="Duration" />
+          <TableColumn fx:id="examDescCol" prefWidth="355.0" text="Description" />
         </columns>
       </TableView>
       <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" prefHeight="27.0" prefWidth="609.0" promptText="Keyword" />
       <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="663.0" layoutY="75.0" onAction="#search" prefHeight="27.0" prefWidth="76.0" styleClass="darkBlueBtn" text="Search" />
+      <JFXButton buttonType="RAISED" layoutX="705.0" layoutY="605.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#attendExam" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
+         <font>
+            <Font size="22.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="EDIT" onDragDetected="#attendExam" size="20" />
+         </graphic>
+      </JFXButton>
+      <StackPane fx:id="dialogPane" layoutX="150.0" layoutY="244.0" mouseTransparent="true" prefHeight="153.0" prefWidth="328.0" />
    </children>
 </AnchorPane>

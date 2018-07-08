@@ -24,7 +24,7 @@ public class Event {
     
     
     /**
-     * Returns the EventType of this Event..
+     * Returns the EventType of this Event.
      * @return the event type.
      */
     public EventType getEventType() {
@@ -51,6 +51,7 @@ public class Event {
             event = (Event) Class.forName(eventType.toString())
                                  .getConstructor(String.class)
                                  .newInstance(toString());
+            
         } catch (InstantiationException
                | IllegalAccessException
                | IllegalArgumentException
@@ -58,6 +59,7 @@ public class Event {
                | NoSuchMethodException
                | SecurityException
                | ClassNotFoundException ex) {
+            ex.printStackTrace();
         }
         
         return event;
