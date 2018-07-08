@@ -10,7 +10,7 @@ import com.jfoenix.controls.JFXTextArea;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventListener;
-import com.hacklympics.api.event.NewMessageEvent;
+import com.hacklympics.api.event.message.NewMessageEvent;
 import com.hacklympics.api.message.Message;
 import com.hacklympics.api.session.Session;
 

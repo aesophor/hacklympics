@@ -100,8 +100,8 @@ def login(request):
             "role": user.role
         }
         
-        OnlineUsers.add(user.username)
-        OnlineUsers.update(username=username, last_login_ip=login_ip)
+        OnlineUsers.add(user)
+        OnlineUsers.update(user=user, last_login_ip=login_ip)
         OnlineUsers.show()
     except AlreadyLoggedIn:
         response_data["statusCode"] = StatusCode.ALREADY_LOGGED_IN
@@ -123,7 +123,7 @@ def logout(request):
         
         user = User.objects.get(username=username)
         
-        OnlineUsers.remove(username)
+        OnlineUsers.remove(user)
         OnlineUsers.show()
     except NotLoggedIn:
         response_data["statusCode"] = StatusCode.NOT_LOGGED_IN

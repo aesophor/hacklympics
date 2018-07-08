@@ -65,3 +65,114 @@ class NewMessageEvent(Event):
         }
         
         return json.dumps(event)
+
+
+class LaunchExamEvent(Event):
+    def __init__(self, exam: Exam):
+        super(NewMessageEvent, self).__init__(EventType.LAUNCH_EXAM)
+        self.exam = exam
+        self.teacher = exam.course.teacher
+
+    def __str__(self):
+        event = {"eventType": self.event_type}
+        
+        event["content"] = {
+            "teacher": {
+                "username": self.teacher.username,
+                "fullname": self.teacher.fullname,
+            },
+            "exam": {
+                "examID": self.exam.id,
+                "title": self.exam.title,
+                "desc": self.exam.desc,
+                "duration": self.exam.duration,
+                "course": self.exam.course.id
+            }
+        }
+        
+        return json.dumps(event)
+
+
+class HaltExamEvent(Event):
+    def __init__(self, exam: Exam):
+        super(NewMessageEvent, self).__init__(EventType.HALT_EXAM)
+        self.exam = exam
+        self.teacher = exam.course.teacher
+
+    def __str__(self):
+        event = {"eventType": self.event_type}
+        
+        event["content"] = {
+            "teacher": {
+                "username": self.teacher.username,
+                "fullname": self.teacher.fullname,
+            },
+            "exam": {
+                "examID": self.exam.id,
+                "title": self.exam.title,
+                "desc": self.exam.desc,
+                "duration": self.exam.duration,
+                "course": self.exam.course.id
+            }
+        }
+        
+        return json.dumps(event)
+
+
+# Both student and teacher can attend an Exam.
+# Student: take the exam.
+# Teacher: proctor the exam.
+class AttendExamEvent(Event):
+    def __init__(self, exam: Exam, user: User):
+        super(NewMessageEvent, self).__init__(EventType.ATTEND_EXAM)
+        self.exam = exam
+        self.user = user
+
+    def __str__(self):
+        event = {"eventType": self.event_type}
+        
+        event["content"] = {
+            "exam": {
+                "examID": self.exam.id,
+                "title": self.exam.title,
+                "desc": self.exam.desc,
+                "duration": self.exam.duration,
+                "course": self.exam.course.id
+            },
+            "user": {
+                "username": self.user.username,
+                "fullname": self.user.fullname,
+                "graduationYear": self.user.graduation_year,
+                "isStudent": self.user.is_student
+            }
+        }
+        
+        return json.dumps(event)
+
+
+class LeaveExamEvent(Event):
+    def __init__(self, exam: Exam, user: User):
+        super(NewMessageEvent, self).__init__(EventType.LEAVE_EXAM)
+        self.exam = exam
+        self.user = user
+
+    def __str__(self):
+        event = {"eventType": self.event_type}
+        
+        event["content"] = {
+            "exam": {
+                "examID": self.exam.id,
+                "title": self.exam.title,
+                "desc": self.exam.desc,
+                "duration": self.exam.duration,
+                "course": self.exam.course.id
+            }, 
+            "user": {
+                "username": self.user.username,
+                "fullname": self.user.fullname,
+                "graduationYear": self.user.graduation_year,
+                "isStudent": self.user.is_student
+            }
+        }
+        
+        return json.dumps(event)

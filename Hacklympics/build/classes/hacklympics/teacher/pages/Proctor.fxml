@@ -23,7 +23,7 @@
                      <children>
                         <VBox prefHeight="640.0" prefWidth="776.0">
                            <children>
-                              <AnchorPane prefHeight="596.0" prefWidth="776.0">
+                              <AnchorPane prefHeight="585.0" prefWidth="776.0">
                                  <children>
                                     <ScrollPane layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0">
                                       <content>
@@ -46,7 +46,7 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </Label>
-                                    <Label fx:id="examLabel21" alignment="CENTER" layoutX="550.0" layoutY="21.0" prefHeight="29.0" text="Special Group">
+                                    <Label fx:id="examLabel21" alignment="CENTER" layoutX="550.0" layoutY="20.0" prefHeight="29.0" text="Special Group">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -57,19 +57,19 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </Label>
-                                    <JFXButton layoutX="241.0" layoutY="24.0" onAction="#adjustLiveScreensParam" prefHeight="9.0" prefWidth="38.0" styleClass="darkBlueBtn" text="&gt;&gt;">
+                                    <JFXButton layoutX="241.0" layoutY="24.0" onAction="#moveToSpecialGrp" prefHeight="9.0" prefWidth="38.0" styleClass="darkBlueBtn" text="&gt;&gt;">
                                        <font>
                                           <Font size="11.0" />
                                        </font>
                                     </JFXButton>
-                                    <JFXButton layoutX="490.0" layoutY="25.0" onAction="#adjustLiveScreensParam" prefHeight="9.0" prefWidth="38.0" styleClass="darkBlueBtn" text="&lt;&lt;">
+                                    <JFXButton layoutX="490.0" layoutY="24.0" onAction="#moveToNormalGrp" prefHeight="9.0" prefWidth="38.0" styleClass="darkBlueBtn" text="&lt;&lt;">
                                        <font>
                                           <Font size="11.0" />
                                        </font>
                                     </JFXButton>
                                  </children>
                               </AnchorPane>
-                              <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="776.0" style="-fx-background-color: -fx-lightgrey;">
+                              <HBox alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="776.0" style="-fx-background-color: -fx-lightgrey;">
                                  <children>
                                     <Label fx:id="examLabel" alignment="CENTER_RIGHT" prefHeight="29.0" text="No Group Selected">
                                        <opaqueInsets>
@@ -119,8 +119,16 @@
                      <children>
                         <VBox prefHeight="639.0" prefWidth="776.0">
                            <children>
-                              <AnchorPane prefHeight="596.0" prefWidth="776.0" />
-                              <HBox alignment="CENTER_RIGHT" prefHeight="43.0" prefWidth="776.0" style="-fx-background-color: -fx-lightgrey;">
+                              <AnchorPane prefHeight="585.0" prefWidth="776.0">
+                                 <children>
+                                    <ScrollPane layoutX="25.0" layoutY="60.0" prefHeight="506.0" prefWidth="725.0">
+                                       <content>
+                                          <AnchorPane fx:id="keystrokeStudentsPane" minHeight="0.0" minWidth="0.0" prefHeight="504.0" prefWidth="351.0" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="776.0" style="-fx-background-color: -fx-lightgrey;">
                                  <children>
                                     <Label fx:id="examLabel1" alignment="CENTER_RIGHT" prefHeight="29.0" text="No Student Selected">
                                        <opaqueInsets>
@@ -156,7 +164,6 @@
             </Tab>
         </tabs>
       </JFXTabPane>
-      <StackPane fx:id="formPane" layoutX="140.0" layoutY="89.0" mouseTransparent="true" prefHeight="250.0" prefWidth="328.0" />
       <StackPane fx:id="dialogPane" layoutX="140.0" layoutY="208.0" mouseTransparent="true" prefHeight="140.0" prefWidth="328.0" />
    </children>
 </AnchorPane>

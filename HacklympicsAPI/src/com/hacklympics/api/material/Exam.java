@@ -82,11 +82,43 @@ public class Exam {
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    /*
     public Response launch() {
+        String uri = String.format("course/%d/exam/launch", this.data.getCourseID());
         
+        JsonObject json = new JsonObject();
+        json.addProperty("examID", this.data.getExamID());
+        
+        return new Response(Utils.post(uri, json.toString()));
     }
-    */
+    
+    public Response halt() {
+        String uri = String.format("course/%d/exam/halt", this.data.getCourseID());
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("examID", this.data.getExamID());
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    public Response attend(String username) {
+        String uri = String.format("course/%d/exam/attend", this.data.getCourseID());
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("examID", this.data.getExamID());
+        json.addProperty("username", username);
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    public Response leave(String username) {
+        String uri = String.format("course/%d/exam/leave", this.data.getCourseID());
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("examID", this.data.getExamID());
+        json.addProperty("username", username);
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
     
     
     /**

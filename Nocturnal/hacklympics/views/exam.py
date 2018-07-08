@@ -2,6 +2,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
 from hacklympics.status_code import StatusCode
+from hacklympics.sessions import OngoingExams
 from hacklympics.models import *
 
 import json
@@ -104,16 +105,98 @@ def remove(request, c_id):
 
 
 def launch(request, c_id):
-    pass
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        req_body = json.loads(request.body.decode("utf-8"))
+        
+        e_id = req_body["examID"]
+        
+        exam = Exam.objects.get(id=e_id)
+        teacher = exam.course.teacher
+        
+        # Add this exam to OngoingExams.
+        # The teacher launching the exam will be the first proctor.
+        OngoingExams.add(exam)
+        OngoingExams.get(exam).add(teacher)
+        OngoingExams.show()
+    except AlreadyLaunched:
+        response_data["statusCode"] = StatusCode.ALREADY_LAUNCHED
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+    
+    return JsonResponse(response_data)
 
 
 def halt(request, c_id):
-    pass
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        req_body = json.loads(request.body.decode("utf-8"))
+        
+        e_id = req_body["examID"]
+        
+        exam = Exam.objects.get(id=e_id)
+        
+        OngoingExams.remove(exam)
+        OngoingExams.show()
+    except NotLaunched:
+        response_data["statusCode"] = StatusCode.NOT_LAUNCHED
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+    
+    return JsonResponse(response_data)
 
 
 def attend(request, c_id):
-    pass
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        req_body = json.loads(request.body.decode("utf-8"))
+        
+        e_id = req_body["examID"]
+        username = req_body["username"]
+        
+        exam = Exam.objects.get(id=e_id)
+        user = User.objects.get(username=username)
+        
+        OngoingExams.get(exam).add(user)
+        OngoingExams.show()
+        # Dispatch a event here!
+    except NotLaunched:
+        response_data["statusCode"] = StatusCode.NOT_LAUNCHED
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+
+    return JsonResponse(response_data)
 
 
-def finish(request, c_id):
-    pass
+def leave(request, c_id):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+    
+    try:
+        req_body = json.loads(request.body.decode("utf-8"))
+        
+        e_id = req_body["examID"]
+        username = req_body["username"]
+        
+        exam = Exam.objects.get(id=e_id)
+        user = User.objects.get(username=username)
+        
+        OngoingExams.get(exam).remove(user)
+        OngoingExams.show()
+        # Dispatch a event here!
+    except NotLaunched:
+        response_data["statusCode"] = StatusCode.NOT_LAUNCHED
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+
+    return JsonResponse(response_data)

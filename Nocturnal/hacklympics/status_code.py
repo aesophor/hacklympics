@@ -16,3 +16,6 @@ class StatusCode(IntEnum):
     
     INCORRECT_ANSWER = 10
     ALREADY_SUBMITTED = 11
+
+    ALREADY_LAUNCHED = 12
+    NOT_LAUNCHED = 13

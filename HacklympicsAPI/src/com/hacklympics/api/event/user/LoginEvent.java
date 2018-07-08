@@ -1,5 +1,6 @@
-package com.hacklympics.api.event;
+package com.hacklympics.api.event.user;
 
+import com.hacklympics.api.event.Event;
 import java.util.Map;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;
