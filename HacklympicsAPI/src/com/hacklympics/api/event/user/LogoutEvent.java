@@ -10,8 +10,8 @@ public class LogoutEvent extends Event {
     
     private final User loggedOutUser;
     
-    public LogoutEvent(String raw) {
-        super(raw);
+    public LogoutEvent(String rawJson) {
+        super(rawJson);
         
         Map<String, Object> loginEvent = this.getContent();
         

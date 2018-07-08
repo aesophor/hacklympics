@@ -77,16 +77,17 @@ class LaunchExamEvent(Event):
         event = {"eventType": self.event_type}
         
         event["content"] = {
-            "teacher": {
-                "username": self.teacher.username,
-                "fullname": self.teacher.fullname,
-            },
             "exam": {
+                "course": self.exam.course.id,
                 "examID": self.exam.id,
                 "title": self.exam.title,
                 "desc": self.exam.desc,
                 "duration": self.exam.duration,
-                "course": self.exam.course.id
+            },
+            "teacher": {
+                "username": self.teacher.username,
+                "fullname": self.teacher.fullname,
+                "graduationYear": self.teacher.graduation_year
             }
         }
         
@@ -103,16 +104,17 @@ class HaltExamEvent(Event):
         event = {"eventType": self.event_type}
         
         event["content"] = {
-            "teacher": {
-                "username": self.teacher.username,
-                "fullname": self.teacher.fullname,
-            },
             "exam": {
+                "courseID": self.exam.course.id,
                 "examID": self.exam.id,
                 "title": self.exam.title,
                 "desc": self.exam.desc,
                 "duration": self.exam.duration,
-                "course": self.exam.course.id
+            },
+            "teacher": {
+                "username": self.teacher.username,
+                "fullname": self.teacher.fullname,
+                "graduationYear": self.teacher.graduation_year
             }
         }
         
@@ -133,11 +135,11 @@ class AttendExamEvent(Event):
         
         event["content"] = {
             "exam": {
+                "courseID": self.exam.course.id,
                 "examID": self.exam.id,
                 "title": self.exam.title,
                 "desc": self.exam.desc,
-                "duration": self.exam.duration,
-                "course": self.exam.course.id
+                "duration": self.exam.duration
             },
             "user": {
                 "username": self.user.username,
@@ -161,11 +163,11 @@ class LeaveExamEvent(Event):
         
         event["content"] = {
             "exam": {
+                "courseID": self.exam.course.id,
                 "examID": self.exam.id,
                 "title": self.exam.title,
                 "desc": self.exam.desc,
-                "duration": self.exam.duration,
-                "course": self.exam.course.id
+                "duration": self.exam.duration
             }, 
             "user": {
                 "username": self.user.username,
