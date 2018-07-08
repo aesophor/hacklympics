@@ -56,7 +56,7 @@ public class TeacherController implements Initializable, MainController {
         setGreetingMsg();
         
         initPages();
-        showPage(pages.get("dashboard"));
+        showPage(pages.get("Dashboard"));
         
         this.setOnLogin((LoginEvent event) -> {
             // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
@@ -79,30 +79,30 @@ public class TeacherController implements Initializable, MainController {
         pages = new HashMap<>();
         controllers = new HashMap<>();
         
-        String dashboardFXML = FXMLTable.getInstance().get("Teacher/dashboard");
-        String coursesFXML = FXMLTable.getInstance().get("Teacher/courses");
-        String studentsFXML = FXMLTable.getInstance().get("Teacher/students");
-        String messagesFXML = FXMLTable.getInstance().get("Teacher/messages");
-        String proctorFXML = FXMLTable.getInstance().get("Teacher/proctor");
+        String dashboardFXML = FXMLTable.getInstance().get("Teacher/Dashboard");
+        String coursesFXML = FXMLTable.getInstance().get("Teacher/Courses");
+        String ongoingExamsFXML = FXMLTable.getInstance().get("Teacher/OngoingExams");
+        String messagesFXML = FXMLTable.getInstance().get("Teacher/Messages");
+        String proctorFXML = FXMLTable.getInstance().get("Teacher/Proctor");
         
         try {
             FXMLLoader dashboardLoader = new FXMLLoader(getClass().getResource(dashboardFXML));
             FXMLLoader coursesLoader = new FXMLLoader(getClass().getResource(coursesFXML));
-            FXMLLoader studentsLoader = new FXMLLoader(getClass().getResource(studentsFXML));
+            FXMLLoader ongoingExamsLoader = new FXMLLoader(getClass().getResource(ongoingExamsFXML));
             FXMLLoader messagesLoader = new FXMLLoader(getClass().getResource(messagesFXML));
             FXMLLoader proctorLoader = new FXMLLoader(getClass().getResource(proctorFXML));
             
-            pages.put("dashboard", dashboardLoader.load());
-            pages.put("courses", coursesLoader.load());
-            pages.put("students", studentsLoader.load());
-            pages.put("messages", messagesLoader.load());
-            pages.put("proctor", proctorLoader.load());
+            pages.put("Dashboard", dashboardLoader.load());
+            pages.put("Courses", coursesLoader.load());
+            pages.put("OngoingExams", ongoingExamsLoader.load());
+            pages.put("Messages", messagesLoader.load());
+            pages.put("Proctor", proctorLoader.load());
             
-            controllers.put("dashboard", dashboardLoader.getController());
-            controllers.put("courses", coursesLoader.getController());
-            controllers.put("students", studentsLoader.getController());
-            controllers.put("messages", messagesLoader.getController());
-            controllers.put("proctor", proctorLoader.getController());
+            controllers.put("Dashboard", dashboardLoader.getController());
+            controllers.put("Courses", coursesLoader.getController());
+            controllers.put("OngoingExams", ongoingExamsLoader.getController());
+            controllers.put("Messages", messagesLoader.getController());
+            controllers.put("Proctor", proctorLoader.getController());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -131,23 +131,23 @@ public class TeacherController implements Initializable, MainController {
     }
     
     public void showDashboard(ActionEvent event) {
-        showPage(pages.get("dashboard"));
+        showPage(pages.get("Dashboard"));
     }
     
     public void showCourses(ActionEvent event) {
-        showPage(pages.get("courses"));
+        showPage(pages.get("Courses"));
     }
     
     public void showStudents(ActionEvent event) {
-        showPage(pages.get("students"));
+        showPage(pages.get("OngoingExams"));
     }
     
     public void showMessages(ActionEvent event) {
-        showPage(pages.get("messages"));
+        showPage(pages.get("Messages"));
     }
     
     public void showProctor(ActionEvent event) {
-        showPage(pages.get("proctor"));
+        showPage(pages.get("Proctor"));
     }
     
     

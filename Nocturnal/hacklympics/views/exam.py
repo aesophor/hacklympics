@@ -40,6 +40,22 @@ def list(request, c_id):
     return JsonResponse(response_data)
 
 
+def list_ongoing(request):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    response_data["content"] = {
+        "exams": [{
+            "courseID": exam.course.id,
+            "examID": exam.id,
+            "title": exam.title,
+            "desc": exam.desc,
+            "duration": exam.duration
+        } for exam in OngoingExams.exams]
+    }
+
+    return JsonResponse(response_data)
+
+
 def create(request, c_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
@@ -166,7 +182,6 @@ def attend(request, c_id):
         
         OngoingExams.get(exam).add(user)
         OngoingExams.show()
-        # Dispatch a event here!
     except NotLaunched:
         response_data["statusCode"] = StatusCode.NOT_LAUNCHED
     except KeyError:
@@ -191,7 +206,6 @@ def leave(request, c_id):
         
         OngoingExams.get(exam).remove(user)
         OngoingExams.show()
-        # Dispatch a event here!
     except NotLaunched:
         response_data["statusCode"] = StatusCode.NOT_LAUNCHED
     except KeyError:

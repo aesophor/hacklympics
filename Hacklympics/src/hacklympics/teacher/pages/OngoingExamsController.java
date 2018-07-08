@@ -15,7 +15,7 @@ import com.google.gson.Gson;
 import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.user.Student;
 
-public class StudentsController implements Initializable {
+public class OngoingExamsController implements Initializable {
     
     private static final Gson GSON = new Gson();
     private ObservableList<Student> records;

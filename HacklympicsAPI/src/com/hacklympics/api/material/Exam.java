@@ -46,6 +46,11 @@ public class Exam {
         return new Response(Utils.get(uri));
     }
     
+    public static Response listOngoing() {
+        String uri = String.format("exam/ongoing");
+        return new Response(Utils.get(uri));
+    }
+    
     public static Response create(int courseID, String title, String desc, int duration) {
         String uri = String.format("course/%d/exam/create", courseID);
         

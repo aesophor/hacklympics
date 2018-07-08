@@ -224,7 +224,7 @@ public class CoursesController implements Initializable {
         
         alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
             StudentController sc = (StudentController) Session.getInstance().getMainController();
-            CodeController cc = (CodeController) sc.getControllers().get("code");
+            CodeController cc = (CodeController) sc.getControllers().get("Code");
             
             cc.setExamLabel(selected.toString());
             cc.setProblemBox(selected.getProblems());

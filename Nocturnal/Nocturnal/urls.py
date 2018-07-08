@@ -39,7 +39,9 @@ urlpatterns = [
     url(r'^course/remove$', course.remove),
     url(r'^course/(?P<c_id>[\w.@+-]+)$', course.get),
 
+    url(r'^exam/ongoing$', exam.list_ongoing),
     url(r'^course/(?P<c_id>\d+)/exam$', exam.list),
+
     url(r'^course/(?P<c_id>\d+)/exam/create$', exam.create),
     url(r'^course/(?P<c_id>\d+)/exam/update$', exam.update),
     url(r'^course/(?P<c_id>\d+)/exam/remove$', exam.remove),

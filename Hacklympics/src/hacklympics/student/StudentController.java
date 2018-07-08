@@ -56,7 +56,7 @@ public class StudentController implements Initializable, MainController {
         initOnlineUserListView();
         
         initPages();
-        showPage(pages.get("dashboard"));
+        showPage(pages.get("Dashboard"));
         
         this.setOnLogin((LoginEvent event) -> {
             // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
@@ -79,30 +79,30 @@ public class StudentController implements Initializable, MainController {
         pages = new HashMap<>();
         controllers = new HashMap<>();
         
-        String dashboardFXML = FXMLTable.getInstance().get("Student/dashboard");
-        String coursesFXML = FXMLTable.getInstance().get("Student/courses");
-        String scoreboardFXML = FXMLTable.getInstance().get("Student/scoreboard");
-        String messagesFXML = FXMLTable.getInstance().get("Student/messages");
-        String codeFXML = FXMLTable.getInstance().get("Student/code");
+        String dashboardFXML = FXMLTable.getInstance().get("Student/Dashboard");
+        String coursesFXML = FXMLTable.getInstance().get("Student/Courses");
+        String ongoingExamsFXML = FXMLTable.getInstance().get("Student/OngoingExams");
+        String messagesFXML = FXMLTable.getInstance().get("Student/Messages");
+        String codeFXML = FXMLTable.getInstance().get("Student/Code");
         
         try {
             FXMLLoader dashboardLoader = new FXMLLoader(getClass().getResource(dashboardFXML));
             FXMLLoader coursesLoader = new FXMLLoader(getClass().getResource(coursesFXML));
-            //FXMLLoader scoreboardLoader = new FXMLLoader(getClass().getResource(coursesFXML));
+            FXMLLoader ongoingExamsLoader = new FXMLLoader(getClass().getResource(ongoingExamsFXML));
             FXMLLoader messagesLoader = new FXMLLoader(getClass().getResource(messagesFXML));
             FXMLLoader codeLoader = new FXMLLoader(getClass().getResource(codeFXML));
             
-            pages.put("dashboard", dashboardLoader.load());
-            pages.put("courses", coursesLoader.load());
-            //pages.put("scoreboard", scoreboardLoader.load());
-            pages.put("messages", messagesLoader.load());
-            pages.put("code", codeLoader.load());
+            pages.put("Dashboard", dashboardLoader.load());
+            pages.put("Courses", coursesLoader.load());
+            pages.put("OngoingExams", ongoingExamsLoader.load());
+            pages.put("Messages", messagesLoader.load());
+            pages.put("Code", codeLoader.load());
             
-            controllers.put("dashboard", dashboardLoader.getController());
-            controllers.put("courses", coursesLoader.getController());
-            //controllers.put("scoreboard", scoreboardLoader.getController());
-            controllers.put("messages", messagesLoader.getController());
-            controllers.put("code", codeLoader.getController());
+            controllers.put("Dashboard", dashboardLoader.getController());
+            controllers.put("Courses", coursesLoader.getController());
+            controllers.put("OngoingExams", ongoingExamsLoader.getController());
+            controllers.put("Messages", messagesLoader.getController());
+            controllers.put("Code", codeLoader.getController());
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
@@ -132,23 +132,23 @@ public class StudentController implements Initializable, MainController {
     }
     
     public void showDashboard(ActionEvent event) {
-        showPage(pages.get("dashboard"));
+        showPage(pages.get("Dashboard"));
     }
     
     public void showCourses(ActionEvent event) {
-        showPage(pages.get("courses"));
+        showPage(pages.get("Courses"));
     }
     
     public void showScoreboard(ActionEvent event) {
-        showPage(pages.get("scoreboard"));
+        showPage(pages.get("Scoreboard"));
     }
     
     public void showMessages(ActionEvent event) {
-        showPage(pages.get("messages"));
+        showPage(pages.get("Messages"));
     }
     
     public void showCode(ActionEvent event) {
-        showPage(pages.get("code"));
+        showPage(pages.get("Code"));
     }
     
     
