@@ -1,10 +1,12 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
+from hacklympics.exceptions import AlreadyLaunched, NotLaunched
 from hacklympics.status_code import StatusCode
 from hacklympics.sessions import OngoingExams
 from hacklympics.models import *
 
+from threading import Timer
 import json
 
 
@@ -136,6 +138,8 @@ def launch(request, c_id):
         OngoingExams.add(exam)
         OngoingExams.get(exam).add(teacher)
         OngoingExams.show()
+    except Exception as e:
+        print(e)
     except AlreadyLaunched:
         response_data["statusCode"] = StatusCode.ALREADY_LAUNCHED
     except KeyError:

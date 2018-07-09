@@ -1,5 +1,6 @@
 package hacklympics.student.pages;
 
+import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.exam.LaunchExamEvent;
@@ -19,7 +20,9 @@ import com.jfoenix.controls.JFXTextField;
 import javafx.application.Platform;
 import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.session.Session;
+import com.hacklympics.api.user.User;
 import hacklympics.student.StudentController;
+import hacklympics.utility.AlertDialog;
 import hacklympics.utility.ConfirmDialog;
 import javafx.scene.layout.StackPane;
 
@@ -111,32 +114,51 @@ public class OngoingExamsController implements Initializable {
      */
     @FXML
     public void attendExam(ActionEvent event) {
-        Exam selected = table.getSelectionModel().getSelectedItem();
-        if (selected == null) return;
+        Exam selectedExam = table.getSelectionModel().getSelectedItem();
+        if (selectedExam == null) return;
         
-        ConfirmDialog alert = new ConfirmDialog(
+        ConfirmDialog confirmation = new ConfirmDialog(
                 dialogPane,
                 "Attend Exam",
-                "You have selected the exam: " + selected + "\n\n"
+                "You have selected the exam: " + selectedExam + "\n\n"
               + "Attend the exam now?"
         );
         
-        alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            Session.getInstance().setCurrentExam(selected);
+        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+            User currentUser = Session.getInstance().getCurrentUser();
+            Response attend = currentUser.attend(selectedExam);
             
-            selected.attend(Session.getInstance().getCurrentUser().getUsername());
+            switch (attend.getStatusCode()) {
+                case SUCCESS:
+                    Session.getInstance().setCurrentExam(selectedExam);
+                    
+                    StudentController sc = (StudentController) Session.getInstance().getMainController();
+                    CodeController cc = (CodeController) sc.getControllers().get("Code");
             
-            StudentController sc = (StudentController) Session.getInstance().getMainController();
-            CodeController cc = (CodeController) sc.getControllers().get("Code");
+                    cc.setExamLabel(selectedExam.toString());
+                    cc.setProblemBox(selectedExam.getProblems());
+                    sc.showCode(e);
+                    break;
+                    
+                case NOT_LAUNCHED:
+                    AlertDialog alert = new AlertDialog(
+                            dialogPane,
+                            "Exam Not Ready or Ended",
+                            "The selected exam is either not launched yet "
+                          + "or has been halted already."
+                    );
+                    
+                    alert.show();
+                    break;
+                    
+                default:
+                    break;
+            }
             
-            cc.setExamLabel(selected.toString());
-            cc.setProblemBox(selected.getProblems());
-            sc.showCode(e);
-            
-            alert.close();
+            confirmation.close();
         });
         
-        alert.show();
+        confirmation.show();
     }
     
     private void setOnExamLaunched(EventHandler<LaunchExamEvent> listener) {

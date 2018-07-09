@@ -45,6 +45,7 @@
                       <Menu mnemonicParsing="false" text="Exam">
                         <items>
                           <MenuItem mnemonicParsing="false" onAction="#submit" text="Submit" />
+                              <MenuItem mnemonicParsing="false" onAction="#leave" text="Leave" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">
@@ -65,7 +66,7 @@
                   </TabPane>
                   <HBox alignment="CENTER_RIGHT" prefHeight="59.0" prefWidth="776.0" style="-fx-background-color: -fx-lightgrey;">
                      <children>
-                        <Label fx:id="examLabel" alignment="CENTER_RIGHT" prefHeight="29.0" text="No Exam Selected">
+                        <Label fx:id="examLabel" alignment="CENTER_RIGHT" prefHeight="29.0" text="No Exam Being Taken">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>

@@ -2,6 +2,7 @@ from hacklympics.exceptions import *
 from hacklympics.events.events import *
 from hacklympics.events.dispatcher import *
 from hacklympics.models import *
+from threading import Timer
 
 class OnlineUsers:
     users = []
@@ -73,18 +74,25 @@ class OngoingExams:
 
     @staticmethod
     def add(exam: Exam):
-        if not OngoingExams.has(exam):
+        if not OngoingExams.has(exam):                        
+            # Create an empty student list for this exam.
+            OngoingExams.exams[exam] = ExamData()
+            
+            # Start the timer of this exam.
+            OngoingExams.exams[exam].timer = Timer(exam.duration * 60, OngoingExams.remove, args=[exam])
+            OngoingExams.exams[exam].timer.start()
+            
             # Notify all users that the exam has been launched.
             dispatch(LaunchExamEvent(exam), OnlineUsers.users)
-            
-            # Create an empty student list for this exam.
-            OngoingExams.exams[exam] = ExamParticipants()
         else:
             raise AlreadyLaunched("This exam has already been launched.")
 
     @staticmethod
     def remove(exam: Exam):
         if OngoingExams.has(exam):
+            # Stop the timer of this exam.
+            OngoingExams.exams[exam].timer.cancel()
+            
             # Remove the element from the dict.
             del OngoingExams.exams[exam]
             
@@ -109,12 +117,16 @@ class OngoingExams:
         print(OngoingExams.exams)
 
 
-class ExamParticipants:
+class ExamData:
+    # ExamData = two lists of participants (Students and Teachers) + timer.
+    
     # A participant of an exam can either be a student or a teacher.
     # Students take the exam while teacher proctor the exam.
     def __init__(self):
         self.students = []
         self.teachers = []
+        
+        self.timer = None
 
     def add(self, user: User):
         if user.is_student:

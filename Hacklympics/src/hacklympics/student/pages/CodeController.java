@@ -26,6 +26,8 @@ import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Student;
+import com.hacklympics.api.user.User;
+import hacklympics.student.StudentController;
 import hacklympics.utility.FileTab;
 import hacklympics.utility.AlertDialog;
 import hacklympics.utility.ConfirmDialog;
@@ -251,8 +253,8 @@ public class CodeController implements Initializable {
                 "Submit Answer",
                 String.format(
                         "Submitting \"%s\" for \"%s\".\n\n"
-                        + "Once submitted, you will NOT be able to revise it.\n"
-                        + "Submit your code now?",
+                      + "Once submitted, you will NOT be able to revise it.\n"
+                      + "Submit your code now?",
                         getCurrentFileTab().getFilename(),
                         selectedProblem
                 )
@@ -326,7 +328,7 @@ public class CodeController implements Initializable {
                         dialogPane,
                         "Sorry",
                         "It seems that your code doesn't work out,\n\n"
-                        + "keep going!"
+                      + "keep going!"
                 );
 
                 failed.show();
@@ -342,6 +344,43 @@ public class CodeController implements Initializable {
                 error.show();
                 break;
         }
+    }
+
+    @FXML
+    public void leave(ActionEvent event) {
+        Exam currentExam = Session.getInstance().getCurrentExam();
+        User currentUser = Session.getInstance().getCurrentUser();
+
+        ConfirmDialog confirmation = new ConfirmDialog(
+                dialogPane,
+                "Leave Exam",
+                "Once left, you will not be able to enter again!\n\n"
+              + "Leave the exam now?"
+        );
+
+        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+            Response leave = currentUser.leave(currentExam);
+            
+            switch (leave.getStatusCode()) {
+                case SUCCESS:
+                    Session.getInstance().setCurrentExam(null);
+
+                    StudentController sc = (StudentController) Session.getInstance().getMainController();
+                    CodeController cc = (CodeController) sc.getControllers().get("Code");
+
+                    cc.setExamLabel("No Exam Selected");
+                    cc.setProblemBox(null);
+                    sc.showOngoingExams(event);
+                    break;
+
+                default:
+                    break;
+            }
+            
+            confirmation.close();
+        });
+
+        confirmation.show();
     }
 
     /**
@@ -424,7 +463,10 @@ public class CodeController implements Initializable {
      */
     public void setProblemBox(List<Problem> problems) {
         problemBox.getItems().clear();
-        problemBox.getItems().addAll(problems);
+
+        if (problems != null) {
+            problemBox.getItems().addAll(problems);
+        }
     }
 
 }

@@ -7,6 +7,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.utility.Utils;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,26 @@ public abstract class User {
         
         JsonObject json = new JsonObject();
         json.addProperty("username", getProfile().getUsername());
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    public Response attend(Exam exam) {
+        String uri = String.format("course/%d/exam/attend", exam.getData().getCourseID());
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("examID", exam.getData().getExamID());
+        json.addProperty("username", this.getProfile().getUsername());
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    public Response leave(Exam exam) {
+        String uri = String.format("course/%d/exam/leave", exam.getData().getCourseID());
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("examID", exam.getData().getExamID());
+        json.addProperty("username", this.getProfile().getUsername());
         
         return new Response(Utils.post(uri, json.toString()));
     }

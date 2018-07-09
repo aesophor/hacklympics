@@ -105,26 +105,6 @@ public class Exam {
         return new Response(Utils.post(uri, json.toString()));
     }
     
-    public Response attend(String username) {
-        String uri = String.format("course/%d/exam/attend", this.data.getCourseID());
-        
-        JsonObject json = new JsonObject();
-        json.addProperty("examID", this.data.getExamID());
-        json.addProperty("username", username);
-        
-        return new Response(Utils.post(uri, json.toString()));
-    }
-    
-    public Response leave(String username) {
-        String uri = String.format("course/%d/exam/leave", this.data.getCourseID());
-        
-        JsonObject json = new JsonObject();
-        json.addProperty("examID", this.data.getExamID());
-        json.addProperty("username", username);
-        
-        return new Response(Utils.post(uri, json.toString()));
-    }
-    
     
     /**
      * Returns all Problems under this Exam.

@@ -71,28 +71,17 @@
                               </AnchorPane>
                               <HBox alignment="CENTER_RIGHT" prefHeight="55.0" prefWidth="776.0" style="-fx-background-color: -fx-lightgrey;">
                                  <children>
-                                    <Label fx:id="examLabel" alignment="CENTER_RIGHT" prefHeight="29.0" text="No Group Selected">
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                       <padding>
-                                          <Insets right="15.0" />
-                                       </padding>
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
-                                    <JFXComboBox fx:id="groupBox" labelFloat="true" minHeight="-Infinity" prefHeight="21.0" prefWidth="161.0" promptText="Pick a Group">
+                                    <JFXComboBox fx:id="groupBox" labelFloat="true" minHeight="-Infinity" prefHeight="21.0" prefWidth="125.0" promptText="Pick a Group">
                                        <padding>
                                           <Insets right="10.0" top="-3.0" />
                                        </padding>
                                     </JFXComboBox>
-                                    <JFXComboBox fx:id="imgQualityBox" labelFloat="true" minHeight="-Infinity" prefHeight="21.0" prefWidth="161.0" promptText="Image Quality">
+                                    <JFXComboBox fx:id="imgQualityBox" labelFloat="true" minHeight="-Infinity" prefHeight="21.0" prefWidth="125.0" promptText="Image Quality">
                                        <padding>
                                           <Insets right="10.0" top="-3.0" />
                                        </padding>
                                     </JFXComboBox>
-                                    <JFXComboBox fx:id="imgFreqBox" labelFloat="true" minHeight="-Infinity" prefHeight="21.0" prefWidth="161.0" promptText="Frequency">
+                                    <JFXComboBox fx:id="imgFreqBox" labelFloat="true" minHeight="-Infinity" prefHeight="21.0" prefWidth="125.0" promptText="Frequency">
                                        <padding>
                                           <Insets right="10.0" top="-3.0" />
                                        </padding>
@@ -130,18 +119,7 @@
                               </AnchorPane>
                               <HBox alignment="CENTER_RIGHT" prefHeight="56.0" prefWidth="776.0" style="-fx-background-color: -fx-lightgrey;">
                                  <children>
-                                    <Label fx:id="examLabel1" alignment="CENTER_RIGHT" prefHeight="29.0" text="No Student Selected">
-                                       <opaqueInsets>
-                                          <Insets />
-                                       </opaqueInsets>
-                                       <padding>
-                                          <Insets right="20.0" />
-                                       </padding>
-                                       <font>
-                                          <Font name="System Bold" size="12.0" />
-                                       </font>
-                                    </Label>
-                                    <JFXComboBox fx:id="keystrokeSpeedBox" minHeight="-Infinity" prefHeight="21.0" prefWidth="161.0" promptText="Play Speed">
+                                    <JFXComboBox fx:id="keystrokeSpeedBox" minHeight="-Infinity" prefHeight="21.0" prefWidth="125.0" promptText="Play Speed">
                                        <padding>
                                           <Insets right="10.0" top="-3.0" />
                                        </padding>
@@ -164,6 +142,22 @@
             </Tab>
         </tabs>
       </JFXTabPane>
+      <Label fx:id="examLabel" layoutX="77.0" layoutY="634.0" prefHeight="29.0" prefWidth="241.0" text="No Exam Being Proctored">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets right="15.0" />
+         </padding>
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <JFXButton layoutX="14.0" layoutY="637.0" onAction="#adjustLiveScreensParam" prefHeight="9.0" prefWidth="53.0" styleClass="darkBlueBtn" text="Halt">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </JFXButton>
       <StackPane fx:id="dialogPane" layoutX="140.0" layoutY="208.0" mouseTransparent="true" prefHeight="140.0" prefWidth="328.0" />
    </children>
 </AnchorPane>

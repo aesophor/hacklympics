@@ -32,6 +32,12 @@ public class Session {
     }
     
     
+    public void clear() {
+        mainController = null;
+        currentUser = null;
+        currentExam = null;
+    }
+    
     public MainController getMainController() {
         return mainController;
     }
