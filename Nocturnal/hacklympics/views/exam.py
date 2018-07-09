@@ -7,6 +7,7 @@ from hacklympics.sessions import OngoingExams
 from hacklympics.models import *
 
 from threading import Timer
+import time
 import json
 
 
@@ -122,6 +123,30 @@ def remove(request, c_id):
     return JsonResponse(response_data)
 
 
+def remaining_time(request, c_id, e_id):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
+        
+        # Remaining time of an exam (in seconds).
+        # Format it to MM:SS in clients.
+        remaining_time = int(exam.duration * 60  - (time.time() - int(OngoingExams.get(exam).start_time)))
+        
+        response_data["content"] = {
+            "remainingTime": remaining_time
+        }
+    except NotLaunched:
+        # Tell the clients the remaining_time is 0 if exam already ends.
+        response_data["remaining_time"] = 0
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+
+    return JsonResponse(response_data)
+
+
 def launch(request, c_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
@@ -130,7 +155,7 @@ def launch(request, c_id):
         
         e_id = req_body["examID"]
         
-        exam = Exam.objects.get(id=e_id)
+        exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         teacher = exam.course.teacher
         
         # Add this exam to OngoingExams.
@@ -138,8 +163,6 @@ def launch(request, c_id):
         OngoingExams.add(exam)
         OngoingExams.get(exam).add(teacher)
         OngoingExams.show()
-    except Exception as e:
-        print(e)
     except AlreadyLaunched:
         response_data["statusCode"] = StatusCode.ALREADY_LAUNCHED
     except KeyError:
@@ -158,7 +181,7 @@ def halt(request, c_id):
         
         e_id = req_body["examID"]
         
-        exam = Exam.objects.get(id=e_id)
+        exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         
         OngoingExams.remove(exam)
         OngoingExams.show()
@@ -181,7 +204,7 @@ def attend(request, c_id):
         e_id = req_body["examID"]
         username = req_body["username"]
         
-        exam = Exam.objects.get(id=e_id)
+        exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         user = User.objects.get(username=username)
         
         OngoingExams.get(exam).add(user)
@@ -205,7 +228,7 @@ def leave(request, c_id):
         e_id = req_body["examID"]
         username = req_body["username"]
         
-        exam = Exam.objects.get(id=e_id)
+        exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         user = User.objects.get(username=username)
         
         OngoingExams.get(exam).remove(user)

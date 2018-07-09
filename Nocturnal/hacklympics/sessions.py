@@ -4,6 +4,8 @@ from hacklympics.events.dispatcher import *
 from hacklympics.models import *
 from threading import Timer
 
+import time
+
 class OnlineUsers:
     users = []
 
@@ -81,6 +83,7 @@ class OngoingExams:
             # Start the timer of this exam.
             OngoingExams.exams[exam].timer = Timer(exam.duration * 60, OngoingExams.remove, args=[exam])
             OngoingExams.exams[exam].timer.start()
+            OngoingExams.exams[exam].start_time = time.time()
             
             # Notify all users that the exam has been launched.
             dispatch(LaunchExamEvent(exam), OnlineUsers.users)
@@ -127,6 +130,7 @@ class ExamData:
         self.teachers = []
         
         self.timer = None
+        self.start_time = None
 
     def add(self, user: User):
         if user.is_student:

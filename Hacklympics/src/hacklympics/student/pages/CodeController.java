@@ -8,6 +8,9 @@ import java.io.IOException;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.StackPane;
@@ -31,12 +34,16 @@ import hacklympics.student.StudentController;
 import hacklympics.utility.FileTab;
 import hacklympics.utility.AlertDialog;
 import hacklympics.utility.ConfirmDialog;
+import hacklympics.utility.Utils;
 
 public class CodeController implements Initializable {
 
     private TerminalConfig terminalConfig;
     private TerminalBuilder terminalBuilder;
     private TerminalTab terminal;
+    
+    private Timeline timeline;
+    private int remainingTime;
 
     @FXML
     private TabPane fileTabPane;
@@ -383,6 +390,7 @@ public class CodeController implements Initializable {
         confirmation.show();
     }
 
+    
     /**
      * Creates a new tab in FileTabPane.
      *
@@ -446,14 +454,39 @@ public class CodeController implements Initializable {
         terminalTabPane.setVisible(false);
         terminalTabPane.setMouseTransparent(true);
     }
-
+    
     /**
-     * Sets the exam label which shows the name of currently ongoing exam.
-     *
-     * @param s name of exam.
+     * Sets the exam label which shows the title of currently ongoing exam.
+     * @param examTitle title of exam.
      */
-    public void setExamLabel(String s) {
-        examLabel.setText(s);
+    public void setExamLabel(String examTitle) {
+        examLabel.setText(examTitle);
+    }
+    
+    /**
+     * Sets the exam label which shows the title of currently ongoing exam,
+     * and shows the remaining time of the exam as well.
+     * @param examTitle name of exam.
+     * @param remainingTime remaining time of exam.
+     */
+    public void setExamLabel(String examTitle, int remainingTime) {
+        examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(remainingTime)));
+        
+        this.remainingTime = remainingTime;
+        this.timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateExamLabelTimer(examTitle)));
+        this.timeline.setCycleCount(Timeline.INDEFINITE);
+        this.timeline.playFromStart();
+    }
+    
+    /**
+     * Updates the remaining time in the exam label.
+     */
+    private void updateExamLabelTimer(String examTitle) {
+        if (this.remainingTime > 0) {
+            this.remainingTime--;
+        }
+        
+        examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(this.remainingTime)));
     }
 
     /**

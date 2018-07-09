@@ -79,7 +79,7 @@ public class Exam {
     }
     
     public Response remove() {
-        String uri = String.format("course/%d/exam/remove", data.getCourseID());
+        String uri = String.format("course/%d/exam/remove", this.data.getCourseID());
         
         JsonObject json = new JsonObject();
         json.addProperty("examID", data.getExamID());
@@ -156,6 +156,27 @@ public class Exam {
         }
         
         return exams;
+    }
+    
+    /**
+     * Gets the remaining time of an exam in seconds. If the exam has not
+     * been launched yet or has already ended, it returns zero.
+     * @return remaining time of an exam.
+     */
+    public int getRemainingTime() {
+        String uri = String.format("course/%d/exam/%d/remaining_time", 
+                this.data.getCourseID(), this.data.getExamID());
+        
+        int remainingTime = 0;
+        Response getRemainingTime = new Response(Utils.get(uri));
+        
+        if (getRemainingTime.success()) {
+            Map<String, Object> content = getRemainingTime.getContent();
+            
+            remainingTime = (int) Double.parseDouble(content.get("remainingTime").toString());
+        }
+        
+        return remainingTime;
     }
     
     

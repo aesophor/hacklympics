@@ -1,5 +1,6 @@
 package hacklympics.teacher.pages;
 
+import com.hacklympics.api.communication.Response;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
@@ -29,6 +30,7 @@ import com.hacklympics.api.user.Role;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Teacher;
 import hacklympics.teacher.TeacherController;
+import hacklympics.utility.AlertDialog;
 import hacklympics.utility.FormDialog;
 import hacklympics.utility.ConfirmDialog;
 import hacklympics.utility.UserListView;
@@ -271,7 +273,7 @@ public class CoursesController implements Initializable {
      * If the user answers yes, then he/she will be taken to the proctor page.
      */
     private void launch(Exam exam) {
-        ConfirmDialog alert = new ConfirmDialog(
+        ConfirmDialog confirmation = new ConfirmDialog(
                 dialogPane,
                 "Launch Exam",
                 "You have selected the exam: " + exam + "\n\n"
@@ -279,19 +281,39 @@ public class CoursesController implements Initializable {
               + "proctor your exam.)"
         );
         
-        alert.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            Session.getInstance().setCurrentExam(exam);
+        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+            Response launch = exam.launch();
             
-            TeacherController tc = (TeacherController) Session.getInstance().getMainController();
-            ProctorController cc = (ProctorController) tc.getControllers().get("Proctor");
+            switch (launch.getStatusCode()) {
+                case SUCCESS:
+                    Session.getInstance().setCurrentExam(exam);
             
-            exam.launch();
-            tc.showProctor(e);
+                    TeacherController tc = (TeacherController) Session.getInstance().getMainController();
+                    ProctorController cc = (ProctorController) tc.getControllers().get("Proctor");
             
-            alert.close();
+                    cc.setExamLabel(exam.getTitle(), exam.getRemainingTime());
+                    tc.showProctor(e);
+                    
+                    confirmation.close();
+                    break;
+                    
+                case ALREADY_LAUNCHED:
+                    AlertDialog alert = new AlertDialog(
+                            dialogPane,
+                            "Exam Already Launched",
+                            "The selected exam has already been launched."
+                    );
+                    
+                    confirmation.close();
+                    alert.show();
+                    break;
+                    
+                default:
+                    break;
+            }
         });
         
-        alert.show();
+        confirmation.show();
     }
     
 

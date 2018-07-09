@@ -34,4 +34,8 @@ public class Utils {
         Session.getInstance().setMainController(loader.getController());
     }
     
+    public static String formatTime(int seconds) {
+        return String.format("%02d:%02d", (seconds / 60), (seconds % 60));
+    }
+    
 }

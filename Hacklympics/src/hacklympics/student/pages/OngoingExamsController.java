@@ -128,6 +128,7 @@ public class OngoingExamsController implements Initializable {
             User currentUser = Session.getInstance().getCurrentUser();
             Response attend = currentUser.attend(selectedExam);
             
+            // TODO: Students should not be able to enter the same exam again.
             switch (attend.getStatusCode()) {
                 case SUCCESS:
                     Session.getInstance().setCurrentExam(selectedExam);
@@ -135,7 +136,7 @@ public class OngoingExamsController implements Initializable {
                     StudentController sc = (StudentController) Session.getInstance().getMainController();
                     CodeController cc = (CodeController) sc.getControllers().get("Code");
             
-                    cc.setExamLabel(selectedExam.toString());
+                    cc.setExamLabel(selectedExam.getTitle(), selectedExam.getRemainingTime());
                     cc.setProblemBox(selectedExam.getProblems());
                     sc.showCode(e);
                     break;
