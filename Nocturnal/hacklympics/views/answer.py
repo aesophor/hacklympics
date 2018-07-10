@@ -58,7 +58,7 @@ def create(request, c_id, e_id, p_id):
         problem = exam.problem_set.get(id=p_id)
         answers = problem.answer_set
         
-        if len(answers.all().filter(student_id=student)) > 0:
+        if answers.all().filter(student_id=student):
             raise AlreadySubmitted('Student' + student + 'has already submitted an answer!')
         
         filepath = "/".join([".", "answers", course.teacher_id, course.name, exam.title, problem.title, student, filename])
@@ -76,6 +76,7 @@ def create(request, c_id, e_id, p_id):
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
     except AlreadySubmitted:
+        # Could be raised in judge.py
         response_data["statusCode"] = StatusCode.ALREADY_SUBMITTED
     
     return JsonResponse(response_data)

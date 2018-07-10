@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -15,7 +14,6 @@
           <TableColumn fx:id="examDescCol" prefWidth="350.0" text="Description" />
         </columns>
       </TableView>
-      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" prefHeight="27.0" prefWidth="609.0" promptText="Keyword" />
-      <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="663.0" layoutY="75.0" onAction="#search" prefHeight="27.0" prefWidth="76.0" styleClass="darkBlueBtn" text="Search" />
+      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" onKeyReleased="#search" prefHeight="27.0" prefWidth="707.0" promptText="Keyword" />
    </children>
 </AnchorPane>

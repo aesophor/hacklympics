@@ -16,9 +16,13 @@ import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXComboBox;
-import com.hacklympics.api.user.Student;
+import hacklympics.teacher.TeacherController;
+import hacklympics.utility.ConfirmDialog;
 import hacklympics.utility.Utils;
-
+import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.user.Student;
+import com.hacklympics.api.session.Session;
 
 public class ProctorController implements Initializable {
     
@@ -78,6 +82,53 @@ public class ProctorController implements Initializable {
         
     }
     
+    /**
+     * Halts the specified exam.
+     * Asks the user for confirmation for halting the exam prematurely.
+     * If the user answers yes, the exam will end and he will be taken
+     * back to the course/exam/problem page.
+     */
+    @FXML
+    public void haltExam(ActionEvent event) {
+        Exam currentExam = Session.getInstance().getCurrentExam();
+        
+        ConfirmDialog confirmation = new ConfirmDialog(
+                dialogPane,
+                "Halt Exam",
+                "Once the exam is halted, all students will no longer be able "
+              + "to submit their code to the server.\n\n"
+              + "Halt the exam now?"
+        );
+
+        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+            Response halt = currentExam.halt();
+            
+            switch (halt.getStatusCode()) {
+                case SUCCESS:
+                    Session.getInstance().setCurrentExam(null);
+
+                    TeacherController sc = (TeacherController) Session.getInstance().getMainController();
+                    ProctorController cc = (ProctorController) sc.getControllers().get("Proctor");
+
+                    // Reset the Proctor Page to its original state.
+                    cc.stopExamLabelTimer();
+                    cc.setExamLabel("No Exam Being Proctored");
+                    
+                    
+                    // Take the user back to OngoingExams Page.
+                    sc.showOngoingExams(event);
+                    break;
+
+                default:
+                    break;
+            }
+            
+            confirmation.close();
+        });
+
+        confirmation.show();
+    }
+    
     
     /**
      * Sets the exam label which shows the title of currently ongoing exam.
@@ -111,6 +162,13 @@ public class ProctorController implements Initializable {
         }
         
         examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(this.remainingTime)));
+    }
+    
+    /**
+     * Stop the remaining time from updating.
+     */
+    public void stopExamLabelTimer() {
+        this.timeline.stop();
     }
     
 }

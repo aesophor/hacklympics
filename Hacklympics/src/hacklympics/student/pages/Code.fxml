@@ -38,14 +38,14 @@
                         </Menu>
                         <Menu mnemonicParsing="false" text="Code">
                            <items>
-                              <MenuItem mnemonicParsing="false" onAction="#compile" text="Compile" />
-                              <MenuItem mnemonicParsing="false" onAction="#execute" text="Run" />
+                              <MenuItem mnemonicParsing="false" onAction="#compile" text="Compile Locally" />
+                              <MenuItem mnemonicParsing="false" onAction="#execute" text="Run Locally" />
                            </items>
                         </Menu>
                       <Menu mnemonicParsing="false" text="Exam">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#submit" text="Submit" />
-                              <MenuItem mnemonicParsing="false" onAction="#leave" text="Leave" />
+                          <MenuItem mnemonicParsing="false" onAction="#submit" text="Submit Code" />
+                              <MenuItem mnemonicParsing="false" onAction="#leave" text="Leave Exam" />
                         </items>
                       </Menu>
                       <Menu mnemonicParsing="false" text="Help">

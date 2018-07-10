@@ -7,13 +7,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTabPane;
 import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.material.Course;
@@ -27,6 +27,10 @@ public class CoursesController implements Initializable {
     private ObservableList<Course> courseRecords;
     private ObservableList<Exam> examRecords;
     private ObservableList<Problem> problemRecords;
+    
+    private List<Course> courseRecordsCache;
+    private List<Exam> examRecordsCache;
+    private List<Problem> problemRecordsCache;
 
     private String keyword;
 
@@ -38,8 +42,6 @@ public class CoursesController implements Initializable {
     private Tab examTab;
     @FXML
     private Tab problemTab;
-    @FXML
-    private JFXButton attendExamBtn;
 
     @FXML
     private JFXTextField keywordField;
@@ -74,7 +76,7 @@ public class CoursesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTables();
-        update(courseTab);
+        fetchAndUpdate(courseTab);
     }
 
     /**
@@ -104,31 +106,43 @@ public class CoursesController implements Initializable {
         // Initialize columns problemsTable.
         probTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         probDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        
+        
+        // Override the default empty message of tables.
+        courseTable.setPlaceholder(new Label("You have not taken any course yet."));
+        examTable.setPlaceholder(new Label("No exams under the selected course."));
+        problemTable.setPlaceholder(new Label("No problems under the selected exam."));
 
         
         // Update examTab and problemTab if the user clicks on courseTab.
+        // Since another course might has been selected, we have to update
+        // the content in exam/problem table accordingly.
         // Disables the attendExamBtn since a different course has been selected.
         courseTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
-                    update(examTab, problemTab);
-                    this.attendExamBtn.setDisable(true);
+                    fetchAndUpdate(examTab, problemTab);
         });
         
         // Update problemTab if the user clicks on examTab.
+        // Since another exam might has been selected, we have to update
+        // the content in problem table accordingly.
         // Enables the attendExamBtn since an exam has been selected.
         examTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
-                    update(problemTab);
-                    this.attendExamBtn.setDisable(false);
+                    fetchAndUpdate(problemTab);
         });
     }
 
     /**
-     * Updates the contents of the tables. It also checks if each record
-     * contains the keyword provided by the user.
+     * Fetches new course/exam/problem data from the server and updates
+     * the contents of the tables in course/exam/problem tabs. It will only
+     * display the records that contain the keyword provided by the user.
+     * e.g., updating the course table also updates exam and problem table.
+     *       updating the exam table also updates problem table.
+     *       updating the problem table only updates problem table itself.
      * @param tabs the tables that you wish to update.
      */
-    private void update(Tab... tabs) {
+    private void fetchAndUpdate(Tab... tabs) {
         keyword = (keyword == null) ? "" : keyword;
 
         for (Tab tab : tabs) {
@@ -136,8 +150,8 @@ public class CoursesController implements Initializable {
             if (tab == courseTab) {
                 courseRecords.clear();
                 
-                List<Course> courses = ((Student) Session.getInstance().getCurrentUser()).getCourses();
-                for (Course c : courses) {
+                courseRecordsCache = ((Student) Session.getInstance().getCurrentUser()).getCourses();
+                for (Course c : courseRecordsCache) {
                     if (c.getData().getName().contains(keyword) |
                         c.getData().getTeacher().contains(keyword)) {
                         courseRecords.add(c);
@@ -146,16 +160,15 @@ public class CoursesController implements Initializable {
 
                 courseTable.getItems().clear();
                 courseTable.getItems().addAll(courseRecords);
-                update(examTab);
+                fetchAndUpdate(examTab);
 
             } else if (tab == examTab) {
                 examRecords.clear();
                 Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
                 
                 if (selectedCourse != null) {
-                    List<Exam> exams = selectedCourse.getExams();
-                    
-                    for (Exam e : exams) {
+                    examRecordsCache = selectedCourse.getExams();
+                    for (Exam e : examRecordsCache) {
                         if (e.getData().getTitle().contains(keyword) |
                             e.getData().getDesc().contains(keyword)) {
                             examRecords.add(e);
@@ -165,15 +178,78 @@ public class CoursesController implements Initializable {
 
                 examTable.getItems().clear();
                 examTable.getItems().addAll(examRecords);
-                update(problemTab);
+                fetchAndUpdate(problemTab);
                 
             } else if (tab == problemTab) {
                 problemRecords.clear();
                 Exam selectedExam = examTable.getSelectionModel().getSelectedItem();
                 
                 if (selectedExam != null) {
-                    List<Problem> problems = selectedExam.getProblems();
-                    for (Problem p : problems) {
+                    problemRecordsCache = selectedExam.getProblems();
+                    for (Problem p : problemRecordsCache) {
+                        if (p.getData().getTitle().contains(keyword) |
+                            p.getData().getDesc().contains(keyword)) {
+                            problemRecords.add(p);
+                        }
+                    }
+                }
+                
+                problemTable.getItems().clear();
+                problemTable.getItems().addAll(problemRecords);
+
+            } else {
+
+            }
+            
+        }
+    }
+    
+    /**
+     * Similar to the fetchAndUpdate(Tab...). But this method does not fetch
+     * the source of table contents from the server, it uses local cache instead.
+     * This method is only useful when user wants to search for courses/exams/problems.
+     * @param tabs 
+     */
+    private void updateLocally(Tab... tabs) {
+        keyword = (keyword == null) ? "" : keyword;
+
+        for (Tab tab : tabs) {
+            
+            if (tab == courseTab) {
+                courseRecords.clear();
+                
+                for (Course c : courseRecordsCache) {
+                    if (c.getData().getName().contains(keyword) |
+                        c.getData().getTeacher().contains(keyword)) {
+                        courseRecords.add(c);
+                    }
+                }
+
+                courseTable.getItems().clear();
+                courseTable.getItems().addAll(courseRecords);
+
+            } else if (tab == examTab) {
+                examRecords.clear();
+                Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
+                
+                if (selectedCourse != null) {
+                    for (Exam e : examRecordsCache) {
+                        if (e.getData().getTitle().contains(keyword) |
+                            e.getData().getDesc().contains(keyword)) {
+                            examRecords.add(e);
+                        }
+                    }
+                }
+
+                examTable.getItems().clear();
+                examTable.getItems().addAll(examRecords);
+                
+            } else if (tab == problemTab) {
+                problemRecords.clear();
+                Exam selectedExam = examTable.getSelectionModel().getSelectedItem();
+                
+                if (selectedExam != null) {
+                    for (Problem p : problemRecordsCache) {
                         if (p.getData().getTitle().contains(keyword) |
                             p.getData().getDesc().contains(keyword)) {
                             problemRecords.add(p);
@@ -195,9 +271,9 @@ public class CoursesController implements Initializable {
      * Invoked when the search button is clicked.
      * @param event emitted by JavaFX.
      */
-    public void search(ActionEvent event) {
+    public void search(KeyEvent event) {
         keyword = keywordField.getText();
-        update(tabPane.getSelectionModel().getSelectedItem());
+        updateLocally(tabPane.getSelectionModel().getSelectedItem());
     }
     
 }

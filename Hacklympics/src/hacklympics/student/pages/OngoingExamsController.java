@@ -1,34 +1,38 @@
 package hacklympics.student.pages;
 
-import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.event.EventManager;
-import com.hacklympics.api.event.EventType;
-import com.hacklympics.api.event.exam.LaunchExamEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
-import com.hacklympics.api.material.Exam;
 import com.jfoenix.controls.JFXTextField;
-import javafx.application.Platform;
-import com.hacklympics.api.event.EventHandler;
-import com.hacklympics.api.session.Session;
-import com.hacklympics.api.user.User;
 import hacklympics.student.StudentController;
 import hacklympics.utility.AlertDialog;
 import hacklympics.utility.ConfirmDialog;
-import javafx.scene.layout.StackPane;
+import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.event.EventManager;
+import com.hacklympics.api.event.EventType;
+import com.hacklympics.api.event.EventHandler;
+import com.hacklympics.api.event.exam.LaunchExamEvent;
+import com.hacklympics.api.session.Session;
+import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.user.User;
 
 public class OngoingExamsController implements Initializable {
     
     private ObservableList<Exam> records;
+    private List<Exam> recordsCache;
+    
     private String keyword;
 
     @FXML
@@ -48,28 +52,8 @@ public class OngoingExamsController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initTable();
-        buildTable();
-        showTable();
-        
-        // Update the OngoingExams table whenever an exam is launched or halted.
-        this.setOnExamLaunched((LaunchExamEvent e) -> {
-            Platform.runLater(() -> {
-                records.clear();
-            
-                buildTable();
-                showTable();
-            });
-        });
-        
-        this.setOnExamHalted((LaunchExamEvent e) -> {
-            Platform.runLater(() -> {
-                records.clear();
-            
-                buildTable();
-                showTable();
-            });
-        });
-    }    
+        fetchAndUpdate();
+    }
     
     
     private void initTable() {
@@ -78,32 +62,61 @@ public class OngoingExamsController implements Initializable {
         examTitleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
         examDurationCol.setCellValueFactory(new PropertyValueFactory<>("duration"));
         examDescCol.setCellValueFactory(new PropertyValueFactory<>("desc"));
+        
+        // Override default empty message of exam table.
+        table.setPlaceholder(new Label("No ongoing exams yet."));
+        
+        // Update the OngoingExams table whenever an exam is launched or halted.
+        this.setOnExamLaunched((LaunchExamEvent e) -> {
+            Platform.runLater(() -> {
+                fetchAndUpdate();
+            });
+        });
+        
+        this.setOnExamHalted((LaunchExamEvent e) -> {
+            Platform.runLater(() -> {
+                fetchAndUpdate();
+            });
+        });
     }
     
-    private void buildTable() {
-        List<Exam> exams = Exam.getOngoingExams();
+    private void fetchAndUpdate() {
         keyword = (keyword == null) ? "" : keyword;
         
-        for (Exam e: exams) {
+        records.clear();
+        
+        recordsCache = Exam.getOngoingExams();
+        for (Exam e: recordsCache) {
             if (e.getData().getTitle().contains(keyword) |
                 e.getData().getDesc().contains(keyword)) {
                 records.add(e);
             }
         }
+        
+        table.getItems().clear();
+        table.getItems().addAll(records);
     }
     
-    private void showTable() {
+    private void updateLocally() {
+        keyword = (keyword == null) ? "" : keyword;
+        
+        records.clear();
+        
+        for (Exam e: recordsCache) {
+            if (e.getData().getTitle().contains(keyword) |
+                e.getData().getDesc().contains(keyword)) {
+                records.add(e);
+            }
+        }
+        
         table.getItems().clear();
         table.getItems().addAll(records);
     }
     
     @FXML
-    public void search(ActionEvent event) {
-        records.clear();
+    public void search(KeyEvent event) {
         keyword = keywordField.getText();
-        
-        buildTable();
-        showTable();
+        updateLocally();
     }
     
     /**
@@ -114,9 +127,22 @@ public class OngoingExamsController implements Initializable {
      */
     @FXML
     public void attendExam(ActionEvent event) {
+        // If the user is try to attend an exam, but no exam is selected,
+        // block this attempt and alert the user.
         Exam selectedExam = table.getSelectionModel().getSelectedItem();
-        if (selectedExam == null) return;
+        if (selectedExam == null) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You have not selected any exam to attend to."
+            );
+            
+            alert.show();
+            return;
+        }
         
+        // If everything alright, then ask the user for confirmation.
+        // If yes, then we will proceed.
         ConfirmDialog confirmation = new ConfirmDialog(
                 dialogPane,
                 "Attend Exam",

@@ -53,8 +53,8 @@ public class EventManager {
     public void fireEvent(Event event) {
         EventType eventType = event.getEventType();
         
-        for (EventHandler handler : this.handlers.get(eventType)) {
-            handler.handle(event);
+        for (EventHandler h : this.handlers.get(eventType)) {
+            h.handle(event);
         }
     }
     

@@ -375,8 +375,12 @@ public class CodeController implements Initializable {
                     StudentController sc = (StudentController) Session.getInstance().getMainController();
                     CodeController cc = (CodeController) sc.getControllers().get("Code");
 
-                    cc.setExamLabel("No Exam Selected");
+                    // Reset the Code Page to its original state.
+                    cc.stopExamLabelTimer();
+                    cc.setExamLabel("No Exam Being Taken");
                     cc.setProblemBox(null);
+                    
+                    // Take the user back to OngoingExams Page.
                     sc.showOngoingExams(event);
                     break;
 
@@ -487,6 +491,13 @@ public class CodeController implements Initializable {
         }
         
         examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(this.remainingTime)));
+    }
+    
+    /**
+     * Stop the remaining time from updating.
+     */
+    public void stopExamLabelTimer() {
+        this.timeline.stop();
     }
 
     /**

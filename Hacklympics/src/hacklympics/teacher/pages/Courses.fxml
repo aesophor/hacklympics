@@ -64,26 +64,26 @@
         </tabs>
       </JFXTabPane>
       
-      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" prefHeight="27.0" prefWidth="609.0" promptText="Keyword" />
-      <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="663.0" layoutY="75.0" onAction="#search" prefHeight="27.0" prefWidth="76.0" styleClass="darkBlueBtn" text="Search" />
-      
-      <JFXButton fx:id="addBtn" buttonType="RAISED" layoutX="695.0" layoutY="595.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#add" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
-         <font>
-            <Font size="22.0" />
-         </font>
+      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" onKeyReleased="#search" prefHeight="27.0" prefWidth="547.0" promptText="Filter" />
+      <JFXButton defaultButton="true" layoutX="593.0" layoutY="75.0" onAction="#edit" prefHeight="31.0" prefWidth="75.0" styleClass="transparentBtn" text=" Edit">
          <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="20" />
+            <FontAwesomeIconView glyphName="EDIT" size="20.0" text="" translateY="2.0" />
          </graphic>
       </JFXButton>
-      <JFXButton fx:id="editBtn" buttonType="RAISED" layoutX="695.0" layoutY="530.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#edit" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
+      <JFXButton defaultButton="true" layoutX="669.0" layoutY="75.0" onAction="#add" prefHeight="31.0" prefWidth="75.0" styleClass="transparentBtn" text=" Add">
+         <graphic>
+            <FontAwesomeIconView glyphName="PLUS_SQUARE" size="20" translateY="1.0" />
+         </graphic></JFXButton>
+      
+      <JFXButton fx:id="launchExamBtn" buttonType="RAISED" layoutX="695.0" layoutY="595.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#launchExam" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
          <font>
             <Font size="22.0" />
          </font>
          <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="PENCIL" size="20.0" translateX="1.0" />
+            <FontAwesomeIconView fill="WHITE" glyphName="ROCKET" size="20" translateX="-1.0" />
          </graphic>
       </JFXButton>
       <StackPane fx:id="formPane" layoutX="140.0" layoutY="89.0" mouseTransparent="true" prefHeight="250.0" prefWidth="328.0" />
-      <StackPane fx:id="dialogPane" layoutX="140.0" layoutY="208.0" mouseTransparent="true" prefHeight="140.0" prefWidth="328.0" />
+      <StackPane fx:id="dialogPane" layoutX="140.0" layoutY="230.0" mouseTransparent="true" prefHeight="140.0" prefWidth="328.0" />
    </children>
 </AnchorPane>

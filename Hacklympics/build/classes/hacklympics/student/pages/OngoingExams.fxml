@@ -18,14 +18,13 @@
           <TableColumn fx:id="examDescCol" prefWidth="350.0" text="Description" />
         </columns>
       </TableView>
-      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" prefHeight="27.0" prefWidth="609.0" promptText="Keyword" />
-      <JFXButton fx:id="searchBtn" defaultButton="true" layoutX="663.0" layoutY="75.0" onAction="#search" prefHeight="27.0" prefWidth="76.0" styleClass="darkBlueBtn" text="Search" />
+      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" onKeyReleased="#search" prefHeight="27.0" prefWidth="707.0" promptText="Keyword" />
       <JFXButton buttonType="RAISED" layoutX="705.0" layoutY="605.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#attendExam" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
          <font>
             <Font size="22.0" />
          </font>
          <graphic>
-            <FontAwesomeIconView fill="WHITE" glyphName="EDIT" onDragDetected="#attendExam" size="20" />
+            <FontAwesomeIconView fill="WHITE" glyphName="EDIT" onDragDetected="#attendExam" size="20" translateX="1.0" />
          </graphic>
       </JFXButton>
       <StackPane fx:id="dialogPane" layoutX="150.0" layoutY="244.0" mouseTransparent="true" prefHeight="153.0" prefWidth="328.0" />
