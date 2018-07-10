@@ -377,6 +377,7 @@ public class CoursesController implements Initializable {
         // If the user is try to launch an exam, but no exam is selected,
         // block this attempt and alert the user.
         Exam selectedExam = examTable.getSelectionModel().getSelectedItem();
+        
         if (selectedExam == null) {
             AlertDialog alert = new AlertDialog(
                     dialogPane,
@@ -409,6 +410,7 @@ public class CoursesController implements Initializable {
                     ProctorController cc = (ProctorController) tc.getControllers().get("Proctor");
             
                     cc.setExamLabel(selectedExam.getTitle(), selectedExam.getRemainingTime());
+                    cc.enableHaltExamBtn();
                     tc.showProctor(e);
                     
                     confirmation.close();

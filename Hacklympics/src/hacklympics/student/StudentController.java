@@ -168,6 +168,7 @@ public class StudentController implements Initializable, MainController {
                 logoutBtn.getScene().getWindow().hide();
                 
                 Session.getInstance().clear();
+                EventManager.getInstance().clearEventHandlers();
                 SocketServer.getInstance().close();
             }
         });

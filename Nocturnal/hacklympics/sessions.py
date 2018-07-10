@@ -133,16 +133,29 @@ class ExamData:
         self.start_time = None
 
     def add(self, user: User):
-        if user.is_student:
-            self.students.append(user)
+        if not self.has(user):
+            if user.is_student:
+                self.students.append(user)
+            else:
+                self.teachers.append(user)
         else:
-            self.teachers.append(user)
+            raise AlreadyAttended("This user has already attended to this exam.")
 
     def remove(self, user: User):
-        if user.is_student:
-            self.students.remove(user)
+        # Once a student left the exam, the student will not be able
+        # to attend the exam again, unless the exam is re-launched.
+        # A teacher can enter and leave as he/she wishes.
+        if self.has(user):
+            if not user.is_student:
+                self.teachers.remove(user)
         else:
-            self.teachers.remove(user)
+            raise NotAttended("This user has not attended to this exam.")
+
+    def has(self, user: User):
+        if user.is_student:
+            return user in self.students
+        else:
+            return user in self.teachers
 
     def __str__(self):
         return str(self.students) + ", " + str(self.teachers)

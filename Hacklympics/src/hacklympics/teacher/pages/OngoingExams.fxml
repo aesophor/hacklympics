@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.OngoingExamsController">
    <children>
@@ -14,6 +18,15 @@
           <TableColumn fx:id="examDescCol" prefWidth="350.0" text="Description" />
         </columns>
       </TableView>
+      <JFXButton buttonType="RAISED" layoutX="705.0" layoutY="605.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#attendExam" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
+         <font>
+            <Font size="22.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="EYE" onDragDetected="#attendExam" size="20" />
+         </graphic>
+      </JFXButton>
       <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" onKeyReleased="#search" prefHeight="27.0" prefWidth="707.0" promptText="Keyword" />
+      <StackPane fx:id="dialogPane" layoutX="150.0" layoutY="244.0" mouseTransparent="true" prefHeight="153.0" prefWidth="328.0" />
    </children>
 </AnchorPane>

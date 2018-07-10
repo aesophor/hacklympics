@@ -21,6 +21,8 @@ import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Student;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 
 public class CoursesController implements Initializable {
 
@@ -130,6 +132,20 @@ public class CoursesController implements Initializable {
         examTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
                     fetchAndUpdate(problemTab);
+        });
+        
+        // Double clicking on a course will take the user to exam tab.
+        courseTable.setOnMouseClicked((MouseEvent event) -> {
+            if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                tabPane.getSelectionModel().select(examTab);
+            }
+        });
+        
+        // Double clicking on a exam will take the user to exam tab.
+        examTable.setOnMouseClicked((MouseEvent event) -> {
+            if(event.getButton().equals(MouseButton.PRIMARY) && event.getClickCount() == 2) {
+                tabPane.getSelectionModel().select(problemTab);
+            }
         });
     }
 

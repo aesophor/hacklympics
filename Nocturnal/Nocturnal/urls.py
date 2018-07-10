@@ -33,20 +33,21 @@ urlpatterns = [
     url(r'^user/(?P<username>[\w.@+-]+)/message/create$', message.create),
     url(r'^user/(?P<username>[\w.@+-]+)/message/(?P<m_id>\d+)$', message.get),
 
+    url(r'^exam/ongoing$', exam.list_ongoing),
+
     url(r'^course$', course.list),
     url(r'^course/create$', course.create),
     url(r'^course/update$', course.update),
     url(r'^course/remove$', course.remove),
     url(r'^course/(?P<c_id>[\w.@+-]+)$', course.get),
 
-    url(r'^exam/ongoing$', exam.list_ongoing),
     url(r'^course/(?P<c_id>\d+)/exam$', exam.list),
-
     url(r'^course/(?P<c_id>\d+)/exam/create$', exam.create),
     url(r'^course/(?P<c_id>\d+)/exam/update$', exam.update),
     url(r'^course/(?P<c_id>\d+)/exam/remove$', exam.remove),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)$', exam.get),
-    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/remaining_time$', exam.remaining_time),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/remaining_time$', exam.get_remaining_time),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/owner$', exam.get_owner),
     url(r'^course/(?P<c_id>\d+)/exam/launch$', exam.launch),
     url(r'^course/(?P<c_id>\d+)/exam/halt$', exam.halt),
     url(r'^course/(?P<c_id>\d+)/exam/attend$', exam.attend),

@@ -15,12 +15,15 @@ import javafx.event.ActionEvent;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import hacklympics.teacher.TeacherController;
+import hacklympics.utility.AlertDialog;
 import hacklympics.utility.ConfirmDialog;
 import hacklympics.utility.Utils;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
 
@@ -51,6 +54,8 @@ public class ProctorController implements Initializable {
     private JFXComboBox imgQualityBox;
     @FXML
     private JFXComboBox imgFreqBox;
+    @FXML
+    private JFXButton leaveExamBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -88,10 +93,28 @@ public class ProctorController implements Initializable {
      * If the user answers yes, the exam will end and he will be taken
      * back to the course/exam/problem page.
      */
-    @FXML
     public void haltExam(ActionEvent event) {
+        // If the user is trying to halt an exam, but the user hasn't
+        // attended to any exam yet, block this attempt and alert the user.
+        // This section of code should never get executed, since
+        // the halt exam button is disabled by default.
         Exam currentExam = Session.getInstance().getCurrentExam();
         
+        if (currentExam == null) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You haven't attended to any exam yet.\n\n"
+                  + "You can launch your exam in My Courses & Exam, or "
+                  + "attend to exams of other teachers in Ongoing Exams."
+            );
+            
+            alert.show();
+            return;
+        }
+        
+        // If everything alright, then ask the user for confirmation.
+        // If yes, then we will proceed.
         ConfirmDialog confirmation = new ConfirmDialog(
                 dialogPane,
                 "Halt Exam",
@@ -113,10 +136,71 @@ public class ProctorController implements Initializable {
                     // Reset the Proctor Page to its original state.
                     cc.stopExamLabelTimer();
                     cc.setExamLabel("No Exam Being Proctored");
-                    
+                    cc.disableExitBtn();
                     
                     // Take the user back to OngoingExams Page.
                     sc.showOngoingExams(event);
+                    break;
+
+                default:
+                    break;
+            }
+            
+            confirmation.close();
+        });
+
+        confirmation.show();
+    }
+    
+    /**
+     * Leaves the specified exam.
+     * Asks the user for confirmation for leaving the exam.
+     * If the user answers yes, the exam will end and he will be taken
+     * back to the OngoingExams page.
+     */
+    public void leaveExam(ActionEvent event) {
+        Exam currentExam = Session.getInstance().getCurrentExam();
+        User currentUser = Session.getInstance().getCurrentUser();
+        
+        // If the user is trying to leave an exam, but the user hasn't
+        // attended to any exam yet, block this attempt and alert the user.
+        if (currentExam == null) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You haven't attended to any exam yet.\n\n"
+                  + "You can attend to your exam by selecting any exam in Ongoing Exams."
+            );
+            
+            alert.show();
+            return;
+        }
+
+        // If everything alright, then ask the user for confirmation.
+        // If yes, then we will proceed.
+        ConfirmDialog confirmation = new ConfirmDialog(
+                dialogPane,
+                "Leave Exam",
+                "As long as the exam is still ongoing, you can come back later at anytime.\n\n"
+              + "Leave the exam now?"
+        );
+
+        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+            Response leave = currentUser.leave(currentExam);
+            
+            switch (leave.getStatusCode()) {
+                case SUCCESS:
+                    Session.getInstance().setCurrentExam(null);
+
+                    TeacherController tc = (TeacherController) Session.getInstance().getMainController();
+                    
+                    // Reset the Proctor Page to its original state.
+                    stopExamLabelTimer();
+                    setExamLabel("No Exam Being Proctored");
+                    disableExitBtn();
+                    
+                    // Take the user back to OngoingExams Page.
+                    tc.showOngoingExams(event);
                     break;
 
                 default:
@@ -169,6 +253,31 @@ public class ProctorController implements Initializable {
      */
     public void stopExamLabelTimer() {
         this.timeline.stop();
+    }
+    
+    /**
+     * Enables and renders the leave exam button as "Halt" Exam button.
+     */
+    public void enableHaltExamBtn() {
+        this.leaveExamBtn.setDisable(false);
+        this.leaveExamBtn.setText("Halt");
+        this.leaveExamBtn.setOnAction((ActionEvent event) -> haltExam(event));
+    }
+    
+    /**
+     * Enables and renders the leave exam button as "Leave" Exam button.
+     */
+    public void enableLeaveExamBtn() {
+        this.leaveExamBtn.setDisable(false);
+        this.leaveExamBtn.setText("Leave");
+        this.leaveExamBtn.setOnAction((ActionEvent event) -> leaveExam(event));
+    }
+    
+    /**
+     * Disables the ability to click on the leave exam button.
+     */
+    public void disableExitBtn() {
+        this.leaveExamBtn.setDisable(true);
     }
     
 }

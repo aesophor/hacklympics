@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.http import JsonResponse
 
-from hacklympics.exceptions import AlreadyLaunched, NotLaunched
+from hacklympics.exceptions import AlreadyLaunched, NotLaunched, AlreadyAttended, NotAttended 
 from hacklympics.status_code import StatusCode
 from hacklympics.sessions import OngoingExams
 from hacklympics.models import *
@@ -20,7 +20,7 @@ def get(request, c_id, e_id):
         "id": exam.id,
         "title": exam.title,
         "desc": exam.desc,
-        "duration": exam.duration,
+        "duration": exam.duration
     }
 
     return JsonResponse(response_data)
@@ -36,7 +36,7 @@ def list(request, c_id):
             "id": exam.id,
             "title": exam.title,
             "desc": exam.desc,
-            "duration": exam.duration,
+            "duration": exam.duration
         } for exam in exams]
     }
 
@@ -52,7 +52,12 @@ def list_ongoing(request):
             "examID": exam.id,
             "title": exam.title,
             "desc": exam.desc,
-            "duration": exam.duration
+            "duration": exam.duration,
+            "teacher": {
+                "username": exam.course.teacher.username,
+                "fullname": exam.course.teacher.fullname,
+                "graduationYear": exam.course.teacher.graduation_year
+            }
         } for exam in OngoingExams.exams]
     }
 
@@ -72,7 +77,7 @@ def create(request, c_id):
         Course.objects.get(id=c_id).exam_set.create(
             title = title,
             desc = desc,
-            duration = duration,
+            duration = duration
         )
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
@@ -123,7 +128,7 @@ def remove(request, c_id):
     return JsonResponse(response_data)
 
 
-def remaining_time(request, c_id, e_id):
+def get_remaining_time(request, c_id, e_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
     try:
@@ -139,6 +144,26 @@ def remaining_time(request, c_id, e_id):
     except NotLaunched:
         # Tell the clients the remaining_time is 0 if exam already ends.
         response_data["remaining_time"] = 0
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+
+    return JsonResponse(response_data)
+
+
+def get_owner(request, c_id, e_id):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
+        teacher = exam.course.teacher
+        
+        response_data["content"] = {
+            "username": teacher.username,
+            "fullname": teacher.fullname,
+            "graduationYear": teacher.graduation_year
+        }
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
@@ -209,6 +234,8 @@ def attend(request, c_id):
         
         OngoingExams.get(exam).add(user)
         OngoingExams.show()
+    except AlreadyAttended:
+        response_data["statusCode"] = StatusCode.ALREADY_ATTENDED
     except NotLaunched:
         response_data["statusCode"] = StatusCode.NOT_LAUNCHED
     except KeyError:
@@ -233,6 +260,8 @@ def leave(request, c_id):
         
         OngoingExams.get(exam).remove(user)
         OngoingExams.show()
+    except NotAttended:
+        response_data["statusCode"] = StatusCode.NOT_ATTENDED
     except NotLaunched:
         response_data["statusCode"] = StatusCode.NOT_LAUNCHED
     except KeyError:

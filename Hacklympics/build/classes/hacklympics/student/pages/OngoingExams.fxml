@@ -27,6 +27,6 @@
             <FontAwesomeIconView fill="WHITE" glyphName="EDIT" onDragDetected="#attendExam" size="20" translateX="1.0" />
          </graphic>
       </JFXButton>
-      <StackPane fx:id="dialogPane" layoutX="150.0" layoutY="244.0" mouseTransparent="true" prefHeight="153.0" prefWidth="328.0" />
+      <StackPane fx:id="dialogPane" layoutX="134.0" layoutY="241.0" mouseTransparent="true" prefHeight="149.0" prefWidth="318.0" />
    </children>
 </AnchorPane>

@@ -24,6 +24,7 @@ import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.exam.LaunchExamEvent;
+import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.user.User;
@@ -73,7 +74,7 @@ public class OngoingExamsController implements Initializable {
             });
         });
         
-        this.setOnExamHalted((LaunchExamEvent e) -> {
+        this.setOnExamHalted((HaltExamEvent e) -> {
             Platform.runLater(() -> {
                 fetchAndUpdate();
             });
@@ -130,6 +131,7 @@ public class OngoingExamsController implements Initializable {
         // If the user is try to attend an exam, but no exam is selected,
         // block this attempt and alert the user.
         Exam selectedExam = table.getSelectionModel().getSelectedItem();
+        
         if (selectedExam == null) {
             AlertDialog alert = new AlertDialog(
                     dialogPane,
@@ -145,9 +147,9 @@ public class OngoingExamsController implements Initializable {
         // If yes, then we will proceed.
         ConfirmDialog confirmation = new ConfirmDialog(
                 dialogPane,
-                "Attend Exam",
+                "Taking Exam",
                 "You have selected the exam: " + selectedExam + "\n\n"
-              + "Attend the exam now?"
+              + "Take the exam now?"
         );
         
         confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
@@ -165,24 +167,24 @@ public class OngoingExamsController implements Initializable {
                     cc.setExamLabel(selectedExam.getTitle(), selectedExam.getRemainingTime());
                     cc.setProblemBox(selectedExam.getProblems());
                     sc.showCode(e);
+                    
+                    confirmation.close();
                     break;
                     
-                case NOT_LAUNCHED:
+                case ALREADY_ATTENDED:
                     AlertDialog alert = new AlertDialog(
                             dialogPane,
-                            "Exam Not Ready or Ended",
-                            "The selected exam is either not launched yet "
-                          + "or has been halted already."
+                            "Alert",
+                            "You cannot take this exam again.\n\n"
+                          + "If you have any problem, please contact your teacher."
                     );
                     
+                    confirmation.close();
                     alert.show();
-                    break;
                     
                 default:
                     break;
             }
-            
-            confirmation.close();
         });
         
         confirmation.show();
@@ -192,7 +194,7 @@ public class OngoingExamsController implements Initializable {
         EventManager.getInstance().addEventHandler(EventType.LAUNCH_EXAM, listener);
     }
     
-    private void setOnExamHalted(EventHandler<LaunchExamEvent> listener) {
+    private void setOnExamHalted(EventHandler<HaltExamEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.HALT_EXAM, listener);
     }
     

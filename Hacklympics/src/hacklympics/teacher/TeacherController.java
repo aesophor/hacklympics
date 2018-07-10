@@ -166,6 +166,8 @@ public class TeacherController implements Initializable, MainController {
                 Utils.loadStage(new FXMLLoader(getClass().getResource(loginFXML)));
                 logoutBtn.getScene().getWindow().hide();
                 
+                Session.getInstance().clear();
+                EventManager.getInstance().clearEventHandlers();
                 SocketServer.getInstance().close();
             }
         });

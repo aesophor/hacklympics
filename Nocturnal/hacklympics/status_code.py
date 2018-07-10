@@ -19,3 +19,5 @@ class StatusCode(IntEnum):
 
     ALREADY_LAUNCHED = 12
     NOT_LAUNCHED = 13
+    ALREADY_ATTENDED = 14
+    NOT_ATTENDED = 15

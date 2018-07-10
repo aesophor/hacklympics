@@ -9,6 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.user.Teacher;
 import com.hacklympics.api.utility.Utils;
 
 public class Exam {
@@ -28,14 +29,14 @@ public class Exam {
         Response get = new Response(Utils.get(uri));
         
         if (get.success()) {
-            Map<String, Object> json = get.getContent();
+            Map<String, Object> exam = get.getContent();
             
             this.data = new ExamData(
                     courseID,
                     examID,
-                    json.get("title").toString(),
-                    json.get("desc").toString(),
-                    (int) Double.parseDouble(json.get("duration").toString())
+                    exam.get("title").toString(),
+                    exam.get("desc").toString(),
+                    (int) Double.parseDouble(exam.get("duration").toString())
             );
         }
     }
@@ -104,7 +105,6 @@ public class Exam {
         
         return new Response(Utils.post(uri, json.toString()));
     }
-    
     
     /**
      * Returns all Problems under this Exam.
@@ -177,6 +177,30 @@ public class Exam {
         }
         
         return remainingTime;
+    }
+    
+    /**
+     * Gets the teacher that owns/launched this exam.
+     * @return the teacher.
+     */
+    public Teacher getOnwer() {
+        String uri = String.format("course/%d/exam/%d/owner", 
+                this.data.getCourseID(), this.data.getExamID());
+        
+        Teacher owner = null;
+        Response getRemainingTime = new Response(Utils.get(uri));
+        
+        if (getRemainingTime.success()) {
+            Map<String, Object> content = getRemainingTime.getContent();
+            
+            String username = content.get("username").toString();
+            String fullname = content.get("fullname").toString();
+            int graduationYear = (int) Double.parseDouble(content.get("graduationYear").toString());
+            
+            owner = new Teacher(username, fullname, graduationYear);
+        }
+        
+        return owner;
     }
     
     

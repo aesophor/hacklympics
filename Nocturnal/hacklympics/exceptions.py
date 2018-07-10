@@ -21,3 +21,13 @@ class AlreadyLaunched(Exception):
 class NotLaunched(Exception):
     def __init__(self, message):
         super().__init__(message)
+
+
+class AlreadyAttended(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
+class NotAttended(Exception):
+    def __init__(self, message):
+        super().__init__(message)

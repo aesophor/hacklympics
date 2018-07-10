@@ -225,7 +225,15 @@ public class CodeController implements Initializable {
     @FXML
     public void showHint(ActionEvent e) {
         Problem selectedProblem = (Problem) problemBox.getSelectionModel().getSelectedItem();
+        
         if (selectedProblem == null) {
+            AlertDialog alert = new AlertDialog(
+                dialogPane,
+                "No Problem Selected",
+                "Please select a problem first."
+            );
+            
+            alert.show();
             return;
         }
 
@@ -247,7 +255,7 @@ public class CodeController implements Initializable {
         if (selectedExam == null | selectedProblem == null) {
             AlertDialog alert = new AlertDialog(
                     dialogPane,
-                    "Tips",
+                    "Alert",
                     "Please make sure both Exam and Problem are selected."
             );
 
@@ -294,7 +302,7 @@ public class CodeController implements Initializable {
                 case ALREADY_SUBMITTED:
                     AlertDialog submitted = new AlertDialog(
                             dialogPane,
-                            "Tips",
+                            "Alert",
                             "You've already submitted your code for this problem."
                     );
 
@@ -357,7 +365,23 @@ public class CodeController implements Initializable {
     public void leave(ActionEvent event) {
         Exam currentExam = Session.getInstance().getCurrentExam();
         User currentUser = Session.getInstance().getCurrentUser();
+        
+        // If the user is trying to leave an exam, but the user hasn't
+        // attended to any exam yet, block this attempt and alert the user.
+        if (currentExam == null) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You haven't attended to any exam yet.\n\n"
+                  + "You can attend to your exam by selecting any exam in Ongoing Exams."
+            );
+            
+            alert.show();
+            return;
+        }
 
+        // If everything alright, then ask the user for confirmation.
+        // If yes, then we will proceed.
         ConfirmDialog confirmation = new ConfirmDialog(
                 dialogPane,
                 "Leave Exam",
@@ -371,14 +395,13 @@ public class CodeController implements Initializable {
             switch (leave.getStatusCode()) {
                 case SUCCESS:
                     Session.getInstance().setCurrentExam(null);
-
+                    
                     StudentController sc = (StudentController) Session.getInstance().getMainController();
-                    CodeController cc = (CodeController) sc.getControllers().get("Code");
 
                     // Reset the Code Page to its original state.
-                    cc.stopExamLabelTimer();
-                    cc.setExamLabel("No Exam Being Taken");
-                    cc.setProblemBox(null);
+                    stopExamLabelTimer();
+                    setExamLabel("No Exam Being Taken");
+                    setProblemBox(null);
                     
                     // Take the user back to OngoingExams Page.
                     sc.showOngoingExams(event);
