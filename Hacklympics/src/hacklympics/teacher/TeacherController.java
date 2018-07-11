@@ -52,12 +52,15 @@ public class TeacherController implements Initializable, MainController {
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        initOnlineUserListView();
         setGreetingMsg();
+        initOnlineUserListView();
         
         initPages();
         showPage(pages.get("Dashboard"));
         
+        
+        // Update the Online User List (on the bottom left) whenever
+        // the SocketServer receives events of user login/logout.
         this.setOnLogin((LoginEvent event) -> {
             // Avoid throwing IllegalStateException by running from a non-JavaFX thread.
             // The following lines of code runs the specified Runnable on the 
@@ -181,16 +184,16 @@ public class TeacherController implements Initializable, MainController {
         bannerMsg.setText(greetingMsg);
     }
     
+    public Map<String, Object> getControllers() {
+        return controllers;
+    }
+    
     private void setOnLogin(EventHandler<LoginEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.LOGIN, listener);
     }
     
     private void setOnLogout(EventHandler<LogoutEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.LOGOUT, listener);
-    }
-    
-    public Map<String, Object> getControllers() {
-        return controllers;
     }
     
 }

@@ -154,6 +154,7 @@ class Message(models.Model):
 
 class Snapshot(models.Model):
     img = models.BinaryField()
+    exam = models.ForeignKey("Exam")
     student = models.ForeignKey("User")
 
     create_time = models.DateTimeField(editable=False)
@@ -164,4 +165,4 @@ class Snapshot(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return "_".join((self.student.username, self.create_time))
+        return "_".join((self.student.username, self.create_time.strftime("%Y-%m-%d_%H:%M")))

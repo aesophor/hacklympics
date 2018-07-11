@@ -62,7 +62,5 @@ def create(request, username):
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.NOT_REGISTERED
-    except Exception as e:
-        print(e)
 
     return JsonResponse(response_data)

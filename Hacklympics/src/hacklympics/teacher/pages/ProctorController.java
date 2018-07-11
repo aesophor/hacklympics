@@ -13,7 +13,7 @@ import javafx.scene.control.Label;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -26,11 +26,18 @@ import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
+import hacklympics.utility.SnapshotBox;
+import javafx.geometry.Insets;
+import javafx.scene.layout.HBox;
+
+// Note: You can store all SnapshotBox in a List.
+//       When SnapshotBox(s) got moved to the other group,
+//       then call rearrangeBoxes() to update the layout :)
 
 public class ProctorController implements Initializable {
     
     private List<Student> attendedStudents;
-    private ObservableList<Student> normalGroup;
+    private ObservableList<Student> genericGroup;
     private ObservableList<Student> specialGroup;
     
     private Timeline timeline;
@@ -45,9 +52,9 @@ public class ProctorController implements Initializable {
     @FXML
     private Label examLabel;
     @FXML
-    private AnchorPane normalGrpPane;
+    private VBox genericGrpBox;
     @FXML
-    private AnchorPane specialGrpPane;
+    private VBox specialGrpBox;
     @FXML
     private JFXComboBox groupBox;
     @FXML
@@ -59,11 +66,20 @@ public class ProctorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        normalGroup = FXCollections.observableArrayList();
-        normalGroup.setAll();
+        genericGroup = FXCollections.observableArrayList();
+        genericGroup.setAll();
         
         specialGroup = FXCollections.observableArrayList();
         specialGroup.setAll();
+        
+        Student s1 = new Student("1080630202");
+        Student s2 = new Student("1080630212");
+        
+        HBox row = new HBox();
+        row.setPadding(new Insets(0, 0, 10, 0));
+        row.getChildren().addAll(new SnapshotBox(s1), new SnapshotBox(s2));
+        
+        this.genericGrpBox.getChildren().add(row);
     }
 
     
@@ -73,7 +89,7 @@ public class ProctorController implements Initializable {
     }
     
     @FXML
-    public void moveToNormalGrp(ActionEvent event) {
+    public void moveToGenericGrp(ActionEvent event) {
         
     }
 

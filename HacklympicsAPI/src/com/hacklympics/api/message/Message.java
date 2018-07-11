@@ -7,10 +7,12 @@ import com.hacklympics.api.utility.Utils;
 
 public class Message {
     
-    private final MessageData data;
+    private final User user;
+    private final String body;
     
     public Message(User user, String content) {
-        this.data = new MessageData(user, content);
+        this.user = user;
+        this.body = content;
     }
     
     
@@ -25,22 +27,18 @@ public class Message {
     }
     
     
-    public MessageData getData() {
-        return data;
-    }
-    
     public User getUser() {
-        return data.getUser();
+        return user;
     }
     
     public String getContent() {
-        return data.getContent();
+        return body;
     }
     
     
     @Override
     public String toString() {
-        return data.toString();
+        return String.format("%s: %s", user.getFullname(), body);
     }
     
 }

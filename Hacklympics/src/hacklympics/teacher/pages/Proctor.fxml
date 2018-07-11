@@ -25,14 +25,14 @@
                            <children>
                               <AnchorPane prefHeight="585.0" prefWidth="776.0">
                                  <children>
-                                    <ScrollPane layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0">
-                                      <content>
-                                        <AnchorPane fx:id="normalGrpPane" minHeight="0.0" minWidth="0.0" prefHeight="506.0" prefWidth="353.0" />
-                                      </content>
+                                    <ScrollPane hbarPolicy="NEVER" layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0">
+                                       <content>
+                                          <VBox fx:id="genericGrpBox" prefHeight="0.0" prefWidth="353.0" />
+                                       </content>
                                     </ScrollPane>
                                     <ScrollPane layoutX="400.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0">
                                        <content>
-                                          <AnchorPane fx:id="specialGrpPane" minHeight="0.0" minWidth="0.0" prefHeight="505.0" prefWidth="353.0" />
+                                          <VBox fx:id="specialGrpBox" prefHeight="506.0" prefWidth="353.0" />
                                        </content>
                                     </ScrollPane>
                                     <Label fx:id="examLabel2" alignment="CENTER" layoutX="126.0" layoutY="20.0" prefHeight="29.0" text="Normal Group">
@@ -62,7 +62,7 @@
                                           <Font size="11.0" />
                                        </font>
                                     </JFXButton>
-                                    <JFXButton layoutX="490.0" layoutY="24.0" onAction="#moveToNormalGrp" prefHeight="9.0" prefWidth="38.0" styleClass="darkBlueBtn" text="&lt;&lt;">
+                                    <JFXButton layoutX="490.0" layoutY="24.0" onAction="#moveToGenericGrp" prefHeight="9.0" prefWidth="38.0" styleClass="darkBlueBtn" text="&lt;&lt;">
                                        <font>
                                           <Font size="11.0" />
                                        </font>

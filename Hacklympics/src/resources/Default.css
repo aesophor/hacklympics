@@ -37,6 +37,10 @@
     -jfx-focus-color: -fx-lightblue;
 }
 
+.jfx-check-box {
+    -jfx-checked-color: -fx-lightblue;
+}
+
 
 /* JFXTabPane */
 .tab {

@@ -59,7 +59,7 @@
             </HBox>
             <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
                <children>
-                  <JFXButton onAction="#showCourses" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="My Courses &amp; Exams" textFill="WHITE">
+                  <JFXButton onAction="#showCourses" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="My Courses / Exams" textFill="WHITE">
                      <graphic>
                         <FontAwesomeIconView fill="#eaeaea" glyphName="BOOK" size="20.0" wrappingWidth="30.0" />
                      </graphic>

@@ -2,7 +2,7 @@ package com.hacklympics.api.communication;
 
 public final class Config {
     
-    public static final String serverHost = "192.168.19.5";
+    public static final String serverHost = "192.168.19.6";
     public static final int serverPort = 8000;
     public static final int evLstnPort = 8001;
     

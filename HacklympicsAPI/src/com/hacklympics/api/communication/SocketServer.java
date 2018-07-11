@@ -12,7 +12,7 @@ public class SocketServer implements Runnable {
     private final EventManager eventManager;
     private final int port;
     private ServerSocket serverSocket;
-    private Socket client;
+    private Socket socket;
     
     private SocketServer(int port) {
         this.eventManager = EventManager.getInstance();
@@ -35,14 +35,15 @@ public class SocketServer implements Runnable {
             serverSocket = new ServerSocket(port);
             
             while (true) {
-                client = serverSocket.accept();
+                socket = serverSocket.accept();
                 
-                BufferedReader br = new BufferedReader(new InputStreamReader(client.getInputStream()));
+                BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                 String e = br.readLine();
+                
                 System.out.println("Received: " + e);
                 eventManager.fireEvent(new Event(e).toConcreteEvent());
                 
-                client.close();
+                socket.close();
             }
         } catch (IOException ex) {
             

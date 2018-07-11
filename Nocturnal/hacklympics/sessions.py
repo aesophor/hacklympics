@@ -81,6 +81,7 @@ class OngoingExams:
             OngoingExams.exams[exam] = ExamData()
             
             # Start the timer of this exam.
+            # Also record the start_time of timer for evaluating remaining time later.
             OngoingExams.exams[exam].timer = Timer(exam.duration * 60, OngoingExams.remove, args=[exam])
             OngoingExams.exams[exam].timer.start()
             OngoingExams.exams[exam].start_time = time.time()
@@ -138,6 +139,7 @@ class ExamData:
                 self.students.append(user)
             else:
                 self.teachers.append(user)
+            # Dispatch a event here?
         else:
             raise AlreadyAttended("This user has already attended to this exam.")
 
@@ -148,6 +150,7 @@ class ExamData:
         if self.has(user):
             if not user.is_student:
                 self.teachers.remove(user)
+            # Dispatch a event here?
         else:
             raise NotAttended("This user has not attended to this exam.")
 

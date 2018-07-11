@@ -28,6 +28,7 @@ import com.hacklympics.api.user.User;
 import hacklympics.teacher.TeacherController;
 import hacklympics.utility.AlertDialog;
 import hacklympics.utility.ConfirmDialog;
+import javafx.collections.ListChangeListener;
 
 public class OngoingExamsController implements Initializable {
     
@@ -70,13 +71,15 @@ public class OngoingExamsController implements Initializable {
         // Update the OngoingExams table whenever an exam is launched or halted.
         this.setOnExamLaunched((LaunchExamEvent e) -> {
             Platform.runLater(() -> {
-                fetchAndUpdate();
+                recordsCache.add(e.getExam());
+                updateLocally();
             });
         });
         
         this.setOnExamHalted((HaltExamEvent e) -> {
             Platform.runLater(() -> {
-                fetchAndUpdate();
+                recordsCache.remove(e.getExam());
+                updateLocally();
             });
         });
     }
@@ -165,9 +168,6 @@ public class OngoingExamsController implements Initializable {
                     
                     // If the user is the owner of the exam, render the exitBtn
                     // as halt exam button. Otherwise, render it as leave button.
-                    System.out.println("Owner: " + selectedExam.getOnwer().getUsername());
-                    System.out.println("Current: " + currentUser.getUsername());
-                    
                     if (selectedExam.getOnwer().getUsername().equals(currentUser.getUsername())) {
                         cc.enableHaltExamBtn();
                     } else {
