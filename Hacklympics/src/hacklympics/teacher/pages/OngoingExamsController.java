@@ -28,7 +28,6 @@ import com.hacklympics.api.user.User;
 import hacklympics.teacher.TeacherController;
 import hacklympics.utility.dialog.AlertDialog;
 import hacklympics.utility.dialog.ConfirmDialog;
-import javafx.collections.ListChangeListener;
 
 public class OngoingExamsController implements Initializable {
     
@@ -69,14 +68,14 @@ public class OngoingExamsController implements Initializable {
         table.setPlaceholder(new Label("No ongoing exams yet."));
         
         // Update the OngoingExams table whenever an exam is launched or halted.
-        this.setOnExamLaunched((LaunchExamEvent e) -> {
+        this.setOnLaunchExam((LaunchExamEvent e) -> {
             Platform.runLater(() -> {
                 recordsCache.add(e.getExam());
                 updateLocally();
             });
         });
         
-        this.setOnExamHalted((HaltExamEvent e) -> {
+        this.setOnHaltExam((HaltExamEvent e) -> {
             Platform.runLater(() -> {
                 recordsCache.remove(e.getExam());
                 updateLocally();
@@ -199,11 +198,12 @@ public class OngoingExamsController implements Initializable {
         confirmation.show();
     }
     
-    private void setOnExamLaunched(EventHandler<LaunchExamEvent> listener) {
+    
+    private void setOnLaunchExam(EventHandler<LaunchExamEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.LAUNCH_EXAM, listener);
     }
     
-    private void setOnExamHalted(EventHandler<HaltExamEvent> listener) {
+    private void setOnHaltExam(EventHandler<HaltExamEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.HALT_EXAM, listener);
     }
     

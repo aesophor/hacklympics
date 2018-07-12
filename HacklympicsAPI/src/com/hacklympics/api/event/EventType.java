@@ -10,7 +10,9 @@ public enum EventType {
     LAUNCH_EXAM("com.hacklympics.api.event.exam.LaunchExamEvent"),     // 3
     HALT_EXAM("com.hacklympics.api.event.exam.HaltExamEvent"),         // 4 
     ATTEND_EXAM("com.hacklympics.api.event.exam.AttendExamEvent"),     // 5
-    LEAVE_EXAM("com.hacklympics.api.event.exam.LeaveExamEvent");       // 6
+    LEAVE_EXAM("com.hacklympics.api.event.exam.LeaveExamEvent"),       // 6
+    
+    NEW_SNAPSHOT("com.hacklympics.api.event.exam.NewSnapshotEvent");   // 7
     
     
     private final String classname;

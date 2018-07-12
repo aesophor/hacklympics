@@ -26,6 +26,9 @@ public class EventManager {
         this.handlers.put(EventType.HALT_EXAM, new ArrayList<>());
         this.handlers.put(EventType.ATTEND_EXAM, new ArrayList<>());
         this.handlers.put(EventType.LEAVE_EXAM, new ArrayList<>());
+        
+        // List of handlers for events of new snapshots arrival.
+        this.handlers.put(EventType.NEW_SNAPSHOT, new ArrayList<>());
     }
     
     public static EventManager getInstance() {

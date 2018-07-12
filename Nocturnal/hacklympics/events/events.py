@@ -201,4 +201,3 @@ class NewSnapshotEvent(Event):
         }
         
         return json.dumps(event)
-

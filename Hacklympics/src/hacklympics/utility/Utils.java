@@ -51,7 +51,7 @@ public class Utils {
         return ImageIO.read(new ByteArrayInputStream(bytes));
     }
     
-    public static Image BufferedImage2FXImage(BufferedImage bufferedImage) {
+    public static Image bufferedImage2FXImage(BufferedImage bufferedImage) {
         return SwingFXUtils.toFXImage(bufferedImage, null);
     }
     

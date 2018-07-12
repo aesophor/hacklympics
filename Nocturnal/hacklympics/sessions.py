@@ -78,7 +78,7 @@ class OngoingExams:
     def add(exam: Exam):
         if not OngoingExams.has(exam):                        
             # Create an empty student list for this exam.
-            OngoingExams.exams[exam] = ExamData()
+            OngoingExams.exams[exam] = ExamData(exam)
             
             # Start the timer of this exam.
             # Also record the start_time of timer for evaluating remaining time later.
@@ -126,7 +126,8 @@ class ExamData:
     
     # A participant of an exam can either be a student or a teacher.
     # Students take the exam while teacher proctor the exam.
-    def __init__(self):
+    def __init__(self, exam: Exam):
+        self.exam = exam
         self.students = []
         self.teachers = []
         
@@ -140,6 +141,7 @@ class ExamData:
             else:
                 self.teachers.append(user)
             # Dispatch a event here?
+            dispatch(AttendExamEvent(self.exam, user), self.teachers)
         else:
             raise AlreadyAttended("This user has already attended to this exam.")
 
@@ -151,6 +153,7 @@ class ExamData:
             if not user.is_student:
                 self.teachers.remove(user)
             # Dispatch a event here?
+            dispatch(LeaveExamEvent(self.exam, user), self.teachers)
         else:
             raise NotAttended("This user has not attended to this exam.")
 

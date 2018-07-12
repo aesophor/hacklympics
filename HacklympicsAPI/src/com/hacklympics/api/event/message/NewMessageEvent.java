@@ -17,10 +17,10 @@ public class NewMessageEvent extends Event {
     public NewMessageEvent(String rawJson) {
         super(rawJson);
         
-        Map<String, Object> newMessageEvent = this.getContent();
-        String msgContent = newMessageEvent.get("content").toString();
+        Map<String, Object> content = this.getContent();
+        String msgContent = content.get("content").toString();
         
-        String rawUserJson = Utils.getGson().toJson(newMessageEvent.get("user"));
+        String rawUserJson = Utils.getGson().toJson(content.get("user"));
         JsonObject userJson = Utils.getGson().fromJson(rawUserJson, JsonObject.class);
             
         String username = userJson.get("username").getAsString();

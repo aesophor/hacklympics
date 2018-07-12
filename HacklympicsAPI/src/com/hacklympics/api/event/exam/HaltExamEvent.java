@@ -15,9 +15,9 @@ public class HaltExamEvent extends Event {
     public HaltExamEvent(String rawJson) {
         super(rawJson);
         
-        Map<String, Object> haltExamEvent = this.getContent();
+        Map<String, Object> content = this.getContent();
         
-        String rawTeacherJson = Utils.getGson().toJson(haltExamEvent.get("teacher"));
+        String rawTeacherJson = Utils.getGson().toJson(content.get("teacher"));
         JsonObject teacherJson = Utils.getGson().fromJson(rawTeacherJson, JsonObject.class);
         
         String username = teacherJson.get("username").getAsString();
@@ -27,7 +27,7 @@ public class HaltExamEvent extends Event {
         this.teacher = new Teacher(username, fullname, gradYear);
         
         
-        String rawExamJson = Utils.getGson().toJson(haltExamEvent.get("exam"));
+        String rawExamJson = Utils.getGson().toJson(content.get("exam"));
         JsonObject examJson = Utils.getGson().fromJson(rawExamJson, JsonObject.class);
         
         int courseID = examJson.get("courseID").getAsInt();

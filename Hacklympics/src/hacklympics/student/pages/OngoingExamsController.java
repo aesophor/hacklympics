@@ -68,13 +68,13 @@ public class OngoingExamsController implements Initializable {
         table.setPlaceholder(new Label("No ongoing exams yet."));
         
         // Update the OngoingExams table whenever an exam is launched or halted.
-        this.setOnExamLaunched((LaunchExamEvent e) -> {
+        this.setOnLaunchExam((LaunchExamEvent e) -> {
             Platform.runLater(() -> {
                 fetchAndUpdate();
             });
         });
         
-        this.setOnExamHalted((HaltExamEvent e) -> {
+        this.setOnHaltExam((HaltExamEvent e) -> {
             Platform.runLater(() -> {
                 fetchAndUpdate();
             });
@@ -190,11 +190,12 @@ public class OngoingExamsController implements Initializable {
         confirmation.show();
     }
     
-    private void setOnExamLaunched(EventHandler<LaunchExamEvent> listener) {
+    
+    private void setOnLaunchExam(EventHandler<LaunchExamEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.LAUNCH_EXAM, listener);
     }
     
-    private void setOnExamHalted(EventHandler<HaltExamEvent> listener) {
+    private void setOnHaltExam(EventHandler<HaltExamEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.HALT_EXAM, listener);
     }
     

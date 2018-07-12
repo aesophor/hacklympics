@@ -10,3 +10,5 @@ class EventType(IntEnum):
     HALT_EXAM = 4
     ATTEND_EXAM = 5
     LEAVE_EXAM = 6
+
+    NEW_SNAPSHOT = 7

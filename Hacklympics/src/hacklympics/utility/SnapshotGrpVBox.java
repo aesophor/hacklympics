@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import com.hacklympics.api.user.Student;
 
 public class SnapshotGrpVBox extends VBox {
     
@@ -64,6 +65,40 @@ public class SnapshotGrpVBox extends VBox {
      */
     public void remove(SnapshotBox snapshotBox) {
         this.snapshotBoxes.remove(snapshotBox);
+    }
+    
+    /**
+     * Gets the SnapshotBox of the specified student.
+     * @param student the student to search for.
+     * @return the student's SnapshotBox.
+     */
+    public SnapshotBox get(Student student) {
+        SnapshotBox target = null;
+        
+        for (SnapshotBox box : snapshotBoxes) {
+            if (box.getStudent().equals(student)) {
+                target = box;
+            }
+        }
+        
+        return target;
+    }
+    
+    /**
+     * Gets the SnapshotBox of the specified student.
+     * @param username the username of the student to search for.
+     * @return the student's SnapshotBox.
+     */
+    public SnapshotBox get(String username) {
+        SnapshotBox target = null;
+        
+        for (SnapshotBox box : snapshotBoxes) {
+            if (box.getStudent().getUsername().equals(username)) {
+                target = box;
+            }
+        }
+        
+        return target;
     }
     
 }

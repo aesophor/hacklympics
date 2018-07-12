@@ -17,9 +17,9 @@ public class LeaveExamEvent extends Event {
     public LeaveExamEvent(String rawJson) {
         super(rawJson);
         
-        Map<String, Object> leaveExamEvent = this.getContent();
+        Map<String, Object> content = this.getContent();
         
-        String rawTeacherJson = Utils.getGson().toJson(leaveExamEvent.get("user"));
+        String rawTeacherJson = Utils.getGson().toJson(content.get("user"));
         JsonObject userJson = Utils.getGson().fromJson(rawTeacherJson, JsonObject.class);
         
         String username = userJson.get("username").getAsString();
@@ -31,7 +31,7 @@ public class LeaveExamEvent extends Event {
                                 : new Teacher(username, fullname, gradYear);
         
         
-        String rawExamJson = Utils.getGson().toJson(leaveExamEvent.get("exam"));
+        String rawExamJson = Utils.getGson().toJson(content.get("exam"));
         JsonObject examJson = Utils.getGson().fromJson(rawExamJson, JsonObject.class);
         
         int courseID = examJson.get("courseID").getAsInt();

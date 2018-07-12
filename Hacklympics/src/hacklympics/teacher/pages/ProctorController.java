@@ -22,31 +22,36 @@ import hacklympics.utility.dialog.AlertDialog;
 import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.event.EventHandler;
+import com.hacklympics.api.event.EventManager;
+import com.hacklympics.api.event.EventType;
+import com.hacklympics.api.event.exam.AttendExamEvent;
+import com.hacklympics.api.event.exam.LeaveExamEvent;
+import com.hacklympics.api.event.snapshot.NewSnapshotEvent;
+import com.hacklympics.api.event.user.LoginEvent;
 import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
 import hacklympics.utility.SnapshotBox;
 import hacklympics.utility.SnapshotGrpVBox;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 
-// Note: You can store all SnapshotBox in a List.
-//       When SnapshotBox(s) got moved to the other group,
-//       then call rearrangeBoxes() to update the layout :)
-
 public class ProctorController implements Initializable {
-    
-    
     
     private List<Student> attendedStudents;
     private ObservableList<Student> genericGroup;
     private ObservableList<Student> specialGroup;
-    
+
     private Timeline timeline;
     private int remainingTime;
-    
+
     @FXML
     private Tab liveScreensTab;
     @FXML
@@ -55,15 +60,15 @@ public class ProctorController implements Initializable {
     private StackPane dialogPane;
     @FXML
     private Label examLabel;
-    
+
     @FXML
     private ScrollPane genericGrpPane;
     @FXML
     private ScrollPane specialGrpPane;
-    
+
     private SnapshotGrpVBox genericGrpBox;
     private SnapshotGrpVBox specialGrpBox;
-    
+
     @FXML
     private JFXComboBox groupBox;
     @FXML
@@ -77,47 +82,87 @@ public class ProctorController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         this.genericGrpBox = new SnapshotGrpVBox();
         this.genericGrpPane.setContent(this.genericGrpBox);
-        
+
         this.specialGrpBox = new SnapshotGrpVBox();
         this.specialGrpPane.setContent(this.specialGrpBox);
-        
+
+        // Create a new SnapshotBox for the student who just arrived,
+        // and add it to the generic group by default.
+        this.setOnAttendExam((AttendExamEvent event) -> {
+            int eventExamID = event.getExam().getExamID();
+            int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+
+            if (eventExamID == currentExamID) {
+                SnapshotBox box = new SnapshotBox((Student) event.getUser());
+                this.genericGrpBox.add(box);
+            }
+        });
+
+        // Remove the SnapshotBox for the student who just left.
+        this.setOnLeaveExam((LeaveExamEvent event) -> {
+            int eventExamID = event.getExam().getExamID();
+            int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+
+            if (eventExamID == currentExamID) {
+                SnapshotBox box = this.genericGrpBox.get((Student) event.getUser());
+                this.genericGrpBox.remove(box);
+            }
+        });
+
+        // Updates the SnapshotBox when a NewSnapshotEvent arrives.
+        this.setOnNewSnapshot((NewSnapshotEvent event) -> {
+            int eventExamID = event.getSnapshot().getExamID();
+            int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+
+            if (eventExamID == currentExamID) {
+                Snapshot snapshot = event.getSnapshot();
+                SnapshotBox box = this.genericGrpBox.get(snapshot.getStudentUsername());
+
+                try {
+                    box.update(snapshot);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
+        });
+
         /* Test */
         Student s1 = new Student("1080630202");
         Student s2 = new Student("1080630212");
         Student s3 = new Student("1080630201");
-        
+
         this.genericGrpBox.add(new SnapshotBox(s1));
         this.genericGrpBox.add(new SnapshotBox(s2));
         this.genericGrpBox.add(new SnapshotBox(s3));
         this.genericGrpBox.rearrange();
     }
-    
-    
+
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
-        
+
     }
-    
+
     @FXML
     public void moveToGenericGrp(ActionEvent event) {
-        
+
     }
 
     @FXML
     public void adjustLiveScreensParam(ActionEvent event) {
-        
+
     }
-    
+
     @FXML
     public void adjustKeystrokesParam(ActionEvent event) {
-        
+
     }
-    
+
     /**
-     * Halts the specified exam (for the teacher who launches the exam).
-     * Asks the user for confirmation for halting the exam prematurely.
-     * If the user answers yes, the exam will end and he will be taken
-     * back to the course/exam/problem page.
+     * Halts the specified exam (for the teacher who launches the exam). Asks
+     * the user for confirmation for halting the exam prematurely. If the user
+     * answers yes, the exam will end and he will be taken back to the
+     * course/exam/problem page.
      */
     public void haltExam(ActionEvent event) {
         // If the user is trying to halt an exam, but the user hasn't
@@ -125,33 +170,33 @@ public class ProctorController implements Initializable {
         // This section of code should never get executed, since
         // the halt exam button is disabled by default.
         Exam currentExam = Session.getInstance().getCurrentExam();
-        
+
         if (currentExam == null) {
             AlertDialog alert = new AlertDialog(
                     dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
-                  + "You can launch your exam in My Courses & Exam, or "
-                  + "attend to exams of other teachers in Ongoing Exams."
+                    + "You can launch your exam in My Courses & Exam, or "
+                    + "attend to exams of other teachers in Ongoing Exams."
             );
-            
+
             alert.show();
             return;
         }
-        
+
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
         ConfirmDialog confirmation = new ConfirmDialog(
                 dialogPane,
                 "Halt Exam",
                 "Once the exam is halted, all students will no longer be able "
-              + "to submit their code to the server.\n\n"
-              + "Halt the exam now?"
+                + "to submit their code to the server.\n\n"
+                + "Halt the exam now?"
         );
 
         confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response halt = currentExam.halt();
-            
+
             switch (halt.getStatusCode()) {
                 case SUCCESS:
                     Session.getInstance().setCurrentExam(null);
@@ -163,7 +208,7 @@ public class ProctorController implements Initializable {
                     cc.stopExamLabelTimer();
                     cc.setExamLabel("No Exam Being Proctored");
                     cc.disableExitBtn();
-                    
+
                     // Take the user back to OngoingExams Page.
                     sc.showOngoingExams(event);
                     break;
@@ -171,23 +216,23 @@ public class ProctorController implements Initializable {
                 default:
                     break;
             }
-            
+
             confirmation.close();
         });
 
         confirmation.show();
     }
-    
+
     /**
-     * Leaves the specified exam (for all teachers except the one who launches the exam).
-     * Asks the user for confirmation for leaving the exam.
-     * If the user answers yes, the exam will end and he will be taken
-     * back to the OngoingExams page.
+     * Leaves the specified exam (for all teachers except the one who launches
+     * the exam). Asks the user for confirmation for leaving the exam. If the
+     * user answers yes, the exam will end and he will be taken back to the
+     * OngoingExams page.
      */
     public void leaveExam(ActionEvent event) {
         Exam currentExam = Session.getInstance().getCurrentExam();
         User currentUser = Session.getInstance().getCurrentUser();
-        
+
         // If the user is trying to leave an exam, but the user hasn't
         // attended to any exam yet, block this attempt and alert the user.
         if (currentExam == null) {
@@ -195,9 +240,9 @@ public class ProctorController implements Initializable {
                     dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
-                  + "You can attend to your exam by selecting any exam in Ongoing Exams."
+                    + "You can attend to your exam by selecting any exam in Ongoing Exams."
             );
-            
+
             alert.show();
             return;
         }
@@ -208,23 +253,23 @@ public class ProctorController implements Initializable {
                 dialogPane,
                 "Leave Exam",
                 "As long as the exam is still ongoing, you can come back later at anytime.\n\n"
-              + "Leave the exam now?"
+                + "Leave the exam now?"
         );
 
         confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response leave = currentUser.leave(currentExam);
-            
+
             switch (leave.getStatusCode()) {
                 case SUCCESS:
                     Session.getInstance().setCurrentExam(null);
 
                     TeacherController tc = (TeacherController) Session.getInstance().getMainController();
-                    
+
                     // Reset the Proctor Page to its original state.
                     stopExamLabelTimer();
                     setExamLabel("No Exam Being Proctored");
                     disableExitBtn();
-                    
+
                     // Take the user back to OngoingExams Page.
                     tc.showOngoingExams(event);
                     break;
@@ -232,37 +277,38 @@ public class ProctorController implements Initializable {
                 default:
                     break;
             }
-            
+
             confirmation.close();
         });
 
         confirmation.show();
     }
-    
-    
+
     /**
      * Sets the exam label which shows the title of currently ongoing exam.
+     *
      * @param examTitle title of exam.
      */
     public void setExamLabel(String examTitle) {
         examLabel.setText(examTitle);
     }
-    
+
     /**
-     * Sets the exam label which shows the title of currently ongoing exam,
-     * and shows the remaining time of the exam as well.
+     * Sets the exam label which shows the title of currently ongoing exam, and
+     * shows the remaining time of the exam as well.
+     *
      * @param examTitle name of exam.
-     * @param remainingTime remaining time of exam.
+     * @param remainingTime remaining time of exam (in seconds).
      */
     public void setExamLabel(String examTitle, int remainingTime) {
         examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(remainingTime)));
-        
+
         this.remainingTime = remainingTime;
         this.timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateExamLabelTimer(examTitle)));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
         this.timeline.playFromStart();
     }
-    
+
     /**
      * Updates the remaining time in the exam label.
      */
@@ -270,17 +316,17 @@ public class ProctorController implements Initializable {
         if (this.remainingTime > 0) {
             this.remainingTime--;
         }
-        
+
         examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(this.remainingTime)));
     }
-    
+
     /**
      * Stop the remaining time from updating.
      */
     public void stopExamLabelTimer() {
         this.timeline.stop();
     }
-    
+
     /**
      * Enables and renders the leave exam button as "Halt" Exam button.
      */
@@ -289,7 +335,7 @@ public class ProctorController implements Initializable {
         this.leaveExamBtn.setText("Halt");
         this.leaveExamBtn.setOnAction((ActionEvent event) -> haltExam(event));
     }
-    
+
     /**
      * Enables and renders the leave exam button as "Leave" Exam button.
      */
@@ -298,12 +344,24 @@ public class ProctorController implements Initializable {
         this.leaveExamBtn.setText("Leave");
         this.leaveExamBtn.setOnAction((ActionEvent event) -> leaveExam(event));
     }
-    
+
     /**
      * Disables the ability to click on the leave exam button.
      */
     public void disableExitBtn() {
         this.leaveExamBtn.setDisable(true);
     }
-    
+
+    private void setOnAttendExam(EventHandler<AttendExamEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.ATTEND_EXAM, listener);
+    }
+
+    private void setOnLeaveExam(EventHandler<LeaveExamEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.LEAVE_EXAM, listener);
+    }
+
+    private void setOnNewSnapshot(EventHandler<NewSnapshotEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.NEW_SNAPSHOT, listener);
+    }
+
 }

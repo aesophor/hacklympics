@@ -6,8 +6,16 @@ import com.hacklympics.api.utility.Utils;
 
 public class Snapshot {
     
-    public Snapshot() {
-        
+    private final int examID;
+    private final String studentUsername;
+    private final String snapshot;
+    private final String timestamp;
+    
+    public Snapshot(int examID, String studentUsername, String snapshot, String timestamp) {
+        this.examID = examID;
+        this.studentUsername = studentUsername;
+        this.snapshot = snapshot;
+        this.timestamp = timestamp;
     }
     
     
@@ -19,6 +27,23 @@ public class Snapshot {
         json.addProperty("image", b64image);
         
         return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    
+    public int getExamID() {
+        return this.examID;
+    }
+    
+    public String getStudentUsername() {
+        return this.studentUsername;
+    }
+    
+    public String getSnapshot() {
+        return this.snapshot;
+    }
+    
+    public String getTimestamp() {
+        return this.timestamp;
     }
     
 }
