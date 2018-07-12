@@ -138,10 +138,12 @@ class ExamData:
         if not self.has(user):
             if user.is_student:
                 self.students.append(user)
+                
+                # Notify all teachers that a student has attend to the exam,
+                # and that they should prepare for receiving snapshot from that student.
+                dispatch(AttendExamEvent(self.exam, user), self.teachers)
             else:
                 self.teachers.append(user)
-            # Dispatch a event here?
-            dispatch(AttendExamEvent(self.exam, user), self.teachers)
         else:
             raise AlreadyAttended("This user has already attended to this exam.")
 
@@ -152,8 +154,10 @@ class ExamData:
         if self.has(user):
             if not user.is_student:
                 self.teachers.remove(user)
-            # Dispatch a event here?
-            dispatch(LeaveExamEvent(self.exam, user), self.teachers)
+            else:
+                # Notify all teachers that a student has left the exam,
+                # and that they will not receive snapshot from that student any longer.
+                dispatch(LeaveExamEvent(self.exam, user), self.teachers)
         else:
             raise NotAttended("This user has not attended to this exam.")
 

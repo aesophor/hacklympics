@@ -31,7 +31,7 @@ public class SnapshotBox extends Group {
         
         this.checkbox = new JFXCheckBox(student.getFullname());
         
-        this.snapshot = new ImageView();
+        this.snapshot = new ImageView(new Image("/resources/Images/BlankSnapshot.jpg"));
         this.snapshot.setFitWidth(SNAPSHOT_WIDTH);
         this.snapshot.setFitHeight(SNAPSHOT_HEIGHT);
         this.snapshot.setLayoutX(SNAPSHOT_LAYOUT_X);

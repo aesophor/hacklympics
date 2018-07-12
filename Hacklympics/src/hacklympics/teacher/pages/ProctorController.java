@@ -45,10 +45,6 @@ import javafx.scene.layout.HBox;
 
 public class ProctorController implements Initializable {
     
-    private List<Student> attendedStudents;
-    private ObservableList<Student> genericGroup;
-    private ObservableList<Student> specialGroup;
-
     private Timeline timeline;
     private int remainingTime;
 
@@ -95,6 +91,7 @@ public class ProctorController implements Initializable {
             if (eventExamID == currentExamID) {
                 SnapshotBox box = new SnapshotBox((Student) event.getUser());
                 this.genericGrpBox.add(box);
+                this.genericGrpBox.rearrange();
             }
         });
 
@@ -106,6 +103,7 @@ public class ProctorController implements Initializable {
             if (eventExamID == currentExamID) {
                 SnapshotBox box = this.genericGrpBox.get((Student) event.getUser());
                 this.genericGrpBox.remove(box);
+                this.genericGrpBox.rearrange();
             }
         });
 
@@ -140,7 +138,7 @@ public class ProctorController implements Initializable {
 
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
-
+        
     }
 
     @FXML
