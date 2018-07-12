@@ -32,9 +32,9 @@ import com.hacklympics.api.user.Role;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Teacher;
 import hacklympics.teacher.TeacherController;
-import hacklympics.utility.AlertDialog;
-import hacklympics.utility.FormDialog;
-import hacklympics.utility.ConfirmDialog;
+import hacklympics.utility.dialog.AlertDialog;
+import hacklympics.utility.dialog.FormDialog;
+import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.UserListView;
 
 public class CoursesController implements Initializable {

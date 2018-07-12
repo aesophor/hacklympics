@@ -32,8 +32,8 @@ import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.User;
 import hacklympics.student.StudentController;
 import hacklympics.utility.FileTab;
-import hacklympics.utility.AlertDialog;
-import hacklympics.utility.ConfirmDialog;
+import hacklympics.utility.dialog.AlertDialog;
+import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
 
 public class CodeController implements Initializable {

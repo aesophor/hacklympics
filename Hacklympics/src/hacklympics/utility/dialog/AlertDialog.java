@@ -1,5 +1,6 @@
-package hacklympics.utility;
+package hacklympics.utility.dialog;
 
+import hacklympics.utility.WrappingText;
 import java.util.ArrayList;
 import javafx.scene.layout.StackPane;
 

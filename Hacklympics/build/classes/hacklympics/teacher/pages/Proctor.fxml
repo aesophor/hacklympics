@@ -25,16 +25,8 @@
                            <children>
                               <AnchorPane prefHeight="585.0" prefWidth="776.0">
                                  <children>
-                                    <ScrollPane hbarPolicy="NEVER" layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0">
-                                       <content>
-                                          <VBox fx:id="genericGrpBox" prefHeight="0.0" prefWidth="353.0" />
-                                       </content>
-                                    </ScrollPane>
-                                    <ScrollPane layoutX="400.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0">
-                                       <content>
-                                          <VBox fx:id="specialGrpBox" prefHeight="506.0" prefWidth="353.0" />
-                                       </content>
-                                    </ScrollPane>
+                                    <ScrollPane fx:id="genericGrpPane" hbarPolicy="NEVER" layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
+                                    <ScrollPane fx:id="specialGrpPane" hbarPolicy="NEVER" layoutX="400.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
                                     <Label fx:id="examLabel2" alignment="CENTER" layoutX="126.0" layoutY="20.0" prefHeight="29.0" text="Normal Group">
                                        <opaqueInsets>
                                           <Insets />

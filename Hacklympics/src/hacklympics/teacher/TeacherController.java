@@ -29,7 +29,7 @@ import com.hacklympics.api.session.Session;
 import com.hacklympics.api.session.Session.MainController;
 import com.hacklympics.api.user.User;
 import hacklympics.utility.FXMLTable;
-import hacklympics.utility.ConfirmDialog;
+import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
 import com.hacklympics.api.event.EventHandler;
 

@@ -26,8 +26,8 @@ import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.User;
 import hacklympics.teacher.TeacherController;
-import hacklympics.utility.AlertDialog;
-import hacklympics.utility.ConfirmDialog;
+import hacklympics.utility.dialog.AlertDialog;
+import hacklympics.utility.dialog.ConfirmDialog;
 import javafx.collections.ListChangeListener;
 
 public class OngoingExamsController implements Initializable {

@@ -18,8 +18,8 @@ import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import hacklympics.teacher.TeacherController;
-import hacklympics.utility.AlertDialog;
-import hacklympics.utility.ConfirmDialog;
+import hacklympics.utility.dialog.AlertDialog;
+import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.material.Exam;
@@ -27,7 +27,9 @@ import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
 import hacklympics.utility.SnapshotBox;
+import hacklympics.utility.SnapshotGrpVBox;
 import javafx.geometry.Insets;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 
 // Note: You can store all SnapshotBox in a List.
@@ -35,6 +37,8 @@ import javafx.scene.layout.HBox;
 //       then call rearrangeBoxes() to update the layout :)
 
 public class ProctorController implements Initializable {
+    
+    
     
     private List<Student> attendedStudents;
     private ObservableList<Student> genericGroup;
@@ -51,10 +55,15 @@ public class ProctorController implements Initializable {
     private StackPane dialogPane;
     @FXML
     private Label examLabel;
+    
     @FXML
-    private VBox genericGrpBox;
+    private ScrollPane genericGrpPane;
     @FXML
-    private VBox specialGrpBox;
+    private ScrollPane specialGrpPane;
+    
+    private SnapshotGrpVBox genericGrpBox;
+    private SnapshotGrpVBox specialGrpBox;
+    
     @FXML
     private JFXComboBox groupBox;
     @FXML
@@ -66,22 +75,23 @@ public class ProctorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        genericGroup = FXCollections.observableArrayList();
-        genericGroup.setAll();
+        this.genericGrpBox = new SnapshotGrpVBox();
+        this.genericGrpPane.setContent(this.genericGrpBox);
         
-        specialGroup = FXCollections.observableArrayList();
-        specialGroup.setAll();
+        this.specialGrpBox = new SnapshotGrpVBox();
+        this.specialGrpPane.setContent(this.specialGrpBox);
         
+        /* Test */
         Student s1 = new Student("1080630202");
         Student s2 = new Student("1080630212");
+        Student s3 = new Student("1080630201");
         
-        HBox row = new HBox();
-        row.setPadding(new Insets(0, 0, 10, 0));
-        row.getChildren().addAll(new SnapshotBox(s1), new SnapshotBox(s2));
-        
-        this.genericGrpBox.getChildren().add(row);
+        this.genericGrpBox.add(new SnapshotBox(s1));
+        this.genericGrpBox.add(new SnapshotBox(s2));
+        this.genericGrpBox.add(new SnapshotBox(s3));
+        this.genericGrpBox.rearrange();
     }
-
+    
     
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
@@ -104,7 +114,7 @@ public class ProctorController implements Initializable {
     }
     
     /**
-     * Halts the specified exam.
+     * Halts the specified exam (for the teacher who launches the exam).
      * Asks the user for confirmation for halting the exam prematurely.
      * If the user answers yes, the exam will end and he will be taken
      * back to the course/exam/problem page.
@@ -169,7 +179,7 @@ public class ProctorController implements Initializable {
     }
     
     /**
-     * Leaves the specified exam.
+     * Leaves the specified exam (for all teachers except the one who launches the exam).
      * Asks the user for confirmation for leaving the exam.
      * If the user answers yes, the exam will end and he will be taken
      * back to the OngoingExams page.

@@ -27,17 +27,15 @@ public class SnapshotBox extends Group {
         
         this.checkbox = new JFXCheckBox(student.getFullname());
         
-        this.snapshot = new ImageView();
+        this.snapshot = new ImageView(new Image("file:/home/aesophor/snap.jpg"));
         this.snapshot.setFitWidth(SNAPSHOT_WIDTH);
         this.snapshot.setFitHeight(SNAPSHOT_HEIGHT);
         this.snapshot.setLayoutX(SNAPSHOT_LAYOUT_X);
         this.snapshot.setLayoutY(SNAPSHOT_LAYOUT_Y);
-        this.snapshot.setImage(new Image("file:/home/aesophor/snap.jpg"));
         
-        this.timeLabel = new Label();
+        this.timeLabel = new Label("Waiting...");
         this.timeLabel.setLayoutX(TIMELABEL_LAYOUT_X);
         this.timeLabel.setLayoutY(TIMELABEL_LAYOUT_Y);
-        this.timeLabel.setText("Waiting...");
         
         this.getChildren().addAll(this.checkbox, this.snapshot, this.timeLabel);
     }

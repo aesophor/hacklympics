@@ -1,4 +1,4 @@
-package hacklympics.utility;
+package hacklympics.utility.dialog;
 
 import java.util.Map;
 import java.util.HashMap;
@@ -9,6 +9,7 @@ import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
+import hacklympics.utility.WrappingText;
 
 public abstract class Dialog {
     
