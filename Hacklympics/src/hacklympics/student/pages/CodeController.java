@@ -24,6 +24,10 @@ import com.kodedu.terminalfx.TerminalTab;
 import com.kodedu.terminalfx.TerminalBuilder;
 import com.kodedu.terminalfx.config.TerminalConfig;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.event.EventHandler;
+import com.hacklympics.api.event.EventManager;
+import com.hacklympics.api.event.EventType;
+import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.material.Answer;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
@@ -35,13 +39,14 @@ import hacklympics.utility.FileTab;
 import hacklympics.utility.dialog.AlertDialog;
 import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
+import javafx.application.Platform;
 
 public class CodeController implements Initializable {
 
     private TerminalConfig terminalConfig;
     private TerminalBuilder terminalBuilder;
     private TerminalTab terminal;
-    
+
     private Timeline timeline;
     private int remainingTime;
 
@@ -79,6 +84,31 @@ public class CodeController implements Initializable {
         // Close the terminal whenever user clicks on the code area.
         fileTabPane.setOnMouseClicked((Event event) -> {
             closeTerminal();
+        });
+
+        // Reset the Code Page to its original state if current exam is halted.
+        this.setOnHaltExam((HaltExamEvent event) -> {
+            if (Session.getInstance().isInExam()) {
+                int eventExamID = event.getExam().getExamID();
+                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+
+                if (eventExamID == currentExamID) {
+                    Session.getInstance().setCurrentExam(null);
+
+                    // Reset the Proctor Page to its original state.
+                    Platform.runLater(() -> {
+                        this.reset();
+
+                        AlertDialog alert = new AlertDialog(
+                                dialogPane,
+                                "Exam Halted",
+                                "The current exam has been halted."
+                        );
+
+                        alert.show();
+                    });
+                }
+            }
         });
 
         createFileTab();
@@ -225,14 +255,14 @@ public class CodeController implements Initializable {
     @FXML
     public void showHint(ActionEvent e) {
         Problem selectedProblem = (Problem) problemBox.getSelectionModel().getSelectedItem();
-        
+
         if (selectedProblem == null) {
             AlertDialog alert = new AlertDialog(
-                dialogPane,
-                "No Problem Selected",
-                "Please select a problem first."
+                    dialogPane,
+                    "No Problem Selected",
+                    "Please select a problem first."
             );
-            
+
             alert.show();
             return;
         }
@@ -268,8 +298,8 @@ public class CodeController implements Initializable {
                 "Submit Answer",
                 String.format(
                         "Submitting \"%s\" for \"%s\".\n\n"
-                      + "Once submitted, you will NOT be able to revise it.\n"
-                      + "Submit your code now?",
+                        + "Once submitted, you will NOT be able to revise it.\n"
+                        + "Submit your code now?",
                         getCurrentFileTab().getFilename(),
                         selectedProblem
                 )
@@ -343,7 +373,7 @@ public class CodeController implements Initializable {
                         dialogPane,
                         "Sorry",
                         "It seems that your code doesn't work out,\n\n"
-                      + "keep going!"
+                        + "keep going!"
                 );
 
                 failed.show();
@@ -365,7 +395,7 @@ public class CodeController implements Initializable {
     public void leave(ActionEvent event) {
         Exam currentExam = Session.getInstance().getCurrentExam();
         User currentUser = Session.getInstance().getCurrentUser();
-        
+
         // If the user is trying to leave an exam, but the user hasn't
         // attended to any exam yet, block this attempt and alert the user.
         if (currentExam == null) {
@@ -373,9 +403,9 @@ public class CodeController implements Initializable {
                     dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
-                  + "You can attend to your exam by selecting any exam in Ongoing Exams."
+                    + "You can attend to your exam by selecting any exam in Ongoing Exams."
             );
-            
+
             alert.show();
             return;
         }
@@ -386,38 +416,43 @@ public class CodeController implements Initializable {
                 dialogPane,
                 "Leave Exam",
                 "Once left, you will not be able to enter again!\n\n"
-              + "Leave the exam now?"
+                + "Leave the exam now?"
         );
 
         confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response leave = currentUser.leave(currentExam);
-            
+
             switch (leave.getStatusCode()) {
                 case SUCCESS:
+                    // Clear session data and reset the Code Page to
+                    // its original state.
                     Session.getInstance().setCurrentExam(null);
-                    
-                    StudentController sc = (StudentController) Session.getInstance().getMainController();
+                    this.reset();
 
-                    // Reset the Code Page to its original state.
-                    stopExamLabelTimer();
-                    setExamLabel("No Exam Being Taken");
-                    setProblemBox(null);
-                    
                     // Take the user back to OngoingExams Page.
+                    StudentController sc = (StudentController) Session.getInstance().getMainController();
                     sc.showOngoingExams(event);
                     break;
 
                 default:
                     break;
             }
-            
+
             confirmation.close();
         });
 
         confirmation.show();
     }
 
-    
+    /**
+     * Resets the Code page to its original state.
+     */
+    private void reset() {
+        setProblemBox(null);
+        stopExamLabelTimer();
+        setExamLabel("No Exam Being Taken");
+    }
+
     /**
      * Creates a new tab in FileTabPane.
      *
@@ -481,30 +516,32 @@ public class CodeController implements Initializable {
         terminalTabPane.setVisible(false);
         terminalTabPane.setMouseTransparent(true);
     }
-    
+
     /**
      * Sets the exam label which shows the title of currently ongoing exam.
+     *
      * @param examTitle title of exam.
      */
     public void setExamLabel(String examTitle) {
         examLabel.setText(examTitle);
     }
-    
+
     /**
-     * Sets the exam label which shows the title of currently ongoing exam,
-     * and shows the remaining time of the exam as well.
+     * Sets the exam label which shows the title of currently ongoing exam, and
+     * shows the remaining time of the exam as well.
+     *
      * @param examTitle name of exam.
      * @param remainingTime remaining time of exam.
      */
     public void setExamLabel(String examTitle, int remainingTime) {
         examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(remainingTime)));
-        
+
         this.remainingTime = remainingTime;
         this.timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateExamLabelTimer(examTitle)));
         this.timeline.setCycleCount(Timeline.INDEFINITE);
         this.timeline.playFromStart();
     }
-    
+
     /**
      * Updates the remaining time in the exam label.
      */
@@ -512,10 +549,10 @@ public class CodeController implements Initializable {
         if (this.remainingTime > 0) {
             this.remainingTime--;
         }
-        
+
         examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(this.remainingTime)));
     }
-    
+
     /**
      * Stop the remaining time from updating.
      */
@@ -534,6 +571,10 @@ public class CodeController implements Initializable {
         if (problems != null) {
             problemBox.getItems().addAll(problems);
         }
+    }
+
+    private void setOnHaltExam(EventHandler<HaltExamEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.HALT_EXAM, listener);
     }
 
 }

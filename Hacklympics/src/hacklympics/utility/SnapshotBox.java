@@ -10,6 +10,7 @@ import com.hacklympics.api.proctor.Snapshot;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import javafx.application.Platform;
 
 public class SnapshotBox extends Group {
     
@@ -49,8 +50,10 @@ public class SnapshotBox extends Group {
         BufferedImage bi = Utils.byteArray2BufferedImage(Base64.decode(snapshot.getSnapshot()));
         Image image = Utils.bufferedImage2FXImage(bi);
         
-        this.snapshot.setImage(image);
-        this.timestamp.setText(snapshot.getTimestamp());
+        Platform.runLater(() -> {
+            this.snapshot.setImage(image);
+            this.timestamp.setText(snapshot.getTimestamp());
+        });
     }
     
     public Student getStudent() {

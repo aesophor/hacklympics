@@ -5,11 +5,13 @@ import socket
 import json
 
 
-def dispatch(event: Event, users: list):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+def dispatch(event: Event, users: list):    
+    print("[*] dispatching ev: ", event, " to ", users)
     
-    print("--> dispatching ev: ", event, " to ", users)
     for user in users:
+        print("+ dispatching to ", user, "(", user.last_login_ip, ")")
+        
+        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         evmsg = str(event) + "\n"
         s.connect((user.last_login_ip, 8001))
         s.send(evmsg.encode("utf-8"))

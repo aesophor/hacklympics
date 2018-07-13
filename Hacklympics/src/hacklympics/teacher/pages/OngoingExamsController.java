@@ -70,15 +70,17 @@ public class OngoingExamsController implements Initializable {
         // Update the OngoingExams table whenever an exam is launched or halted.
         this.setOnLaunchExam((LaunchExamEvent e) -> {
             Platform.runLater(() -> {
-                recordsCache.add(e.getExam());
-                updateLocally();
+                //recordsCache.add(e.getExam());
+                //updateLocally();
+                fetchAndUpdate();
             });
         });
         
         this.setOnHaltExam((HaltExamEvent e) -> {
             Platform.runLater(() -> {
-                recordsCache.remove(e.getExam());
-                updateLocally();
+                //recordsCache.remove(e.getExam());
+                //updateLocally();
+                fetchAndUpdate();
             });
         });
     }

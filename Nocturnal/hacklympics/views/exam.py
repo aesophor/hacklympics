@@ -194,6 +194,8 @@ def launch(request, c_id):
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+    except Exception as e:
+        print(e)
     
     return JsonResponse(response_data)
 
@@ -207,7 +209,7 @@ def halt(request, c_id):
         e_id = req_body["examID"]
         
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
-        
+       
         OngoingExams.remove(exam)
         OngoingExams.show()
     except NotLaunched:
@@ -216,6 +218,8 @@ def halt(request, c_id):
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+    except Exception as e:
+        print(e)
     
     return JsonResponse(response_data)
 
@@ -242,6 +246,8 @@ def attend(request, c_id):
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+    except Exception as e:
+        print(e)
 
     return JsonResponse(response_data)
 
@@ -268,5 +274,7 @@ def leave(request, c_id):
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
         response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+    except Exception as e:
+        print(e)
 
     return JsonResponse(response_data)

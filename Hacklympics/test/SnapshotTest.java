@@ -30,6 +30,7 @@ public class SnapshotTest {
 
     public static void main(String[] args) throws AWTException, IOException {
         BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+        BufferedImage thumbnail = Thumbnails.of(image).scale(0.25).asBufferedImage();
         
         /*
         ImageIO.write(image, "png", new File("screenshot.png"));
@@ -39,7 +40,7 @@ public class SnapshotTest {
                 .toFile("screenshot_thumbnail.jpg");
         */
         
-        String imageString = Base64.getEncoder().encodeToString(Utils.bufferedImage2ByteArray(image));
+        String imageString = Base64.getEncoder().encodeToString(Utils.bufferedImage2ByteArray(thumbnail));
         
         Response snapshot = create(7, 10, "1080630202", imageString);
         if (snapshot.getStatusCode() == StatusCode.SUCCESS) {

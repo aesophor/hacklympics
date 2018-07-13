@@ -12,10 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/Hacklympics/src/hacklympics/utility/SnapshotGrpVBox.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/Hacklympics/src/hacklympics/teacher/TeacherController.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/Hacklympics/test/SnapshotTest.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/Hacklympics/src/hacklympics/teacher/pages/ProctorController.java</file>
+            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/Hacklympics/src/hacklympics/student/pages/CodeController.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/Hacklympics/src/hacklympics/utility/SnapshotBox.java</file>
         </group>
     </open-files>

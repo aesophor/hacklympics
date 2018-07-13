@@ -67,4 +67,9 @@ public class Session {
         this.currentExam = exam;
     }
     
+    
+    public boolean isInExam() {
+        return (this.currentExam != null);
+    }
+    
 }

@@ -2,18 +2,14 @@ package hacklympics.teacher.pages;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.List;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.VBox;
 import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
@@ -26,9 +22,9 @@ import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.exam.AttendExamEvent;
+import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.event.exam.LeaveExamEvent;
 import com.hacklympics.api.event.snapshot.NewSnapshotEvent;
-import com.hacklympics.api.event.user.LoginEvent;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
@@ -37,14 +33,11 @@ import com.hacklympics.api.session.Session;
 import hacklympics.utility.SnapshotBox;
 import hacklympics.utility.SnapshotGrpVBox;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.geometry.Insets;
+import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.HBox;
 
 public class ProctorController implements Initializable {
-    
+
     private Timeline timeline;
     private int remainingTime;
 
@@ -82,28 +75,64 @@ public class ProctorController implements Initializable {
         this.specialGrpBox = new SnapshotGrpVBox();
         this.specialGrpPane.setContent(this.specialGrpBox);
 
+        // Clear all SnapshotBoxes of current exam and restore the
+        // Proctor Page to its original state if current exam is halted.
+        this.setOnHaltExam((HaltExamEvent event) -> {
+            if (Session.getInstance().isInExam()) {
+                int eventExamID = event.getExam().getExamID();
+                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+
+                if (eventExamID == currentExamID) {
+                    Session.getInstance().setCurrentExam(null);
+
+                    // Reset the Proctor Page to its original state.
+                    Platform.runLater(() -> {
+                        this.reset();
+
+                        AlertDialog alert = new AlertDialog(
+                                dialogPane,
+                                "Exam Halted",
+                                "The current exam has been halted."
+                        );
+
+                        alert.show();
+                    });
+                }
+            }
+        });
+
         // Create a new SnapshotBox for the student who just arrived,
         // and add it to the generic group by default.
         this.setOnAttendExam((AttendExamEvent event) -> {
-            int eventExamID = event.getExam().getExamID();
-            int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+            if (Session.getInstance().isInExam()) {
+                int eventExamID = event.getExam().getExamID();
+                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
 
-            if (eventExamID == currentExamID) {
-                SnapshotBox box = new SnapshotBox((Student) event.getUser());
-                this.genericGrpBox.add(box);
-                this.genericGrpBox.rearrange();
+                if (eventExamID == currentExamID) {
+                    SnapshotBox box = new SnapshotBox((Student) event.getUser());
+                    this.genericGrpBox.add(box);
+
+                    Platform.runLater(() -> {
+                        this.genericGrpBox.rearrange();
+                    });
+                }
             }
         });
 
         // Remove the SnapshotBox for the student who just left.
         this.setOnLeaveExam((LeaveExamEvent event) -> {
-            int eventExamID = event.getExam().getExamID();
-            int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+            if (Session.getInstance().isInExam()) {
+                int eventExamID = event.getExam().getExamID();
+                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
 
-            if (eventExamID == currentExamID) {
-                SnapshotBox box = this.genericGrpBox.get((Student) event.getUser());
-                this.genericGrpBox.remove(box);
-                this.genericGrpBox.rearrange();
+                if (eventExamID == currentExamID) {
+                    SnapshotBox box = this.genericGrpBox.get((Student) event.getUser());
+                    this.genericGrpBox.remove(box);
+
+                    Platform.runLater(() -> {
+                        this.genericGrpBox.rearrange();
+                    });
+                }
             }
         });
 
@@ -122,23 +151,12 @@ public class ProctorController implements Initializable {
                     ex.printStackTrace();
                 }
             }
-
         });
-
-        /* Test */
-        Student s1 = new Student("1080630202");
-        Student s2 = new Student("1080630212");
-        Student s3 = new Student("1080630201");
-
-        this.genericGrpBox.add(new SnapshotBox(s1));
-        this.genericGrpBox.add(new SnapshotBox(s2));
-        this.genericGrpBox.add(new SnapshotBox(s3));
-        this.genericGrpBox.rearrange();
     }
 
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
-        
+
     }
 
     @FXML
@@ -193,28 +211,9 @@ public class ProctorController implements Initializable {
         );
 
         confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            Response halt = currentExam.halt();
-
-            switch (halt.getStatusCode()) {
-                case SUCCESS:
-                    Session.getInstance().setCurrentExam(null);
-
-                    TeacherController sc = (TeacherController) Session.getInstance().getMainController();
-                    ProctorController cc = (ProctorController) sc.getControllers().get("Proctor");
-
-                    // Reset the Proctor Page to its original state.
-                    cc.stopExamLabelTimer();
-                    cc.setExamLabel("No Exam Being Proctored");
-                    cc.disableExitBtn();
-
-                    // Take the user back to OngoingExams Page.
-                    sc.showOngoingExams(event);
-                    break;
-
-                default:
-                    break;
-            }
-
+            // Unlike leaving an exam, halting an exam will force all
+            // all students and teachers to leave the exam immediately.
+            currentExam.halt();
             confirmation.close();
         });
 
@@ -259,16 +258,13 @@ public class ProctorController implements Initializable {
 
             switch (leave.getStatusCode()) {
                 case SUCCESS:
+                    // Clear session data and reset the Code Page to
+                    // its original state.
                     Session.getInstance().setCurrentExam(null);
-
-                    TeacherController tc = (TeacherController) Session.getInstance().getMainController();
-
-                    // Reset the Proctor Page to its original state.
-                    stopExamLabelTimer();
-                    setExamLabel("No Exam Being Proctored");
-                    disableExitBtn();
+                    this.reset();
 
                     // Take the user back to OngoingExams Page.
+                    TeacherController tc = (TeacherController) Session.getInstance().getMainController();
                     tc.showOngoingExams(event);
                     break;
 
@@ -283,12 +279,26 @@ public class ProctorController implements Initializable {
     }
 
     /**
+     * Resets the Code page to its original state.
+     */
+    private void reset() {
+        this.genericGrpBox.clear();
+        this.specialGrpBox.clear();
+        this.genericGrpBox.rearrange();
+        this.specialGrpBox.rearrange();
+
+        this.disableLeaveBtn();
+        this.stopExamLabelTimer();
+        this.setExamLabel("No Exam Being Proctored");
+    }
+
+    /**
      * Sets the exam label which shows the title of currently ongoing exam.
      *
      * @param examTitle title of exam.
      */
     public void setExamLabel(String examTitle) {
-        examLabel.setText(examTitle);
+        this.examLabel.setText(examTitle);
     }
 
     /**
@@ -299,7 +309,7 @@ public class ProctorController implements Initializable {
      * @param remainingTime remaining time of exam (in seconds).
      */
     public void setExamLabel(String examTitle, int remainingTime) {
-        examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(remainingTime)));
+        this.examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(remainingTime)));
 
         this.remainingTime = remainingTime;
         this.timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateExamLabelTimer(examTitle)));
@@ -315,7 +325,7 @@ public class ProctorController implements Initializable {
             this.remainingTime--;
         }
 
-        examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(this.remainingTime)));
+        this.examLabel.setText(String.format("%s (%s)", examTitle, Utils.formatTime(this.remainingTime)));
     }
 
     /**
@@ -346,8 +356,12 @@ public class ProctorController implements Initializable {
     /**
      * Disables the ability to click on the leave exam button.
      */
-    public void disableExitBtn() {
+    public void disableLeaveBtn() {
         this.leaveExamBtn.setDisable(true);
+    }
+
+    private void setOnHaltExam(EventHandler<HaltExamEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.HALT_EXAM, listener);
     }
 
     private void setOnAttendExam(EventHandler<AttendExamEvent> listener) {

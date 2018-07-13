@@ -183,7 +183,7 @@ class LeaveExamEvent(Event):
 # Wrap the snapshot in the event body.
 # Note that the snapshot: str here should already be encoded in base64.
 class NewSnapshotEvent(Event):
-    def __init__(self, exam: Exam, student: User, snapshot: str, timestamp: str):
+    def __init__(self, exam: Exam, student: str, snapshot: str, timestamp: str):
         super(NewSnapshotEvent, self).__init__(EventType.NEW_SNAPSHOT)
         self.exam = exam
         self.student = student
@@ -195,9 +195,9 @@ class NewSnapshotEvent(Event):
         
         event["content"] = {
             "examID": self.exam.id,
-            "student": self.student.username,
-            "snapshot": snapshot,
-            "timestamp": timestamp
+            "student": self.student,
+            "snapshot": self.snapshot,
+            "timestamp": self.timestamp
         }
         
         return json.dumps(event)
