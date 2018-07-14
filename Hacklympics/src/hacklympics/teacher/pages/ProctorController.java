@@ -32,6 +32,7 @@ import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
 import hacklympics.utility.snapshot.SnapshotBox;
+import hacklympics.utility.snapshot.SnapshotGroup;
 import hacklympics.utility.snapshot.SnapshotGrpVBox;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,12 +41,6 @@ import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
 
 public class ProctorController implements Initializable {
-
-    private static final double DEFAULT_GENERIC_QUALITY = 0.25;
-    private static final int DEFAULT_GENERIC_FREQUENCY = 5;
-
-    private static final double DEFAULT_SPECIAL_QUALITY = 0.5;
-    private static final int DEFAULT_SPECIAL_FREQUENCY = 3;
 
     private Timeline timeline;
     private int remainingTime;
@@ -78,27 +73,37 @@ public class ProctorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // First we will cache to generic and special group VBox for
+        // writing code with better readability.
+        this.genericGrpBox = SnapshotGroup.GENERIC.getSnapshotGrpVBox();
+        this.specialGrpBox = SnapshotGroup.SPECIAL.getSnapshotGrpVBox();
+        
         // Initialize the generic and special group VBox.
-        this.genericGrpBox = new SnapshotGrpVBox("Generic", DEFAULT_GENERIC_QUALITY, DEFAULT_GENERIC_FREQUENCY);
         this.genericGrpPane.setContent(this.genericGrpBox);
-
-        this.specialGrpBox = new SnapshotGrpVBox("Special", DEFAULT_SPECIAL_QUALITY, DEFAULT_SPECIAL_FREQUENCY);
         this.specialGrpPane.setContent(this.specialGrpBox);
 
         // Add the generic and special group VBoxes to the groupBox.
-        this.groupBox.getItems().add(this.genericGrpBox);
-        this.groupBox.getItems().add(this.specialGrpBox);
+        // This part is tricky: we cannot simply add a VBox to a combobox
+        // as its content (since SnapshotGrpVBox extends VBox), 
+        // toString method won't be fully functional! you may try it out
+        // for yourself. So I created an enum to wrap the SnapshotGrpVBox.
+        this.groupBox.getItems().add(SnapshotGroup.GENERIC);
+        this.groupBox.getItems().add(SnapshotGroup.SPECIAL);
 
         // Populate the imgQualityBox and imgFrequencyBox.
+        // This part needs to be refactored.
         this.imgQualityBox.getItems().addAll(0.15, 0.25, 0.35, 0.5, 0.75);
         this.imgFrequencyBox.getItems().addAll(3, 5, 8, 10, 15);
 
+        
         // When user selects a certain group, display the corresponding parameters.
         this.groupBox.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
-                    SnapshotGrpVBox selectedGroup = (SnapshotGrpVBox) this.groupBox.getSelectionModel().getSelectedItem();
-                    this.imgQualityBox.getSelectionModel().select((Double) selectedGroup.getQuality());
-                    this.imgFrequencyBox.getSelectionModel().select((Integer) selectedGroup.getFrequency());
+                    SnapshotGroup selectedGroup = (SnapshotGroup) this.groupBox.getSelectionModel().getSelectedItem();
+                    SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
+                    
+                    this.imgQualityBox.getSelectionModel().select((Double) vbox.getQuality());
+                    this.imgFrequencyBox.getSelectionModel().select((Integer) vbox.getFrequency());
                 }
         );
 
@@ -164,6 +169,7 @@ public class ProctorController implements Initializable {
         });
 
         // Updates the SnapshotBox when a NewSnapshotEvent arrives.
+        // The target SnapshotBox could either be in generic or special group.
         this.setOnNewSnapshot((NewSnapshotEvent event) -> {
             if (Session.getInstance().isInExam()) {
                 int eventExamID = event.getSnapshot().getExamID();
@@ -171,8 +177,9 @@ public class ProctorController implements Initializable {
 
                 if (eventExamID == currentExamID) {
                     Snapshot snapshot = event.getSnapshot();
-                    // What about spec grp?
+                    
                     SnapshotBox box = this.genericGrpBox.get(snapshot.getStudentUsername());
+                    if (box == null) box = this.specialGrpBox.get(snapshot.getStudentUsername());
 
                     try {
                         box.update(snapshot);
@@ -264,7 +271,8 @@ public class ProctorController implements Initializable {
 
     @FXML
     public void adjustLiveScreensParam(ActionEvent event) {
-        SnapshotGrpVBox selectedGroup = (SnapshotGrpVBox) this.groupBox.getSelectionModel().getSelectedItem();
+        SnapshotGroup selectedGroup = (SnapshotGroup) this.groupBox.getSelectionModel().getSelectedItem();
+        SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
 
         Double selectedQuality = (Double) this.imgQualityBox.getSelectionModel().getSelectedItem();
         Integer selectedFrequency = (Integer) this.imgFrequencyBox.getSelectionModel().getSelectedItem();
@@ -272,14 +280,14 @@ public class ProctorController implements Initializable {
         Response adjustParam = Snapshot.adjustParam(
                 Session.getInstance().getCurrentExam().getCourseID(),
                 Session.getInstance().getCurrentExam().getExamID(),
-                selectedGroup.getStudents(),
+                vbox.getStudents(),
                 selectedQuality,
                 selectedFrequency
         );
 
         if (adjustParam.getStatusCode() == StatusCode.SUCCESS) {
-            selectedGroup.setQuality(selectedQuality);
-            selectedGroup.setFrequency(selectedFrequency);
+            vbox.setQuality(selectedQuality);
+            vbox.setFrequency(selectedFrequency);
 
             AlertDialog alert = new AlertDialog(
                     dialogPane,
@@ -369,7 +377,7 @@ public class ProctorController implements Initializable {
                     "You haven't attended to any exam yet.\n\n"
                   + "You can attend to your exam by selecting any exam in Ongoing Exams."
             );
-
+        
             alert.show();
             return;
         }

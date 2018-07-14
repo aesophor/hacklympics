@@ -11,18 +11,17 @@ public class SnapshotGrpVBox extends VBox {
 
     private static final int COL_SIZE = 2;
     
-    private String groupName;
     private List<SnapshotBox> snapshotBoxes;
-    
     private double quality;
     private int frequency;
+    
+    
 
-    public SnapshotGrpVBox(String groupName, double quality, int frequency) {
-        this.groupName = groupName;
+    public SnapshotGrpVBox(double quality, int frequency) {
+        this.snapshotBoxes = new ArrayList<>();
+        
         this.quality = quality;
         this.frequency = frequency;
-        
-        this.snapshotBoxes = new ArrayList<>();
         
         // Set the predHeight of VBox to USE_PREF_SIZE
         // to ensure the scroll bar of ScrollPane will appear.
@@ -188,8 +187,4 @@ public class SnapshotGrpVBox extends VBox {
         this.frequency = frequency;
     }
     
-    @Override
-    public String toString() {
-        return this.groupName;
-    }
 }
