@@ -11,12 +11,12 @@ import java.io.IOException;
 public class SnapshotManager implements Runnable {
     
     private static SnapshotManager snapshotManager;
-    private boolean running;
+    private static volatile boolean running;
+    
     private double quality;
     private int frequency;
     
     public SnapshotManager(double quality, int frequency) {
-        this.running = false;
         this.quality = quality;
         this.frequency = frequency;
     }
@@ -34,7 +34,7 @@ public class SnapshotManager implements Runnable {
     public void run() {
         System.out.println("[*] Starting snapshot thread...");
         
-        this.running = true;
+        running = true;
         
         while (running) {
             try {
@@ -51,14 +51,14 @@ public class SnapshotManager implements Runnable {
                 Thread.sleep(frequency * 1000);
             } catch (AWTException | IOException | InterruptedException ex) {
                 ex.printStackTrace();
-                this.running = false;
+                running = false;
             }
         }
     }
     
     public void shutdown() {
         System.out.println("[*] Shutting down snapshot thread...");
-        this.running = false;
+        running = false;
     }
     
     
