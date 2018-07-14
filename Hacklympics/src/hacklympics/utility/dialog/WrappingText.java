@@ -1,4 +1,4 @@
-package hacklympics.utility;
+package hacklympics.utility.dialog;
 
 import javafx.scene.text.Text;
 

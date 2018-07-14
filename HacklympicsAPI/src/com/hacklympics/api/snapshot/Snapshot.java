@@ -1,4 +1,4 @@
-package com.hacklympics.api.proctor;
+package com.hacklympics.api.snapshot;
 
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;

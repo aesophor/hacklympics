@@ -2,7 +2,7 @@ package com.hacklympics.api.event.snapshot;
 
 import java.util.Map;
 import com.hacklympics.api.event.Event;
-import com.hacklympics.api.proctor.Snapshot;
+import com.hacklympics.api.snapshot.Snapshot;
 
 
 public class NewSnapshotEvent extends Event {

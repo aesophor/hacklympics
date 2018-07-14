@@ -1,6 +1,6 @@
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
-import static com.hacklympics.api.proctor.Snapshot.create;
+import static com.hacklympics.api.snapshot.Snapshot.create;
 import hacklympics.utility.Utils;
 import java.io.File;
 import java.awt.Robot;
@@ -13,7 +13,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Base64;
 import javax.imageio.ImageIO;
-import net.coobird.thumbnailator.Thumbnails;
 
 public class SnapshotTest {
     
@@ -29,16 +28,9 @@ public class SnapshotTest {
     }
 
     public static void main(String[] args) throws AWTException, IOException {
+        /*
         BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
         BufferedImage thumbnail = Thumbnails.of(image).scale(0.25).asBufferedImage();
-        
-        /*
-        ImageIO.write(image, "png", new File("screenshot.png"));
-        
-        Thumbnails.of(new File("screenshot.png"))
-                .size(640, 480)
-                .toFile("screenshot_thumbnail.jpg");
-        */
         
         String imageString = Base64.getEncoder().encodeToString(Utils.bufferedImage2ByteArray(thumbnail));
         
@@ -46,6 +38,7 @@ public class SnapshotTest {
         if (snapshot.getStatusCode() == StatusCode.SUCCESS) {
             System.out.println("Damn Train");
         }
+        */
     }
     
 }

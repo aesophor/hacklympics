@@ -1,10 +1,16 @@
 package com.hacklympics.api.utility;
 
-import java.util.Enumeration;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
+import javax.imageio.ImageIO;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
 import com.google.gson.Gson;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -75,6 +81,20 @@ public class Utils {
         }
         
         return null;
+    }
+    
+    public static byte[] bufferedImage2ByteArray(BufferedImage image) throws IOException {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ImageIO.write(image, "jpg", baos);
+        return baos.toByteArray();
+    }
+    
+    public static BufferedImage byteArray2BufferedImage(byte[] bytes) throws IOException {
+        return ImageIO.read(new ByteArrayInputStream(bytes));
+    }
+    
+    public static Image bufferedImage2FXImage(BufferedImage bufferedImage) {
+        return SwingFXUtils.toFXImage(bufferedImage, null);
     }
     
     public static String formatTime(int seconds) {

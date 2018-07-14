@@ -171,7 +171,7 @@ public class StudentController implements Initializable, MainController {
                 
                 Session.getInstance().clear();
                 EventManager.getInstance().clearEventHandlers();
-                SocketServer.getInstance().close();
+                SocketServer.getInstance().shutdown();
             }
         });
         

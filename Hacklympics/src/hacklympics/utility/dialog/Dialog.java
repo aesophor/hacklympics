@@ -9,7 +9,6 @@ import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
-import hacklympics.utility.WrappingText;
 
 public abstract class Dialog {
     

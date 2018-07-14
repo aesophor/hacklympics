@@ -26,12 +26,12 @@ import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.event.exam.LeaveExamEvent;
 import com.hacklympics.api.event.snapshot.NewSnapshotEvent;
 import com.hacklympics.api.material.Exam;
-import com.hacklympics.api.proctor.Snapshot;
+import com.hacklympics.api.snapshot.Snapshot;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
-import hacklympics.utility.SnapshotBox;
-import hacklympics.utility.SnapshotGrpVBox;
+import hacklympics.utility.snapshot.SnapshotBox;
+import hacklympics.utility.snapshot.SnapshotGrpVBox;
 import java.io.IOException;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
@@ -138,17 +138,19 @@ public class ProctorController implements Initializable {
 
         // Updates the SnapshotBox when a NewSnapshotEvent arrives.
         this.setOnNewSnapshot((NewSnapshotEvent event) -> {
-            int eventExamID = event.getSnapshot().getExamID();
-            int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+            if (Session.getInstance().isInExam()) {
+                int eventExamID = event.getSnapshot().getExamID();
+                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
 
-            if (eventExamID == currentExamID) {
-                Snapshot snapshot = event.getSnapshot();
-                SnapshotBox box = this.genericGrpBox.get(snapshot.getStudentUsername());
+                if (eventExamID == currentExamID) {
+                    Snapshot snapshot = event.getSnapshot();
+                    SnapshotBox box = this.genericGrpBox.get(snapshot.getStudentUsername());
 
-                try {
-                    box.update(snapshot);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                    try {
+                        box.update(snapshot);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
         });
@@ -156,7 +158,7 @@ public class ProctorController implements Initializable {
 
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
-
+        
     }
 
     @FXML
@@ -192,8 +194,8 @@ public class ProctorController implements Initializable {
                     dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
-                    + "You can launch your exam in My Courses & Exam, or "
-                    + "attend to exams of other teachers in Ongoing Exams."
+                  + "You can launch your exam in My Courses & Exam, or "
+                  + "attend to exams of other teachers in Ongoing Exams."
             );
 
             alert.show();
@@ -206,8 +208,8 @@ public class ProctorController implements Initializable {
                 dialogPane,
                 "Halt Exam",
                 "Once the exam is halted, all students will no longer be able "
-                + "to submit their code to the server.\n\n"
-                + "Halt the exam now?"
+              + "to submit their code to the server.\n\n"
+              + "Halt the exam now?"
         );
 
         confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
@@ -237,7 +239,7 @@ public class ProctorController implements Initializable {
                     dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
-                    + "You can attend to your exam by selecting any exam in Ongoing Exams."
+                  + "You can attend to your exam by selecting any exam in Ongoing Exams."
             );
 
             alert.show();
@@ -250,7 +252,7 @@ public class ProctorController implements Initializable {
                 dialogPane,
                 "Leave Exam",
                 "As long as the exam is still ongoing, you can come back later at anytime.\n\n"
-                + "Leave the exam now?"
+              + "Leave the exam now?"
         );
 
         confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {

@@ -27,6 +27,7 @@ import com.hacklympics.api.event.exam.LaunchExamEvent;
 import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.snapshot.SnapshotManager;
 import com.hacklympics.api.user.User;
 
 public class OngoingExamsController implements Initializable {
@@ -159,6 +160,11 @@ public class OngoingExamsController implements Initializable {
             // TODO: Students should not be able to enter the same exam again.
             switch (attend.getStatusCode()) {
                 case SUCCESS:
+                    // Execute the snapshot thread.
+                    Session.getInstance().getExecutor().execute(SnapshotManager.getInstance());
+                    
+                    // Setup session data, examLabel and problemBox
+                    // to inform user that he/she is taking an exam.
                     Session.getInstance().setCurrentExam(selectedExam);
                     
                     StudentController sc = (StudentController) Session.getInstance().getMainController();

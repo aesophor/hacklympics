@@ -1,4 +1,4 @@
-package hacklympics.utility;
+package hacklympics.utility.snapshot;
 
 import java.util.List;
 import java.util.ArrayList;

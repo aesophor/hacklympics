@@ -50,7 +50,7 @@ public class SocketServer implements Runnable {
         }
     }
     
-    public void close() {
+    public void shutdown() {
         try {
             System.out.println("[*] Stopped listening for events.");
             serverSocket.close();

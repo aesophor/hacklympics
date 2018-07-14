@@ -1,6 +1,5 @@
 package hacklympics.utility.dialog;
 
-import hacklympics.utility.WrappingText;
 import javafx.scene.layout.StackPane;
 
 public class ConfirmDialog extends Dialog {

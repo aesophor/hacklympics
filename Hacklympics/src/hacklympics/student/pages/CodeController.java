@@ -32,6 +32,7 @@ import com.hacklympics.api.material.Answer;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
+import com.hacklympics.api.snapshot.SnapshotManager;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.User;
 import hacklympics.student.StudentController;
@@ -93,9 +94,12 @@ public class CodeController implements Initializable {
                 int currentExamID = Session.getInstance().getCurrentExam().getExamID();
 
                 if (eventExamID == currentExamID) {
+                    // Shutdown the snapshot thread.
+                    SnapshotManager.getInstance().shutdown();
+                    
+                    // Reset the Proctor Page to its original state.
                     Session.getInstance().setCurrentExam(null);
 
-                    // Reset the Proctor Page to its original state.
                     Platform.runLater(() -> {
                         this.reset();
 
@@ -424,6 +428,9 @@ public class CodeController implements Initializable {
 
             switch (leave.getStatusCode()) {
                 case SUCCESS:
+                    // Shutdown the snapshot thread.
+                    SnapshotManager.getInstance().shutdown();
+                    
                     // Clear session data and reset the Code Page to
                     // its original state.
                     Session.getInstance().setCurrentExam(null);

@@ -1,4 +1,4 @@
-package hacklympics.utility;
+package hacklympics.utility.snapshot;
 
 import javafx.scene.Group;
 import javafx.scene.control.Label;
@@ -6,8 +6,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import com.jfoenix.controls.JFXCheckBox;
 import com.hacklympics.api.user.Student;
-import com.hacklympics.api.proctor.Snapshot;
+import com.hacklympics.api.snapshot.Snapshot;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+import hacklympics.utility.Utils;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javafx.application.Platform;
