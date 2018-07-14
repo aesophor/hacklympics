@@ -61,4 +61,8 @@ public class SnapshotBox extends Group {
         return this.student;
     }
     
+    public JFXCheckBox getCheckBox() {
+        return this.checkbox;
+    }
+    
 }

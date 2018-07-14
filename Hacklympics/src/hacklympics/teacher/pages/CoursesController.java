@@ -141,7 +141,8 @@ public class CoursesController implements Initializable {
         courseTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
                     fetchAndUpdate(examTab, problemTab);
-        });
+                }
+        );
         
         // Update problemTab if the user clicks on examTab.
         // Since another exam might has been selected, we have to update
@@ -149,7 +150,8 @@ public class CoursesController implements Initializable {
         examTable.getSelectionModel().selectedItemProperty().addListener(
                 (obs, oldSelection, newSelection) -> {
                     fetchAndUpdate(problemTab);
-        });
+                }
+        );
         
         // Double clicking on a course will take the user to exam tab.
         courseTable.setOnMouseClicked((MouseEvent event) -> {

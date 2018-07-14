@@ -73,7 +73,7 @@
                                           <Insets right="10.0" top="-3.0" />
                                        </padding>
                                     </JFXComboBox>
-                                    <JFXComboBox fx:id="imgFreqBox" labelFloat="true" minHeight="-Infinity" prefHeight="21.0" prefWidth="125.0" promptText="Frequency">
+                                    <JFXComboBox fx:id="imgFrequencyBox" labelFloat="true" minHeight="-Infinity" prefHeight="21.0" prefWidth="125.0" promptText="Frequency">
                                        <padding>
                                           <Insets right="10.0" top="-3.0" />
                                        </padding>

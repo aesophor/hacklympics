@@ -12,13 +12,13 @@ public class SnapshotManager implements Runnable {
     
     private static SnapshotManager snapshotManager;
     private boolean running;
-    private double scale;
-    private int freq;
+    private double quality;
+    private int frequency;
     
-    public SnapshotManager(double scale, int freq) {
+    public SnapshotManager(double quality, int frequency) {
         this.running = false;
-        this.scale = scale;
-        this.freq = freq;
+        this.quality = quality;
+        this.frequency = frequency;
     }
     
     public static SnapshotManager getInstance() {
@@ -38,7 +38,7 @@ public class SnapshotManager implements Runnable {
         
         while (running) {
             try {
-                BufferedImage img = Utils.takeSnapshot(scale);
+                BufferedImage img = Utils.takeSnapshot(quality);
                 String base64img = Base64.encode(Utils.bufferedImage2ByteArray(img));
                 
                 Response snapshot = Snapshot.create(
@@ -48,7 +48,7 @@ public class SnapshotManager implements Runnable {
                         base64img
                 );
                 
-                Thread.sleep(freq * 1000);
+                Thread.sleep(frequency * 1000);
             } catch (AWTException | IOException | InterruptedException ex) {
                 ex.printStackTrace();
                 this.running = false;
@@ -57,25 +57,25 @@ public class SnapshotManager implements Runnable {
     }
     
     public void shutdown() {
-        System.out.println("[*] Shutting down anpshot thread...");
+        System.out.println("[*] Shutting down snapshot thread...");
         this.running = false;
     }
     
     
-    public double getScale() {
-        return this.scale;
+    public double getQuality() {
+        return this.quality;
     }
     
-    public int getFreq() {
-        return this.freq;
+    public int getFrequency() {
+        return this.frequency;
     }
     
-    public void setScale(double scale) {
-        this.scale = scale;
+    public void setQuality(double quality) {
+        this.quality = quality;
     }
     
-    public void setFreq(int freq) {
-        this.freq = freq;
+    public void setFrequency(int freq) {
+        this.frequency = freq;
     }
     
 }

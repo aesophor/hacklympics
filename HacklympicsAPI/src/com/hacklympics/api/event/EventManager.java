@@ -29,6 +29,7 @@ public class EventManager {
         
         // List of handlers for events of new snapshots arrival.
         this.handlers.put(EventType.NEW_SNAPSHOT, new ArrayList<>());
+        this.handlers.put(EventType.ADJUST_SNAPSHOT_PARAM, new ArrayList<>());
     }
     
     public static EventManager getInstance() {

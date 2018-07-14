@@ -201,3 +201,22 @@ class NewSnapshotEvent(Event):
         }
         
         return json.dumps(event)
+
+
+class AdjustSnapshotParamEvent(Event):
+    def __init__(self, exam: Exam, quality: float, frequency: int):
+        super(AdjustSnapshotParamEvent, self).__init__(EventType.ADJUST_SNAPSHOT_PARAM)
+        self.exam = exam
+        self.quality = quality
+        self.frequency = frequency
+
+    def __str__(self):
+        event = {"eventType": self.event_type}
+        
+        event["content"] = {
+            "examID": self.exam.id,
+            "quality": self.quality,
+            "frequency": self.frequency
+        }
+        
+        return json.dumps(event)

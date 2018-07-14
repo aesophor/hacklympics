@@ -10,12 +10,20 @@ import com.hacklympics.api.user.Student;
 public class SnapshotGrpVBox extends VBox {
 
     private static final int COL_SIZE = 2;
-
+    
+    private String groupName;
     private List<SnapshotBox> snapshotBoxes;
+    
+    private double quality;
+    private int frequency;
 
-    public SnapshotGrpVBox() {
+    public SnapshotGrpVBox(String groupName, double quality, int frequency) {
+        this.groupName = groupName;
+        this.quality = quality;
+        this.frequency = frequency;
+        
         this.snapshotBoxes = new ArrayList<>();
-
+        
         // Set the predHeight of VBox to USE_PREF_SIZE
         // to ensure the scroll bar of ScrollPane will appear.
         this.setPrefHeight(USE_PREF_SIZE);
@@ -56,6 +64,22 @@ public class SnapshotGrpVBox extends VBox {
     public void clear() {
         this.snapshotBoxes.clear();
     }
+    
+    /**
+     * Gets the SnapshotBoxes that are selected by the user.
+     * @return selected SnapshotBoxes.
+     */
+    public List<SnapshotBox> getSelectedItems() {
+        List<SnapshotBox> selectedBoxes = new ArrayList<>();
+        
+        for (SnapshotBox box : snapshotBoxes) {
+            if (box.getCheckBox().isSelected()) {
+                selectedBoxes.add(box);
+            }
+        }
+        
+        return (selectedBoxes.isEmpty()) ? null : selectedBoxes;
+    }
 
     /**
      * Adds the specified SnapshotBox to this group.
@@ -65,15 +89,36 @@ public class SnapshotGrpVBox extends VBox {
     public void add(SnapshotBox snapshotBox) {
         this.snapshotBoxes.add(snapshotBox);
     }
+    
+    /**
+     * Adds all specified SnapshotBoxes to this group. rearrange() should
+     * be called right after this operation.
+     * @param snapshotBoxes the SnapshotBoxes to add.
+     */
+    public void addAll(List<SnapshotBox> snapshotBoxes) {
+        for (SnapshotBox box : snapshotBoxes) {
+            this.snapshotBoxes.add(box);
+        }
+    }
 
     /**
      * Removes the specified SnapshotBox from this group. rearrange() should be
      * called right after this operation.
-     *
-     * @param snapshotBox the SnapshotBox to add.
+     * @param snapshotBox the SnapshotBox to remove.
      */
     public void remove(SnapshotBox snapshotBox) {
         this.snapshotBoxes.remove(snapshotBox);
+    }
+    
+    /**
+     * Removes all specified SnapshotBoxes from this group. rearrange() should
+     * be called right after this operation.
+     * @param snapshotBoxes the SnapshotBoxes to remove.
+     */
+    public void removeAll(List<SnapshotBox> snapshotBoxes) {
+        for (SnapshotBox box : snapshotBoxes) {
+            this.snapshotBoxes.remove(box);
+        }
     }
 
     /**
@@ -111,5 +156,40 @@ public class SnapshotGrpVBox extends VBox {
 
         return target;
     }
+    
+    /**
+     * Gets all students currently in this group.
+     * @return all students in this group.
+     */
+    public List<Student> getStudents() {
+        List<Student> students = new ArrayList<>();
+        
+        for (SnapshotBox box : snapshotBoxes) {
+            students.add(box.getStudent());
+        }
+        
+        return students;
+    }
 
+    
+    public double getQuality() {
+        return this.quality;
+    }
+    
+    public int getFrequency() {
+        return this.frequency;
+    }
+    
+    public void setQuality(double quality) {
+        this.quality = quality;
+    }
+    
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
+    }
+    
+    @Override
+    public String toString() {
+        return this.groupName;
+    }
 }

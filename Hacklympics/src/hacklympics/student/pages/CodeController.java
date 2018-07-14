@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.animation.KeyFrame;
@@ -15,7 +14,6 @@ import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -28,6 +26,7 @@ import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.exam.HaltExamEvent;
+import com.hacklympics.api.event.snapshot.AdjustSnapshotParamEvent;
 import com.hacklympics.api.material.Answer;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
@@ -77,10 +76,9 @@ public class CodeController implements Initializable {
 
         // Update filepath label whenever the selected tab is changed.
         fileTabPane.getSelectionModel().selectedItemProperty().addListener(
-                (ObservableValue<? extends Tab> ov, Tab ot, Tab nt) -> {
+                (obs, oldSelection, newSelection) -> {
                     updateFilepathLabel();
-                }
-        );
+        });
 
         // Close the terminal whenever user clicks on the code area.
         fileTabPane.setOnMouseClicked((Event event) -> {
@@ -111,6 +109,25 @@ public class CodeController implements Initializable {
 
                         alert.show();
                     });
+                }
+            }
+        });
+        
+        // Adjust the snapshot parameters and restart the snapshot thread
+        // upon receiving an AdjustSnapshotParamEvent.
+        this.setOnAdjustSnapshotParam((AdjustSnapshotParamEvent event) -> {
+            if (Session.getInstance().isInExam()) {
+                int eventExamID = event.getExamID();
+                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+                
+                if (eventExamID == currentExamID) {
+                    // Set the parameters.
+                    SnapshotManager.getInstance().setQuality(event.getQuality());
+                    SnapshotManager.getInstance().setFrequency(event.getFrequency());
+                    
+                    // Restart the snapshot thread.
+                    SnapshotManager.getInstance().shutdown();
+                    Session.getInstance().getExecutor().execute(SnapshotManager.getInstance());
                 }
             }
         });
@@ -582,6 +599,10 @@ public class CodeController implements Initializable {
 
     private void setOnHaltExam(EventHandler<HaltExamEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.HALT_EXAM, listener);
+    }
+    
+    private void setOnAdjustSnapshotParam(EventHandler<AdjustSnapshotParamEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.ADJUST_SNAPSHOT_PARAM, listener);
     }
 
 }

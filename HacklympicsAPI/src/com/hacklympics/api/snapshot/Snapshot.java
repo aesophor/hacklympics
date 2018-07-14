@@ -1,7 +1,10 @@
 package com.hacklympics.api.snapshot;
 
+import java.util.List;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.user.Student;
 import com.hacklympics.api.utility.Utils;
 
 public class Snapshot {
@@ -25,6 +28,22 @@ public class Snapshot {
         JsonObject json = new JsonObject();
         json.addProperty("student", student);
         json.addProperty("image", b64image);
+        
+        return new Response(Utils.post(uri, json.toString()));
+    }
+    
+    public static Response adjustParam(int courseID, int examID, List<Student> students, double quality, int frequency) {
+        String uri = String.format("course/%d/exam/%d/snapshot/adjust_param", courseID, examID);
+        
+        JsonArray s = new JsonArray();
+        for (Student student : students) {
+            s.add(student.getUsername());
+        }
+        
+        JsonObject json = new JsonObject();
+        json.addProperty("quality", quality);
+        json.addProperty("frequency", frequency);
+        json.add("students", s);
         
         return new Response(Utils.post(uri, json.toString()));
     }

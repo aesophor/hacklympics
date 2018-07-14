@@ -54,6 +54,7 @@ urlpatterns = [
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/remaining_time$', exam.get_remaining_time),
     
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/snapshot/create$', snapshot.create),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/snapshot/adjust_param$', snapshot.adjust_param),
 
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem$', problem.list),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/create$', problem.create),

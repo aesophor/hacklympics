@@ -18,6 +18,7 @@ import hacklympics.utility.dialog.AlertDialog;
 import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.communication.StatusCode;
 import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventType;
@@ -33,10 +34,18 @@ import com.hacklympics.api.session.Session;
 import hacklympics.utility.snapshot.SnapshotBox;
 import hacklympics.utility.snapshot.SnapshotGrpVBox;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.application.Platform;
 import javafx.scene.control.ScrollPane;
 
 public class ProctorController implements Initializable {
+
+    private static final double DEFAULT_GENERIC_QUALITY = 0.25;
+    private static final int DEFAULT_GENERIC_FREQUENCY = 5;
+
+    private static final double DEFAULT_SPECIAL_QUALITY = 0.5;
+    private static final int DEFAULT_SPECIAL_FREQUENCY = 3;
 
     private Timeline timeline;
     private int remainingTime;
@@ -63,17 +72,35 @@ public class ProctorController implements Initializable {
     @FXML
     private JFXComboBox imgQualityBox;
     @FXML
-    private JFXComboBox imgFreqBox;
+    private JFXComboBox imgFrequencyBox;
     @FXML
     private JFXButton leaveExamBtn;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        this.genericGrpBox = new SnapshotGrpVBox();
+        // Initialize the generic and special group VBox.
+        this.genericGrpBox = new SnapshotGrpVBox("Generic", DEFAULT_GENERIC_QUALITY, DEFAULT_GENERIC_FREQUENCY);
         this.genericGrpPane.setContent(this.genericGrpBox);
 
-        this.specialGrpBox = new SnapshotGrpVBox();
+        this.specialGrpBox = new SnapshotGrpVBox("Special", DEFAULT_SPECIAL_QUALITY, DEFAULT_SPECIAL_FREQUENCY);
         this.specialGrpPane.setContent(this.specialGrpBox);
+
+        // Add the generic and special group VBoxes to the groupBox.
+        this.groupBox.getItems().add(this.genericGrpBox);
+        this.groupBox.getItems().add(this.specialGrpBox);
+
+        // Populate the imgQualityBox and imgFrequencyBox.
+        this.imgQualityBox.getItems().addAll(0.15, 0.25, 0.35, 0.5, 0.75);
+        this.imgFrequencyBox.getItems().addAll(3, 5, 8, 10, 15);
+
+        // When user selects a certain group, display the corresponding parameters.
+        this.groupBox.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldSelection, newSelection) -> {
+                    SnapshotGrpVBox selectedGroup = (SnapshotGrpVBox) this.groupBox.getSelectionModel().getSelectedItem();
+                    this.imgQualityBox.getSelectionModel().select((Double) selectedGroup.getQuality());
+                    this.imgFrequencyBox.getSelectionModel().select((Integer) selectedGroup.getFrequency());
+                }
+        );
 
         // Clear all SnapshotBoxes of current exam and restore the
         // Proctor Page to its original state if current exam is halted.
@@ -144,6 +171,7 @@ public class ProctorController implements Initializable {
 
                 if (eventExamID == currentExamID) {
                     Snapshot snapshot = event.getSnapshot();
+                    // What about spec grp?
                     SnapshotBox box = this.genericGrpBox.get(snapshot.getStudentUsername());
 
                     try {
@@ -158,17 +186,117 @@ public class ProctorController implements Initializable {
 
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
+        // Get the selected SnapshotBoxes from the generic group.
+        List<SnapshotBox> genGrpSelectedBoxes = this.genericGrpBox.getSelectedItems();
+
+        if (genGrpSelectedBoxes == null) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You have not selected any students to move."
+            );
+
+            alert.show();
+            return;
+        }
         
+        // Move them from generic group to special group.
+        this.genericGrpBox.removeAll(genGrpSelectedBoxes);
+        this.specialGrpBox.addAll(genGrpSelectedBoxes);
+
+        this.genericGrpBox.rearrange();
+        this.specialGrpBox.rearrange();
+
+        // Apply the special group snapshot parameters to the SnapshotBoxes
+        // we just moved.
+        List<Student> students = new ArrayList<>();
+        for (SnapshotBox box : genGrpSelectedBoxes) {
+            students.add(box.getStudent());
+        }
+
+        Snapshot.adjustParam(
+                Session.getInstance().getCurrentExam().getCourseID(),
+                Session.getInstance().getCurrentExam().getExamID(),
+                students,
+                this.specialGrpBox.getQuality(),
+                this.specialGrpBox.getFrequency()
+        );
     }
 
     @FXML
     public void moveToGenericGrp(ActionEvent event) {
+        // Get the selected SnapshotBoxes from the special group.
+        List<SnapshotBox> speGrpSelectedBoxes = this.specialGrpBox.getSelectedItems();
 
+        if (speGrpSelectedBoxes == null) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You have not selected any students to move."
+            );
+
+            alert.show();
+            return;
+        }
+        
+        // Move them from generic group to special group.
+        this.specialGrpBox.removeAll(speGrpSelectedBoxes);
+        this.genericGrpBox.addAll(speGrpSelectedBoxes);
+
+        this.specialGrpBox.rearrange();
+        this.genericGrpBox.rearrange();
+
+        // Apply the generic group snapshot parameters to the SnapshotBoxes
+        // we just moved.
+        List<Student> students = new ArrayList<>();
+        for (SnapshotBox box : speGrpSelectedBoxes) {
+            students.add(box.getStudent());
+        }
+
+        Snapshot.adjustParam(
+                Session.getInstance().getCurrentExam().getCourseID(),
+                Session.getInstance().getCurrentExam().getExamID(),
+                students,
+                this.genericGrpBox.getQuality(),
+                this.genericGrpBox.getFrequency()
+        );
     }
 
     @FXML
     public void adjustLiveScreensParam(ActionEvent event) {
+        SnapshotGrpVBox selectedGroup = (SnapshotGrpVBox) this.groupBox.getSelectionModel().getSelectedItem();
 
+        Double selectedQuality = (Double) this.imgQualityBox.getSelectionModel().getSelectedItem();
+        Integer selectedFrequency = (Integer) this.imgFrequencyBox.getSelectionModel().getSelectedItem();
+
+        Response adjustParam = Snapshot.adjustParam(
+                Session.getInstance().getCurrentExam().getCourseID(),
+                Session.getInstance().getCurrentExam().getExamID(),
+                selectedGroup.getStudents(),
+                selectedQuality,
+                selectedFrequency
+        );
+
+        if (adjustParam.getStatusCode() == StatusCode.SUCCESS) {
+            selectedGroup.setQuality(selectedQuality);
+            selectedGroup.setFrequency(selectedFrequency);
+
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Parameters Adjusted",
+                    "The snapshot parameters has been adjusted."
+            );
+
+            alert.show();
+        } else {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "Failed to adjust the snapshot parameters."
+            );
+
+            alert.show();
+        }
     }
 
     @FXML
@@ -194,8 +322,8 @@ public class ProctorController implements Initializable {
                     dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
-                  + "You can launch your exam in My Courses & Exam, or "
-                  + "attend to exams of other teachers in Ongoing Exams."
+                    + "You can launch your exam in My Courses & Exam, or "
+                    + "attend to exams of other teachers in Ongoing Exams."
             );
 
             alert.show();

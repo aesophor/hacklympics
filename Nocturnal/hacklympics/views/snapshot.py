@@ -32,8 +32,31 @@ def create(request, c_id, e_id):
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
-        response_data["statusCode"] = StatusCode.NOT_REGISTERED
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
+
+    return JsonResponse(response_data)
+
+
+def adjust_param(request, c_id, e_id):
+    response_data = {"statusCode": StatusCode.SUCCESS}
+
+    try:
+        req_body = json.loads(request.body.decode("utf-8"))
+        
+        students = req_body["students"]
+        quality = req_body["quality"]
+        frequency = req_body["frequency"]
+        
+        exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
+        students = User.objects.filter(username__in=students)
+        
+        dispatch(AdjustSnapshotParamEvent(exam, quality, frequency), students)
+    except KeyError:
+        response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
+    except ObjectDoesNotExist:
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXIST
     except Exception as e:
         print(e)
 
     return JsonResponse(response_data)
+
