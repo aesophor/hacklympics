@@ -169,7 +169,7 @@ public class OngoingExamsController implements Initializable {
                     
                     StudentController sc = (StudentController) Session.getInstance().getMainController();
                     CodeController cc = (CodeController) sc.getControllers().get("Code");
-            
+                    
                     cc.setExamLabel(selectedExam.getTitle(), selectedExam.getRemainingTime());
                     cc.setProblemBox(selectedExam.getProblems());
                     sc.showCode(e);

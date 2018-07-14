@@ -18,6 +18,11 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import com.hacklympics.api.communication.Config;
+import java.awt.AWTException;
+import java.awt.Rectangle;
+import java.awt.Robot;
+import java.awt.Toolkit;
+import net.coobird.thumbnailator.Thumbnails;
 
 public class Utils {
     
@@ -81,6 +86,13 @@ public class Utils {
         }
         
         return null;
+    }
+    
+    public static BufferedImage takeSnapshot(double scale) throws AWTException, IOException {
+        BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
+        BufferedImage thumbnail = Thumbnails.of(image).scale(scale).asBufferedImage();
+        
+        return thumbnail;
     }
     
     public static byte[] bufferedImage2ByteArray(BufferedImage image) throws IOException {
