@@ -19,6 +19,7 @@ public class NewMessageEvent extends Event {
         
         Map<String, Object> content = this.getContent();
         String msgContent = content.get("content").toString();
+        int examID = (int) Double.parseDouble(content.get("examID").toString());
         
         String rawUserJson = Utils.getGson().toJson(content.get("user"));
         JsonObject userJson = Utils.getGson().fromJson(rawUserJson, JsonObject.class);
@@ -31,7 +32,7 @@ public class NewMessageEvent extends Event {
         User msgCreator = (isStudent) ? new Student(username, fullname, gradYear)
                                       : new Teacher(username, fullname, gradYear);
         
-        this.message = new Message(msgCreator, msgContent);
+        this.message = new Message(msgCreator, examID, msgContent);
     }
     
     

@@ -30,10 +30,6 @@ urlpatterns = [
     url(r'^user/reset$', user.reset),
     url(r'^user/(?P<username>[\w.@+-]+)$', user.get),
     
-    url(r'^user/(?P<username>[\w.@+-]+)/message$', message.list),
-    url(r'^user/(?P<username>[\w.@+-]+)/message/create$', message.create),
-    url(r'^user/(?P<username>[\w.@+-]+)/message/(?P<m_id>\d+)$', message.get),
-   
     url(r'^course$', course.list),
     url(r'^course/create$', course.create),
     url(r'^course/update$', course.update),
@@ -53,6 +49,8 @@ urlpatterns = [
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/owner$', exam.get_owner),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/remaining_time$', exam.get_remaining_time),
     
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/message/create$', message.create),
+
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/snapshot/create$', snapshot.create),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/snapshot/adjust_param$', snapshot.adjust_param),
 

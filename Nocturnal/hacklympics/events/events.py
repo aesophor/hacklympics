@@ -46,9 +46,10 @@ class LogoutEvent(Event):
 
 
 class NewMessageEvent(Event):
-    def __init__(self, user: User, content: str):
+    def __init__(self, user: User, exam: Exam, content: str):
         super(NewMessageEvent, self).__init__(EventType.NEW_MESSAGE)
         self.user = user
+        self.exam = exam
         self.content = content
 
     def __str__(self):
@@ -56,6 +57,7 @@ class NewMessageEvent(Event):
         
         event["content"] = {
             "content": self.content,
+            "examID": self.exam.id,
             "user": {
                 "username": self.user.username,
                 "fullname": self.user.fullname,

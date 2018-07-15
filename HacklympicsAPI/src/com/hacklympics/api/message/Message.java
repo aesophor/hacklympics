@@ -8,19 +8,21 @@ import com.hacklympics.api.utility.Utils;
 public class Message {
     
     private final User user;
-    private final String body;
+    private final int examID;
+    private final String content;
     
-    public Message(User user, String content) {
+    public Message(User user, int examID, String content) {
+        this.examID = examID;
         this.user = user;
-        this.body = content;
+        this.content = content;
     }
     
     
-    public static Response create(String username, String content) {
-        String uri = String.format("user/%s/message/create", username);
+    public static Response create(int courseID, int examID, String username, String content) {
+        String uri = String.format("course/%d/exam/%d/snapshot/create", courseID, examID);
         
         JsonObject json = new JsonObject();
-        json.addProperty("user", username);
+        json.addProperty("username", username);
         json.addProperty("content", content);
         
         return new Response(Utils.post(uri, json.toString()));
@@ -31,14 +33,18 @@ public class Message {
         return user;
     }
     
+    public int getExamID() {
+        return this.examID;
+    }
+    
     public String getContent() {
-        return body;
+        return content;
     }
     
     
     @Override
     public String toString() {
-        return String.format("%s: %s", user.getFullname(), body);
+        return String.format("%s: %s", user.getFullname(), content);
     }
     
 }

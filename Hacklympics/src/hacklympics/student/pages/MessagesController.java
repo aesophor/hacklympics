@@ -13,6 +13,8 @@ import com.hacklympics.api.event.message.NewMessageEvent;
 import com.hacklympics.api.message.Message;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.event.EventHandler;
+import hacklympics.utility.dialog.AlertDialog;
+import javafx.scene.layout.StackPane;
 
 public class MessagesController implements Initializable {
 
@@ -20,6 +22,8 @@ public class MessagesController implements Initializable {
     private TextArea messageBoard;
     @FXML
     private JFXTextArea inputArea;
+    @FXML
+    private StackPane dialogPane;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -34,10 +38,29 @@ public class MessagesController implements Initializable {
     
     
     public void send(ActionEvent event) {
+        // If current user tries to send a message but he/she is not in a exam, 
+        // block this attempt and alert the user.
+        if (Session.getInstance().isInExam()) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You can only send message while you are in an exam."
+            );
+
+            alert.show();
+        }
+        
+        // Send the message only if the user has entered something in inputArea.
         String message = inputArea.getText();
         
         if (!message.isEmpty()) {
-            Message.create(Session.getInstance().getCurrentUser().getUsername(), message);
+            Message.create(
+                    Session.getInstance().getCurrentExam().getCourseID(),
+                    Session.getInstance().getCurrentExam().getExamID(),
+                    Session.getInstance().getCurrentUser().getUsername(),
+                    message
+            );
+            
             inputArea.clear();
         }
     }

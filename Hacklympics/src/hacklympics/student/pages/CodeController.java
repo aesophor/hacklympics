@@ -124,10 +124,6 @@ public class CodeController implements Initializable {
                     // Set the parameters.
                     SnapshotManager.getInstance().setQuality(event.getQuality());
                     SnapshotManager.getInstance().setFrequency(event.getFrequency());
-                    
-                    // Restart the snapshot thread.
-                    SnapshotManager.getInstance().shutdown();
-                    Session.getInstance().getExecutor().execute(SnapshotManager.getInstance());
                 }
             }
         });

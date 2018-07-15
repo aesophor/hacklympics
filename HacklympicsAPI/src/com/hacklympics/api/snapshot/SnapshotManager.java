@@ -11,8 +11,8 @@ import java.io.IOException;
 public class SnapshotManager implements Runnable {
     
     private static SnapshotManager snapshotManager;
-    private static volatile boolean running;
     
+    private boolean running;
     private double quality;
     private int frequency;
     

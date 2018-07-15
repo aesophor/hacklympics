@@ -5,6 +5,8 @@
         <group>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/communication/Config.java</file>
             <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/communication/SocketServer.java</file>
+            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/snapshot/SnapshotManager.java</file>
+            <file>file:/home/aesophor/Code/Java/NetBeansProjects/Hacklympics/HacklympicsAPI/src/com/hacklympics/api/communication/StatusCode.java</file>
         </group>
     </open-files>
 </project-private>

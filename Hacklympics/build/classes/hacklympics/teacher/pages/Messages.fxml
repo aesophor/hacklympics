@@ -7,9 +7,10 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="AnchorPane" prefHeight="592.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.162" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.MessagesController">
+<AnchorPane id="AnchorPane" prefHeight="592.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.teacher.pages.MessagesController">
    <children>
       <VBox layoutY="35.0" prefHeight="639.0" prefWidth="776.0">
          <children>
@@ -40,5 +41,6 @@
             </HBox>
          </children>
       </VBox>
+      <StackPane fx:id="dialogPane" layoutX="80.0" layoutY="259.0" mouseTransparent="true" prefHeight="105.0" prefWidth="283.0" />
    </children>
 </AnchorPane>

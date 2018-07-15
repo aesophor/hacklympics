@@ -9,58 +9,29 @@ from hacklympics.models import *
 
 import json
 
-
-def get(request, username, m_id):
-    response_data = {"statusCode": StatusCode.SUCCESS}
-
-    message = User.objects.get(username=username).message_set.get(id=m_id)
-
-    response_data["content"] = {
-        "source_ip": message.source_ip,
-        "content": message.content,
-        "user": message.user_id
-    }
-
-    return JsonResponse(response_data)
-
-
-def list(request, username):
-    response_data = {"statusCode": StatusCode.SUCCESS}
-
-    messages = User.objects.get(username=username).message_set.all()
-
-    response_data["content"] = {
-        "messages": [{
-            "source_ip": message.source_ip,
-            "content": message.content,
-            "user": message.user_id
-        } for message in messages]
-    }
-
-    return JsonResponse(response_data)
-
-
-def create(request, username):
+def create(request, c_id, e_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
     try:
         req_body = json.loads(request.body.decode("utf-8"))
         
-        username = req_body["user"]
+        username = req_body["username"]
         content = req_body["content"]
-        source_ip = User.objects.get(username=username).last_login_ip
         
         user = User.objects.get(username=username)
+        source_ip = user.last_login_ip
+        exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         
         user.message_set.create(
             source_ip = source_ip,
             content = content,
+            exam = exam
         )
         
-        dispatch(NewMessageEvent(user, content), OnlineUsers.users)
+        dispatch(NewMessageEvent(user, exam, content), OnlineUsers.users)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
-        response_data["statusCode"] = StatusCode.NOT_REGISTERED
+        response_data["statusCode"] = StatusCode.MATERIAL_DOES_NOT_EXISTS
 
     return JsonResponse(response_data)

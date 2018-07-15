@@ -48,14 +48,15 @@ public class SocketServer implements Runnable {
         } catch (IOException ex) {
             
         }
+        
+        System.out.println("[*] Stopped listening for events.");
     }
     
     public void shutdown() {
         try {
-            System.out.println("[*] Stopped listening for events.");
             serverSocket.close();
         } catch (IOException ioe) {
-            System.out.println("[-] Failed to stop listening for events.");
+            ioe.printStackTrace();
         }
     }
     

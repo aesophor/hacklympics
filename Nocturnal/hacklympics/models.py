@@ -140,6 +140,7 @@ class Message(models.Model):
     source_ip = models.CharField(max_length=16)
     content = models.CharField(max_length=256)
     user = models.ForeignKey("User")
+    exam = models.ForeignKey("Exam")
 
     create_time = models.DateTimeField(editable=False)
 
