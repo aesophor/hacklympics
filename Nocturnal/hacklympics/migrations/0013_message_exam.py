@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='message',
             name='exam',
-            field=models.ForeignKey(null=True, to='hacklympics.Exam', blank=True),
+            field=models.ForeignKey(null=True, blank=True, to='hacklympics.Exam'),
         ),
     ]
