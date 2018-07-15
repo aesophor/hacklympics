@@ -19,7 +19,7 @@ public class Message {
     
     
     public static Response create(int courseID, int examID, String username, String content) {
-        String uri = String.format("course/%d/exam/%d/snapshot/create", courseID, examID);
+        String uri = String.format("course/%d/exam/%d/message/create", courseID, examID);
         
         JsonObject json = new JsonObject();
         json.addProperty("username", username);

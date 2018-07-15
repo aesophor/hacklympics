@@ -47,7 +47,7 @@ public class MessagesController implements Initializable {
     public void send(ActionEvent event) {
         // If current user tries to send a message but he/she is not in a exam, 
         // block this attempt and alert the user.
-        if (Session.getInstance().isInExam()) {
+        if (!Session.getInstance().isInExam()) {
             AlertDialog alert = new AlertDialog(
                     dialogPane,
                     "Alert",
@@ -55,6 +55,7 @@ public class MessagesController implements Initializable {
             );
 
             alert.show();
+            return;
         }
         
         // Send the message only if the user has entered something in inputArea.
