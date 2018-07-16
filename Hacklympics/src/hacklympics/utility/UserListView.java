@@ -15,8 +15,8 @@ public class UserListView {
     private final JFXListView listView;
     private final ObservableList<User> users;
     
-    private double minHeight = 200;
-    private double maxHeight = 200;
+    private final double minHeight = 200;
+    private final double maxHeight = 200;
     
     public UserListView(SelectionMode mode, Role role) {
         this.listView = new JFXListView();

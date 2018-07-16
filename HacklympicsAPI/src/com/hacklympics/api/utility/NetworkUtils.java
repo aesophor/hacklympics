@@ -1,30 +1,19 @@
 package com.hacklympics.api.utility;
 
-import java.awt.Robot;
-import java.awt.Toolkit;
-import java.awt.Rectangle;
-import java.awt.AWTException;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
-import javax.imageio.ImageIO;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
 import com.google.gson.Gson;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import net.coobird.thumbnailator.Thumbnails;
 import com.hacklympics.api.communication.Config;
 
-public class Utils {
+public class NetworkUtils {
     
     private static final MediaType JSON;
     private static final OkHttpClient CLIENT;
@@ -36,7 +25,7 @@ public class Utils {
         GSON = new Gson();
     }
     
-    private Utils() {}
+    private NetworkUtils() {}
     
     
     public static String get(String uri) {
@@ -88,30 +77,6 @@ public class Utils {
         return null;
     }
     
-    public static BufferedImage takeSnapshot(double scale) throws AWTException, IOException {
-        BufferedImage image = new Robot().createScreenCapture(new Rectangle(Toolkit.getDefaultToolkit().getScreenSize()));
-        BufferedImage thumbnail = Thumbnails.of(image).scale(scale).asBufferedImage();
-        
-        return thumbnail;
-    }
-    
-    public static byte[] bufferedImage2ByteArray(BufferedImage image) throws IOException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        ImageIO.write(image, "jpg", baos);
-        return baos.toByteArray();
-    }
-    
-    public static BufferedImage byteArray2BufferedImage(byte[] bytes) throws IOException {
-        return ImageIO.read(new ByteArrayInputStream(bytes));
-    }
-    
-    public static Image bufferedImage2FXImage(BufferedImage bufferedImage) {
-        return SwingFXUtils.toFXImage(bufferedImage, null);
-    }
-    
-    public static String formatTime(int seconds) {
-        return String.format("%02d:%02d", (seconds / 60), (seconds % 60));
-    }
     
     public static String hash(String s) {
         return s;

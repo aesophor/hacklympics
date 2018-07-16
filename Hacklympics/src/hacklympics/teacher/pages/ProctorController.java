@@ -2,17 +2,22 @@ package hacklympics.teacher.pages;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.application.Platform;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
 import javafx.event.ActionEvent;
-import javafx.scene.control.Tab;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXProgressBar;
 import hacklympics.teacher.TeacherController;
 import hacklympics.utility.dialog.AlertDialog;
 import hacklympics.utility.dialog.ConfirmDialog;
@@ -31,57 +36,63 @@ import com.hacklympics.api.snapshot.Snapshot;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
-import hacklympics.utility.snapshot.SnapshotBox;
-import hacklympics.utility.snapshot.SnapshotGroup;
-import hacklympics.utility.snapshot.SnapshotGrpVBox;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import javafx.application.Platform;
-import javafx.scene.control.ScrollPane;
+import com.hacklympics.api.snapshot.SnapshotManager;
+import hacklympics.utility.proctor.KeystrokeStudentsVBox;
+import hacklympics.utility.proctor.SnapshotBox;
+import hacklympics.utility.proctor.SnapshotGroup;
+import hacklympics.utility.proctor.SnapshotGrpVBox;
 
 public class ProctorController implements Initializable {
 
     private Timeline timeline;
     private int remainingTime;
+    
+    private SnapshotGrpVBox snapshotGenGrpVBox;
+    private SnapshotGrpVBox snapshotSpeGrpVBox;
+    
+    private KeystrokeStudentsVBox keystrokeStudentsVBox;
 
-    @FXML
-    private Tab liveScreensTab;
-    @FXML
-    private Tab keystrokesTab;
     @FXML
     private StackPane dialogPane;
     @FXML
     private Label examLabel;
+    @FXML
+    private JFXButton leaveExamBtn;
 
     @FXML
-    private ScrollPane genericGrpPane;
+    private ScrollPane snapshotGenGrpPane;
     @FXML
-    private ScrollPane specialGrpPane;
-
-    private SnapshotGrpVBox genericGrpBox;
-    private SnapshotGrpVBox specialGrpBox;
-
+    private ScrollPane snapshotSpeGrpPane;
     @FXML
     private JFXComboBox groupBox;
     @FXML
     private JFXComboBox imgQualityBox;
     @FXML
     private JFXComboBox imgFrequencyBox;
+    
     @FXML
-    private JFXButton leaveExamBtn;
+    private ScrollPane keystrokeStudentsPane;
+    @FXML
+    private ScrollPane codePane;
+    @FXML
+    private JFXProgressBar keystrokeBar;
 
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // First we will cache to generic and special group VBox for
-        // writing code with better readability.
-        this.genericGrpBox = SnapshotGroup.GENERIC.getSnapshotGrpVBox();
-        this.specialGrpBox = SnapshotGroup.SPECIAL.getSnapshotGrpVBox();
+        // First we will cache to generic and special group VBox so that
+        // we can write code with better readability later.
+        this.snapshotGenGrpVBox = SnapshotGroup.GENERIC.getSnapshotGrpVBox();
+        this.snapshotSpeGrpVBox = SnapshotGroup.SPECIAL.getSnapshotGrpVBox();
+        this.keystrokeStudentsVBox = new KeystrokeStudentsVBox();
         
-        // Initialize the generic and special group VBox.
-        this.genericGrpPane.setContent(this.genericGrpBox);
-        this.specialGrpPane.setContent(this.specialGrpBox);
-
+        // Initialize the generic and special group pane in LiveScreens Tab,
+        // as well as keystroke pane in Keystroke Tab.
+        this.snapshotGenGrpPane.setContent(this.snapshotGenGrpVBox);
+        this.snapshotSpeGrpPane.setContent(this.snapshotSpeGrpVBox);
+        this.keystrokeStudentsPane.setContent(this.keystrokeStudentsVBox);
+        
+        
         // Add the generic and special group VBoxes to the groupBox.
         // This part is tricky: we cannot simply add a VBox to a combobox
         // as its content (since SnapshotGrpVBox extends VBox), 
@@ -91,10 +102,8 @@ public class ProctorController implements Initializable {
         this.groupBox.getItems().add(SnapshotGroup.SPECIAL);
 
         // Populate the imgQualityBox and imgFrequencyBox.
-        // This part needs to be refactored.
-        this.imgQualityBox.getItems().addAll(0.15, 0.25, 0.35, 0.5, 0.75);
-        this.imgFrequencyBox.getItems().addAll(3, 5, 8, 10, 15);
-
+        this.imgQualityBox.getItems().addAll(SnapshotManager.QUALITY_OPTIONS);
+        this.imgFrequencyBox.getItems().addAll(SnapshotManager.FREQUENCY_OPTIONS);
         
         // When user selects a certain group, display the corresponding parameters.
         this.groupBox.getSelectionModel().selectedItemProperty().addListener(
@@ -106,86 +115,67 @@ public class ProctorController implements Initializable {
                     this.imgFrequencyBox.getSelectionModel().select((Integer) vbox.getFrequency());
                 }
         );
-
+        
+        
         // Clear all SnapshotBoxes of current exam and restore the
         // Proctor Page to its original state if current exam is halted.
         this.setOnHaltExam((HaltExamEvent event) -> {
-            if (Session.getInstance().isInExam()) {
-                int eventExamID = event.getExam().getExamID();
-                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                Session.getInstance().setCurrentExam(null);
 
-                if (eventExamID == currentExamID) {
-                    Session.getInstance().setCurrentExam(null);
+                // Reset the Proctor Page to its original state.
+                Platform.runLater(() -> {
+                    this.reset();
 
-                    // Reset the Proctor Page to its original state.
-                    Platform.runLater(() -> {
-                        this.reset();
+                    AlertDialog alert = new AlertDialog(
+                            dialogPane,
+                            "Exam Halted",
+                            "The current exam has been halted."
+                    );
 
-                        AlertDialog alert = new AlertDialog(
-                                dialogPane,
-                                "Exam Halted",
-                                "The current exam has been halted."
-                        );
-
-                        alert.show();
-                    });
-                }
+                    alert.show();
+                });
             }
         });
 
         // Create a new SnapshotBox for the student who just arrived,
         // and add it to the generic group by default.
         this.setOnAttendExam((AttendExamEvent event) -> {
-            if (Session.getInstance().isInExam()) {
-                int eventExamID = event.getExam().getExamID();
-                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                SnapshotBox box = new SnapshotBox((Student) event.getUser());
+                this.snapshotGenGrpVBox.add(box);
 
-                if (eventExamID == currentExamID) {
-                    SnapshotBox box = new SnapshotBox((Student) event.getUser());
-                    this.genericGrpBox.add(box);
-
-                    Platform.runLater(() -> {
-                        this.genericGrpBox.rearrange();
-                    });
-                }
+                Platform.runLater(() -> {
+                    this.snapshotGenGrpVBox.rearrange();
+                });
             }
         });
 
         // Remove the SnapshotBox for the student who just left.
         this.setOnLeaveExam((LeaveExamEvent event) -> {
-            if (Session.getInstance().isInExam()) {
-                int eventExamID = event.getExam().getExamID();
-                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                SnapshotBox box = this.snapshotGenGrpVBox.get((Student) event.getUser());
+                this.snapshotGenGrpVBox.remove(box);
 
-                if (eventExamID == currentExamID) {
-                    SnapshotBox box = this.genericGrpBox.get((Student) event.getUser());
-                    this.genericGrpBox.remove(box);
-
-                    Platform.runLater(() -> {
-                        this.genericGrpBox.rearrange();
-                    });
-                }
+                Platform.runLater(() -> {
+                    this.snapshotGenGrpVBox.rearrange();
+                });
             }
         });
 
         // Updates the SnapshotBox when a NewSnapshotEvent arrives.
         // The target SnapshotBox could either be in generic or special group.
         this.setOnNewSnapshot((NewSnapshotEvent event) -> {
-            if (Session.getInstance().isInExam()) {
-                int eventExamID = event.getSnapshot().getExamID();
-                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
-
-                if (eventExamID == currentExamID) {
-                    Snapshot snapshot = event.getSnapshot();
+            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                Snapshot snapshot = event.getSnapshot();
                     
-                    SnapshotBox box = this.genericGrpBox.get(snapshot.getStudentUsername());
-                    if (box == null) box = this.specialGrpBox.get(snapshot.getStudentUsername());
+                SnapshotBox box = this.snapshotGenGrpVBox.get(snapshot.getStudentUsername());
+                if (box == null) box = this.snapshotSpeGrpVBox.get(snapshot.getStudentUsername());
 
-                    try {
-                        box.update(snapshot);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                try {
+                    box.update(snapshot);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
                 }
             }
         });
@@ -194,7 +184,7 @@ public class ProctorController implements Initializable {
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
         // Get the selected SnapshotBoxes from the generic group.
-        List<SnapshotBox> genGrpSelectedBoxes = this.genericGrpBox.getSelectedItems();
+        List<SnapshotBox> genGrpSelectedBoxes = this.snapshotGenGrpVBox.getSelectedItems();
 
         if (genGrpSelectedBoxes == null) {
             AlertDialog alert = new AlertDialog(
@@ -208,12 +198,13 @@ public class ProctorController implements Initializable {
         }
         
         // Move them from generic group to special group.
-        this.genericGrpBox.removeAll(genGrpSelectedBoxes);
-        this.specialGrpBox.addAll(genGrpSelectedBoxes);
+        this.snapshotGenGrpVBox.removeAll(genGrpSelectedBoxes);
+        this.snapshotSpeGrpVBox.addAll(genGrpSelectedBoxes);
 
-        this.genericGrpBox.rearrange();
-        this.specialGrpBox.rearrange();
+        this.snapshotGenGrpVBox.rearrange();
+        this.snapshotSpeGrpVBox.rearrange();
 
+        
         // Apply the special group snapshot parameters to the SnapshotBoxes
         // we just moved.
         List<Student> students = new ArrayList<>();
@@ -225,15 +216,15 @@ public class ProctorController implements Initializable {
                 Session.getInstance().getCurrentExam().getCourseID(),
                 Session.getInstance().getCurrentExam().getExamID(),
                 students,
-                this.specialGrpBox.getQuality(),
-                this.specialGrpBox.getFrequency()
+                this.snapshotSpeGrpVBox.getQuality(),
+                this.snapshotSpeGrpVBox.getFrequency()
         );
     }
 
     @FXML
     public void moveToGenericGrp(ActionEvent event) {
         // Get the selected SnapshotBoxes from the special group.
-        List<SnapshotBox> speGrpSelectedBoxes = this.specialGrpBox.getSelectedItems();
+        List<SnapshotBox> speGrpSelectedBoxes = this.snapshotSpeGrpVBox.getSelectedItems();
 
         if (speGrpSelectedBoxes == null) {
             AlertDialog alert = new AlertDialog(
@@ -247,12 +238,13 @@ public class ProctorController implements Initializable {
         }
         
         // Move them from generic group to special group.
-        this.specialGrpBox.removeAll(speGrpSelectedBoxes);
-        this.genericGrpBox.addAll(speGrpSelectedBoxes);
+        this.snapshotSpeGrpVBox.removeAll(speGrpSelectedBoxes);
+        this.snapshotGenGrpVBox.addAll(speGrpSelectedBoxes);
 
-        this.specialGrpBox.rearrange();
-        this.genericGrpBox.rearrange();
+        this.snapshotSpeGrpVBox.rearrange();
+        this.snapshotGenGrpVBox.rearrange();
 
+        
         // Apply the generic group snapshot parameters to the SnapshotBoxes
         // we just moved.
         List<Student> students = new ArrayList<>();
@@ -264,19 +256,38 @@ public class ProctorController implements Initializable {
                 Session.getInstance().getCurrentExam().getCourseID(),
                 Session.getInstance().getCurrentExam().getExamID(),
                 students,
-                this.genericGrpBox.getQuality(),
-                this.genericGrpBox.getFrequency()
+                this.snapshotGenGrpVBox.getQuality(),
+                this.snapshotGenGrpVBox.getFrequency()
         );
     }
 
     @FXML
     public void adjustLiveScreensParam(ActionEvent event) {
+        // If the user tries to broadcast the command to adjust snapshot
+        // parameters to all students in the exam, but the user is currently
+        // not in any exam, block this attempt and alert the user.
+        if (!Session.getInstance().isInExam()) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You can only adjust parameters while in exam."
+            );
+
+            alert.show();
+            return;
+        }
+        
+        // If everything is fine, then we will proceed.
+        // First, check which group the user is trying to adjust.
         SnapshotGroup selectedGroup = (SnapshotGroup) this.groupBox.getSelectionModel().getSelectedItem();
         SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
 
+        // Get the parameters from the ComboBoxes.
         Double selectedQuality = (Double) this.imgQualityBox.getSelectionModel().getSelectedItem();
         Integer selectedFrequency = (Integer) this.imgFrequencyBox.getSelectionModel().getSelectedItem();
 
+        // Broadcast the command to adjust snapshot parameters
+        // to the students within the user-selected group.
         Response adjustParam = Snapshot.adjustParam(
                 Session.getInstance().getCurrentExam().getCourseID(),
                 Session.getInstance().getCurrentExam().getExamID(),
@@ -420,10 +431,11 @@ public class ProctorController implements Initializable {
      * Resets the Code page to its original state.
      */
     private void reset() {
-        this.genericGrpBox.clear();
-        this.specialGrpBox.clear();
-        this.genericGrpBox.rearrange();
-        this.specialGrpBox.rearrange();
+        this.snapshotGenGrpVBox.clear();
+        this.snapshotSpeGrpVBox.clear();
+        
+        this.snapshotGenGrpVBox.rearrange();
+        this.snapshotSpeGrpVBox.rearrange();
 
         this.disableLeaveBtn();
         this.stopExamLabelTimer();

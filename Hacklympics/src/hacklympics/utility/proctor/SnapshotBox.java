@@ -1,19 +1,18 @@
-package hacklympics.utility.snapshot;
+package hacklympics.utility.proctor;
 
-import javafx.scene.Group;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javafx.application.Platform;;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import com.jfoenix.controls.JFXCheckBox;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.snapshot.Snapshot;
+import com.hacklympics.api.utility.ImageUtils;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
-import hacklympics.utility.Utils;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javafx.application.Platform;
 
-public class SnapshotBox extends Group {
+public class SnapshotBox extends StudentBox {
     
     private static final int SNAPSHOT_WIDTH = 155;
     private static final int SNAPSHOT_HEIGHT = 93;
@@ -23,13 +22,12 @@ public class SnapshotBox extends Group {
     private static final int TIMELABEL_LAYOUT_X = 15;
     private static final int TIMELABEL_LAYOUT_Y = 115;
     
-    private final Student student;
     private final JFXCheckBox checkbox;
     private final ImageView snapshot;
     private final Label timestamp;
 
     public SnapshotBox(Student student) {
-        this.student = student;
+        super(student);
         
         this.checkbox = new JFXCheckBox(student.getFullname());
         
@@ -47,18 +45,15 @@ public class SnapshotBox extends Group {
     }
     
     
+    @Override
     public void update(Snapshot snapshot) throws IOException {
-        BufferedImage bi = Utils.byteArray2BufferedImage(Base64.decode(snapshot.getSnapshot()));
-        Image image = Utils.bufferedImage2FXImage(bi);
+        BufferedImage bi = ImageUtils.byteArray2BufferedImage(Base64.decode(snapshot.getSnapshot()));
+        Image image = ImageUtils.bufferedImage2FXImage(bi);
         
         Platform.runLater(() -> {
             this.snapshot.setImage(image);
             this.timestamp.setText(snapshot.getTimestamp());
         });
-    }
-    
-    public Student getStudent() {
-        return this.student;
     }
     
     public JFXCheckBox getCheckBox() {

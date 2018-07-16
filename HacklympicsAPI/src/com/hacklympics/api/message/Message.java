@@ -3,7 +3,7 @@ package com.hacklympics.api.message;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.user.User;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class Message {
     
@@ -25,7 +25,7 @@ public class Message {
         json.addProperty("username", username);
         json.addProperty("content", content);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     

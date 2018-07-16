@@ -27,9 +27,9 @@
                            <children>
                               <AnchorPane prefHeight="585.0" prefWidth="776.0">
                                  <children>
-                                    <ScrollPane fx:id="genericGrpPane" hbarPolicy="NEVER" layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
-                                    <ScrollPane fx:id="specialGrpPane" hbarPolicy="NEVER" layoutX="400.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
-                                    <Label alignment="CENTER" layoutX="126.0" layoutY="20.0" prefHeight="29.0" text="Normal Group">
+                                    <ScrollPane fx:id="snapshotGenGrpPane" hbarPolicy="NEVER" layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
+                                    <ScrollPane fx:id="snapshotSpeGrpPane" hbarPolicy="NEVER" layoutX="400.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
+                                    <Label alignment="CENTER" layoutX="126.0" layoutY="20.0" prefHeight="29.0" text="Generic Group">
                                        <opaqueInsets>
                                           <Insets />
                                        </opaqueInsets>
@@ -115,7 +115,7 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </Label>
-                                    <ScrollPane fx:id="allStudentsPane" layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
+                                    <ScrollPane fx:id="keystrokeStudentsPane" layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
                                     <ScrollPane fx:id="CodePane" layoutX="400.0" layoutY="60.0" prefHeight="454.0" prefWidth="355.0" />
                                     <Label alignment="CENTER" layoutX="518.0" layoutY="20.0" prefHeight="29.0" text="Code Playback">
                                        <opaqueInsets>
@@ -187,6 +187,6 @@
             <Font size="11.0" />
          </font>
       </JFXButton>
-      <StackPane fx:id="dialogPane" layoutX="140.0" layoutY="208.0" mouseTransparent="true" prefHeight="140.0" prefWidth="328.0" />
+      <StackPane fx:id="dialogPane" layoutX="129.0" layoutY="232.0" mouseTransparent="true" prefHeight="109.0" prefWidth="329.0" />
    </children>
 </AnchorPane>

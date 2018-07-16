@@ -116,6 +116,6 @@
          </font>
       </Label>
       <TabPane fx:id="terminalTabPane" layoutY="394.0" mouseTransparent="true" prefHeight="237.0" prefWidth="776.0" style="-fx-background-color: #dfdfdf;" tabClosingPolicy="UNAVAILABLE" visible="false" />
-      <StackPane fx:id="dialogPane" layoutX="110.0" layoutY="225.0" mouseTransparent="true" prefHeight="124.0" prefWidth="370.0" />
+      <StackPane fx:id="dialogPane" layoutX="130.0" layoutY="225.0" mouseTransparent="true" prefHeight="124.0" prefWidth="322.0" />
    </children>
 </AnchorPane>

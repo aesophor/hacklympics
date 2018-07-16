@@ -8,7 +8,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.material.Exam;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -27,7 +27,7 @@ public abstract class User {
     
     private void initProfile(String username) {
         String uri = String.format("user/%s", username);
-        Response response = new Response(Utils.get(uri));
+        Response response = new Response(NetworkUtils.get(uri));
         
         if (response.success()) {
             Map<String, Object> json = response.getContent();
@@ -43,12 +43,12 @@ public abstract class User {
     
     public static Response list() {
         String uri = String.format("user");
-        return new Response(Utils.get(uri));
+        return new Response(NetworkUtils.get(uri));
     }
     
     public static Response listOnline() {
         String uri = String.format("user/online");
-        return new Response(Utils.get(uri));
+        return new Response(NetworkUtils.get(uri));
     }
     
     public static Response register(String username, String password,
@@ -63,7 +63,7 @@ public abstract class User {
         json.addProperty("graduationYear", graduationYear);
         json.addProperty("isStudent", true);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public static Response login(String username, String password) {
@@ -71,10 +71,10 @@ public abstract class User {
         
         JsonObject json = new JsonObject();
         json.addProperty("username", username);
-        json.addProperty("password", Utils.hash(password));
-        json.addProperty("loginIP", Utils.getLocalAddress());
+        json.addProperty("password", NetworkUtils.hash(password));
+        json.addProperty("loginIP", NetworkUtils.getLocalAddress());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response logout() {
@@ -83,7 +83,7 @@ public abstract class User {
         JsonObject json = new JsonObject();
         json.addProperty("username", getProfile().getUsername());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response attend(Exam exam) {
@@ -93,7 +93,7 @@ public abstract class User {
         json.addProperty("examID", exam.getData().getExamID());
         json.addProperty("username", this.getProfile().getUsername());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response leave(Exam exam) {
@@ -103,7 +103,7 @@ public abstract class User {
         json.addProperty("examID", exam.getData().getExamID());
         json.addProperty("username", this.getProfile().getUsername());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     
@@ -112,8 +112,8 @@ public abstract class User {
         Response list = User.listOnline();
         
         if (list.success()) {
-            String raw = Utils.getGson().toJson(list.getContent().get("users"));
-            JsonArray json = Utils.getGson().fromJson(raw, JsonArray.class);
+            String raw = NetworkUtils.getGson().toJson(list.getContent().get("users"));
+            JsonArray json = NetworkUtils.getGson().fromJson(raw, JsonArray.class);
             
             for (JsonElement e: json) {
                 String username = e.getAsJsonObject().get("username").getAsString();

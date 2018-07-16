@@ -41,6 +41,6 @@
             </HBox>
          </children>
       </VBox>
-      <StackPane fx:id="dialogPane" layoutX="80.0" layoutY="259.0" mouseTransparent="true" prefHeight="105.0" prefWidth="283.0" />
+      <StackPane fx:id="dialogPane" layoutX="169.0" layoutY="226.0" mouseTransparent="true" prefHeight="117.0" prefWidth="256.0" />
    </children>
 </AnchorPane>

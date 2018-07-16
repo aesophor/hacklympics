@@ -10,7 +10,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class Course {
     
@@ -26,7 +26,7 @@ public class Course {
     
     public void initCourseData(int courseID) {
         String uri = String.format("course/%d", courseID);
-        Response get = new Response(Utils.get(uri));
+        Response get = new Response(NetworkUtils.get(uri));
         
         if (get.success()) {
             Map<String, Object> json = get.getContent();
@@ -44,7 +44,7 @@ public class Course {
     
     public static Response list() {
         String uri = String.format("course");
-        return new Response(Utils.get(uri));
+        return new Response(NetworkUtils.get(uri));
     }
     
     public static Response create(String name, int semester, String teacher, List<String> students) {
@@ -61,7 +61,7 @@ public class Course {
         json.addProperty("teacher", teacher);
         json.add("students", s);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response update(String name, int semester, String teacher, List<String> students) {
@@ -84,7 +84,7 @@ public class Course {
         json.addProperty("teacher", teacher);
         json.add("students", s);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response remove() {
@@ -93,7 +93,7 @@ public class Course {
         JsonObject json = new JsonObject();
         json.addProperty("id", data.getCourseID());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     
@@ -106,8 +106,8 @@ public class Course {
         Response list = Exam.list(getData().getCourseID());
         
         if (list.success()) {
-            String raw = Utils.getGson().toJson(list.getContent().get("exams"));
-            JsonArray json = Utils.getGson().fromJson(raw, JsonArray.class);
+            String raw = NetworkUtils.getGson().toJson(list.getContent().get("exams"));
+            JsonArray json = NetworkUtils.getGson().fromJson(raw, JsonArray.class);
             
             for (JsonElement e: json) {
                 int examID = e.getAsJsonObject().get("id").getAsInt();

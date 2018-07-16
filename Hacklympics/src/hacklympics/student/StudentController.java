@@ -37,6 +37,7 @@ public class StudentController implements Initializable, MainController {
     
     private Map<String, AnchorPane> pages;
     private Map<String, Object> controllers;
+    
     private ObservableList<User> onlineUsers;
     
     @FXML

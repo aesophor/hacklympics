@@ -29,12 +29,7 @@ public class MessagesController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         setOnNewMessage((NewMessageEvent event) -> {
             if (Session.getInstance().isInExam()) {
-                int eventExamID = event.getMessage().getExamID();
-                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
-                
-                if (eventExamID == currentExamID) {
-                    messageBoard.appendText(event.getMessage() + "\n");
-                }
+                messageBoard.appendText(event.getMessage() + "\n");
             }
         });
     }

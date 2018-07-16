@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 import com.hacklympics.api.event.Event;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.user.Teacher;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class LaunchExamEvent extends Event {
     
@@ -17,8 +17,8 @@ public class LaunchExamEvent extends Event {
         
         Map<String, Object> content = this.getContent();
         
-        String rawTeacherJson = Utils.getGson().toJson(content.get("teacher"));
-        JsonObject teacherJson = Utils.getGson().fromJson(rawTeacherJson, JsonObject.class);
+        String rawTeacherJson = NetworkUtils.getGson().toJson(content.get("teacher"));
+        JsonObject teacherJson = NetworkUtils.getGson().fromJson(rawTeacherJson, JsonObject.class);
         
         String username = teacherJson.get("username").getAsString();
         String fullname = teacherJson.get("fullname").getAsString();
@@ -27,8 +27,8 @@ public class LaunchExamEvent extends Event {
         this.teacher = new Teacher(username, fullname, gradYear);
         
         
-        String rawExamJson = Utils.getGson().toJson(content.get("exam"));
-        JsonObject examJson = Utils.getGson().fromJson(rawExamJson, JsonObject.class);
+        String rawExamJson = NetworkUtils.getGson().toJson(content.get("exam"));
+        JsonObject examJson = NetworkUtils.getGson().fromJson(rawExamJson, JsonObject.class);
         
         int courseID = examJson.get("courseID").getAsInt();
         int examID = examJson.get("examID").getAsInt();

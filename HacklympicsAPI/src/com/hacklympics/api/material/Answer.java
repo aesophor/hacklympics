@@ -4,7 +4,7 @@ import java.util.Map;
 import javafx.beans.property.SimpleStringProperty;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class Answer {
     
@@ -18,7 +18,7 @@ public class Answer {
         String uri = String.format("course/%d/exam/%d/problem/%d/answer/%d",
                 courseID, examID, problemID, answerID);
         
-        Response get = new Response(Utils.get(uri));
+        Response get = new Response(NetworkUtils.get(uri));
         
         if (get.success()) {
             Map<String, Object> json = get.getContent();
@@ -40,7 +40,7 @@ public class Answer {
         String uri = String.format("course/%d/exam/%d/problem/%d/answer", 
                 courseID, examID, answerID);
         
-        return new Response(Utils.get(uri));
+        return new Response(NetworkUtils.get(uri));
     }
     
     public static Response create(int courseID, int examID, int problemID, 
@@ -53,7 +53,7 @@ public class Answer {
         json.addProperty("sourceCode", sourceCode);
         json.addProperty("student", student);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response update(String filename, String sourceCode) {
@@ -67,7 +67,7 @@ public class Answer {
         json.addProperty("filename", filename);
         json.addProperty("sourceCode", sourceCode);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response remove() {
@@ -77,7 +77,7 @@ public class Answer {
         JsonObject json = new JsonObject();
         json.addProperty("answerID", data.getAnswerID());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response validate() {
@@ -87,7 +87,7 @@ public class Answer {
         JsonObject json = new JsonObject();
         json.addProperty("answerID", data.getAnswerID());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     

@@ -15,6 +15,7 @@
             <word>filepath</word>
             <word>fullname</word>
             <word>Popups</word>
+            <word>textbox</word>
         </spellchecker-wordlist>
     </configuration>
 </project>

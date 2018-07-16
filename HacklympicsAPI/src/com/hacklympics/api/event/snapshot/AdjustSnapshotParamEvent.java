@@ -2,9 +2,11 @@ package com.hacklympics.api.event.snapshot;
 
 import java.util.Map;
 import com.hacklympics.api.event.Event;
+import com.hacklympics.api.event.ExamDependent;
+import com.hacklympics.api.session.Session;
 
 
-public class AdjustSnapshotParamEvent extends Event {
+public class AdjustSnapshotParamEvent extends Event implements ExamDependent {
     
     private final int examID;
     private final double quality;
@@ -31,6 +33,13 @@ public class AdjustSnapshotParamEvent extends Event {
     
     public int getFrequency() {
         return this.frequency;
+    }
+    
+    @Override
+    public boolean isForCurrentExam() {
+        int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+        
+        return this.examID == currentExamID;
     }
     
 }

@@ -3,14 +3,15 @@ package com.hacklympics.api.event.message;
 import java.util.Map;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.event.Event;
+import com.hacklympics.api.event.ExamDependent;
 import com.hacklympics.api.message.Message;
+import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
-
-public class NewMessageEvent extends Event {
+public class NewMessageEvent extends Event implements ExamDependent {
     
     private final Message message;
     
@@ -21,8 +22,8 @@ public class NewMessageEvent extends Event {
         String msgContent = content.get("content").toString();
         int examID = (int) Double.parseDouble(content.get("examID").toString());
         
-        String rawUserJson = Utils.getGson().toJson(content.get("user"));
-        JsonObject userJson = Utils.getGson().fromJson(rawUserJson, JsonObject.class);
+        String rawUserJson = NetworkUtils.getGson().toJson(content.get("user"));
+        JsonObject userJson = NetworkUtils.getGson().fromJson(rawUserJson, JsonObject.class);
             
         String username = userJson.get("username").getAsString();
         String fullname = userJson.get("fullname").getAsString();
@@ -42,6 +43,14 @@ public class NewMessageEvent extends Event {
      */
     public Message getMessage() {
         return message;
+    }
+
+    @Override
+    public boolean isForCurrentExam() {
+        int eventExamID = this.getMessage().getExamID();
+        int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+        
+        return eventExamID == currentExamID;
     }
     
 }

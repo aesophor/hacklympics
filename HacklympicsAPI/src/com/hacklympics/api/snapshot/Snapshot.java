@@ -5,7 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.user.Student;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class Snapshot {
     
@@ -29,7 +29,7 @@ public class Snapshot {
         json.addProperty("student", student);
         json.addProperty("image", b64image);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public static Response adjustParam(int courseID, int examID, List<Student> students, double quality, int frequency) {
@@ -45,7 +45,7 @@ public class Snapshot {
         json.addProperty("frequency", frequency);
         json.add("students", studentsJsonArray);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     

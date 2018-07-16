@@ -4,7 +4,7 @@ import java.util.Map;
 import javafx.beans.property.SimpleStringProperty;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class Problem {
     
@@ -23,7 +23,7 @@ public class Problem {
     private void initProblemData(int courseID, int examID, int problemID) {
         String uri = String.format("course/%d/exam/%d/problem/%d", courseID, examID, problemID);
         
-        Response get = new Response(Utils.get(uri));
+        Response get = new Response(NetworkUtils.get(uri));
         
         if (get.success()) {
             Map<String, Object> json = get.getContent();
@@ -43,7 +43,7 @@ public class Problem {
     
     public static Response list(int courseID, int examID) {
         String uri = String.format("course/%d/exam/%d/problem", courseID, examID);
-        return new Response(Utils.get(uri));
+        return new Response(NetworkUtils.get(uri));
     }
     
     public static Response create(int courseID, int examID, 
@@ -57,7 +57,7 @@ public class Problem {
         json.addProperty("input", input);
         json.addProperty("output", output);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response update(String title, String desc, String input, String output) {
@@ -73,7 +73,7 @@ public class Problem {
         json.addProperty("input", input);
         json.addProperty("output", output);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response remove() {
@@ -82,7 +82,7 @@ public class Problem {
         JsonObject json = new JsonObject();
         json.addProperty("problemID", data.getProblemID());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     

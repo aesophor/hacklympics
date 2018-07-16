@@ -87,44 +87,34 @@ public class CodeController implements Initializable {
 
         // Reset the Code Page to its original state if current exam is halted.
         this.setOnHaltExam((HaltExamEvent event) -> {
-            if (Session.getInstance().isInExam()) {
-                int eventExamID = event.getExam().getExamID();
-                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
-
-                if (eventExamID == currentExamID) {
-                    // Shutdown the snapshot thread.
-                    SnapshotManager.getInstance().shutdown();
+            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                // Shutdown the snapshot thread.
+                SnapshotManager.getInstance().shutdown();
                     
-                    // Reset the Proctor Page to its original state.
-                    Session.getInstance().setCurrentExam(null);
+                // Reset the Proctor Page to its original state.
+                Session.getInstance().setCurrentExam(null);
 
-                    Platform.runLater(() -> {
-                        this.reset();
+                Platform.runLater(() -> {
+                    this.reset();
 
-                        AlertDialog alert = new AlertDialog(
-                                dialogPane,
-                                "Exam Halted",
-                                "The current exam has been halted."
-                        );
+                    AlertDialog alert = new AlertDialog(
+                            dialogPane,
+                            "Exam Halted",
+                            "The current exam has been halted."
+                    );
 
-                        alert.show();
-                    });
-                }
+                    alert.show();
+                });
             }
         });
         
         // Adjust the snapshot parameters and restart the snapshot thread
         // upon receiving an AdjustSnapshotParamEvent.
         this.setOnAdjustSnapshotParam((AdjustSnapshotParamEvent event) -> {
-            if (Session.getInstance().isInExam()) {
-                int eventExamID = event.getExamID();
-                int currentExamID = Session.getInstance().getCurrentExam().getExamID();
-                
-                if (eventExamID == currentExamID) {
-                    // Set the parameters.
-                    SnapshotManager.getInstance().setQuality(event.getQuality());
-                    SnapshotManager.getInstance().setFrequency(event.getFrequency());
-                }
+            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                // Set the parameters.
+                SnapshotManager.getInstance().setQuality(event.getQuality());
+                SnapshotManager.getInstance().setFrequency(event.getFrequency());
             }
         });
 

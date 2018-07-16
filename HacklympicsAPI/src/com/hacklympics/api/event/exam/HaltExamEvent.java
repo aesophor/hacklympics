@@ -3,11 +3,13 @@ package com.hacklympics.api.event.exam;
 import java.util.Map;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.event.Event;
+import com.hacklympics.api.event.ExamDependent;
 import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Teacher;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
-public class HaltExamEvent extends Event {
+public class HaltExamEvent extends Event implements ExamDependent {
     
     private final Exam exam;
     private final Teacher teacher;
@@ -17,8 +19,8 @@ public class HaltExamEvent extends Event {
         
         Map<String, Object> content = this.getContent();
         
-        String rawTeacherJson = Utils.getGson().toJson(content.get("teacher"));
-        JsonObject teacherJson = Utils.getGson().fromJson(rawTeacherJson, JsonObject.class);
+        String rawTeacherJson = NetworkUtils.getGson().toJson(content.get("teacher"));
+        JsonObject teacherJson = NetworkUtils.getGson().fromJson(rawTeacherJson, JsonObject.class);
         
         String username = teacherJson.get("username").getAsString();
         String fullname = teacherJson.get("fullname").getAsString();
@@ -27,8 +29,8 @@ public class HaltExamEvent extends Event {
         this.teacher = new Teacher(username, fullname, gradYear);
         
         
-        String rawExamJson = Utils.getGson().toJson(content.get("exam"));
-        JsonObject examJson = Utils.getGson().fromJson(rawExamJson, JsonObject.class);
+        String rawExamJson = NetworkUtils.getGson().toJson(content.get("exam"));
+        JsonObject examJson = NetworkUtils.getGson().fromJson(rawExamJson, JsonObject.class);
         
         int courseID = examJson.get("courseID").getAsInt();
         int examID = examJson.get("examID").getAsInt();
@@ -54,6 +56,15 @@ public class HaltExamEvent extends Event {
      */
     public Teacher getTeacher() {
         return teacher;
+    }
+    
+    
+    @Override
+    public boolean isForCurrentExam() {
+        int eventExamID = this.getExam().getExamID();
+        int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+        
+        return eventExamID == currentExamID;
     }
     
 }

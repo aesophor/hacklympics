@@ -10,7 +10,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.user.Teacher;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class Exam {
     
@@ -26,7 +26,7 @@ public class Exam {
     
     private void initExamData(int courseID, int examID) {
         String uri = String.format("course/%d/exam/%d", courseID, examID);
-        Response get = new Response(Utils.get(uri));
+        Response get = new Response(NetworkUtils.get(uri));
         
         if (get.success()) {
             Map<String, Object> exam = get.getContent();
@@ -44,12 +44,12 @@ public class Exam {
     
     public static Response list(int courseID) {
         String uri = String.format("course/%d/exam", courseID);
-        return new Response(Utils.get(uri));
+        return new Response(NetworkUtils.get(uri));
     }
     
     public static Response listOngoing() {
         String uri = String.format("exam/ongoing");
-        return new Response(Utils.get(uri));
+        return new Response(NetworkUtils.get(uri));
     }
     
     public static Response create(int courseID, String title, String desc, int duration) {
@@ -60,7 +60,7 @@ public class Exam {
         json.addProperty("desc", desc);
         json.addProperty("duration", Integer.toString(duration));
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response update(String title, String desc, int duration) {
@@ -76,7 +76,7 @@ public class Exam {
         json.addProperty("desc", desc);
         json.addProperty("duration", duration);
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response remove() {
@@ -85,7 +85,7 @@ public class Exam {
         JsonObject json = new JsonObject();
         json.addProperty("examID", data.getExamID());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response launch() {
@@ -94,7 +94,7 @@ public class Exam {
         JsonObject json = new JsonObject();
         json.addProperty("examID", this.data.getExamID());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response halt() {
@@ -103,7 +103,7 @@ public class Exam {
         JsonObject json = new JsonObject();
         json.addProperty("examID", this.data.getExamID());
         
-        return new Response(Utils.post(uri, json.toString()));
+        return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     /**
@@ -115,8 +115,8 @@ public class Exam {
         Response list = Problem.list(getData().getCourseID(), getData().getExamID());
         
         if (list.success()) {
-            String raw = Utils.getGson().toJson(list.getContent().get("problems"));
-            JsonArray json = Utils.getGson().fromJson(raw, JsonArray.class);
+            String raw = NetworkUtils.getGson().toJson(list.getContent().get("problems"));
+            JsonArray json = NetworkUtils.getGson().fromJson(raw, JsonArray.class);
             
             for (JsonElement e: json) {
                 int problemID = e.getAsJsonObject().get("id").getAsInt();
@@ -141,8 +141,8 @@ public class Exam {
         Response list = Exam.listOngoing();
         
         if (list.success()) {
-            String raw = Utils.getGson().toJson(list.getContent().get("exams"));
-            JsonArray json = Utils.getGson().fromJson(raw, JsonArray.class);
+            String raw = NetworkUtils.getGson().toJson(list.getContent().get("exams"));
+            JsonArray json = NetworkUtils.getGson().fromJson(raw, JsonArray.class);
             
             for (JsonElement e: json) {
                 int courseID = e.getAsJsonObject().get("courseID").getAsInt();
@@ -168,7 +168,7 @@ public class Exam {
                 this.data.getCourseID(), this.data.getExamID());
         
         int remainingTime = 0;
-        Response getRemainingTime = new Response(Utils.get(uri));
+        Response getRemainingTime = new Response(NetworkUtils.get(uri));
         
         if (getRemainingTime.success()) {
             Map<String, Object> content = getRemainingTime.getContent();
@@ -188,7 +188,7 @@ public class Exam {
                 this.data.getCourseID(), this.data.getExamID());
         
         Teacher owner = null;
-        Response getRemainingTime = new Response(Utils.get(uri));
+        Response getRemainingTime = new Response(NetworkUtils.get(uri));
         
         if (getRemainingTime.success()) {
             Map<String, Object> content = getRemainingTime.getContent();

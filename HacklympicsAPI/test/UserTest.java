@@ -7,7 +7,7 @@ import com.hacklympics.api.user.UserProfile;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;
 import com.hacklympics.api.user.User;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class UserTest {
     

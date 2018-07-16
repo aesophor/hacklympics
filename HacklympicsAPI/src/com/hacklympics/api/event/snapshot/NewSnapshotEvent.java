@@ -2,10 +2,12 @@ package com.hacklympics.api.event.snapshot;
 
 import java.util.Map;
 import com.hacklympics.api.event.Event;
+import com.hacklympics.api.event.ExamDependent;
+import com.hacklympics.api.session.Session;
 import com.hacklympics.api.snapshot.Snapshot;
 
 
-public class NewSnapshotEvent extends Event {
+public class NewSnapshotEvent extends Event implements ExamDependent {
     
     private final Snapshot snapshot;
     
@@ -29,6 +31,14 @@ public class NewSnapshotEvent extends Event {
      */
     public Snapshot getSnapshot() {
         return this.snapshot;
+    }
+    
+    @Override
+    public boolean isForCurrentExam() {
+        int eventExamID = this.getSnapshot().getExamID();
+        int currentExamID = Session.getInstance().getCurrentExam().getExamID();
+        
+        return eventExamID == currentExamID;
     }
     
 }

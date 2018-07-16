@@ -286,7 +286,7 @@ public class CoursesController implements Initializable {
     }
     
     /**
-     * Invoked when the search button is clicked.
+     * Invoked when something is typed into the filter textbox.
      * @param event emitted by JavaFX.
      */
     public void search(KeyEvent event) {

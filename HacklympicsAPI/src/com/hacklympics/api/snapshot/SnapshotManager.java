@@ -2,19 +2,40 @@ package com.hacklympics.api.snapshot;
 
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.utility.Utils;
+import com.hacklympics.api.utility.ImageUtils;
 import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import java.awt.AWTException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SnapshotManager implements Runnable {
+    
+    public static final List<Double> QUALITY_OPTIONS = new ArrayList<>();
+    public static final List<Integer> FREQUENCY_OPTIONS = new ArrayList<>();
     
     public static final double GENERIC_GRP_DEFAULT_QUALITY = 0.25;
     public static final int GENERIC_GRP_DEFAULT_FREQUENCY = 5;
     
-    public static final double SPECIAL_GRP_DEFAULT_QUALITY = 0.25;
-    public static final int SPECIAL_GRP_DEFAULT_FREQUENCY = 5;
+    public static final double SPECIAL_GRP_DEFAULT_QUALITY = 0.50;
+    public static final int SPECIAL_GRP_DEFAULT_FREQUENCY = 3;
+    
+    static {
+        // Available quality options (scale of original snapshot).
+        QUALITY_OPTIONS.add(0.15);
+        QUALITY_OPTIONS.add(0.25);
+        QUALITY_OPTIONS.add(0.50);
+        QUALITY_OPTIONS.add(0.75);
+        QUALITY_OPTIONS.add(1.00);
+        
+        // Available frequency options (snapshot per sec).
+        FREQUENCY_OPTIONS.add(3);
+        FREQUENCY_OPTIONS.add(5);
+        FREQUENCY_OPTIONS.add(8);
+        FREQUENCY_OPTIONS.add(10);
+        FREQUENCY_OPTIONS.add(15);
+    }
     
     
     private static SnapshotManager snapshotManager;
@@ -46,8 +67,8 @@ public class SnapshotManager implements Runnable {
         
         while (running) {
             try {
-                BufferedImage img = Utils.takeSnapshot(quality);
-                String base64img = Base64.encode(Utils.bufferedImage2ByteArray(img));
+                BufferedImage img = ImageUtils.takeSnapshot(quality);
+                String base64img = Base64.encode(ImageUtils.bufferedImage2ByteArray(img));
                 
                 Response snapshot = Snapshot.create(
                         Session.getInstance().getCurrentExam().getCourseID(),

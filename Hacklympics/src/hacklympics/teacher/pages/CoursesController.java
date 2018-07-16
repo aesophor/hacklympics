@@ -303,7 +303,7 @@ public class CoursesController implements Initializable {
     }
     
     /**
-     * Called when the search button is clicked.
+     * Invoked when something is typed into the filter textbox.
      * @param event emitted by JavaFX.
      */
     @FXML
