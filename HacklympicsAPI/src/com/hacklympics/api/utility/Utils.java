@@ -1,5 +1,9 @@
 package com.hacklympics.api.utility;
 
+import java.awt.Robot;
+import java.awt.Toolkit;
+import java.awt.Rectangle;
+import java.awt.AWTException;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.ByteArrayInputStream;
@@ -17,12 +21,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
-import com.hacklympics.api.communication.Config;
-import java.awt.AWTException;
-import java.awt.Rectangle;
-import java.awt.Robot;
-import java.awt.Toolkit;
 import net.coobird.thumbnailator.Thumbnails;
+import com.hacklympics.api.communication.Config;
 
 public class Utils {
     
@@ -76,7 +76,7 @@ public class Utils {
                     InetAddress address = (InetAddress) addresses.nextElement();
                     String addr = address.getHostAddress();
                 
-                    if (addr.startsWith("192.168") | addr.startsWith("172.16")) {
+                    if (addr.startsWith("192.168.") | addr.startsWith("172.16.") | addr.startsWith("10.")) {
                         return addr;
                     }
                 }

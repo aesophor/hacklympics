@@ -53,6 +53,7 @@ public class LoginController {
                         
                         String studentFXML = FXMLTable.getInstance().get("Student");
                         Utils.loadUserStage(new FXMLLoader(getClass().getResource(studentFXML)));
+                        
                         loginBtn.getScene().getWindow().hide();
                         break;
                         
@@ -62,6 +63,7 @@ public class LoginController {
                         
                         String teacherFXML = FXMLTable.getInstance().get("Teacher");
                         Utils.loadUserStage(new FXMLLoader(getClass().getResource(teacherFXML)));
+                        
                         loginBtn.getScene().getWindow().hide();
                         break;
                         

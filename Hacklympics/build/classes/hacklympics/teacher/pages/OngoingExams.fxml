@@ -27,6 +27,6 @@
          </graphic>
       </JFXButton>
       <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" onKeyReleased="#search" prefHeight="27.0" prefWidth="707.0" promptText="Keyword" />
-      <StackPane fx:id="dialogPane" layoutX="150.0" layoutY="244.0" mouseTransparent="true" prefHeight="153.0" prefWidth="328.0" />
+      <StackPane fx:id="dialogPane" layoutX="208.0" layoutY="244.0" mouseTransparent="true" prefHeight="124.0" prefWidth="270.0" />
    </children>
 </AnchorPane>

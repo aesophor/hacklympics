@@ -1,9 +1,11 @@
 package hacklympics.utility.snapshot;
 
+import com.hacklympics.api.snapshot.SnapshotManager;
+
 public enum SnapshotGroup {
     
-    GENERIC("Generic", 0.25, 5),
-    SPECIAL("Special", 0.5, 3);
+    GENERIC("Generic", SnapshotManager.GENERIC_GRP_DEFAULT_QUALITY, SnapshotManager.GENERIC_GRP_DEFAULT_FREQUENCY),
+    SPECIAL("Special", SnapshotManager.SPECIAL_GRP_DEFAULT_QUALITY, SnapshotManager.SPECIAL_GRP_DEFAULT_FREQUENCY);
     
     
     private final SnapshotGrpVBox snapshotGrpVBox;

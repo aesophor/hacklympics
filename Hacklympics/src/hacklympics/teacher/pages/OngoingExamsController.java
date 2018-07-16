@@ -132,7 +132,7 @@ public class OngoingExamsController implements Initializable {
      */
     @FXML
     public void attendExam(ActionEvent event) {
-        // If the user is try to launch an exam, but no exam is selected,
+        // If the user is trying to launch an exam, but no exam is selected,
         // block this attempt and alert the user.
         Exam selectedExam = table.getSelectionModel().getSelectedItem();
         
@@ -141,6 +141,19 @@ public class OngoingExamsController implements Initializable {
                     dialogPane,
                     "Alert",
                     "You have not selected any exam to attend to."
+            );
+            
+            alert.show();
+            return;
+        }
+        
+        // If the user is trying to launch an exam, but is already
+        // in an exam, block this attempt and alert the user.
+        if (Session.getInstance().isInExam()) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You are already in an exam."
             );
             
             alert.show();

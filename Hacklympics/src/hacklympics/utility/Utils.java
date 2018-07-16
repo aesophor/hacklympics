@@ -20,6 +20,7 @@ public class Utils {
         
     }
     
+    
     public static void loadStage(FXMLLoader loader) {
         try {
             Parent root = loader.load();

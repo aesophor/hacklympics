@@ -35,15 +35,15 @@ public class Snapshot {
     public static Response adjustParam(int courseID, int examID, List<Student> students, double quality, int frequency) {
         String uri = String.format("course/%d/exam/%d/snapshot/adjust_param", courseID, examID);
         
-        JsonArray s = new JsonArray();
+        JsonArray studentsJsonArray = new JsonArray();
         for (Student student : students) {
-            s.add(student.getUsername());
+            studentsJsonArray.add(student.getUsername());
         }
         
         JsonObject json = new JsonObject();
         json.addProperty("quality", quality);
         json.addProperty("frequency", frequency);
-        json.add("students", s);
+        json.add("students", studentsJsonArray);
         
         return new Response(Utils.post(uri, json.toString()));
     }

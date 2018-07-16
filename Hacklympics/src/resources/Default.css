@@ -41,6 +41,15 @@
     -jfx-checked-color: -fx-lightblue;
 }
 
+.jfx-progress-bar > .track, .jfx-progress-bar > .bar {
+    -fx-background-radius: 0;
+    -fx-background-insets: 0;
+}
+
+.jfx-progress-bar > .bar {
+    -fx-background-color: -fx-lightblue;
+}
+
 
 /* JFXTabPane */
 .tab {

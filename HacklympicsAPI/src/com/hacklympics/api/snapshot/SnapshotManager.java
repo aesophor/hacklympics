@@ -10,20 +10,28 @@ import java.io.IOException;
 
 public class SnapshotManager implements Runnable {
     
+    public static final double GENERIC_GRP_DEFAULT_QUALITY = 0.25;
+    public static final int GENERIC_GRP_DEFAULT_FREQUENCY = 5;
+    
+    public static final double SPECIAL_GRP_DEFAULT_QUALITY = 0.25;
+    public static final int SPECIAL_GRP_DEFAULT_FREQUENCY = 5;
+    
+    
     private static SnapshotManager snapshotManager;
     
     private boolean running;
     private double quality;
     private int frequency;
     
-    public SnapshotManager(double quality, int frequency) {
-        this.quality = quality;
-        this.frequency = frequency;
+    public SnapshotManager() {
+        // All students will be placed in Generic Group initially.
+        this.quality = GENERIC_GRP_DEFAULT_QUALITY;
+        this.frequency = GENERIC_GRP_DEFAULT_FREQUENCY;
     }
     
     public static SnapshotManager getInstance() {
         if (snapshotManager == null) {
-            snapshotManager = new SnapshotManager(0.25, 5);
+            snapshotManager = new SnapshotManager();
         }
         
         return snapshotManager;
@@ -32,7 +40,7 @@ public class SnapshotManager implements Runnable {
     
     @Override
     public void run() {
-        System.out.println("[*] Starting snapshot thread...");
+        System.out.println("[*] Started snapshot thread.");
         
         running = true;
         
@@ -54,10 +62,11 @@ public class SnapshotManager implements Runnable {
                 running = false;
             }
         }
+        
+        System.out.println("[*] Stopped snapshot thread.");
     }
     
     public void shutdown() {
-        System.out.println("[*] Shutting down snapshot thread...");
         running = false;
     }
     
