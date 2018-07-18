@@ -50,7 +50,7 @@ def adjust_param(request, c_id, e_id):
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         students = User.objects.filter(username__in=students)
         
-        dispatch(AdjustSnapshotParamEvent(exam, quality, frequency), students)
+        dispatch(AdjustSnapshotParamEvent(exam, quality, frequency), OngoingExams.get(exam).students)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:

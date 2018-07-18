@@ -55,6 +55,7 @@ urlpatterns = [
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/snapshot/adjust_param$', snapshot.adjust_param),
     
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/keystroke/sync$', keystroke.sync),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/keystroke/adjust_param$', keystroke.adjust_param),
 
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem$', problem.list),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/create$', problem.create),

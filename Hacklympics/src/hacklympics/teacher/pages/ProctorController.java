@@ -38,13 +38,16 @@ import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
+import com.jfoenix.controls.JFXTextArea;
 import hacklympics.utility.proctor.SnapshotManager;
 import static hacklympics.utility.FileTab.computeHighlighting;
 import hacklympics.utility.proctor.KeystrokeBox;
+import hacklympics.utility.proctor.KeystrokeManager;
 import hacklympics.utility.proctor.KeystrokeStudentsVBox;
 import hacklympics.utility.proctor.SnapshotBox;
 import hacklympics.utility.proctor.SnapshotGroup;
 import hacklympics.utility.proctor.SnapshotGrpVBox;
+import javafx.scene.layout.HBox;
 import static javafx.scene.layout.Region.USE_PREF_SIZE;
 import javafx.scene.layout.VBox;
 import org.fxmisc.richtext.CodeArea;
@@ -60,8 +63,6 @@ public class ProctorController implements Initializable {
     
     private KeystrokeStudentsVBox keystrokeStudentsVBox;
     
-    private CodeArea codeArea;
-
     @FXML
     private StackPane dialogPane;
     @FXML
@@ -85,12 +86,12 @@ public class ProctorController implements Initializable {
     @FXML
     private ScrollPane keystrokePlaybackPane;
     @FXML
+    private JFXTextArea codeArea;
+    @FXML
     private JFXProgressBar keystrokePlaybackBar;
+    @FXML
+    private JFXComboBox keyFrequencyBox;
 
-    
-    // 1. Sync snapshot / keystroke only.
-    // 2. Implement playback functionalities.
-    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // First we will cache to generic and special group VBox so that
@@ -130,22 +131,33 @@ public class ProctorController implements Initializable {
         );
         
         
+        // Populate the keyFrequencyBox.
+        this.keyFrequencyBox.getItems().addAll(KeystrokeManager.FREQUENCY_OPTIONS);
+        
+        /************************************************************************
         // Place a CodeArea into keystrokePlaybackPane.
         codeArea = new CodeArea();
         codeArea.getStyleClass().add("code-area");
+        //codeArea.setEditable(false);
+        codeArea.setPrefHeight(USE_PREF_SIZE);
         codeArea.getStylesheets().add("/resources/JavaKeywords.css");
 
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.multiPlainChanges()
-                .successionEnds(java.time.Duration.ofMillis(200))
+                .successionEnds(java.time.Duration.ofMillis(1))
                 .subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
 
         // Add the code area we just created into a VBox.
+        HBox hbox = new HBox();
+        hbox.getChildren().add(codeArea);
+        
         VBox vbox = new VBox();
-        vbox.setPrefHeight(USE_PREF_SIZE);
-        vbox.getStyleClass().add("code-vbox");
-        vbox.getChildren().add(codeArea);
+        vbox.setPrefWidth(353.0);
+        vbox.setPrefHeight(451.0);
+        //vbox.getStyleClass().add("code-vbox");
+        vbox.getChildren().add(hbox);
         this.keystrokePlaybackPane.setContent(vbox);
+        ************************************************************************/
         
         
         // Clear all SnapshotBoxes of current exam and restore the
@@ -373,18 +385,112 @@ public class ProctorController implements Initializable {
     
     @FXML
     public void playKeystroke(ActionEvent event) throws InterruptedException {
-        KeystrokeBox selectedBox = this.keystrokeStudentsVBox.getSelectedItem();
-        List<String> keystrokeHistory = selectedBox.getKeystrokeHistory();
-        
-        for (String moment : keystrokeHistory) {
-            this.codeArea.replaceText(moment);
+        // If the user tries to play the keystroke history of a student,
+        // but the user is currently not in any exam, block this attempt
+        // and alert the user.
+        if (!Session.getInstance().isInExam()) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "Keystroke playback is only available during exam."
+            );
+
+            alert.show();
+            return;
         }
         
+        // If the user has not selected any student for playback,
+        // block this attempt and alert the user.
+        KeystrokeBox selectedBox = this.keystrokeStudentsVBox.getSelectedItem();
+        
+        if (selectedBox == null) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You haven't selected any student yet."
+            );
+
+            alert.show();
+            return;
+        }
+        
+        // If everything is fine, then we will proceed.
+        // Execute a new thread for keystroke playback, since we will
+        // need to call Thread.sleep() during playback.
+        // If we call Thread.sleep() on JavaFX thread, the UI will hang.
+        List<String> keystrokeHistory = selectedBox.getKeystrokeHistory();
+        
+        new Thread() {
+            @Override
+            public void run() {
+                for (int i = 0; i < keystrokeHistory.size(); i++) {
+                    double currentProgress = ((double) i) / keystrokeHistory.size();
+                    int currentIndex = i;
+                    
+                    Platform.runLater(() -> {
+                        codeArea.setText(keystrokeHistory.get(currentIndex));
+                        keystrokePlaybackBar.setProgress(currentProgress);
+                    });
+                
+                    try {
+                        // playback speed * 1000.
+                        Thread.sleep(100);
+                    } catch (InterruptedException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        }.start();
     }
     
     @FXML
     public void adjustKeystrokesParam(ActionEvent event) {
+        // If the user tries to broadcast the command to adjust snapshot
+        // parameters to all students in the exam, but the user is currently
+        // not in any exam, block this attempt and alert the user.
+        if (!Session.getInstance().isInExam()) {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "You can only adjust parameters while in exam."
+            );
 
+            alert.show();
+            return;
+        }
+        
+        // If everything is fine, then we will proceed.
+        // Get the parameters from the ComboBoxes.
+        Integer selectedFrequency = (Integer) this.keyFrequencyBox.getSelectionModel().getSelectedItem();
+
+        // Broadcast the command to adjust snapshot parameters
+        // to the students within the user-selected group.
+        Response adjustParam = Keystroke.adjustParam(
+                Session.getInstance().getCurrentExam().getCourseID(),
+                Session.getInstance().getCurrentExam().getExamID(),
+                this.keystrokeStudentsVBox.getStudents(),
+                selectedFrequency
+        );
+
+        if (adjustParam.getStatusCode() == StatusCode.SUCCESS) {
+            this.keystrokeStudentsVBox.setFrequency(selectedFrequency);
+
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Parameters Adjusted",
+                    "The keystroke parameters has been adjusted."
+            );
+
+            alert.show();
+        } else {
+            AlertDialog alert = new AlertDialog(
+                    dialogPane,
+                    "Alert",
+                    "Failed to adjust the keystroke parameters."
+            );
+
+            alert.show();
+        }
     }
     
 
@@ -503,6 +609,8 @@ public class ProctorController implements Initializable {
         
         this.keystrokeStudentsVBox.clear();
         this.keystrokeStudentsVBox.rearrange();
+        
+        this.codeArea.clear();
 
         this.disableLeaveOrHaltBtn();
         this.stopExamLabelTimer();

@@ -80,8 +80,6 @@ public class FileTab extends Tab {
 
     public FileTab() {
         super("Untitled");
-
-        this.keystrokeHistory = new ArrayList<>();
         
         codeArea = new CodeArea();
         codeArea.getStyleClass().add("code-area");
@@ -108,6 +106,9 @@ public class FileTab extends Tab {
         anchorPane.getStyleClass().add("code-anchor");
         anchorPane.getChildren().add(vbox);
         setContent(anchorPane);
+        
+        this.keystrokeHistory = new ArrayList<>();
+        this.keystrokeHistory.add(codeArea.getText());
 
         getStyleClass().add("minimal-tab");
         markAsUnsaved();

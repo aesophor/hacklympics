@@ -33,6 +33,7 @@ public class EventManager {
         
         // List of handlers for events of new keystrokes arrival.
         this.handlers.put(EventType.NEW_KEYSTROKE, new ArrayList<>());
+        this.handlers.put(EventType.ADJUST_KEYSTROKE_PARAM, new ArrayList<>());
     }
     
     public static EventManager getInstance() {

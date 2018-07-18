@@ -41,6 +41,8 @@ public class StudentController implements Initializable, MainController {
     private ObservableList<User> onlineUsers;
     
     @FXML
+    private AnchorPane mainPane;
+    @FXML
     private AnchorPane holderPane;
     @FXML
     private StackPane dialogPane;
@@ -156,13 +158,15 @@ public class StudentController implements Initializable, MainController {
     
     
     public void logout(ActionEvent event) {
-        ConfirmDialog confirm = new ConfirmDialog(
+        //this.mainPane.setMouseTransparent(true);
+        
+        ConfirmDialog dialog = new ConfirmDialog(
                 dialogPane,
                 "Logout",
                 "You are about to be logged out. Are you sure?"
         );
         
-        confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response logout = Session.getInstance().getCurrentUser().logout();
             
             if (logout.success()) {
@@ -176,7 +180,7 @@ public class StudentController implements Initializable, MainController {
             }
         });
         
-        confirm.show();
+        dialog.show();
     }
     
     private void setGreetingMsg() {

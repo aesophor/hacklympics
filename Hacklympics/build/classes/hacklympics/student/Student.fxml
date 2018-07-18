@@ -12,149 +12,154 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="mainPane" prefHeight="698.0" prefWidth="1042.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.StudentController">
+<AnchorPane id="AnchorPane" prefHeight="698.0" prefWidth="1042.0" styleClass="mainFxmlClass" stylesheets="@../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="hacklympics.student.StudentController">
    <children>
-      <Label alignment="CENTER" layoutX="266.0" prefHeight="60.0" prefWidth="776.0" styleClass="banner" stylesheets="@../../resources/Default.css" textFill="#eaeaea">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-      <AnchorPane fx:id="holderPane" layoutX="266.0" layoutY="24.0" prefHeight="674.0" prefWidth="776.0" />
-      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="266.0" styleClass="sidebar">
+      <AnchorPane fx:id="mainPane" prefHeight="698.0" prefWidth="1042.0">
          <children>
-            <Label alignment="CENTER" prefHeight="58.0" prefWidth="266.0" style="-fx-background-color: #0095d9;" stylesheets="@../../resources/Default.css" text="Hacklympics" textFill="#eaeaea">
+            <Label alignment="CENTER" layoutX="266.0" prefHeight="60.0" prefWidth="776.0" styleClass="banner" stylesheets="@../../resources/Default.css" textFill="#eaeaea">
                <font>
                   <Font size="18.0" />
                </font>
-               <padding>
-                  <Insets bottom="20.0" left="20.0" right="20.0" top="18.0" />
-               </padding>
             </Label>
-            <HBox layoutX="10.0" layoutY="69.0" prefHeight="42.0" prefWidth="266.0">
+            <AnchorPane fx:id="holderPane" layoutX="266.0" layoutY="24.0" prefHeight="674.0" prefWidth="776.0" />
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="698.0" prefWidth="266.0" styleClass="sidebar">
                <children>
-                  <Label prefHeight="76.0" prefWidth="265.0" text="NAVIGATION" textFill="#aeaeae">
+                  <Label alignment="CENTER" prefHeight="58.0" prefWidth="266.0" style="-fx-background-color: #0095d9;" stylesheets="@../../resources/Default.css" text="Hacklympics" textFill="#eaeaea">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
                      <padding>
-                        <Insets left="25.0" top="15.0" />
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="18.0" />
                      </padding>
                   </Label>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="374.0" prefHeight="42.0" prefWidth="266.0">
-               <children>
-                  <JFXButton onAction="#showDashboard" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Dashboard" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIconView fill="#eaeaea" glyphName="DASHBOARD" size="20.0" wrappingWidth="30.0" />
-                     </graphic>
-                     <padding>
-                        <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </JFXButton>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
-               <children>
-                  <JFXButton onAction="#showCourses" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="My Courses / Exams" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIconView fill="#eaeaea" glyphName="BOOK" size="20.0" wrappingWidth="30.0" />
-                     </graphic>
-                     <padding>
-                        <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </JFXButton>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
-               <children>
-                  <JFXButton onAction="#showOngoingExams" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Ongoing Exams" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIconView fill="#eaeaea" glyphName="LIST" size="20.0" wrappingWidth="30.0" />
-                     </graphic>
-                     <padding>
-                        <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </JFXButton>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
-               <children>
-                  <JFXButton onAction="#showMessages" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Messages" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIconView fill="#eaeaea" glyphName="COMMENT" size="20.0" wrappingWidth="30.0" />
-                     </graphic>
-                     <padding>
-                        <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </JFXButton>
-               </children>
-            </HBox>
-            <HBox layoutX="10.0" layoutY="69.0" prefHeight="42.0" prefWidth="266.0">
-               <children>
-                  <JFXButton onAction="#showCode" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Code" textFill="WHITE">
-                     <graphic>
-                        <FontAwesomeIconView fill="#eaeaea" glyphName="CODE" size="20.0" wrappingWidth="30.0" />
-                     </graphic>
-                     <padding>
-                        <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
-                     </padding>
-                     <HBox.margin>
-                        <Insets />
-                     </HBox.margin>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </JFXButton>
-               </children>
-            </HBox>
-            <VBox prefHeight="200.0" prefWidth="100.0">
-               <children>
-                  <AnchorPane prefHeight="325.0" prefWidth="266.0">
+                  <HBox layoutX="10.0" layoutY="69.0" prefHeight="42.0" prefWidth="266.0">
                      <children>
-                        <Label layoutX="14.0" layoutY="313.0" text="Hacklympics Alpha (08072018)" textFill="#aeaeae" />
-                        <JFXListView fx:id="onlineUserListView" layoutX="24.0" layoutY="116.0" prefHeight="184.0" prefWidth="201.0" style="-fx-background-color: transparent;">
+                        <Label prefHeight="76.0" prefWidth="265.0" text="NAVIGATION" textFill="#aeaeae">
                            <padding>
-                              <Insets left="-5.0" />
-                           </padding></JFXListView>
-                        <Label layoutX="25.0" layoutY="78.0" text="ONLINE USERS" textFill="#b1b1b1" />
-                        <Line endX="100.0" layoutX="125.0" layoutY="69.0" startX="-100.0" stroke="#b1b1b1" />
+                              <Insets left="25.0" top="15.0" />
+                           </padding>
+                        </Label>
                      </children>
-                     <opaqueInsets>
-                        <Insets />
-                     </opaqueInsets>
-                  </AnchorPane>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="374.0" prefHeight="42.0" prefWidth="266.0">
+                     <children>
+                        <JFXButton onAction="#showDashboard" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Dashboard" textFill="WHITE">
+                           <graphic>
+                              <FontAwesomeIconView fill="#eaeaea" glyphName="DASHBOARD" size="20.0" wrappingWidth="30.0" />
+                           </graphic>
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
+                     <children>
+                        <JFXButton onAction="#showCourses" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="My Courses / Exams" textFill="WHITE">
+                           <graphic>
+                              <FontAwesomeIconView fill="#eaeaea" glyphName="BOOK" size="20.0" wrappingWidth="30.0" />
+                           </graphic>
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
+                     <children>
+                        <JFXButton onAction="#showOngoingExams" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Ongoing Exams" textFill="WHITE">
+                           <graphic>
+                              <FontAwesomeIconView fill="#eaeaea" glyphName="LIST" size="20.0" wrappingWidth="30.0" />
+                           </graphic>
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="120.0" prefHeight="42.0" prefWidth="266.0">
+                     <children>
+                        <JFXButton onAction="#showMessages" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Messages" textFill="WHITE">
+                           <graphic>
+                              <FontAwesomeIconView fill="#eaeaea" glyphName="COMMENT" size="20.0" wrappingWidth="30.0" />
+                           </graphic>
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="10.0" layoutY="69.0" prefHeight="42.0" prefWidth="266.0">
+                     <children>
+                        <JFXButton onAction="#showCode" prefHeight="33.0" prefWidth="266.0" ripplerFill="#545454c2" styleClass="sidebarBtn" text="Code" textFill="WHITE">
+                           <graphic>
+                              <FontAwesomeIconView fill="#eaeaea" glyphName="CODE" size="20.0" wrappingWidth="30.0" />
+                           </graphic>
+                           <padding>
+                              <Insets bottom="15.0" left="30.0" right="15.0" top="15.0" />
+                           </padding>
+                           <HBox.margin>
+                              <Insets />
+                           </HBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </JFXButton>
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <AnchorPane prefHeight="325.0" prefWidth="266.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="313.0" text="Hacklympics Alpha (08072018)" textFill="#aeaeae" />
+                              <JFXListView fx:id="onlineUserListView" layoutX="24.0" layoutY="116.0" prefHeight="184.0" prefWidth="201.0" style="-fx-background-color: transparent;">
+                                 <padding>
+                                    <Insets left="-5.0" />
+                                 </padding>
+                              </JFXListView>
+                              <Label layoutX="25.0" layoutY="78.0" text="ONLINE USERS" textFill="#b1b1b1" />
+                              <Line endX="100.0" layoutX="125.0" layoutY="69.0" startX="-100.0" stroke="#b1b1b1" />
+                           </children>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
                </children>
             </VBox>
+            <Label fx:id="bannerMsg" alignment="CENTER_RIGHT" layoutX="719.0" layoutY="21.0" prefHeight="18.0" prefWidth="213.0">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Label>
+            <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="955.0" layoutY="16.0" onAction="#logout" styleClass="lightBlueBtn" text="Logout" textFill="WHITE" />
          </children>
-      </VBox>
-      <Label fx:id="bannerMsg" alignment="CENTER_RIGHT" layoutX="719.0" layoutY="21.0" prefHeight="18.0" prefWidth="213.0">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Label>
-      <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="955.0" layoutY="16.0" onAction="#logout" styleClass="lightBlueBtn" text="Logout" textFill="WHITE" />
+      </AnchorPane>
       <StackPane fx:id="dialogPane" layoutX="368.0" layoutY="252.0" mouseTransparent="true" prefHeight="135.0" prefWidth="367.0" />
    </children>
 </AnchorPane>

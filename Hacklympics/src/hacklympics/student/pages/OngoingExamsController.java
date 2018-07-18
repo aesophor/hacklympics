@@ -29,6 +29,7 @@ import com.hacklympics.api.session.Session;
 import com.hacklympics.api.material.Exam;
 import hacklympics.utility.proctor.SnapshotManager;
 import com.hacklympics.api.user.User;
+import hacklympics.utility.proctor.KeystrokeManager;
 
 public class OngoingExamsController implements Initializable {
     
@@ -173,8 +174,9 @@ public class OngoingExamsController implements Initializable {
             // TODO: Students should not be able to enter the same exam again.
             switch (attend.getStatusCode()) {
                 case SUCCESS:
-                    // Execute the snapshot thread.
+                    // Execute the snapshot and keystroke logging thread.
                     Session.getInstance().getExecutor().execute(SnapshotManager.getInstance());
+                    Session.getInstance().getExecutor().execute(KeystrokeManager.getInstance());
                     
                     // Setup session data, examLabel and problemBox
                     // to inform user that he/she is taking an exam.

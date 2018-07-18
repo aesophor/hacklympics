@@ -54,16 +54,14 @@ public class KeystrokeManager implements Runnable {
 
         while (running) {
             try {
-                if (Session.getInstance().isInExam()) {
-                    Keystroke.sync(
-                            currentExam.getCourseID(),
-                            currentExam.getExamID(),
-                            currentUser.getUsername(),
-                            cc.getSelectedFileTab().getKeystrokeHistory()
-                    );
+                Keystroke.sync(
+                        currentExam.getCourseID(),
+                        currentExam.getExamID(),
+                        currentUser.getUsername(),
+                        cc.getSelectedFileTab().getKeystrokeHistory()
+                );
 
-                    Thread.sleep(frequency * 1000);
-                }
+                Thread.sleep(frequency * 1000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
                 running = false;

@@ -225,7 +225,7 @@ class AdjustSnapshotParamEvent(Event):
 
 
 class NewKeystrokeEvent(Event):
-    def __init__(self, exam: Exam, student: str, history: str):
+    def __init__(self, exam: Exam, student: str, history: list):
         super(NewKeystrokeEvent, self).__init__(EventType.NEW_KEYSTROKE)
         self.exam = exam
         self.student = student

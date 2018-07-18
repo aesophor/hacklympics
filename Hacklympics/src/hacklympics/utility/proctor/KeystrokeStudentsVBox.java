@@ -1,13 +1,14 @@
 package hacklympics.utility.proctor;
 
 import java.util.List;
+import java.util.ArrayList;
 import javafx.scene.control.ToggleGroup;
 import com.hacklympics.api.user.Student;
 
 public class KeystrokeStudentsVBox extends StudentsVBox {
     
     private final ToggleGroup toggleGroup;
-    private double playSpeed;
+    private int frequency;
     
     public KeystrokeStudentsVBox() {
         super();
@@ -104,6 +105,21 @@ public class KeystrokeStudentsVBox extends StudentsVBox {
         return target;
     }
     
+    
+    /**
+     * Gets all students currently in this group.
+     * @return all students in this group.
+     */
+    public List<Student> getStudents() {
+        List<Student> students = new ArrayList<>();
+        
+        for (StudentBox box : studentBoxes) {
+            students.add(box.getStudent());
+        }
+        
+        return students;
+    }
+    
     /**
      * Gets the KeystrokeBox that is selected by the user.
      * @return selected KeystrokeBox.
@@ -121,8 +137,12 @@ public class KeystrokeStudentsVBox extends StudentsVBox {
     }
     
     
-    public double getPlaySpeed() {
-        return this.playSpeed;
+    public int getFrequency() {
+        return this.frequency;
+    }
+    
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
     }
     
 }

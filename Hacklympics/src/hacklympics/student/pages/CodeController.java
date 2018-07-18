@@ -9,12 +9,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.util.Duration;
 import javafx.event.Event;
 import javafx.event.ActionEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import com.jfoenix.controls.JFXComboBox;
@@ -26,13 +28,12 @@ import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.exam.HaltExamEvent;
+import com.hacklympics.api.event.proctor.AdjustKeystrokeParamEvent;
 import com.hacklympics.api.event.proctor.AdjustSnapshotParamEvent;
 import com.hacklympics.api.material.Answer;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
-import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.session.Session;
-import hacklympics.utility.proctor.SnapshotManager;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.User;
 import hacklympics.student.StudentController;
@@ -40,8 +41,8 @@ import hacklympics.utility.FileTab;
 import hacklympics.utility.dialog.AlertDialog;
 import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
-import javafx.application.Platform;
-import javafx.scene.input.KeyEvent;
+import hacklympics.utility.proctor.KeystrokeManager;
+import hacklympics.utility.proctor.SnapshotManager;
 
 public class CodeController implements Initializable {
 
@@ -90,8 +91,9 @@ public class CodeController implements Initializable {
         // Reset the Code Page to its original state if current exam is halted.
         this.setOnHaltExam((HaltExamEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
-                // Shutdown the snapshot thread.
+                // Shutdown the snapshot and keystroke logging thread.
                 SnapshotManager.getInstance().shutdown();
+                KeystrokeManager.getInstance().shutdown();
                     
                 // Reset the Proctor Page to its original state.
                 Session.getInstance().setCurrentExam(null);
@@ -119,7 +121,17 @@ public class CodeController implements Initializable {
                 SnapshotManager.getInstance().setFrequency(event.getFrequency());
             }
         });
+        
+        // Adjust the keystroke parameters and restart the keystroke logging
+        // thread upon receiving an AdjustKeystrokeParamEvent.
+        this.setOnAdjustKeystrokeParam((AdjustKeystrokeParamEvent event) -> {
+            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                // Set the parameters.
+                KeystrokeManager.getInstance().setFrequency(event.getFrequency());
+            }
+        });
 
+        
         createFileTab();
     }
 
@@ -433,8 +445,9 @@ public class CodeController implements Initializable {
 
             switch (leave.getStatusCode()) {
                 case SUCCESS:
-                    // Shutdown the snapshot thread.
+                    // Shutdown the snapshot and keystroke logging thread.
                     SnapshotManager.getInstance().shutdown();
+                    KeystrokeManager.getInstance().shutdown();
                     
                     // Clear session data and reset the Code Page to
                     // its original state.
@@ -595,6 +608,10 @@ public class CodeController implements Initializable {
     
     private void setOnAdjustSnapshotParam(EventHandler<AdjustSnapshotParamEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.ADJUST_SNAPSHOT_PARAM, listener);
+    }
+    
+    private void setOnAdjustKeystrokeParam(EventHandler<AdjustKeystrokeParamEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.ADJUST_KEYSTROKE_PARAM, listener);
     }
 
 }

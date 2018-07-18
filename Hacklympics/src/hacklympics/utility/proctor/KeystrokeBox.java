@@ -43,8 +43,10 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
     public void update(Keystroke keystroke) {
         this.keystrokeHistory = keystroke.getHistory();
         
-        int lastIndex = this.keystrokeHistory.size() - 1;
-        this.codeArea.setText(this.keystrokeHistory.get(lastIndex));
+        if (this.keystrokeHistory.size() > 0) {
+            int lastIndex = this.keystrokeHistory.size() - 1;
+            this.codeArea.setText(this.keystrokeHistory.get(lastIndex));
+        }
     }
     
     

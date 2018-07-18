@@ -2,6 +2,9 @@ package com.hacklympics.api.event.proctor;
 
 import java.util.Map;
 import java.util.List;
+import java.util.ArrayList;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.hacklympics.api.event.Event;
 import com.hacklympics.api.event.ExamRelated;
 import com.hacklympics.api.proctor.Keystroke;
@@ -19,7 +22,14 @@ public class NewKeystrokeEvent extends Event implements ExamRelated {
         
         int examID = (int) Double.parseDouble(content.get("examID").toString());
         String student = content.get("student").toString();
-        List<String> history = NetworkUtils.getGson().fromJson(content.get("students").toString(), List.class);
+        List<String> history = new ArrayList<>();
+        
+        String rawHistoryJson = NetworkUtils.getGson().toJson(content.get("history"));
+        JsonArray historyJsonArray = NetworkUtils.getGson().fromJson(rawHistoryJson, JsonArray.class);
+        
+        for (JsonElement e : historyJsonArray) {
+            history.add(e.getAsString());
+        }
         
         this.keystroke = new Keystroke(
                 examID,
