@@ -116,7 +116,7 @@
                                        </font>
                                     </Label>
                                     <ScrollPane fx:id="keystrokeStudentsPane" layoutX="25.0" layoutY="60.0" prefHeight="508.0" prefWidth="355.0" />
-                                    <ScrollPane fx:id="CodePane" layoutX="400.0" layoutY="60.0" prefHeight="454.0" prefWidth="355.0" />
+                                    <ScrollPane fx:id="keystrokePlaybackPane" layoutX="400.0" layoutY="60.0" prefHeight="454.0" prefWidth="355.0" />
                                     <Label alignment="CENTER" layoutX="518.0" layoutY="20.0" prefHeight="29.0" text="Code Playback">
                                        <opaqueInsets>
                                           <Insets />
@@ -128,8 +128,8 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </Label>
-                                    <JFXProgressBar fx:id="keystrokeBar" layoutX="400.0" layoutY="526.0" prefHeight="5.0" prefWidth="355.0" progress="0.0" />
-                                    <JFXButton fx:id="keystrokePlayBtn" layoutX="560.0" layoutY="542.0" styleClass="lightBlueBtn" text=" ">
+                                    <JFXProgressBar fx:id="keystrokePlaybackBar" layoutX="400.0" layoutY="526.0" prefHeight="5.0" prefWidth="355.0" progress="0.0" />
+                                    <JFXButton fx:id="keystrokePlayBtn" layoutX="560.0" layoutY="542.0" onAction="#playKeystroke" styleClass="lightBlueBtn" text=" ">
                                        <graphic>
                                           <FontAwesomeIconView fill="WHITE" glyphName="PLAY" translateX="5.0" />
                                        </graphic>

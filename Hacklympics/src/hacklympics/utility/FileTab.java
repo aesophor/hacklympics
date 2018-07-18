@@ -7,8 +7,10 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.scene.control.Tab;
@@ -67,6 +69,9 @@ public class FileTab extends Tab {
         "}"
     });
 
+    
+    private final List<String> keystrokeHistory;
+    
     private final AnchorPane anchorPane;
     private final VBox vbox;
     private final CodeArea codeArea;
@@ -76,6 +81,8 @@ public class FileTab extends Tab {
     public FileTab() {
         super("Untitled");
 
+        this.keystrokeHistory = new ArrayList<>();
+        
         codeArea = new CodeArea();
         codeArea.getStyleClass().add("code-area");
         codeArea.getStylesheets().add(COLORSCHEME);
@@ -91,7 +98,7 @@ public class FileTab extends Tab {
             markAsUnsaved();
         });
 
-        // Add the code area I just created into a VBox.
+        // Add the code area we just created into a VBox.
         vbox = new VBox();
         vbox.getStyleClass().add("code-vbox");
         vbox.getChildren().add(codeArea);
@@ -213,7 +220,7 @@ public class FileTab extends Tab {
      * @return absolute path of the file.
      */
     public String getFilepath() {
-        return (file == null) ? "Unsaved file" : file.getAbsolutePath();
+        return (this.file == null) ? "Unsaved file" : this.file.getAbsolutePath();
     }
 
     /**
@@ -222,15 +229,19 @@ public class FileTab extends Tab {
      * @return the directory in which the file is saved.
      */
     public String getLocation() {
-        return file.getAbsoluteFile().getParent();
+        return this.file.getAbsoluteFile().getParent();
+    }
+    
+    public List<String> getKeystrokeHistory() {
+        return this.keystrokeHistory;
     }
 
     public CodeArea getCodeArea() {
-        return codeArea;
+        return this.codeArea;
     }
 
     public File getFile() {
-        return file;
+        return this.file;
     }
 
     public void setFile(File file) {

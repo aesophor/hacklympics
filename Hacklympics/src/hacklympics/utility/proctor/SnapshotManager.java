@@ -1,14 +1,15 @@
-package com.hacklympics.api.proctor;
+package hacklympics.utility.proctor;
 
-import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.session.Session;
-import com.hacklympics.api.utility.ImageUtils;
-import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
+
+import com.hacklympics.api.proctor.Snapshot;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.io.IOException;
 import java.awt.AWTException;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import com.hacklympics.api.session.Session;
+import com.hacklympics.api.utility.ImageUtils;
 
 public class SnapshotManager implements Runnable {
     
@@ -44,7 +45,7 @@ public class SnapshotManager implements Runnable {
     private double quality;
     private int frequency;
     
-    public SnapshotManager() {
+    private SnapshotManager() {
         // All students will be placed in Generic Group initially.
         this.quality = GENERIC_GRP_DEFAULT_QUALITY;
         this.frequency = GENERIC_GRP_DEFAULT_FREQUENCY;
@@ -68,9 +69,10 @@ public class SnapshotManager implements Runnable {
         while (running) {
             try {
                 BufferedImage img = ImageUtils.takeSnapshot(quality);
-                String base64img = Base64.encode(ImageUtils.bufferedImage2ByteArray(img));
+                byte[] imgByteArray = ImageUtils.bufferedImage2ByteArray(img);
+                String base64img = Base64.getEncoder().encodeToString(imgByteArray);
                 
-                Response snapshot = Snapshot.create(
+                Snapshot.create(
                         Session.getInstance().getCurrentExam().getCourseID(),
                         Session.getInstance().getCurrentExam().getExamID(),
                         Session.getInstance().getCurrentUser().getUsername(),

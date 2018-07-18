@@ -38,12 +38,17 @@ import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.proctor.SnapshotManager;
+import hacklympics.utility.proctor.SnapshotManager;
+import static hacklympics.utility.FileTab.computeHighlighting;
 import hacklympics.utility.proctor.KeystrokeBox;
 import hacklympics.utility.proctor.KeystrokeStudentsVBox;
 import hacklympics.utility.proctor.SnapshotBox;
 import hacklympics.utility.proctor.SnapshotGroup;
 import hacklympics.utility.proctor.SnapshotGrpVBox;
+import static javafx.scene.layout.Region.USE_PREF_SIZE;
+import javafx.scene.layout.VBox;
+import org.fxmisc.richtext.CodeArea;
+import org.fxmisc.richtext.LineNumberFactory;
 
 public class ProctorController implements Initializable {
 
@@ -54,6 +59,8 @@ public class ProctorController implements Initializable {
     private SnapshotGrpVBox snapshotSpeGrpVBox;
     
     private KeystrokeStudentsVBox keystrokeStudentsVBox;
+    
+    private CodeArea codeArea;
 
     @FXML
     private StackPane dialogPane;
@@ -76,9 +83,9 @@ public class ProctorController implements Initializable {
     @FXML
     private ScrollPane keystrokeStudentsPane;
     @FXML
-    private ScrollPane codePane;
+    private ScrollPane keystrokePlaybackPane;
     @FXML
-    private JFXProgressBar keystrokeBar;
+    private JFXProgressBar keystrokePlaybackBar;
 
     
     // 1. Sync snapshot / keystroke only.
@@ -121,6 +128,24 @@ public class ProctorController implements Initializable {
                     this.imgFrequencyBox.getSelectionModel().select((Integer) vbox.getFrequency());
                 }
         );
+        
+        
+        // Place a CodeArea into keystrokePlaybackPane.
+        codeArea = new CodeArea();
+        codeArea.getStyleClass().add("code-area");
+        codeArea.getStylesheets().add("/resources/JavaKeywords.css");
+
+        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
+        codeArea.multiPlainChanges()
+                .successionEnds(java.time.Duration.ofMillis(200))
+                .subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
+
+        // Add the code area we just created into a VBox.
+        VBox vbox = new VBox();
+        vbox.setPrefHeight(USE_PREF_SIZE);
+        vbox.getStyleClass().add("code-vbox");
+        vbox.getChildren().add(codeArea);
+        this.keystrokePlaybackPane.setContent(vbox);
         
         
         // Clear all SnapshotBoxes of current exam and restore the
@@ -204,7 +229,6 @@ public class ProctorController implements Initializable {
                 KeystrokeBox box = this.keystrokeStudentsVBox.get(keystroke.getStudentUsername());
                 
                 box.update(keystroke);
-                box.getKeystrokeHistory().add(keystroke.getContent());
             }
         });
     }
@@ -346,10 +370,23 @@ public class ProctorController implements Initializable {
         }
     }
 
+    
+    @FXML
+    public void playKeystroke(ActionEvent event) throws InterruptedException {
+        KeystrokeBox selectedBox = this.keystrokeStudentsVBox.getSelectedItem();
+        List<String> keystrokeHistory = selectedBox.getKeystrokeHistory();
+        
+        for (String moment : keystrokeHistory) {
+            this.codeArea.replaceText(moment);
+        }
+        
+    }
+    
     @FXML
     public void adjustKeystrokesParam(ActionEvent event) {
 
     }
+    
 
     /**
      * Halts the specified exam (for the teacher who launches the exam). Asks
@@ -461,9 +498,11 @@ public class ProctorController implements Initializable {
     private void reset() {
         this.snapshotGenGrpVBox.clear();
         this.snapshotSpeGrpVBox.clear();
-        
         this.snapshotGenGrpVBox.rearrange();
         this.snapshotSpeGrpVBox.rearrange();
+        
+        this.keystrokeStudentsVBox.clear();
+        this.keystrokeStudentsVBox.rearrange();
 
         this.disableLeaveOrHaltBtn();
         this.stopExamLabelTimer();

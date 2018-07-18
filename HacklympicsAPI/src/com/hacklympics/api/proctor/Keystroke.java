@@ -1,5 +1,7 @@
 package com.hacklympics.api.proctor;
 
+import com.google.gson.JsonArray;
+import java.util.List;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.utility.NetworkUtils;
@@ -8,21 +10,26 @@ public class Keystroke implements ProctorMedium {
     
     private final int examID;
     private final String studentUsername;
-    private final String content;
+    private final List<String> history;
     
-    public Keystroke(int examID, String studentUsername, String content) {
+    public Keystroke(int examID, String studentUsername, List<String> history) {
         this.examID = examID;
         this.studentUsername = studentUsername;
-        this.content = content;
+        this.history = history;
     }
     
     
-    public static Response sync(int courseID, int examID, String student, String content) {
+    public static Response sync(int courseID, int examID, String student, List<String> history) {
         String uri = String.format("course/%d/exam/%d/keystroke/sync", courseID, examID);
+        
+        JsonArray historyJsonArray = new JsonArray();
+        for (String moment : history) {
+            historyJsonArray.add(moment);
+        }
         
         JsonObject json = new JsonObject();
         json.addProperty("student", student);
-        json.addProperty("content", content);
+        json.add("history", historyJsonArray);
         
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
@@ -36,14 +43,8 @@ public class Keystroke implements ProctorMedium {
         return this.studentUsername;
     }
     
-    public String getContent() {
-        return this.content;
-    }
-    
-    
-    @Override
-    public String toString() {
-        return String.format("[%s] %s", this.studentUsername, this.content);
+    public List<String> getHistory() {
+        return this.history;
     }
     
 }

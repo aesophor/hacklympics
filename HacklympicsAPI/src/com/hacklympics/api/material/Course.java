@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ArrayList;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,7 +35,7 @@ public class Course {
                     json.get("name").toString(),
                     (int) Double.parseDouble(json.get("semester").toString()),
                     json.get("teacher").toString(),
-                    new Gson().fromJson(json.get("students").toString(), List.class)
+                    NetworkUtils.getGson().fromJson(json.get("students").toString(), List.class)
             );
         }
     }
@@ -50,16 +49,16 @@ public class Course {
     public static Response create(String name, int semester, String teacher, List<String> students) {
         String uri = String.format("course/create");
         
-        JsonArray s = new JsonArray();
+        JsonArray studentsJsonArray = new JsonArray();
         for (String student : students) {
-            s.add(student);
+            studentsJsonArray.add(student);
         }
         
         JsonObject json = new JsonObject();
         json.addProperty("name", name);
         json.addProperty("semester", semester);
         json.addProperty("teacher", teacher);
-        json.add("students", s);
+        json.add("students", studentsJsonArray);
         
         return new Response(NetworkUtils.post(uri, json.toString()));
     }

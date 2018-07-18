@@ -1,10 +1,12 @@
 package com.hacklympics.api.event.proctor;
 
 import java.util.Map;
+import java.util.List;
 import com.hacklympics.api.event.Event;
 import com.hacklympics.api.event.ExamRelated;
 import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.session.Session;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class NewKeystrokeEvent extends Event implements ExamRelated {
     
@@ -17,12 +19,12 @@ public class NewKeystrokeEvent extends Event implements ExamRelated {
         
         int examID = (int) Double.parseDouble(content.get("examID").toString());
         String student = content.get("student").toString();
-        String keystrokeContent = content.get("content").toString();
+        List<String> history = NetworkUtils.getGson().fromJson(content.get("students").toString(), List.class);
         
         this.keystroke = new Keystroke(
                 examID,
                 student,
-                keystrokeContent
+                history
         );
     }
     

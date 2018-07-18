@@ -1,9 +1,9 @@
 package hacklympics.utility.proctor;
 
-import static com.hacklympics.api.proctor.SnapshotManager.GENERIC_GRP_DEFAULT_QUALITY;
-import static com.hacklympics.api.proctor.SnapshotManager.GENERIC_GRP_DEFAULT_FREQUENCY;
-import static com.hacklympics.api.proctor.SnapshotManager.SPECIAL_GRP_DEFAULT_QUALITY;
-import static com.hacklympics.api.proctor.SnapshotManager.SPECIAL_GRP_DEFAULT_FREQUENCY;
+import static hacklympics.utility.proctor.SnapshotManager.GENERIC_GRP_DEFAULT_QUALITY;
+import static hacklympics.utility.proctor.SnapshotManager.GENERIC_GRP_DEFAULT_FREQUENCY;
+import static hacklympics.utility.proctor.SnapshotManager.SPECIAL_GRP_DEFAULT_QUALITY;
+import static hacklympics.utility.proctor.SnapshotManager.SPECIAL_GRP_DEFAULT_FREQUENCY;
 
 public enum SnapshotGroup {
     

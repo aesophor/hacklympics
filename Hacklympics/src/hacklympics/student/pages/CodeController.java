@@ -32,7 +32,7 @@ import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.proctor.SnapshotManager;
+import hacklympics.utility.proctor.SnapshotManager;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.User;
 import hacklympics.student.StudentController;
@@ -149,7 +149,7 @@ public class CodeController implements Initializable {
         try {
             createFileTab().open(selected);
         } catch (IOException ioe) {
-            fileTabPane.getTabs().remove(getCurrentFileTab());
+            fileTabPane.getTabs().remove(getSelectedFileTab());
 
             AlertDialog alert = new AlertDialog(
                     dialogPane,
@@ -165,14 +165,14 @@ public class CodeController implements Initializable {
     public void saveFile(ActionEvent event) {
         // If the current file is still an untitled file,
         // prompt the user to save it as a new file instead.
-        if (getCurrentFileTab().getFile() == null) {
+        if (getSelectedFileTab().getFile() == null) {
             saveFileAs(event);
             return;
         }
 
         // The code below will do the effective task of saving the file.
         try {
-            getCurrentFileTab().save();
+            getSelectedFileTab().save();
         } catch (IOException ioe) {
             AlertDialog alert = new AlertDialog(
                     dialogPane,
@@ -195,7 +195,7 @@ public class CodeController implements Initializable {
 
         File selected = fileChooser.showSaveDialog(fileTabPane.getScene().getWindow());
 
-        getCurrentFileTab().setFile(selected);
+        getSelectedFileTab().setFile(selected);
         saveFile(event);
     }
 
@@ -203,8 +203,8 @@ public class CodeController implements Initializable {
     public void closeFile(ActionEvent event) {
         // If the current file does not have any unsaved change,
         // close the tab directly.
-        if (!getCurrentFileTab().unsaved()) {
-            fileTabPane.getTabs().remove(getCurrentFileTab());
+        if (!getSelectedFileTab().unsaved()) {
+            fileTabPane.getTabs().remove(getSelectedFileTab());
             return;
         }
 
@@ -216,7 +216,7 @@ public class CodeController implements Initializable {
         );
 
         dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            fileTabPane.getTabs().remove(getCurrentFileTab());
+            fileTabPane.getTabs().remove(getSelectedFileTab());
             dialog.close();
         });
 
@@ -235,14 +235,14 @@ public class CodeController implements Initializable {
     @FXML
     public void compile(ActionEvent event) throws IOException {
         // If current file is still unsaved, save it first.
-        if (getCurrentFileTab().unsaved()) {
+        if (getSelectedFileTab().unsaved()) {
             saveFile(event);
         }
 
         showTerminal();
 
-        String location = getCurrentFileTab().getLocation();
-        String filepath = getCurrentFileTab().getFilepath();
+        String location = getSelectedFileTab().getLocation();
+        String filepath = getSelectedFileTab().getFilepath();
 
         terminal.onTerminalFxReady(() -> {
             terminal.command(String.join(" ", "javac", "-cp", location, filepath, "\r"));
@@ -253,8 +253,8 @@ public class CodeController implements Initializable {
     public void execute(ActionEvent event) {
         showTerminal();
 
-        String location = getCurrentFileTab().getLocation();
-        String className = getCurrentFileTab().getFilename().split("[.]")[0];
+        String location = getSelectedFileTab().getLocation();
+        String className = getSelectedFileTab().getFilename().split("[.]")[0];
 
         terminal.onTerminalFxReady(() -> {
             terminal.command(String.join(" ", "java", "-cp", location, className, "\r"));
@@ -309,7 +309,7 @@ public class CodeController implements Initializable {
                         "Submitting \"%s\" for \"%s\".\n\n"
                         + "Once submitted, you will NOT be able to revise it.\n"
                         + "Submit your code now?",
-                        getCurrentFileTab().getFilename(),
+                        getSelectedFileTab().getFilename(),
                         selectedProblem
                 )
         );
@@ -319,8 +319,8 @@ public class CodeController implements Initializable {
                     selectedExam.getCourseID(),
                     selectedExam.getExamID(),
                     selectedProblem.getProblemID(),
-                    getCurrentFileTab().getFilename(),
-                    getCurrentFileTab().getCodeArea().getText(),
+                    getSelectedFileTab().getFilename(),
+                    getSelectedFileTab().getCodeArea().getText(),
                     student.getUsername()
             );
 
@@ -486,26 +486,11 @@ public class CodeController implements Initializable {
         
         
         // Whenever the students have typed something on the keyboard,
-        // we have to synchronize the CodeArea's content of current tab
-        // with the teachers' KeystrokeBox.
+        // we have to add the content to the history for synchronizing
+        // the CodeArea's content of current tab with the teachers' 
+        // KeystrokeBox later.
         c.getCodeArea().setOnKeyReleased((KeyEvent keyEvent) -> {
-            Exam currentExam = Session.getInstance().getCurrentExam();
-            User currentUser = Session.getInstance().getCurrentUser();
-
-            // If the user has typed something into the CodeArea,
-            // but he/she is not currently in any exam, then ignore it.
-            if (currentExam == null) {
-                return;
-            }
-        
-            // Send the CodeArea content to the server, dispatching
-            // current content to all teachers proctoring this exam.
-            Response sync = Keystroke.sync(
-                    currentExam.getCourseID(),
-                    currentExam.getExamID(),
-                    currentUser.getUsername(),
-                    c.getCodeArea().getText()
-            );
+            c.getKeystrokeHistory().add(c.getCodeArea().getText());
         });
 
         return c;
@@ -515,7 +500,7 @@ public class CodeController implements Initializable {
      * Gets the currently selected tab in FileTabPane.
      * @return the currently selected tab.
      */
-    private FileTab getCurrentFileTab() {
+    public FileTab getSelectedFileTab() {
         return ((FileTab) fileTabPane.getSelectionModel().getSelectedItem());
     }
 
@@ -523,7 +508,7 @@ public class CodeController implements Initializable {
      * Updates the filepath label on the bottom left.
      */
     private void updateFilepathLabel() {
-        FileTab current = getCurrentFileTab();
+        FileTab current = getSelectedFileTab();
         filepathLabel.setText((current == null) ? "" : current.getFilepath());
     }
 
