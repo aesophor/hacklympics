@@ -77,14 +77,12 @@ public class NetworkUtils {
         return null;
     }
     
+    public static Gson getGson() {
+        return GSON;
+    }
     
     public static String hash(String s) {
         return s;
-    }
-    
-    
-    public static Gson getGson() {
-        return GSON;
     }
     
 }

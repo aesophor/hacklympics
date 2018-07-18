@@ -3,13 +3,13 @@ package com.hacklympics.api.event.exam;
 import java.util.Map;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.event.Event;
-import com.hacklympics.api.event.ExamDependent;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Teacher;
 import com.hacklympics.api.utility.NetworkUtils;
+import com.hacklympics.api.event.ExamRelated;
 
-public class HaltExamEvent extends Event implements ExamDependent {
+public class HaltExamEvent extends Event implements ExamRelated {
     
     private final Exam exam;
     private final Teacher teacher;

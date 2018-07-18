@@ -222,3 +222,22 @@ class AdjustSnapshotParamEvent(Event):
         }
         
         return json.dumps(event)
+
+
+class NewKeystrokeEvent(Event):
+    def __init__(self, exam: Exam, student: str, content: str):
+        super(NewKeystrokeEvent, self).__init__(EventType.NEW_KEYSTROKE)
+        self.exam = exam
+        self.student = student
+        self.content = content
+
+    def __str__(self):
+        event = {"eventType": self.event_type}
+        
+        event["content"] = {
+            "examID": self.exam.id,
+            "student": self.student,
+            "content": self.content
+        }
+        
+        return json.dumps(event)

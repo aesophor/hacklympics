@@ -27,7 +27,7 @@ import com.hacklympics.api.event.exam.LaunchExamEvent;
 import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.material.Exam;
-import com.hacklympics.api.snapshot.SnapshotManager;
+import com.hacklympics.api.proctor.SnapshotManager;
 import com.hacklympics.api.user.User;
 
 public class OngoingExamsController implements Initializable {

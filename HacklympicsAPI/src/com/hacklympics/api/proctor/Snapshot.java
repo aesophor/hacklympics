@@ -1,4 +1,4 @@
-package com.hacklympics.api.snapshot;
+package com.hacklympics.api.proctor;
 
 import java.util.List;
 import com.google.gson.JsonArray;
@@ -7,7 +7,7 @@ import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.utility.NetworkUtils;
 
-public class Snapshot {
+public class Snapshot implements ProctorMedium {
     
     private final int examID;
     private final String studentUsername;

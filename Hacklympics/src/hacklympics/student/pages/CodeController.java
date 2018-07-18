@@ -26,12 +26,13 @@ import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.exam.HaltExamEvent;
-import com.hacklympics.api.event.snapshot.AdjustSnapshotParamEvent;
+import com.hacklympics.api.event.proctor.AdjustSnapshotParamEvent;
 import com.hacklympics.api.material.Answer;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
+import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.snapshot.SnapshotManager;
+import com.hacklympics.api.proctor.SnapshotManager;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.User;
 import hacklympics.student.StudentController;
@@ -40,6 +41,7 @@ import hacklympics.utility.dialog.AlertDialog;
 import hacklympics.utility.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
 import javafx.application.Platform;
+import javafx.scene.input.KeyEvent;
 
 public class CodeController implements Initializable {
 
@@ -207,18 +209,18 @@ public class CodeController implements Initializable {
         }
 
         // Otherwise, show a ConfirmDialog to the user.
-        ConfirmDialog confirm = new ConfirmDialog(
+        ConfirmDialog dialog = new ConfirmDialog(
                 dialogPane,
                 "Unsaved Changes",
                 "Do you want to close it without saving?"
         );
 
-        confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
             fileTabPane.getTabs().remove(getCurrentFileTab());
-            confirm.close();
+            dialog.close();
         });
 
-        confirm.show();
+        dialog.show();
     }
 
     @FXML
@@ -300,7 +302,7 @@ public class CodeController implements Initializable {
             return;
         }
 
-        ConfirmDialog confirm = new ConfirmDialog(
+        ConfirmDialog dialog = new ConfirmDialog(
                 dialogPane,
                 "Submit Answer",
                 String.format(
@@ -312,7 +314,7 @@ public class CodeController implements Initializable {
                 )
         );
 
-        confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response create = Answer.create(
                     selectedExam.getCourseID(),
                     selectedExam.getExamID(),
@@ -322,7 +324,7 @@ public class CodeController implements Initializable {
                     student.getUsername()
             );
 
-            confirm.close();
+            dialog.close();
 
             switch (create.getStatusCode()) {
                 case SUCCESS:
@@ -358,7 +360,7 @@ public class CodeController implements Initializable {
             }
         });
 
-        confirm.show();
+        dialog.show();
     }
 
     private void validate(Answer answer) {
@@ -419,14 +421,14 @@ public class CodeController implements Initializable {
 
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
-        ConfirmDialog confirmation = new ConfirmDialog(
+        ConfirmDialog dialog = new ConfirmDialog(
                 dialogPane,
                 "Leave Exam",
                 "Once left, you will not be able to enter again!\n\n"
                 + "Leave the exam now?"
         );
 
-        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response leave = currentUser.leave(currentExam);
 
             switch (leave.getStatusCode()) {
@@ -448,10 +450,10 @@ public class CodeController implements Initializable {
                     break;
             }
 
-            confirmation.close();
+            dialog.close();
         });
 
-        confirmation.show();
+        dialog.show();
     }
 
     /**
@@ -465,7 +467,6 @@ public class CodeController implements Initializable {
 
     /**
      * Creates a new tab in FileTabPane.
-     *
      * @return the newly created FileTab.
      */
     private FileTab createFileTab() {
@@ -482,13 +483,36 @@ public class CodeController implements Initializable {
             event.consume();
             closeFile(null);
         });
+        
+        
+        // Whenever the students have typed something on the keyboard,
+        // we have to synchronize the CodeArea's content of current tab
+        // with the teachers' KeystrokeBox.
+        c.getCodeArea().setOnKeyReleased((KeyEvent keyEvent) -> {
+            Exam currentExam = Session.getInstance().getCurrentExam();
+            User currentUser = Session.getInstance().getCurrentUser();
+
+            // If the user has typed something into the CodeArea,
+            // but he/she is not currently in any exam, then ignore it.
+            if (currentExam == null) {
+                return;
+            }
+        
+            // Send the CodeArea content to the server, dispatching
+            // current content to all teachers proctoring this exam.
+            Response sync = Keystroke.sync(
+                    currentExam.getCourseID(),
+                    currentExam.getExamID(),
+                    currentUser.getUsername(),
+                    c.getCodeArea().getText()
+            );
+        });
 
         return c;
     }
 
     /**
      * Gets the currently selected tab in FileTabPane.
-     *
      * @return the currently selected tab.
      */
     private FileTab getCurrentFileTab() {
@@ -529,7 +553,6 @@ public class CodeController implements Initializable {
 
     /**
      * Sets the exam label which shows the title of currently ongoing exam.
-     *
      * @param examTitle title of exam.
      */
     public void setExamLabel(String examTitle) {
@@ -539,7 +562,6 @@ public class CodeController implements Initializable {
     /**
      * Sets the exam label which shows the title of currently ongoing exam, and
      * shows the remaining time of the exam as well.
-     *
      * @param examTitle name of exam.
      * @param remainingTime remaining time of exam.
      */
@@ -572,7 +594,6 @@ public class CodeController implements Initializable {
 
     /**
      * Adds all problems of a exam to the problem ComboBox.
-     *
      * @param problems all problems of currently ongoing exams.
      */
     public void setProblemBox(List<Problem> problems) {

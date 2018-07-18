@@ -182,7 +182,7 @@
             <Font name="System Bold" size="12.0" />
          </font>
       </Label>
-      <JFXButton fx:id="leaveExamBtn" disable="true" layoutX="14.0" layoutY="637.0" prefHeight="9.0" prefWidth="53.0" styleClass="darkBlueBtn" text="Leave">
+      <JFXButton fx:id="leaveOrHaltBtn" disable="true" layoutX="14.0" layoutY="637.0" prefHeight="9.0" prefWidth="53.0" styleClass="darkBlueBtn" text="Leave">
          <font>
             <Font size="11.0" />
          </font>

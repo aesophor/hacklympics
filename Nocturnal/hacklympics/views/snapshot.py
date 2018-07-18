@@ -7,7 +7,7 @@ from hacklympics.sessions import OngoingExams
 from hacklympics.status_code import StatusCode
 from hacklympics.models import *
 
-import datetime
+from datetime import datetime
 import base64
 import json
 
@@ -21,7 +21,7 @@ def create(request, c_id, e_id):
         image = req_body["image"]
         
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
-        timestamp = datetime.datetime.now().strftime("%Y/%m/%d %H:%M")
+        timestamp = datetime.now().strftime("%Y/%m/%d %H:%M")
         
         exam.snapshot_set.create(
             img = base64.b64decode(image),

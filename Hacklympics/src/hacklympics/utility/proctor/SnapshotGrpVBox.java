@@ -24,22 +24,6 @@ public class SnapshotGrpVBox extends StudentsVBox {
     public void clear() {
         this.studentBoxes.clear();
     }
-    
-    /**
-     * Gets the SnapshotBoxes that are selected by the user.
-     * @return selected SnapshotBoxes.
-     */
-    public List<SnapshotBox> getSelectedItems() {
-        List<SnapshotBox> selectedBoxes = new ArrayList<>();
-        
-        for (StudentBox box : studentBoxes) {
-            if (((SnapshotBox) box).getCheckBox().isSelected()) {
-                selectedBoxes.add((SnapshotBox) box);
-            }
-        }
-        
-        return (selectedBoxes.isEmpty()) ? null : selectedBoxes;
-    }
 
     /**
      * Adds the specified SnapshotBox to this group.
@@ -61,8 +45,8 @@ public class SnapshotGrpVBox extends StudentsVBox {
     }
 
     /**
-     * Removes the specified SnapshotBox from this group. rearrange() should be
-     * called right after this operation.
+     * Removes the specified SnapshotBox from this group. rearrange() should 
+     * be called right after this operation.
      * @param snapshotBox the SnapshotBox to remove.
      */
     public void remove(SnapshotBox snapshotBox) {
@@ -126,6 +110,22 @@ public class SnapshotGrpVBox extends StudentsVBox {
         }
         
         return students;
+    }
+    
+    /**
+     * Gets the SnapshotBoxes that are selected by the user.
+     * @return selected SnapshotBoxes.
+     */
+    public List<SnapshotBox> getSelectedItems() {
+        List<SnapshotBox> selectedBoxes = new ArrayList<>();
+        
+        for (StudentBox box : studentBoxes) {
+            if (((SnapshotBox) box).getCheckBox().isSelected()) {
+                selectedBoxes.add((SnapshotBox) box);
+            }
+        }
+        
+        return (selectedBoxes.isEmpty()) ? null : selectedBoxes;
     }
 
     

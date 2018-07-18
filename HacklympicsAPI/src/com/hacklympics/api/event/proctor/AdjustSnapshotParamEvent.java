@@ -1,12 +1,12 @@
-package com.hacklympics.api.event.snapshot;
+package com.hacklympics.api.event.proctor;
 
 import java.util.Map;
 import com.hacklympics.api.event.Event;
-import com.hacklympics.api.event.ExamDependent;
 import com.hacklympics.api.session.Session;
+import com.hacklympics.api.event.ExamRelated;
 
 
-public class AdjustSnapshotParamEvent extends Event implements ExamDependent {
+public class AdjustSnapshotParamEvent extends Event implements ExamRelated {
     
     private final int examID;
     private final double quality;

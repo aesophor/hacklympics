@@ -393,7 +393,7 @@ public class CoursesController implements Initializable {
         
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
-        ConfirmDialog confirmation = new ConfirmDialog(
+        ConfirmDialog dialog = new ConfirmDialog(
                 dialogPane,
                 "Launch Exam",
                 "You have selected the exam: " + selectedExam + "\n\n"
@@ -401,7 +401,7 @@ public class CoursesController implements Initializable {
               + "proctor your exam.)"
         );
         
-        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response launch = selectedExam.launch();
             
             switch (launch.getStatusCode()) {
@@ -415,7 +415,7 @@ public class CoursesController implements Initializable {
                     cc.enableHaltExamBtn();
                     tc.showProctor(e);
                     
-                    confirmation.close();
+                    dialog.close();
                     break;
                     
                 case ALREADY_LAUNCHED:
@@ -425,7 +425,7 @@ public class CoursesController implements Initializable {
                             "The selected exam has already been launched."
                     );
                     
-                    confirmation.close();
+                    dialog.close();
                     alert.show();
                     break;
                     
@@ -434,7 +434,7 @@ public class CoursesController implements Initializable {
             }
         });
         
-        confirmation.show();
+        dialog.show();
     }
     
 

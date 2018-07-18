@@ -1,4 +1,4 @@
-package com.hacklympics.api.snapshot;
+package com.hacklympics.api.proctor;
 
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.session.Session;

@@ -3,15 +3,15 @@ package com.hacklympics.api.event.message;
 import java.util.Map;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.event.Event;
-import com.hacklympics.api.event.ExamDependent;
 import com.hacklympics.api.message.Message;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;
 import com.hacklympics.api.utility.NetworkUtils;
+import com.hacklympics.api.event.ExamRelated;
 
-public class NewMessageEvent extends Event implements ExamDependent {
+public class NewMessageEvent extends Event implements ExamRelated {
     
     private final Message message;
     

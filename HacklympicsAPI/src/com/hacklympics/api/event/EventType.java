@@ -12,8 +12,10 @@ public enum EventType {
     ATTEND_EXAM("com.hacklympics.api.event.exam.AttendExamEvent"),                          // 5
     LEAVE_EXAM("com.hacklympics.api.event.exam.LeaveExamEvent"),                            // 6
     
-    NEW_SNAPSHOT("com.hacklympics.api.event.snapshot.NewSnapshotEvent"),                    // 7
-    ADJUST_SNAPSHOT_PARAM("com.hacklympics.api.event.snapshot.AdjustSnapshotParamEvent");   // 8
+    NEW_SNAPSHOT("com.hacklympics.api.event.proctor.NewSnapshotEvent"),                     // 7
+    ADJUST_SNAPSHOT_PARAM("com.hacklympics.api.event.proctor.AdjustSnapshotParamEvent"),    // 8
+    
+    NEW_KEYSTROKE("com.hacklympics.api.event.proctor.NewKeystrokeEvent");                   // 9
     
     
     private final String classname;

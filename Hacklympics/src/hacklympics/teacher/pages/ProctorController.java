@@ -30,13 +30,16 @@ import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.exam.AttendExamEvent;
 import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.event.exam.LeaveExamEvent;
-import com.hacklympics.api.event.snapshot.NewSnapshotEvent;
+import com.hacklympics.api.event.proctor.NewKeystrokeEvent;
+import com.hacklympics.api.event.proctor.NewSnapshotEvent;
+import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.material.Exam;
-import com.hacklympics.api.snapshot.Snapshot;
+import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.snapshot.SnapshotManager;
+import com.hacklympics.api.proctor.SnapshotManager;
+import hacklympics.utility.proctor.KeystrokeBox;
 import hacklympics.utility.proctor.KeystrokeStudentsVBox;
 import hacklympics.utility.proctor.SnapshotBox;
 import hacklympics.utility.proctor.SnapshotGroup;
@@ -57,7 +60,7 @@ public class ProctorController implements Initializable {
     @FXML
     private Label examLabel;
     @FXML
-    private JFXButton leaveExamBtn;
+    private JFXButton leaveOrHaltBtn;
 
     @FXML
     private ScrollPane snapshotGenGrpPane;
@@ -78,6 +81,9 @@ public class ProctorController implements Initializable {
     private JFXProgressBar keystrokeBar;
 
     
+    // 1. Sync snapshot / keystroke only.
+    // 2. Implement playback functionalities.
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // First we will cache to generic and special group VBox so that
@@ -87,7 +93,7 @@ public class ProctorController implements Initializable {
         this.keystrokeStudentsVBox = new KeystrokeStudentsVBox();
         
         // Initialize the generic and special group pane in LiveScreens Tab,
-        // as well as keystroke pane in Keystroke Tab.
+        // as well as keystroke students pane in Keystroke Tab.
         this.snapshotGenGrpPane.setContent(this.snapshotGenGrpVBox);
         this.snapshotSpeGrpPane.setContent(this.snapshotSpeGrpVBox);
         this.keystrokeStudentsPane.setContent(this.keystrokeStudentsVBox);
@@ -142,11 +148,17 @@ public class ProctorController implements Initializable {
         // and add it to the generic group by default.
         this.setOnAttendExam((AttendExamEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
-                SnapshotBox box = new SnapshotBox((Student) event.getUser());
-                this.snapshotGenGrpVBox.add(box);
+                // Add a SnapshotBox to generic group VBox in LiveScreen Tab.
+                SnapshotBox snapshotBox = new SnapshotBox((Student) event.getUser());
+                this.snapshotGenGrpVBox.add(snapshotBox);
+                
+                // Add a KeystrokeBox to keystroke students VBox in Keystroke Tab.
+                KeystrokeBox keystrokeBox = new KeystrokeBox((Student) event.getUser());
+                this.keystrokeStudentsVBox.add(keystrokeBox);
 
                 Platform.runLater(() -> {
                     this.snapshotGenGrpVBox.rearrange();
+                    this.keystrokeStudentsVBox.rearrange();
                 });
             }
         });
@@ -154,11 +166,17 @@ public class ProctorController implements Initializable {
         // Remove the SnapshotBox for the student who just left.
         this.setOnLeaveExam((LeaveExamEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
-                SnapshotBox box = this.snapshotGenGrpVBox.get((Student) event.getUser());
-                this.snapshotGenGrpVBox.remove(box);
+                // Remove the SnapshotBox of the event-specified student from LiveScreen Tab.
+                SnapshotBox snapshotBox = this.snapshotGenGrpVBox.get((Student) event.getUser());
+                this.snapshotGenGrpVBox.remove(snapshotBox);
 
+                // Remove the KeystrokeBox from Keystroke Tab also.
+                KeystrokeBox keystrokeBox = this.keystrokeStudentsVBox.get((Student) event.getUser());
+                this.keystrokeStudentsVBox.remove(keystrokeBox);
+                
                 Platform.runLater(() -> {
                     this.snapshotGenGrpVBox.rearrange();
+                    this.keystrokeStudentsVBox.rearrange();
                 });
             }
         });
@@ -168,15 +186,25 @@ public class ProctorController implements Initializable {
         this.setOnNewSnapshot((NewSnapshotEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
                 Snapshot snapshot = event.getSnapshot();
-                    
-                SnapshotBox box = this.snapshotGenGrpVBox.get(snapshot.getStudentUsername());
-                if (box == null) box = this.snapshotSpeGrpVBox.get(snapshot.getStudentUsername());
-
+                
                 try {
-                    box.update(snapshot);
+                    // Find out in which group the student belongs to,
+                    // and perform an update on that SnapshotBox.
+                    SnapshotGroup.getSnapshotBox(snapshot.getStudentUsername()).update(snapshot);
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
+            }
+        });
+        
+        // Updates the KeystrokeBox when a NewKeystrokeEvent arrives.
+        this.setOnNewKeystroke((NewKeystrokeEvent event) -> {
+            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                Keystroke keystroke = event.getKeystroke();
+                KeystrokeBox box = this.keystrokeStudentsVBox.get(keystroke.getStudentUsername());
+                
+                box.update(keystroke);
+                box.getKeystrokeHistory().add(keystroke.getContent());
             }
         });
     }
@@ -351,7 +379,7 @@ public class ProctorController implements Initializable {
 
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
-        ConfirmDialog confirmation = new ConfirmDialog(
+        ConfirmDialog dialog = new ConfirmDialog(
                 dialogPane,
                 "Halt Exam",
                 "Once the exam is halted, all students will no longer be able "
@@ -359,14 +387,14 @@ public class ProctorController implements Initializable {
               + "Halt the exam now?"
         );
 
-        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
             // Unlike leaving an exam, halting an exam will force all
             // all students and teachers to leave the exam immediately.
             currentExam.halt();
-            confirmation.close();
+            dialog.close();
         });
 
-        confirmation.show();
+        dialog.show();
     }
 
     /**
@@ -395,14 +423,14 @@ public class ProctorController implements Initializable {
 
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
-        ConfirmDialog confirmation = new ConfirmDialog(
+        ConfirmDialog dialog = new ConfirmDialog(
                 dialogPane,
                 "Leave Exam",
                 "As long as the exam is still ongoing, you can come back later at anytime.\n\n"
               + "Leave the exam now?"
         );
 
-        confirmation.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response leave = currentUser.leave(currentExam);
 
             switch (leave.getStatusCode()) {
@@ -421,10 +449,10 @@ public class ProctorController implements Initializable {
                     break;
             }
 
-            confirmation.close();
+            dialog.close();
         });
 
-        confirmation.show();
+        dialog.show();
     }
 
     /**
@@ -437,7 +465,7 @@ public class ProctorController implements Initializable {
         this.snapshotGenGrpVBox.rearrange();
         this.snapshotSpeGrpVBox.rearrange();
 
-        this.disableLeaveBtn();
+        this.disableLeaveOrHaltBtn();
         this.stopExamLabelTimer();
         this.setExamLabel("No Exam Being Proctored");
     }
@@ -489,25 +517,25 @@ public class ProctorController implements Initializable {
      * Enables and renders the leave exam button as "Halt" Exam button.
      */
     public void enableHaltExamBtn() {
-        this.leaveExamBtn.setDisable(false);
-        this.leaveExamBtn.setText("Halt");
-        this.leaveExamBtn.setOnAction((ActionEvent event) -> haltExam(event));
+        this.leaveOrHaltBtn.setDisable(false);
+        this.leaveOrHaltBtn.setText("Halt");
+        this.leaveOrHaltBtn.setOnAction((ActionEvent event) -> haltExam(event));
     }
 
     /**
      * Enables and renders the leave exam button as "Leave" Exam button.
      */
     public void enableLeaveExamBtn() {
-        this.leaveExamBtn.setDisable(false);
-        this.leaveExamBtn.setText("Leave");
-        this.leaveExamBtn.setOnAction((ActionEvent event) -> leaveExam(event));
+        this.leaveOrHaltBtn.setDisable(false);
+        this.leaveOrHaltBtn.setText("Leave");
+        this.leaveOrHaltBtn.setOnAction((ActionEvent event) -> leaveExam(event));
     }
 
     /**
      * Disables the ability to click on the leave exam button.
      */
-    public void disableLeaveBtn() {
-        this.leaveExamBtn.setDisable(true);
+    public void disableLeaveOrHaltBtn() {
+        this.leaveOrHaltBtn.setDisable(true);
     }
 
     private void setOnHaltExam(EventHandler<HaltExamEvent> listener) {
@@ -525,5 +553,9 @@ public class ProctorController implements Initializable {
     private void setOnNewSnapshot(EventHandler<NewSnapshotEvent> listener) {
         EventManager.getInstance().addEventHandler(EventType.NEW_SNAPSHOT, listener);
     }
-
+    
+    private void setOnNewKeystroke(EventHandler<NewKeystrokeEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.NEW_KEYSTROKE, listener);
+    }
+    
 }

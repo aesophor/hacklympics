@@ -4,7 +4,7 @@ import java.nio.file.Files;
 import java.util.Base64;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
-import static com.hacklympics.api.snapshot.Snapshot.create;
+import static com.hacklympics.api.proctor.Snapshot.create;
 
 public class ImageTest {
     
