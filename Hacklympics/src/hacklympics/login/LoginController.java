@@ -15,7 +15,7 @@ import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;
-import hacklympics.utility.FXMLTable;
+import hacklympics.common.FXMLTable;
 import hacklympics.utility.Utils;
 
 public class LoginController {

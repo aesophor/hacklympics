@@ -21,9 +21,9 @@ import com.hacklympics.api.session.Session;
 import com.hacklympics.api.session.Session.MainController;
 import com.hacklympics.api.user.User;
 import hacklympics.utility.Utils;
-import hacklympics.utility.FXMLTable;
-import hacklympics.utility.OnlineUserListView;
-import hacklympics.utility.dialog.ConfirmDialog;
+import hacklympics.common.FXMLTable;
+import hacklympics.common.OnlineUserListView;
+import hacklympics.common.dialog.ConfirmDialog;
 
 public class TeacherController implements Initializable, MainController {
     

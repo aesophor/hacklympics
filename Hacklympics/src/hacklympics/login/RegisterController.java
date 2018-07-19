@@ -15,7 +15,7 @@ import com.jfoenix.controls.JFXTextField;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
 import com.hacklympics.api.user.User;
-import hacklympics.utility.FXMLTable;
+import hacklympics.common.FXMLTable;
 import hacklympics.utility.Utils;
 
 

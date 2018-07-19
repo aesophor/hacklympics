@@ -4,7 +4,7 @@ import com.hacklympics.api.communication.Config;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import hacklympics.utility.FXMLTable;
+import hacklympics.common.FXMLTable;
 import hacklympics.utility.Utils;
 
 public class Main extends Application {
