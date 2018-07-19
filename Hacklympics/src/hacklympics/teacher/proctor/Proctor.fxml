@@ -20,7 +20,7 @@
    <children>
       <JFXTabPane id="tabPane" fx:id="tabPane" prefHeight="674.0" prefWidth="776.0">
           <tabs>
-          <Tab id="coursesTab" fx:id="liveScreensTab" closable="false" text="Live Screens">
+          <Tab fx:id="liveScreensTab" closable="false" text="Live Screens">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -97,7 +97,7 @@
                   </AnchorPane>
             </content>
           </Tab>
-            <Tab id="examsTab" fx:id="keystrokesTab" closable="false" text="Keystrokes">
+            <Tab fx:id="keystrokesTab" closable="false" text="Keystrokes">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="776.0">
                      <children>

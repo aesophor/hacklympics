@@ -21,6 +21,7 @@ public class SnapshotBox extends StudentBox<Snapshot> {
 
     private static final int TIMELABEL_LAYOUT_X = 15;
     private static final int TIMELABEL_LAYOUT_Y = 115;
+    private static final int FINISH_LABEL_LAYOUT_X = 50;
 
     private final JFXCheckBox checkbox;
     private final ImageView snapshot;
@@ -54,6 +55,15 @@ public class SnapshotBox extends StudentBox<Snapshot> {
         Platform.runLater(() -> {
             this.snapshot.setImage(image);
             this.timestamp.setText(snapshot.getTimestamp());
+        });
+    }
+    
+    @Override
+    public void markAsFinished() {
+        Platform.runLater(() -> {
+            this.timestamp.setText("Finished");
+            this.timestamp.setLayoutX(FINISH_LABEL_LAYOUT_X);
+            this.timestamp.getStyleClass().add("finish-label");
         });
     }
 

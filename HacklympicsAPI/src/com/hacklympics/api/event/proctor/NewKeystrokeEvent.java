@@ -36,12 +36,16 @@ public class NewKeystrokeEvent extends Event implements ExamRelated {
             history.add(e.getAsString());
         }
         
+        // Extract timestamp from json content.
+        String timestamp = content.get("timestamp").toString();
+        
         
         // Create a new instance of Keystroke.
         this.keystroke = new Keystroke(
                 examID,
                 studentUsername,
-                history
+                history,
+                timestamp
         );
     }
     

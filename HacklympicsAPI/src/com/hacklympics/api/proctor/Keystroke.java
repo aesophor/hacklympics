@@ -12,11 +12,13 @@ public class Keystroke implements ProctorMedium {
     private final int examID;
     private final String studentUsername;
     private final List<String> history;
+    private final String timestamp;
     
-    public Keystroke(int examID, String studentUsername, List<String> history) {
+    public Keystroke(int examID, String studentUsername, List<String> history, String timestamp) {
         this.examID = examID;
         this.studentUsername = studentUsername;
         this.history = history;
+        this.timestamp = timestamp;
     }
     
     
@@ -61,6 +63,10 @@ public class Keystroke implements ProctorMedium {
     
     public List<String> getHistory() {
         return this.history;
+    }
+    
+    public String getTimestamp() {
+        return this.timestamp;
     }
     
 }

@@ -16,6 +16,9 @@ public abstract class StudentBox<T extends ProctorMedium> extends Group {
     
     public abstract void update(T t) throws IOException;
     
+    public abstract void markAsFinished();
+    
+    
     public Student getStudent() {
         return this.student;
     }

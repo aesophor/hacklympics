@@ -21,8 +21,9 @@ def sync(request, c_id, e_id):
         history = req_body["history"]
         
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
+        timestamp = datetime.now().strftime("%Y/%m/%d %H:%M")
         
-        dispatch(NewKeystrokeEvent(exam, student, history), OngoingExams.get(exam).teachers)
+        dispatch(NewKeystrokeEvent(exam, student, history, timestamp), OngoingExams.get(exam).teachers)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:

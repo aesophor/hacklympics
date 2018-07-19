@@ -305,3 +305,9 @@
     -fx-pref-height: 555;
     -fx-background-color: -fx-white;
 }
+
+
+/* proctor */
+.finish-label {
+    -fx-text-fill: -fx-green;
+}

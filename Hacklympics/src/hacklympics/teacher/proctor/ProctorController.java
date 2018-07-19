@@ -93,8 +93,9 @@ public class ProctorController implements Initializable {
 
                 // Reset the Proctor Page to its original state.
                 Platform.runLater(() -> {
-                    this.reset();
-
+                    this.stopExamLabelTimer();
+                    this.disableLeaveOrHaltBtn();
+                    
                     AlertDialog alert = new AlertDialog(
                             "Exam Halted",
                             "The current exam has been halted."
@@ -127,6 +128,7 @@ public class ProctorController implements Initializable {
         // Remove the SnapshotBox for the student who just left.
         this.setOnLeaveExam((LeaveExamEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
+                /*
                 // Remove the SnapshotBox of the event-specified student from LiveScreen Tab.
                 SnapshotBox snapshotBox = this.snapshotGenGrpVBox.get((Student) event.getUser());
                 this.snapshotGenGrpVBox.remove(snapshotBox);
@@ -139,6 +141,13 @@ public class ProctorController implements Initializable {
                     this.snapshotGenGrpVBox.rearrange();
                     this.keystrokeStudentsVBox.rearrange();
                 });
+                */
+                
+                SnapshotBox snapshotBox = this.snapshotGenGrpVBox.get((Student) event.getUser());
+                snapshotBox.markAsFinished();
+                
+                KeystrokeBox keystrokeBox = this.keystrokeStudentsVBox.get((Student) event.getUser());
+                keystrokeBox.markAsFinished();
             }
         });
     }
@@ -216,6 +225,18 @@ public class ProctorController implements Initializable {
 
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
+        // If user tries to move students between groups, but he/she is not
+        // in any exam, block this attempt and alert the user.
+        if (!Session.getInstance().isInExam()) {
+            AlertDialog alert = new AlertDialog(
+                    "Alert",
+                    "You can only move students between groups while in exams."
+            );
+
+            alert.show();
+            return;
+        }
+        
         // Get the selected SnapshotBoxes from the generic group.
         List<SnapshotBox> genGrpSelectedBoxes = this.snapshotGenGrpVBox.getSelectedItems();
 
@@ -228,6 +249,7 @@ public class ProctorController implements Initializable {
             alert.show();
             return;
         }
+        
         
         // Move them from generic group to special group.
         this.snapshotGenGrpVBox.removeAll(genGrpSelectedBoxes);
@@ -255,6 +277,18 @@ public class ProctorController implements Initializable {
 
     @FXML
     public void moveToGenericGrp(ActionEvent event) {
+        // If user tries to move students between groups, but he/she is not
+        // in any exam, block this attempt and alert the user.
+        if (!Session.getInstance().isInExam()) {
+            AlertDialog alert = new AlertDialog(
+                    "Alert",
+                    "You can only move students between groups while in exams."
+            );
+
+            alert.show();
+            return;
+        }
+        
         // Get the selected SnapshotBoxes from the special group.
         List<SnapshotBox> speGrpSelectedBoxes = this.snapshotSpeGrpVBox.getSelectedItems();
 
@@ -557,7 +591,7 @@ public class ProctorController implements Initializable {
     /**
      * Resets the Code page to its original state.
      */
-    private void reset() {
+    public void reset() {
         this.snapshotGenGrpVBox.clear();
         this.snapshotSpeGrpVBox.clear();
         this.snapshotGenGrpVBox.rearrange();
@@ -613,7 +647,9 @@ public class ProctorController implements Initializable {
      * Stop the remaining time from updating.
      */
     public void stopExamLabelTimer() {
-        this.timeline.stop();
+        if (this.timeline != null) {
+            this.timeline.stop();
+        }
     }
 
     /**

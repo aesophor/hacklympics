@@ -403,6 +403,7 @@ public class CoursesController implements Initializable {
                     TeacherController tc = (TeacherController) Session.getInstance().getMainController();
                     ProctorController cc = (ProctorController) tc.getControllers().get("Proctor");
             
+                    cc.reset();
                     cc.setExamLabel(selectedExam.getTitle(), selectedExam.getRemainingTime());
                     cc.enableHaltExamBtn();
                     tc.showProctor(e);

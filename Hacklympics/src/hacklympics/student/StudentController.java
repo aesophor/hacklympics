@@ -18,7 +18,7 @@ import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.SocketServer;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.api.session.Session.MainController;
+import com.hacklympics.api.session.MainController;
 import com.hacklympics.api.user.User;
 import hacklympics.utility.Utils;
 import hacklympics.common.FXMLTable;

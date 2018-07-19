@@ -176,6 +176,9 @@ public class OngoingExamsController implements Initializable {
                     TeacherController tc = (TeacherController) Session.getInstance().getMainController();
                     ProctorController cc = (ProctorController) tc.getControllers().get("Proctor");
                     
+                    // Reset the Proctor Page first.
+                    cc.reset();
+                    
                     // If the user is the owner of the exam, render the exitBtn
                     // as halt exam button. Otherwise, render it as leave button.
                     if (selectedExam.getOnwer().getUsername().equals(currentUser.getUsername())) {

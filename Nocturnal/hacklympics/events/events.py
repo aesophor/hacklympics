@@ -225,11 +225,12 @@ class AdjustSnapshotParamEvent(Event):
 
 
 class NewKeystrokeEvent(Event):
-    def __init__(self, exam: Exam, student: str, history: list):
+    def __init__(self, exam: Exam, student: str, history: list, timestamp: str):
         super(NewKeystrokeEvent, self).__init__(EventType.NEW_KEYSTROKE)
         self.exam = exam
         self.student = student
         self.history = history
+        self.timestamp = timestamp
 
     def __str__(self):
         event = {"eventType": self.event_type}
@@ -237,7 +238,8 @@ class NewKeystrokeEvent(Event):
         event["content"] = {
             "examID": self.exam.id,
             "student": self.student,
-            "history": self.history
+            "history": self.history,
+            "timestamp": self.timestamp
         }
         
         return json.dumps(event)
