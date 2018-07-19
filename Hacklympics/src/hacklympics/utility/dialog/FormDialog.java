@@ -5,7 +5,6 @@ import java.util.HashMap;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
 
@@ -16,8 +15,8 @@ public class FormDialog extends Dialog {
     private final VBox vbox;
     private final Map<String, Node> components;
     
-    public FormDialog(StackPane pane, String title) {
-        super(pane, title);
+    public FormDialog(String title) {
+        super(title);
         
         this.components = new HashMap<>();
         this.vbox = new VBox(VBOX_SPACING);

@@ -86,10 +86,6 @@ public class Problem {
     }
     
     
-    public ProblemData getData() {
-        return data;
-    }
-    
     public Integer getCourseID() {
         return data.getCourseID();
     }
@@ -134,6 +130,7 @@ public class Problem {
     public SimpleStringProperty outputProperty() {
         return data.outputProperty();
     }
+    
     
     @Override
     public String toString() {

@@ -187,8 +187,7 @@ public class CoursesController implements Initializable {
                 
                 courseRecordsCache = ((Teacher) Session.getInstance().getCurrentUser()).getCourses();
                 for (Course c : courseRecordsCache) {
-                    if (c.getData().getName().contains(keyword) |
-                        c.getData().getTeacher().contains(keyword)) {
+                    if (c.getName().contains(keyword) | c.getTeacher().contains(keyword)) {
                         courseRecords.add(c);
                     }
                 }
@@ -204,8 +203,7 @@ public class CoursesController implements Initializable {
                 if (selectedCourse != null) {
                     examRecordsCache = selectedCourse.getExams();
                     for (Exam e : examRecordsCache) {
-                        if (e.getData().getTitle().contains(keyword) |
-                            e.getData().getDesc().contains(keyword)) {
+                        if (e.getTitle().contains(keyword) | e.getDesc().contains(keyword)) {
                             examRecords.add(e);
                         }
                     }
@@ -222,8 +220,7 @@ public class CoursesController implements Initializable {
                 if (selectedExam != null) {
                     problemRecordsCache = selectedExam.getProblems();
                     for (Problem p : problemRecordsCache) {
-                        if (p.getData().getTitle().contains(keyword) |
-                            p.getData().getDesc().contains(keyword)) {
+                        if (p.getTitle().contains(keyword) | p.getDesc().contains(keyword)) {
                             problemRecords.add(p);
                         }
                     }
@@ -254,8 +251,7 @@ public class CoursesController implements Initializable {
                 courseRecords.clear();
                 
                 for (Course c : courseRecordsCache) {
-                    if (c.getData().getName().contains(keyword) |
-                        c.getData().getTeacher().contains(keyword)) {
+                    if (c.getName().contains(keyword) | c.getTeacher().contains(keyword)) {
                         courseRecords.add(c);
                     }
                 }
@@ -269,8 +265,7 @@ public class CoursesController implements Initializable {
                 
                 if (selectedCourse != null) {
                     for (Exam e : examRecordsCache) {
-                        if (e.getData().getTitle().contains(keyword) |
-                            e.getData().getDesc().contains(keyword)) {
+                        if (e.getTitle().contains(keyword) | e.getDesc().contains(keyword)) {
                             examRecords.add(e);
                         }
                     }
@@ -285,8 +280,7 @@ public class CoursesController implements Initializable {
                 
                 if (selectedExam != null) {
                     for (Problem p : problemRecordsCache) {
-                        if (p.getData().getTitle().contains(keyword) |
-                            p.getData().getDesc().contains(keyword)) {
+                        if (p.getTitle().contains(keyword) | p.getDesc().contains(keyword)) {
                             problemRecords.add(p);
                         }
                     }
@@ -367,7 +361,6 @@ public class CoursesController implements Initializable {
         // block this attempt and alert the user.
         if (tabPane.getSelectionModel().getSelectedItem() != examTab) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "Please note that only an exam can be launched."
             );
@@ -382,7 +375,6 @@ public class CoursesController implements Initializable {
         
         if (selectedExam == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You have not selected any exam to launch."
             );
@@ -394,7 +386,6 @@ public class CoursesController implements Initializable {
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
         ConfirmDialog dialog = new ConfirmDialog(
-                dialogPane,
                 "Launch Exam",
                 "You have selected the exam: " + selectedExam + "\n\n"
               + "Launch the exam now? (Other teachers will also be able to "
@@ -420,7 +411,6 @@ public class CoursesController implements Initializable {
                     
                 case ALREADY_LAUNCHED:
                     AlertDialog alert = new AlertDialog(
-                            dialogPane,
                             "Exam Already Launched",
                             "The selected exam has already been launched."
                     );
@@ -444,7 +434,7 @@ public class CoursesController implements Initializable {
     private void addCourse() {
         UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
-        FormDialog form = new FormDialog(formPane, "Add new course");
+        FormDialog form = new FormDialog("Add new course");
         form.addTextField("Name", "");
         form.addTextField("Semester", "");
         form.add("Students", studentsList.getListView());
@@ -452,12 +442,12 @@ public class CoursesController implements Initializable {
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField nameField = (JFXTextField) form.get("Name");
             JFXTextField semesterField = (JFXTextField) form.get("Semester");
-            String teacher = Session.getInstance().getCurrentUser().getProfile().getUsername();
+            String teacher = Session.getInstance().getCurrentUser().getUsername();
             List<User> selectedStudents = studentsList.getSelected();
             
             List<String> students = new ArrayList<>();
             for (User user : selectedStudents) {
-                students.add(user.getProfile().getUsername());
+                students.add(user.getUsername());
             }
             
             Course.create(
@@ -478,7 +468,7 @@ public class CoursesController implements Initializable {
      * Popups a FormDialog which allows the user to add an exam.
      */
     private void addExam() {
-        FormDialog form = new FormDialog(formPane, "Add new exam");
+        FormDialog form = new FormDialog("Add new exam");
         form.addTextField("Title", "");
         form.addTextField("Duration", "");
         form.addTextField("Description", "");
@@ -487,10 +477,10 @@ public class CoursesController implements Initializable {
             JFXTextField titleField = (JFXTextField) form.get("Title");
             JFXTextField durationField = (JFXTextField) form.get("Duration");
             JFXTextField descField = (JFXTextField) form.get("Description");
-            Course selected = courseTable.getSelectionModel().getSelectedItem();
+            Course selectedCourse = courseTable.getSelectionModel().getSelectedItem();
             
             Exam.create(
-                    selected.getData().getCourseID(),
+                    selectedCourse.getCourseID(),
                     titleField.getText(),
                     descField.getText(),
                     Integer.parseInt(durationField.getText())
@@ -507,7 +497,7 @@ public class CoursesController implements Initializable {
      * Popups a FormDialog which allows the user to add a problem.
      */
     private void addProblem() {
-        FormDialog form = new FormDialog(formPane, "Add new problem");
+        FormDialog form = new FormDialog("Add new problem");
         form.addTextField("Title", "");
         form.addTextArea("Description", "");
         form.addTextArea("Input", "");
@@ -518,11 +508,11 @@ public class CoursesController implements Initializable {
             JFXTextArea descField = (JFXTextArea) form.get("Description");
             JFXTextArea inputArea = (JFXTextArea) form.get("Input");
             JFXTextArea outputArea = (JFXTextArea) form.get("Output");
-            Exam selected = examTable.getSelectionModel().getSelectedItem();
+            Exam selectedExam = examTable.getSelectionModel().getSelectedItem();
             
             Problem.create(
-                    selected.getCourseID(),
-                    selected.getExamID(),
+                    selectedExam.getCourseID(),
+                    selectedExam.getExamID(),
                     titleField.getText(),
                     descField.getText(),
                     inputArea.getText(),
@@ -542,15 +532,15 @@ public class CoursesController implements Initializable {
     private void editCourse(Course course) {
         UserListView studentsList = new UserListView(SelectionMode.MULTIPLE, Role.STUDENT);
         
-        FormDialog form = new FormDialog(formPane, "Edit course");
-        form.addTextField("Name", course.getData().getName());
-        form.addTextField("Semester", course.getData().getSemester().toString());
+        FormDialog form = new FormDialog("Edit course");
+        form.addTextField("Name", course.getName());
+        form.addTextField("Semester", course.getSemester().toString());
         form.add("Students", studentsList.getListView());
         form.addDeleteBtn("deleteBtn");
         
         for (String username : course.getStudents()) {
             for (User user : studentsList.getAllItems()) {
-                if (username.equals(user.getProfile().getUsername())) {
+                if (username.equals(user.getUsername())) {
                     studentsList.getListView().getSelectionModel().select(user);
                 }
             }
@@ -559,12 +549,12 @@ public class CoursesController implements Initializable {
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
             JFXTextField nameField = (JFXTextField) form.get("Name");
             JFXTextField semesterField = (JFXTextField) form.get("Semester");
-            String teacher = Session.getInstance().getCurrentUser().getProfile().getUsername();
+            String teacher = Session.getInstance().getCurrentUser().getUsername();
             List<User> s = studentsList.getSelected();
 
             List<String> students = new ArrayList<>();
             for (User user : s) {
-                students.add(user.getProfile().getUsername());
+                students.add(user.getUsername());
             }
 
             course.update(
@@ -581,7 +571,6 @@ public class CoursesController implements Initializable {
         
         form.getAsButton("deleteBtn").setOnAction((ActionEvent e) -> {
             ConfirmDialog dialog = new ConfirmDialog(
-                    dialogPane,
                     "Delete course",
                     "Do you want to delete this course?"
             );
@@ -604,10 +593,10 @@ public class CoursesController implements Initializable {
      * Popups a FormDialog which allows the user to edit an existing exam.
      */
     private void editExam(Exam exam) {    
-        FormDialog form = new FormDialog(formPane, "Edit exam");
-        form.addTextField("Title", exam.getData().getTitle());
-        form.addTextField("Duration", exam.getData().getDuration().toString());
-        form.addTextField("Description", exam.getData().getDesc());
+        FormDialog form = new FormDialog("Edit exam");
+        form.addTextField("Title", exam.getTitle());
+        form.addTextField("Duration", exam.getDuration().toString());
+        form.addTextField("Description", exam.getDesc());
         form.addDeleteBtn("deleteBtn");
 
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
@@ -628,7 +617,6 @@ public class CoursesController implements Initializable {
         
         ((Button) form.get("deleteBtn")).setOnAction((ActionEvent e) -> {
             ConfirmDialog dialog = new ConfirmDialog(
-                    dialogPane,
                     "Delete exam",
                     "Do you want to delete this exam?"
             );
@@ -651,11 +639,11 @@ public class CoursesController implements Initializable {
      * Popups a FormDialog which allows the user to edit an existing problem.
      */
     private void editProblem(Problem problem) {
-        FormDialog form = new FormDialog(formPane, "Edit problem");
-        form.addTextField("Title", problem.getData().getTitle());
-        form.addTextArea("Description", problem.getData().getDesc());
-        form.addTextArea("Input", problem.getData().getInput());
-        form.addTextArea("Output", problem.getData().getOutput());
+        FormDialog form = new FormDialog("Edit problem");
+        form.addTextField("Title", problem.getTitle());
+        form.addTextArea("Description", problem.getDesc());
+        form.addTextArea("Input", problem.getInput());
+        form.addTextArea("Output", problem.getOutput());
         form.addDeleteBtn("deleteBtn");
 
         form.getConfirmBtn().setOnAction((ActionEvent e) -> {
@@ -678,7 +666,6 @@ public class CoursesController implements Initializable {
         
         ((Button) form.get("deleteBtn")).setOnAction((ActionEvent e) -> {
             ConfirmDialog dialog = new ConfirmDialog(
-                    dialogPane,
                     "Delete problem",
                     "Do you want to delete this problem?"
             );

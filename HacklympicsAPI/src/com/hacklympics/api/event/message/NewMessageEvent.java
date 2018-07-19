@@ -19,9 +19,17 @@ public class NewMessageEvent extends Event implements ExamRelated {
         super(rawJson);
         
         Map<String, Object> content = this.getContent();
+        
+        
+        // Extract the message content (message body).
         String msgContent = content.get("content").toString();
+        
+        
+        // Extract examID from json content.
         int examID = (int) Double.parseDouble(content.get("examID").toString());
         
+        
+        // Extract user from json content.
         String rawUserJson = NetworkUtils.getGson().toJson(content.get("user"));
         JsonObject userJson = NetworkUtils.getGson().fromJson(rawUserJson, JsonObject.class);
             
@@ -33,6 +41,8 @@ public class NewMessageEvent extends Event implements ExamRelated {
         User msgCreator = (isStudent) ? new Student(username, fullname, gradYear)
                                       : new Teacher(username, fullname, gradYear);
         
+        
+        // Create a new instance of Message.
         this.message = new Message(msgCreator, examID, msgContent);
     }
     

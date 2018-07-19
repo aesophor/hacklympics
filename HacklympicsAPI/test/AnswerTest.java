@@ -8,10 +8,8 @@ public class AnswerTest {
     
     public static void main(String[] args) {
         Course systemSoftwares = new Course(7);
-        Exam e = new Exam(systemSoftwares.getData().getCourseID(), 10);
-        Problem p = new Problem(e.getData().getCourseID(),
-                                e.getData().getExamID(),
-                                7);
+        Exam e = new Exam(systemSoftwares.getCourseID(), 10);
+        Problem p = new Problem(e.getCourseID(), e.getExamID(), 7);
         
         /*
         Answer a = new Answer(p.getData().getCourseID(),

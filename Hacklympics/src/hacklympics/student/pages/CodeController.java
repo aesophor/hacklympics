@@ -102,7 +102,6 @@ public class CodeController implements Initializable {
                     this.reset();
 
                     AlertDialog alert = new AlertDialog(
-                            dialogPane,
                             "Exam Halted",
                             "The current exam has been halted."
                     );
@@ -164,7 +163,6 @@ public class CodeController implements Initializable {
             fileTabPane.getTabs().remove(getSelectedFileTab());
 
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Error",
                     "Unable to open the specified file."
             );
@@ -187,7 +185,6 @@ public class CodeController implements Initializable {
             getSelectedFileTab().save();
         } catch (IOException ioe) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Error",
                     "Unable to write to the specified file."
             );
@@ -222,7 +219,6 @@ public class CodeController implements Initializable {
 
         // Otherwise, show a ConfirmDialog to the user.
         ConfirmDialog dialog = new ConfirmDialog(
-                dialogPane,
                 "Unsaved Changes",
                 "Do you want to close it without saving?"
         );
@@ -279,7 +275,6 @@ public class CodeController implements Initializable {
 
         if (selectedProblem == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "No Problem Selected",
                     "Please select a problem first."
             );
@@ -289,7 +284,6 @@ public class CodeController implements Initializable {
         }
 
         AlertDialog hint = new AlertDialog(
-                dialogPane,
                 selectedProblem.getTitle(),
                 selectedProblem.getDesc()
         );
@@ -305,7 +299,6 @@ public class CodeController implements Initializable {
 
         if (selectedExam == null | selectedProblem == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "Please make sure both Exam and Problem are selected."
             );
@@ -315,7 +308,6 @@ public class CodeController implements Initializable {
         }
 
         ConfirmDialog dialog = new ConfirmDialog(
-                dialogPane,
                 "Submit Answer",
                 String.format(
                         "Submitting \"%s\" for \"%s\".\n\n"
@@ -352,7 +344,6 @@ public class CodeController implements Initializable {
 
                 case ALREADY_SUBMITTED:
                     AlertDialog submitted = new AlertDialog(
-                            dialogPane,
                             "Alert",
                             "You've already submitted your code for this problem."
                     );
@@ -362,7 +353,6 @@ public class CodeController implements Initializable {
 
                 default:
                     AlertDialog error = new AlertDialog(
-                            dialogPane,
                             "Submission Error",
                             "ErrorCode: " + create.getStatusCode().toString()
                     );
@@ -381,7 +371,6 @@ public class CodeController implements Initializable {
         switch (validate.getStatusCode()) {
             case SUCCESS:
                 AlertDialog correct = new AlertDialog(
-                        dialogPane,
                         "Congratulations",
                         "Your code works correctly. Nice work!"
                 );
@@ -391,7 +380,6 @@ public class CodeController implements Initializable {
 
             case INCORRECT_ANSWER:
                 AlertDialog failed = new AlertDialog(
-                        dialogPane,
                         "Sorry",
                         "It seems that your code doesn't work out,\n\n"
                         + "keep going!"
@@ -402,7 +390,6 @@ public class CodeController implements Initializable {
 
             default:
                 AlertDialog error = new AlertDialog(
-                        dialogPane,
                         "Validation Error",
                         "ErrorCode: " + validate.getStatusCode().toString()
                 );
@@ -421,7 +408,6 @@ public class CodeController implements Initializable {
         // attended to any exam yet, block this attempt and alert the user.
         if (currentExam == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
                     + "You can attend to your exam by selecting any exam in Ongoing Exams."
@@ -434,7 +420,6 @@ public class CodeController implements Initializable {
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
         ConfirmDialog dialog = new ConfirmDialog(
-                dialogPane,
                 "Leave Exam",
                 "Once left, you will not be able to enter again!\n\n"
                 + "Leave the exam now?"

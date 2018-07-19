@@ -17,6 +17,8 @@ public class AdjustSnapshotParamEvent extends Event implements ExamRelated {
         
         Map<String, Object> content = this.getContent();
         
+        
+        // Extract examID, snapshot quality and frequency from json content.
         this.examID = (int) Double.parseDouble(content.get("examID").toString());
         this.quality = Double.parseDouble(content.get("quality").toString());
         this.frequency = (int) Double.parseDouble(content.get("frequency").toString());

@@ -112,7 +112,7 @@ public class Exam {
      */
     public List<Problem> getProblems() {
         List<Problem> problems = new ArrayList<>();
-        Response list = Problem.list(getData().getCourseID(), getData().getExamID());
+        Response list = Problem.list(getCourseID(), getExamID());
         
         if (list.success()) {
             String raw = NetworkUtils.getGson().toJson(list.getContent().get("problems"));
@@ -204,10 +204,6 @@ public class Exam {
     }
     
     
-    public ExamData getData() {
-        return data;
-    }
-    
     public Integer getCourseID() {
         return data.getCourseID();
     }
@@ -248,6 +244,7 @@ public class Exam {
     public SimpleIntegerProperty durationProperty() {
         return data.durationProperty();
     }
+    
     
     @Override
     public String toString() {

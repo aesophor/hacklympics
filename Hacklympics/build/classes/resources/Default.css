@@ -33,6 +33,11 @@
     -jfx-focus-color: -fx-lightblue;
 }
 
+.jfx-list-view .scroll-bar:vertical {
+    -fx-scale-x: 0;
+}
+
+
 .jfx-combo-box {
     -jfx-focus-color: -fx-lightblue;
 }
@@ -107,6 +112,10 @@
     -fx-text-fill: white;
 }
 
+
+.online-user-list {
+    -fx-background-color: transparent;
+}
 
 .online-user-list .list-cell {
     -fx-background-color: transparent;

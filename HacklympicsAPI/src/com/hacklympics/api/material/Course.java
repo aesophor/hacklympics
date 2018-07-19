@@ -102,7 +102,7 @@ public class Course {
      */
     public List<Exam> getExams() {
         List<Exam> exams = new ArrayList<>();
-        Response list = Exam.list(getData().getCourseID());
+        Response list = Exam.list(getCourseID());
         
         if (list.success()) {
             String raw = NetworkUtils.getGson().toJson(list.getContent().get("exams"));
@@ -114,17 +114,13 @@ public class Course {
                 String desc = e.getAsJsonObject().get("desc").getAsString();
                 int duration = e.getAsJsonObject().get("duration").getAsInt();
                 
-                exams.add(new Exam(getData().getCourseID(), examID, title, desc, duration));
+                exams.add(new Exam(getCourseID(), examID, title, desc, duration));
             }
         }
         
         return exams;
     }
     
-    
-    public CourseData getData() {
-        return data;
-    }
     
     public int getCourseID() {
         return data.getCourseID();
@@ -162,6 +158,7 @@ public class Course {
     public SimpleStringProperty teacherProperty() {
         return data.teacherProperty();
     }
+    
     
     @Override
     public String toString() {

@@ -43,8 +43,8 @@ public class Answer {
         return new Response(NetworkUtils.get(uri));
     }
     
-    public static Response create(int courseID, int examID, int problemID, 
-                                  String filename, String sourceCode, String student) {
+    public static Response create(int courseID, int examID, int problemID,
+            String filename, String sourceCode, String student) {
         String uri = String.format("course/%d/exam/%d/problem/%d/answer/create",
                 courseID, examID, problemID);
         
@@ -91,10 +91,6 @@ public class Answer {
     }
     
     
-    public AnswerData getData() {
-        return data;
-    }
-    
     public Integer getCourseID() {
         return data.getCourseID();
     }
@@ -136,6 +132,7 @@ public class Answer {
     public SimpleStringProperty studentProperty() {
         return data.studentProperty();
     }
+    
     
     @Override
     public String toString() {

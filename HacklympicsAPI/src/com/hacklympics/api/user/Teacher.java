@@ -50,7 +50,7 @@ public class Teacher extends User {
             String raw = NetworkUtils.getGson().toJson(list.getContent().get("courses"));
             JsonArray json = NetworkUtils.getGson().fromJson(raw, JsonArray.class);
             
-            String username = getProfile().getUsername();
+            String username = this.getUsername();
             
             for (JsonElement e: json) {
                 int courseID = e.getAsJsonObject().get("id").getAsInt();

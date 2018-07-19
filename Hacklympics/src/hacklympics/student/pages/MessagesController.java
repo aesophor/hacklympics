@@ -13,6 +13,7 @@ import com.hacklympics.api.event.message.NewMessageEvent;
 import com.hacklympics.api.message.Message;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.event.EventHandler;
+import hacklympics.student.StudentController;
 import hacklympics.utility.dialog.AlertDialog;
 import javafx.scene.layout.StackPane;
 
@@ -44,7 +45,6 @@ public class MessagesController implements Initializable {
         // block this attempt and alert the user.
         if (!Session.getInstance().isInExam()) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You can only send message while you are in an exam."
             );

@@ -44,6 +44,7 @@ public class EventManager {
         return eventManager;
     }
     
+    
     /**
      * Adds a EventHandler which subscribes to a specific type of Event.
      * @param eventType the type of the Event which the handler will handle.

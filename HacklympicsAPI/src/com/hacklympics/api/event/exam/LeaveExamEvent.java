@@ -21,18 +21,8 @@ public class LeaveExamEvent extends Event implements ExamRelated {
         
         Map<String, Object> content = this.getContent();
         
-        String rawTeacherJson = NetworkUtils.getGson().toJson(content.get("user"));
-        JsonObject userJson = NetworkUtils.getGson().fromJson(rawTeacherJson, JsonObject.class);
         
-        String username = userJson.get("username").getAsString();
-        String fullname = userJson.get("fullname").getAsString();
-        int gradYear = userJson.get("graduationYear").getAsInt();
-        boolean isStudent = userJson.get("isStudent").getAsBoolean();
-        
-        this.user = (isStudent) ? new Student(username, fullname, gradYear)
-                                : new Teacher(username, fullname, gradYear);
-        
-        
+        // Extract exam from json content.
         String rawExamJson = NetworkUtils.getGson().toJson(content.get("exam"));
         JsonObject examJson = NetworkUtils.getGson().fromJson(rawExamJson, JsonObject.class);
         
@@ -43,6 +33,19 @@ public class LeaveExamEvent extends Event implements ExamRelated {
         int duration = examJson.get("duration").getAsInt();
         
         this.exam = new Exam(courseID, examID, title, desc, duration);
+        
+        
+        // Extract teacher from json content.
+        String rawUserJson = NetworkUtils.getGson().toJson(content.get("user"));
+        JsonObject userJson = NetworkUtils.getGson().fromJson(rawUserJson, JsonObject.class);
+        
+        String username = userJson.get("username").getAsString();
+        String fullname = userJson.get("fullname").getAsString();
+        int gradYear = userJson.get("graduationYear").getAsInt();
+        boolean isStudent = userJson.get("isStudent").getAsBoolean();
+        
+        this.user = (isStudent) ? new Student(username, fullname, gradYear)
+                                : new Teacher(username, fullname, gradYear);
     }
     
     

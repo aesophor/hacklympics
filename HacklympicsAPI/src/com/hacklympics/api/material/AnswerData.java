@@ -10,9 +10,9 @@ public class AnswerData {
     private final SimpleIntegerProperty problemID;
     private final SimpleIntegerProperty answerID;
     
-    private SimpleStringProperty className;
-    private SimpleStringProperty sourceCode;
-    private SimpleStringProperty student;
+    private final SimpleStringProperty className;
+    private final SimpleStringProperty sourceCode;
+    private final SimpleStringProperty student;
     
     public AnswerData(int courseID, int examID, int problemID, int answerID, 
             String className, String sourceCode, String student) {

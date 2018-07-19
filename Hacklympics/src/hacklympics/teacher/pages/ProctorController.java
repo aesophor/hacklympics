@@ -40,18 +40,12 @@ import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
 import com.jfoenix.controls.JFXTextArea;
 import hacklympics.utility.proctor.SnapshotManager;
-import static hacklympics.utility.FileTab.computeHighlighting;
 import hacklympics.utility.proctor.KeystrokeBox;
 import hacklympics.utility.proctor.KeystrokeManager;
 import hacklympics.utility.proctor.KeystrokeStudentsVBox;
 import hacklympics.utility.proctor.SnapshotBox;
 import hacklympics.utility.proctor.SnapshotGroup;
 import hacklympics.utility.proctor.SnapshotGrpVBox;
-import javafx.scene.layout.HBox;
-import static javafx.scene.layout.Region.USE_PREF_SIZE;
-import javafx.scene.layout.VBox;
-import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.LineNumberFactory;
 
 public class ProctorController implements Initializable {
 
@@ -94,70 +88,8 @@ public class ProctorController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // First we will cache to generic and special group VBox so that
-        // we can write code with better readability later.
-        this.snapshotGenGrpVBox = SnapshotGroup.GENERIC.getSnapshotGrpVBox();
-        this.snapshotSpeGrpVBox = SnapshotGroup.SPECIAL.getSnapshotGrpVBox();
-        this.keystrokeStudentsVBox = new KeystrokeStudentsVBox();
-        
-        // Initialize the generic and special group pane in LiveScreens Tab,
-        // as well as keystroke students pane in Keystroke Tab.
-        this.snapshotGenGrpPane.setContent(this.snapshotGenGrpVBox);
-        this.snapshotSpeGrpPane.setContent(this.snapshotSpeGrpVBox);
-        this.keystrokeStudentsPane.setContent(this.keystrokeStudentsVBox);
-        
-        
-        // Add the generic and special group VBoxes to the groupBox.
-        // This part is tricky: we cannot simply add a VBox to a combobox
-        // as its content (since SnapshotGrpVBox extends VBox), 
-        // toString method won't be fully functional! you may try it out
-        // for yourself. So I created an enum to wrap the SnapshotGrpVBox.
-        this.groupBox.getItems().add(SnapshotGroup.GENERIC);
-        this.groupBox.getItems().add(SnapshotGroup.SPECIAL);
-
-        // Populate the imgQualityBox and imgFrequencyBox.
-        this.imgQualityBox.getItems().addAll(SnapshotManager.QUALITY_OPTIONS);
-        this.imgFrequencyBox.getItems().addAll(SnapshotManager.FREQUENCY_OPTIONS);
-        
-        // When user selects a certain group, display the corresponding parameters.
-        this.groupBox.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldSelection, newSelection) -> {
-                    SnapshotGroup selectedGroup = (SnapshotGroup) this.groupBox.getSelectionModel().getSelectedItem();
-                    SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
-                    
-                    this.imgQualityBox.getSelectionModel().select((Double) vbox.getQuality());
-                    this.imgFrequencyBox.getSelectionModel().select((Integer) vbox.getFrequency());
-                }
-        );
-        
-        
-        // Populate the keyFrequencyBox.
-        this.keyFrequencyBox.getItems().addAll(KeystrokeManager.FREQUENCY_OPTIONS);
-        
-        /************************************************************************
-        // Place a CodeArea into keystrokePlaybackPane.
-        codeArea = new CodeArea();
-        codeArea.getStyleClass().add("code-area");
-        //codeArea.setEditable(false);
-        codeArea.setPrefHeight(USE_PREF_SIZE);
-        codeArea.getStylesheets().add("/resources/JavaKeywords.css");
-
-        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-        codeArea.multiPlainChanges()
-                .successionEnds(java.time.Duration.ofMillis(1))
-                .subscribe(ignore -> codeArea.setStyleSpans(0, computeHighlighting(codeArea.getText())));
-
-        // Add the code area we just created into a VBox.
-        HBox hbox = new HBox();
-        hbox.getChildren().add(codeArea);
-        
-        VBox vbox = new VBox();
-        vbox.setPrefWidth(353.0);
-        vbox.setPrefHeight(451.0);
-        //vbox.getStyleClass().add("code-vbox");
-        vbox.getChildren().add(hbox);
-        this.keystrokePlaybackPane.setContent(vbox);
-        ************************************************************************/
+        initLiveScreenTab();
+        initKeystrokeTab();
         
         
         // Clear all SnapshotBoxes of current exam and restore the
@@ -171,7 +103,6 @@ public class ProctorController implements Initializable {
                     this.reset();
 
                     AlertDialog alert = new AlertDialog(
-                            dialogPane,
                             "Exam Halted",
                             "The current exam has been halted."
                     );
@@ -217,7 +148,46 @@ public class ProctorController implements Initializable {
                 });
             }
         });
+    }
+    
+    private void initLiveScreenTab() {
+        // First we will cache to generic and special group VBox so that
+        // we can write code with better readability later.
+        this.snapshotGenGrpVBox = SnapshotGroup.GENERIC.getSnapshotGrpVBox();
+        this.snapshotSpeGrpVBox = SnapshotGroup.SPECIAL.getSnapshotGrpVBox();
+        this.keystrokeStudentsVBox = new KeystrokeStudentsVBox();
+        
+        // Initialize the generic and special group pane in LiveScreens Tab,
+        // as well as keystroke students pane in Keystroke Tab.
+        this.snapshotGenGrpPane.setContent(this.snapshotGenGrpVBox);
+        this.snapshotSpeGrpPane.setContent(this.snapshotSpeGrpVBox);
+        this.keystrokeStudentsPane.setContent(this.keystrokeStudentsVBox);
+        
+        
+        // Add the generic and special group VBoxes to the groupBox.
+        // This part is tricky: we cannot simply add a VBox to a combobox
+        // as its content (since SnapshotGrpVBox extends VBox), 
+        // toString method won't be fully functional! you may try it out
+        // for yourself. So I created an enum to wrap the SnapshotGrpVBox.
+        this.groupBox.getItems().add(SnapshotGroup.GENERIC);
+        this.groupBox.getItems().add(SnapshotGroup.SPECIAL);
 
+        // Populate the imgQualityBox and imgFrequencyBox.
+        this.imgQualityBox.getItems().addAll(SnapshotManager.QUALITY_OPTIONS);
+        this.imgFrequencyBox.getItems().addAll(SnapshotManager.FREQUENCY_OPTIONS);
+        
+        // When user selects a certain group, display the corresponding parameters.
+        this.groupBox.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldSelection, newSelection) -> {
+                    SnapshotGroup selectedGroup = (SnapshotGroup) this.groupBox.getSelectionModel().getSelectedItem();
+                    SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
+                    
+                    this.imgQualityBox.getSelectionModel().select((Double) vbox.getQuality());
+                    this.imgFrequencyBox.getSelectionModel().select((Integer) vbox.getFrequency());
+                }
+        );
+        
+        
         // Updates the SnapshotBox when a NewSnapshotEvent arrives.
         // The target SnapshotBox could either be in generic or special group.
         this.setOnNewSnapshot((NewSnapshotEvent event) -> {
@@ -233,6 +203,11 @@ public class ProctorController implements Initializable {
                 }
             }
         });
+    }
+    
+    private void initKeystrokeTab() {
+        // Populate the keyFrequencyBox.
+        this.keyFrequencyBox.getItems().addAll(KeystrokeManager.FREQUENCY_OPTIONS);
         
         // Updates the KeystrokeBox when a NewKeystrokeEvent arrives.
         this.setOnNewKeystroke((NewKeystrokeEvent event) -> {
@@ -244,6 +219,7 @@ public class ProctorController implements Initializable {
             }
         });
     }
+    
 
     @FXML
     public void moveToSpecialGrp(ActionEvent event) {
@@ -252,7 +228,6 @@ public class ProctorController implements Initializable {
 
         if (genGrpSelectedBoxes == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You have not selected any students to move."
             );
@@ -292,7 +267,6 @@ public class ProctorController implements Initializable {
 
         if (speGrpSelectedBoxes == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You have not selected any students to move."
             );
@@ -325,6 +299,7 @@ public class ProctorController implements Initializable {
         );
     }
 
+    
     @FXML
     public void adjustLiveScreensParam(ActionEvent event) {
         // If the user tries to broadcast the command to adjust snapshot
@@ -332,7 +307,6 @@ public class ProctorController implements Initializable {
         // not in any exam, block this attempt and alert the user.
         if (!Session.getInstance().isInExam()) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You can only adjust parameters while in exam."
             );
@@ -365,7 +339,6 @@ public class ProctorController implements Initializable {
             vbox.setFrequency(selectedFrequency);
 
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Parameters Adjusted",
                     "The snapshot parameters has been adjusted."
             );
@@ -373,7 +346,6 @@ public class ProctorController implements Initializable {
             alert.show();
         } else {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "Failed to adjust the snapshot parameters."
             );
@@ -381,8 +353,55 @@ public class ProctorController implements Initializable {
             alert.show();
         }
     }
-
     
+    @FXML
+    public void adjustKeystrokesParam(ActionEvent event) {
+        // If the user tries to broadcast the command to adjust snapshot
+        // parameters to all students in the exam, but the user is currently
+        // not in any exam, block this attempt and alert the user.
+        if (!Session.getInstance().isInExam()) {
+            AlertDialog alert = new AlertDialog(
+                    "Alert",
+                    "You can only adjust parameters while in exam."
+            );
+
+            alert.show();
+            return;
+        }
+        
+        // If everything is fine, then we will proceed.
+        // Get the parameters from the ComboBoxes.
+        Integer selectedFrequency = (Integer) this.keyFrequencyBox.getSelectionModel().getSelectedItem();
+
+        // Broadcast the command to adjust snapshot parameters
+        // to the students within the user-selected group.
+        Response adjustParam = Keystroke.adjustParam(
+                Session.getInstance().getCurrentExam().getCourseID(),
+                Session.getInstance().getCurrentExam().getExamID(),
+                this.keystrokeStudentsVBox.getStudents(),
+                selectedFrequency
+        );
+
+        if (adjustParam.getStatusCode() == StatusCode.SUCCESS) {
+            this.keystrokeStudentsVBox.setFrequency(selectedFrequency);
+
+            AlertDialog alert = new AlertDialog(
+                    "Parameters Adjusted",
+                    "The keystroke parameters has been adjusted."
+            );
+
+            alert.show();
+        } else {
+            AlertDialog alert = new AlertDialog(
+                    "Alert",
+                    "Failed to adjust the keystroke parameters."
+            );
+
+            alert.show();
+        }
+    }
+    
+
     @FXML
     public void playKeystroke(ActionEvent event) throws InterruptedException {
         // If the user tries to play the keystroke history of a student,
@@ -390,7 +409,6 @@ public class ProctorController implements Initializable {
         // and alert the user.
         if (!Session.getInstance().isInExam()) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "Keystroke playback is only available during exam."
             );
@@ -405,7 +423,6 @@ public class ProctorController implements Initializable {
         
         if (selectedBox == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You haven't selected any student yet."
             );
@@ -443,57 +460,7 @@ public class ProctorController implements Initializable {
         }.start();
     }
     
-    @FXML
-    public void adjustKeystrokesParam(ActionEvent event) {
-        // If the user tries to broadcast the command to adjust snapshot
-        // parameters to all students in the exam, but the user is currently
-        // not in any exam, block this attempt and alert the user.
-        if (!Session.getInstance().isInExam()) {
-            AlertDialog alert = new AlertDialog(
-                    dialogPane,
-                    "Alert",
-                    "You can only adjust parameters while in exam."
-            );
-
-            alert.show();
-            return;
-        }
-        
-        // If everything is fine, then we will proceed.
-        // Get the parameters from the ComboBoxes.
-        Integer selectedFrequency = (Integer) this.keyFrequencyBox.getSelectionModel().getSelectedItem();
-
-        // Broadcast the command to adjust snapshot parameters
-        // to the students within the user-selected group.
-        Response adjustParam = Keystroke.adjustParam(
-                Session.getInstance().getCurrentExam().getCourseID(),
-                Session.getInstance().getCurrentExam().getExamID(),
-                this.keystrokeStudentsVBox.getStudents(),
-                selectedFrequency
-        );
-
-        if (adjustParam.getStatusCode() == StatusCode.SUCCESS) {
-            this.keystrokeStudentsVBox.setFrequency(selectedFrequency);
-
-            AlertDialog alert = new AlertDialog(
-                    dialogPane,
-                    "Parameters Adjusted",
-                    "The keystroke parameters has been adjusted."
-            );
-
-            alert.show();
-        } else {
-            AlertDialog alert = new AlertDialog(
-                    dialogPane,
-                    "Alert",
-                    "Failed to adjust the keystroke parameters."
-            );
-
-            alert.show();
-        }
-    }
     
-
     /**
      * Halts the specified exam (for the teacher who launches the exam). Asks
      * the user for confirmation for halting the exam prematurely. If the user
@@ -509,7 +476,6 @@ public class ProctorController implements Initializable {
 
         if (currentExam == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
                     + "You can launch your exam in My Courses & Exam, or "
@@ -523,7 +489,6 @@ public class ProctorController implements Initializable {
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
         ConfirmDialog dialog = new ConfirmDialog(
-                dialogPane,
                 "Halt Exam",
                 "Once the exam is halted, all students will no longer be able "
               + "to submit their code to the server.\n\n"
@@ -554,7 +519,6 @@ public class ProctorController implements Initializable {
         // attended to any exam yet, block this attempt and alert the user.
         if (currentExam == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You haven't attended to any exam yet.\n\n"
                   + "You can attend to your exam by selecting any exam in Ongoing Exams."
@@ -567,7 +531,6 @@ public class ProctorController implements Initializable {
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
         ConfirmDialog dialog = new ConfirmDialog(
-                dialogPane,
                 "Leave Exam",
                 "As long as the exam is still ongoing, you can come back later at anytime.\n\n"
               + "Leave the exam now?"

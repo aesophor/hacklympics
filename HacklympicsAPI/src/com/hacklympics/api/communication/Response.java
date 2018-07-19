@@ -29,7 +29,7 @@ public class Response {
     }
     
     /**
-     * Check if the status code of this response is 'SUCCESS'.
+     * Checks if the status code of this response is 'SUCCESS'.
      * @return true if the status code is 'SUCCESS'.
      */
     public boolean success() {

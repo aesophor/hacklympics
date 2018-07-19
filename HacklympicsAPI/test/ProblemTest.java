@@ -7,10 +7,8 @@ public class ProblemTest {
     
     public static void main(String[] args) {
         Course systemSoftwares = new Course(7);
-        Exam e = new Exam(systemSoftwares.getData().getCourseID(), 4);
-        Problem p = new Problem(e.getData().getCourseID(),
-                                e.getData().getExamID(),
-                                4);
+        Exam e = new Exam(systemSoftwares.getCourseID(), 4);
+        Problem p = new Problem(e.getCourseID(), e.getExamID(), 4);
         
         /*
         Response response = Problem.create(

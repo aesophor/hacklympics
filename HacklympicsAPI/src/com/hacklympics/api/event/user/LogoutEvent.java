@@ -15,6 +15,7 @@ public class LogoutEvent extends Event {
         
         Map<String, Object> loginEvent = this.getContent();
         
+        
         String username = loginEvent.get("username").toString();
         String fullname = loginEvent.get("fullname").toString();
         int gradYear = (int) Double.parseDouble(loginEvent.get("graduationYear").toString());

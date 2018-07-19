@@ -16,6 +16,8 @@ public class AdjustKeystrokeParamEvent extends Event implements ExamRelated {
         
         Map<String, Object> content = this.getContent();
         
+        
+        // Extract examID and new keystroke frequency from json content.
         this.examID = (int) Double.parseDouble(content.get("examID").toString());
         this.frequency = (int) Double.parseDouble(content.get("frequency").toString());
     }

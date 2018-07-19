@@ -81,27 +81,27 @@ public abstract class User {
         String uri = "user/logout";
         
         JsonObject json = new JsonObject();
-        json.addProperty("username", getProfile().getUsername());
+        json.addProperty("username", this.getUsername());
         
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response attend(Exam exam) {
-        String uri = String.format("course/%d/exam/attend", exam.getData().getCourseID());
+        String uri = String.format("course/%d/exam/attend", exam.getCourseID());
         
         JsonObject json = new JsonObject();
-        json.addProperty("examID", exam.getData().getExamID());
-        json.addProperty("username", this.getProfile().getUsername());
+        json.addProperty("examID", exam.getExamID());
+        json.addProperty("username", this.getUsername());
         
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
     public Response leave(Exam exam) {
-        String uri = String.format("course/%d/exam/leave", exam.getData().getCourseID());
+        String uri = String.format("course/%d/exam/leave", exam.getCourseID());
         
         JsonObject json = new JsonObject();
-        json.addProperty("examID", exam.getData().getExamID());
-        json.addProperty("username", this.getProfile().getUsername());
+        json.addProperty("examID", exam.getExamID());
+        json.addProperty("username", this.getUsername());
         
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
@@ -132,10 +132,6 @@ public abstract class User {
         return users;
     }
     
-    
-    public UserProfile getProfile() {
-        return profile;
-    }
     
     public String getUsername() {
         return profile.getUsername();

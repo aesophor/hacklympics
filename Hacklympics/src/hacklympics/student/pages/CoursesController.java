@@ -170,8 +170,7 @@ public class CoursesController implements Initializable {
                 
                 courseRecordsCache = ((Student) Session.getInstance().getCurrentUser()).getCourses();
                 for (Course c : courseRecordsCache) {
-                    if (c.getData().getName().contains(keyword) |
-                        c.getData().getTeacher().contains(keyword)) {
+                    if (c.getName().contains(keyword) | c.getTeacher().contains(keyword)) {
                         courseRecords.add(c);
                     }
                 }
@@ -187,8 +186,7 @@ public class CoursesController implements Initializable {
                 if (selectedCourse != null) {
                     examRecordsCache = selectedCourse.getExams();
                     for (Exam e : examRecordsCache) {
-                        if (e.getData().getTitle().contains(keyword) |
-                            e.getData().getDesc().contains(keyword)) {
+                        if (e.getTitle().contains(keyword) | e.getDesc().contains(keyword)) {
                             examRecords.add(e);
                         }
                     }
@@ -205,8 +203,7 @@ public class CoursesController implements Initializable {
                 if (selectedExam != null) {
                     problemRecordsCache = selectedExam.getProblems();
                     for (Problem p : problemRecordsCache) {
-                        if (p.getData().getTitle().contains(keyword) |
-                            p.getData().getDesc().contains(keyword)) {
+                        if (p.getTitle().contains(keyword) | p.getDesc().contains(keyword)) {
                             problemRecords.add(p);
                         }
                     }
@@ -237,8 +234,7 @@ public class CoursesController implements Initializable {
                 courseRecords.clear();
                 
                 for (Course c : courseRecordsCache) {
-                    if (c.getData().getName().contains(keyword) |
-                        c.getData().getTeacher().contains(keyword)) {
+                    if (c.getName().contains(keyword) | c.getTeacher().contains(keyword)) {
                         courseRecords.add(c);
                     }
                 }
@@ -252,8 +248,7 @@ public class CoursesController implements Initializable {
                 
                 if (selectedCourse != null) {
                     for (Exam e : examRecordsCache) {
-                        if (e.getData().getTitle().contains(keyword) |
-                            e.getData().getDesc().contains(keyword)) {
+                        if (e.getTitle().contains(keyword) | e.getDesc().contains(keyword)) {
                             examRecords.add(e);
                         }
                     }
@@ -268,8 +263,7 @@ public class CoursesController implements Initializable {
                 
                 if (selectedExam != null) {
                     for (Problem p : problemRecordsCache) {
-                        if (p.getData().getTitle().contains(keyword) |
-                            p.getData().getDesc().contains(keyword)) {
+                        if (p.getTitle().contains(keyword) | p.getDesc().contains(keyword)) {
                             problemRecords.add(p);
                         }
                     }

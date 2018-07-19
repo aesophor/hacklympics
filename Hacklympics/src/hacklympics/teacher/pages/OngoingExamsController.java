@@ -92,8 +92,7 @@ public class OngoingExamsController implements Initializable {
         
         recordsCache = Exam.getOngoingExams();
         for (Exam e: recordsCache) {
-            if (e.getData().getTitle().contains(keyword) |
-                e.getData().getDesc().contains(keyword)) {
+            if (e.getTitle().contains(keyword) | e.getDesc().contains(keyword)) {
                 records.add(e);
             }
         }
@@ -108,8 +107,7 @@ public class OngoingExamsController implements Initializable {
         records.clear();
         
         for (Exam e: recordsCache) {
-            if (e.getData().getTitle().contains(keyword) |
-                e.getData().getDesc().contains(keyword)) {
+            if (e.getTitle().contains(keyword) | e.getDesc().contains(keyword)) {
                 records.add(e);
             }
         }
@@ -138,7 +136,6 @@ public class OngoingExamsController implements Initializable {
         
         if (selectedExam == null) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You have not selected any exam to attend to."
             );
@@ -151,7 +148,6 @@ public class OngoingExamsController implements Initializable {
         // in an exam, block this attempt and alert the user.
         if (Session.getInstance().isInExam()) {
             AlertDialog alert = new AlertDialog(
-                    dialogPane,
                     "Alert",
                     "You are already in an exam."
             );
@@ -163,7 +159,6 @@ public class OngoingExamsController implements Initializable {
         // If everything alright, then ask the user for confirmation.
         // If yes, then we will proceed.
         ConfirmDialog confirmation = new ConfirmDialog(
-                dialogPane,
                 "Proctor Exam",
                 "You have selected the exam: " + selectedExam + "\n\n"
               + "Proctor the exam now? (You will become a proctor of this exam)"
@@ -196,7 +191,6 @@ public class OngoingExamsController implements Initializable {
                     
                 case ALREADY_ATTENDED:
                     AlertDialog alert = new AlertDialog(
-                            dialogPane,
                             "Alert",
                             "You are already proctoring this exam."
                     );

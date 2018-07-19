@@ -1,14 +1,13 @@
 package hacklympics.utility.dialog;
 
 import java.util.ArrayList;
-import javafx.scene.layout.StackPane;
 
 public class AlertDialog extends Dialog {
     
-    public AlertDialog(StackPane pane, String title, String body) {
-        super(pane, title);
+    public AlertDialog(String title, String body) {
+        super(title);
         
-        this.content.setBody(new WrappingText(body, pane.getWidth()));
+        this.content.setBody(new WrappingText(body, this.dialogPane.getWidth()));
         this.buttons.remove("confirmBtn");
         
         this.content.setActions(new ArrayList<>(buttons.values()));

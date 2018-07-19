@@ -17,16 +17,8 @@ public class LaunchExamEvent extends Event {
         
         Map<String, Object> content = this.getContent();
         
-        String rawTeacherJson = NetworkUtils.getGson().toJson(content.get("teacher"));
-        JsonObject teacherJson = NetworkUtils.getGson().fromJson(rawTeacherJson, JsonObject.class);
         
-        String username = teacherJson.get("username").getAsString();
-        String fullname = teacherJson.get("fullname").getAsString();
-        int gradYear = teacherJson.get("graduationYear").getAsInt();
-        
-        this.teacher = new Teacher(username, fullname, gradYear);
-        
-        
+        // Extract exam from json content.
         String rawExamJson = NetworkUtils.getGson().toJson(content.get("exam"));
         JsonObject examJson = NetworkUtils.getGson().fromJson(rawExamJson, JsonObject.class);
         
@@ -37,6 +29,17 @@ public class LaunchExamEvent extends Event {
         int duration = examJson.get("duration").getAsInt();
         
         this.exam = new Exam(courseID, examID, title, desc, duration);
+        
+        
+        // Extract teacher from json content.
+        String rawTeacherJson = NetworkUtils.getGson().toJson(content.get("teacher"));
+        JsonObject teacherJson = NetworkUtils.getGson().fromJson(rawTeacherJson, JsonObject.class);
+        
+        String username = teacherJson.get("username").getAsString();
+        String fullname = teacherJson.get("fullname").getAsString();
+        int gradYear = teacherJson.get("graduationYear").getAsInt();
+        
+        this.teacher = new Teacher(username, fullname, gradYear);
     }
     
     

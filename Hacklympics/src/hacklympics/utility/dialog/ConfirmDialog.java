@@ -1,13 +1,11 @@
 package hacklympics.utility.dialog;
 
-import javafx.scene.layout.StackPane;
-
 public class ConfirmDialog extends Dialog {
     
-    public ConfirmDialog(StackPane pane, String title, String body) {
-        super(pane, title);
+    public ConfirmDialog(String title, String body) {
+        super(title);
         
-        this.content.setBody(new WrappingText(body, pane.getWidth()));
+        this.content.setBody(new WrappingText(body, this.dialogPane.getWidth()));
     }
     
 }

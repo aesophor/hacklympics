@@ -20,20 +20,27 @@ public class NewKeystrokeEvent extends Event implements ExamRelated {
         
         Map<String, Object> content = this.getContent();
         
-        int examID = (int) Double.parseDouble(content.get("examID").toString());
-        String student = content.get("student").toString();
-        List<String> history = new ArrayList<>();
         
+        // Extract examID from json content.
+        int examID = (int) Double.parseDouble(content.get("examID").toString());
+        
+        // Extract student's username from json content.
+        String studentUsername = content.get("student").toString();
+        
+        // Extract student's keystroke history from json content.
         String rawHistoryJson = NetworkUtils.getGson().toJson(content.get("history"));
         JsonArray historyJsonArray = NetworkUtils.getGson().fromJson(rawHistoryJson, JsonArray.class);
         
+        List<String> history = new ArrayList<>();
         for (JsonElement e : historyJsonArray) {
             history.add(e.getAsString());
         }
         
+        
+        // Create a new instance of Keystroke.
         this.keystroke = new Keystroke(
                 examID,
-                student,
+                studentUsername,
                 history
         );
     }
