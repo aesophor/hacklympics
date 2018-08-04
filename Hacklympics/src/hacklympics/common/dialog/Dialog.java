@@ -13,8 +13,6 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXDialog;
 import com.jfoenix.controls.JFXDialogLayout;
 import com.jfoenix.controls.events.JFXDialogEvent;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public abstract class Dialog {
     
@@ -36,7 +34,7 @@ public abstract class Dialog {
         this.buttons = new HashMap<>();
         this.content = new JFXDialogLayout();
         this.dialog = new JFXDialog(
-                this.container,
+        		this.container,
                 this.content,
                 JFXDialog.DialogTransition.TOP
         );

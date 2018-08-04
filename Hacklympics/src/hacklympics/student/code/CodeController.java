@@ -40,7 +40,7 @@ import hacklympics.student.StudentController;
 import hacklympics.common.dialog.AlertDialog;
 import hacklympics.common.dialog.ConfirmDialog;
 import hacklympics.utility.Utils;
-import hacklympics.teacher.proctor.KeystrokeManager;
+import hacklympics.teacher.proctor.KeystrokeLogger;
 import hacklympics.teacher.proctor.SnapshotManager;
 
 public class CodeController implements Initializable {
@@ -92,7 +92,7 @@ public class CodeController implements Initializable {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
                 // Shutdown the snapshot and keystroke logging thread.
                 SnapshotManager.getInstance().shutdown();
-                KeystrokeManager.getInstance().shutdown();
+                KeystrokeLogger.getInstance().shutdown();
                     
                 // Reset the Proctor Page to its original state.
                 Session.getInstance().setCurrentExam(null);
@@ -125,7 +125,7 @@ public class CodeController implements Initializable {
         this.setOnAdjustKeystrokeParam((AdjustKeystrokeParamEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
                 // Set the parameters.
-                KeystrokeManager.getInstance().setFrequency(event.getFrequency());
+                KeystrokeLogger.getInstance().setFrequency(event.getFrequency());
             }
         });
 
@@ -431,7 +431,7 @@ public class CodeController implements Initializable {
                 case SUCCESS:
                     // Shutdown the snapshot and keystroke logging thread.
                     SnapshotManager.getInstance().shutdown();
-                    KeystrokeManager.getInstance().shutdown();
+                    KeystrokeLogger.getInstance().shutdown();
                     
                     // Clear session data and reset the Code Page to
                     // its original state.

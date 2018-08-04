@@ -30,7 +30,7 @@ public class Course {
         if (get.success()) {
             Map<String, Object> json = get.getContent();
             
-            this.data = new CourseData(
+			this.data = new CourseData(
                     courseID,
                     json.get("name").toString(),
                     (int) Double.parseDouble(json.get("semester").toString()),

@@ -38,7 +38,7 @@ public class Keystroke implements ProctorMedium {
     }
     
     public static Response adjustParam(int courseID, int examID, List<Student> students, int frequency) {
-        String uri = String.format("course/%d/exam/%d/snapshot/adjust_param", courseID, examID);
+        String uri = String.format("course/%d/exam/%d/keystroke/adjust_param", courseID, examID);
         
         JsonArray studentsJsonArray = new JsonArray();
         for (Student student : students) {

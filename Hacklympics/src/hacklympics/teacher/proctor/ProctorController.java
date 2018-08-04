@@ -143,6 +143,8 @@ public class ProctorController implements Initializable {
                 });
                 */
                 
+                // Set the timestamp label to "Finished" when a student
+                // leaves the exam.
                 SnapshotBox snapshotBox = this.snapshotGenGrpVBox.get((Student) event.getUser());
                 snapshotBox.markAsFinished();
                 
@@ -209,7 +211,7 @@ public class ProctorController implements Initializable {
     
     private void initKeystrokeTab() {
         // Populate the keyFrequencyBox.
-        this.keyFrequencyBox.getItems().addAll(KeystrokeManager.FREQUENCY_OPTIONS);
+        this.keyFrequencyBox.getItems().addAll(KeystrokeLogger.FREQUENCY_OPTIONS);
         
         // Updates the KeystrokeBox when a NewKeystrokeEvent arrives.
         this.setOnNewKeystroke((NewKeystrokeEvent event) -> {
@@ -342,12 +344,25 @@ public class ProctorController implements Initializable {
             return;
         }
         
-        // If everything is fine, then we will proceed.
-        // First, check which group the user is trying to adjust.
+        // Check which group the user is trying to adjust.
+        // If the user has not selected any group, block this attempt and
+        // alert the user.
         SnapshotGroup selectedGroup = (SnapshotGroup) this.groupBox.getSelectionModel().getSelectedItem();
-        SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
+        
+        if (selectedGroup == null) {
+            AlertDialog alert = new AlertDialog(
+                    "Alert",
+                    "Please select a group to configure first."
+            );
 
+            alert.show();
+            return;
+        }
+        
+
+        // If everything is fine, then we will proceed.
         // Get the parameters from the ComboBoxes.
+        SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
         Double selectedQuality = (Double) this.imgQualityBox.getSelectionModel().getSelectedItem();
         Integer selectedFrequency = (Integer) this.imgFrequencyBox.getSelectionModel().getSelectedItem();
 
@@ -374,7 +389,8 @@ public class ProctorController implements Initializable {
         } else {
             AlertDialog alert = new AlertDialog(
                     "Alert",
-                    "Failed to adjust the snapshot parameters."
+                    "Failed to adjust the snapshot parameters.\n\n"
+                  + "Error code:" + adjustParam.getStatusCode().toString() 
             );
 
             alert.show();
@@ -421,7 +437,8 @@ public class ProctorController implements Initializable {
         } else {
             AlertDialog alert = new AlertDialog(
                     "Alert",
-                    "Failed to adjust the keystroke parameters."
+                    "Failed to adjust the keystroke parameters.\n\n"
+                  + "Error code:" + adjustParam.getStatusCode().toString() 
             );
 
             alert.show();
@@ -431,19 +448,6 @@ public class ProctorController implements Initializable {
 
     @FXML
     public void playKeystroke(ActionEvent event) throws InterruptedException {
-        // If the user tries to play the keystroke history of a student,
-        // but the user is currently not in any exam, block this attempt
-        // and alert the user.
-        if (!Session.getInstance().isInExam()) {
-            AlertDialog alert = new AlertDialog(
-                    "Alert",
-                    "Keystroke playback is only available during exam."
-            );
-
-            alert.show();
-            return;
-        }
-        
         // If the user has not selected any student for playback,
         // block this attempt and alert the user.
         KeystrokeBox selectedBox = this.keystrokeStudentsVBox.getSelectedItem();
@@ -464,7 +468,7 @@ public class ProctorController implements Initializable {
         // If we call Thread.sleep() on JavaFX thread, the UI will hang.
         List<String> keystrokeHistory = selectedBox.getKeystrokeHistory();
         
-        new Thread() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < keystrokeHistory.size(); i++) {
@@ -484,7 +488,7 @@ public class ProctorController implements Initializable {
                     }
                 }
             }
-        }.start();
+        }).start();
     }
     
     

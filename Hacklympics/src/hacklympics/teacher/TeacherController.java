@@ -12,8 +12,9 @@ import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
-import com.jfoenix.controls.JFXButton;
+import javafx.scene.input.MouseEvent;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.SocketServer;
 import com.hacklympics.api.event.EventManager;
@@ -22,6 +23,7 @@ import com.hacklympics.api.session.MainController;
 import com.hacklympics.api.user.User;
 import hacklympics.utility.Utils;
 import hacklympics.common.FXMLTable;
+import hacklympics.common.DropDownUserMenu;
 import hacklympics.common.OnlineUserListView;
 import hacklympics.common.dialog.ConfirmDialog;
 
@@ -29,6 +31,8 @@ public class TeacherController implements Initializable, MainController {
     
     private Map<String, AnchorPane> pages;
     private Map<String, Object> controllers;
+    
+    private DropDownUserMenu userMenu;
     
     @FXML
     private AnchorPane mainPane;
@@ -39,21 +43,39 @@ public class TeacherController implements Initializable, MainController {
     @FXML
     private StackPane dialogPane;
     @FXML
-    private Label greetLabel;
-    @FXML
-    private JFXButton logoutBtn;
+    private Button userMenuBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initPages();
         showPage(pages.get("Dashboard"));
         
-        // Sets the greeting message.
-        User current = Session.getInstance().getCurrentUser();
-        greetLabel.setText(String.format("Welcome, %s", current.getFullname()));
         
-        // Initializes OnlineUserListView.
+        // Initialize OnlineUserListView.
         this.onlineUserPane.getChildren().add(new OnlineUserListView());
+        
+        // Initialize user menu.
+        User currentUser = Session.getInstance().getCurrentUser();
+        this.userMenuBtn.setText(String.format("%s ", currentUser.getFullname()));
+        
+        this.userMenu = new DropDownUserMenu();
+        
+        this.userMenu.add(new Label("Profile"), (MouseEvent event) -> {
+            this.userMenu.hide();
+        });
+        
+        this.userMenu.add(new Label("Settings"), (MouseEvent event) -> {
+            this.userMenu.hide();
+        });
+        
+        this.userMenu.add(new Label("About"), (MouseEvent event) -> {
+            this.userMenu.hide();
+        });
+        
+        this.userMenu.add(new Label("Logout"), (MouseEvent event) -> {
+            this.userMenu.hide();
+            this.logout();
+        });
     }
     
     
@@ -92,7 +114,11 @@ public class TeacherController implements Initializable, MainController {
     
     
     @FXML
-    public void logout(ActionEvent event) {
+    public void showUserMenu(ActionEvent event) {
+        this.userMenu.show(this.userMenuBtn);
+    }
+    
+    private void logout() {
         ConfirmDialog confirm = new ConfirmDialog(
                 "Logout",
                 "You are about to be logged out. Are you sure?"
@@ -104,7 +130,7 @@ public class TeacherController implements Initializable, MainController {
             if (logout.success()) {
                 String loginFXML = FXMLTable.getInstance().get("Login");
                 Utils.loadStage(new FXMLLoader(getClass().getResource(loginFXML)));
-                logoutBtn.getScene().getWindow().hide();
+                userMenuBtn.getScene().getWindow().hide();
                 
                 Session.getInstance().clear();
                 EventManager.getInstance().clearEventHandlers();
@@ -116,7 +142,6 @@ public class TeacherController implements Initializable, MainController {
     }
     
     
-    @FXML
     private void showPage(Node node) {
         this.contentPane.getChildren().clear();
         this.contentPane.getChildren().add(node);

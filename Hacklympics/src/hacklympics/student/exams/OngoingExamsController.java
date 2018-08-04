@@ -30,7 +30,7 @@ import com.hacklympics.api.session.Session;
 import com.hacklympics.api.material.Exam;
 import hacklympics.teacher.proctor.SnapshotManager;
 import com.hacklympics.api.user.User;
-import hacklympics.teacher.proctor.KeystrokeManager;
+import hacklympics.teacher.proctor.KeystrokeLogger;
 
 public class OngoingExamsController implements Initializable {
     
@@ -172,7 +172,7 @@ public class OngoingExamsController implements Initializable {
                 case SUCCESS:
                     // Execute the snapshot and keystroke logging thread.
                     Session.getInstance().getExecutor().execute(SnapshotManager.getInstance());
-                    Session.getInstance().getExecutor().execute(KeystrokeManager.getInstance());
+                    Session.getInstance().getExecutor().execute(KeystrokeLogger.getInstance());
                     
                     // Setup session data, examLabel and problemBox
                     // to inform user that he/she is taking an exam.
