@@ -40,6 +40,7 @@ import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
 import com.jfoenix.controls.JFXTextArea;
+import static hacklympics.student.code.FileTab.SAMPLE_CODE;
 
 public class ProctorController implements Initializable {
 
@@ -472,6 +473,10 @@ public class ProctorController implements Initializable {
         new Thread(new Runnable() {
             @Override
             public void run() {
+            	// Clears the codeArea for keystroke playback.
+                codeArea.clear();
+                codeArea.setText(SAMPLE_CODE);
+                
                 for (int i = 0; i < patches.size(); i++) {
                     double currentProgress = ((double) i) / patches.size();
                     
