@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="lib" path="libs/diffutils-1.2.1.jar"/>
 	<classpathentry kind="lib" path="libs/fontawesomefx-8.9.jar"/>
 	<classpathentry kind="lib" path="libs/gson-2.8.2.jar"/>
 	<classpathentry kind="lib" path="libs/jfoenix-8.0.1.jar" sourcepath="libs/jfoenix-8.0.1.jar"/>
@@ -12,5 +11,6 @@
 	<classpathentry kind="lib" path="libs/terminalfx-1.0.5.jar"/>
 	<classpathentry kind="lib" path="libs/thumbnailator-0.4.8.jar"/>
 	<classpathentry kind="lib" path="/home/aesophor/Code/Hacklympics/Hacklympics/HacklympicsAPI/bin"/>
+	<classpathentry kind="lib" path="libs/java-diff-utils-1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

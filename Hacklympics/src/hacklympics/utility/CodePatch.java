@@ -10,7 +10,7 @@ import difflib.DiffUtils;
 
 public class CodePatch implements Serializable {
 	
-	private final Patch patch;
+	private final Patch patch; // java.io.NotSerializableException: difflib.Patch
 	
 	public CodePatch(String original, String revised) {
 		List<String> originalLines = Arrays.asList(original.split("\\n"));

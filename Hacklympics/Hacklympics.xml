@@ -13,7 +13,6 @@
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <fileset dir="${dir.buildfile}/bin"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/diffutils-1.2.1.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/fontawesomefx-8.9.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/gson-2.8.2.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/jfoenix-8.0.1.jar"/>
@@ -22,7 +21,8 @@
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/richtextfx-fat-0.9.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/terminalfx-1.0.5.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/thumbnailator-0.4.8.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/HacklympicsAPI/dist/HacklympicsAPI.jar"/>
+            <fileset dir="${dir.workspace}/HacklympicsAPI/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/java-diff-utils-1.2.jar"/>
         </jar>
     </target>
 </project>
