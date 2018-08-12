@@ -12,6 +12,7 @@ import com.hacklympics.api.user.Student;
 import com.hacklympics.api.proctor.Keystroke;
 import hacklympics.utility.CodePatch;
 import hacklympics.utility.Utils;
+import static hacklympics.student.code.FileTab.SAMPLE_CODE;
 
 public class KeystrokeBox extends StudentBox<Keystroke> {
     
@@ -40,7 +41,8 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
         
         this.codeArea = new TextArea();
         this.codeArea.setEditable(false);
-        this.codeArea.setFont(Font.font("System", 10.0));
+        this.codeArea.setText(SAMPLE_CODE);
+        this.codeArea.setFont(Font.font("System", 8.0));
         this.codeArea.setPrefWidth(CODEAREA_WIDTH);
         this.codeArea.setPrefHeight(CODEAREA_HEIGHT);
         this.codeArea.setLayoutX(CODEAREA_LAYOUT_X);

@@ -61,7 +61,7 @@ public class FileTab extends Tab {
             + "|(?<COMMENT>" + COMMENT_PATTERN + ")"
     );
 
-    private static final String SAMPLE_CODE = String.join("\n", new String[]{
+    public static final String SAMPLE_CODE = String.join("\n", new String[]{
         "import java.util.*;",
         "",
         "public class Program {",
