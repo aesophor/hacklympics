@@ -46,7 +46,7 @@ public class SocketServer implements Runnable {
                 socket.close();
             }
         } catch (IOException ex) {
-            
+        	
         }
         
         System.out.println("[*] Stopped listening for events.");

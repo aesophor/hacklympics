@@ -2,6 +2,7 @@ package hacklympics.student.code;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Arrays;
 import java.util.List;
 import java.io.File;
 import java.io.IOException;
@@ -20,9 +21,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import com.jfoenix.controls.JFXComboBox;
+import com.jfoenix.controls.JFXTextArea;
 import com.kodedu.terminalfx.TerminalTab;
 import com.kodedu.terminalfx.TerminalBuilder;
 import com.kodedu.terminalfx.config.TerminalConfig;
+
+import difflib.DiffUtils;
+import difflib.Patch;
+
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.EventManager;
@@ -39,6 +45,7 @@ import com.hacklympics.api.user.User;
 import hacklympics.student.StudentController;
 import hacklympics.common.dialog.AlertDialog;
 import hacklympics.common.dialog.ConfirmDialog;
+import hacklympics.utility.CodePatch;
 import hacklympics.utility.Utils;
 import hacklympics.teacher.proctor.KeystrokeLogger;
 import hacklympics.teacher.proctor.SnapshotManager;
@@ -469,28 +476,33 @@ public class CodeController implements Initializable {
     private FileTab createFileTab() {
         // Create a new tab "c", add it to our fileTabPane
         // and select (switch to) that tab.
-        FileTab c = new FileTab();
-        fileTabPane.getTabs().add(c);
-        fileTabPane.getSelectionModel().select(c);
+        FileTab tab = new FileTab();
+        fileTabPane.getTabs().add(tab);
+        fileTabPane.getSelectionModel().select(tab);
 
         // Overrides the default behavior of the close button on each tab by
         // consuming the original event, and then call my own closing method.
-        c.setOnCloseRequest((Event event) -> {
+        tab.setOnCloseRequest((Event event) -> {
             // Buggy here.
             event.consume();
             closeFile(null);
         });
         
         
-        // Whenever the students have typed something on the keyboard,
-        // we have to add the content to the history for synchronizing
-        // the CodeArea's content of current tab with the teachers' 
-        // KeystrokeBox later.
-        c.getCodeArea().setOnKeyReleased((KeyEvent keyEvent) -> {
-            c.getKeystrokeHistory().add(c.getCodeArea().getText());
+        // Whenever there's a change to the CodeArea, we compute the diff,
+        // create a patch and add that patch to keystrokeHistory.
+        // Later on we can send these patches to the teacher's client.
+        tab.getCodeArea().textProperty().addListener((observable, original, revised) -> {
+        	CodePatch patch = new CodePatch(original, revised);
+        	
+        	try {
+        		tab.addPatch(Utils.serialize(patch));
+			} catch (IOException ex) {
+				ex.printStackTrace();
+			}
         });
-
-        return c;
+        
+        return tab;
     }
 
     /**

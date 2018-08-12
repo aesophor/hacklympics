@@ -8,6 +8,7 @@ import java.io.BufferedWriter;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -21,6 +22,9 @@ import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
 import org.fxmisc.richtext.model.StyleSpans;
 import org.fxmisc.richtext.model.StyleSpansBuilder;
+
+import difflib.DiffUtils;
+import difflib.Patch;
 
 public class FileTab extends Tab {
 
@@ -70,7 +74,7 @@ public class FileTab extends Tab {
     });
 
     
-    private final List<String> keystrokeHistory;
+    private final List<String> patches;
     
     private final AnchorPane anchorPane;
     private final VBox vbox;
@@ -80,6 +84,8 @@ public class FileTab extends Tab {
 
     public FileTab() {
         super("Untitled");
+        
+        patches = new ArrayList<>();
         
         codeArea = new CodeArea();
         codeArea.getStyleClass().add("code-area");
@@ -107,9 +113,6 @@ public class FileTab extends Tab {
         anchorPane.getChildren().add(vbox);
         setContent(anchorPane);
         
-        this.keystrokeHistory = new ArrayList<>();
-        this.keystrokeHistory.add(codeArea.getText());
-
         getStyleClass().add("minimal-tab");
         markAsUnsaved();
     }
@@ -200,6 +203,18 @@ public class FileTab extends Tab {
     public boolean unsaved() {
         return unsaved;
     }
+    
+    public synchronized List<String> getPatches() {
+    	return patches;
+    }
+    
+    public synchronized void addPatch(String patch) {
+    	patches.add(patch);
+    }
+    
+    public synchronized void clearPatches() {
+    	patches.clear();
+    }
 
     /**
      * Gets the filename of the file opened in this tab.
@@ -233,10 +248,6 @@ public class FileTab extends Tab {
         return this.file.getAbsoluteFile().getParent();
     }
     
-    public List<String> getKeystrokeHistory() {
-        return this.keystrokeHistory;
-    }
-
     public CodeArea getCodeArea() {
         return this.codeArea;
     }

@@ -11,6 +11,6 @@
 	<classpathentry kind="lib" path="libs/richtextfx-fat-0.9.0.jar"/>
 	<classpathentry kind="lib" path="libs/terminalfx-1.0.5.jar"/>
 	<classpathentry kind="lib" path="libs/thumbnailator-0.4.8.jar"/>
-	<classpathentry kind="lib" path="/home/aesophor/Code/Hacklympics/Hacklympics/HacklympicsAPI/dist/HacklympicsAPI.jar"/>
+	<classpathentry kind="lib" path="/home/aesophor/Code/Hacklympics/Hacklympics/HacklympicsAPI/bin"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

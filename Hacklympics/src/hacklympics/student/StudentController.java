@@ -9,11 +9,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
-import com.jfoenix.controls.JFXButton;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.SocketServer;
 import com.hacklympics.api.event.EventManager;
@@ -21,6 +22,7 @@ import com.hacklympics.api.session.Session;
 import com.hacklympics.api.session.MainController;
 import com.hacklympics.api.user.User;
 import hacklympics.utility.Utils;
+import hacklympics.common.DropDownUserMenu;
 import hacklympics.common.FXMLTable;
 import hacklympics.common.OnlineUserListView;
 import hacklympics.common.dialog.ConfirmDialog;
@@ -30,30 +32,50 @@ public class StudentController implements Initializable, MainController {
     private Map<String, AnchorPane> pages;
     private Map<String, Object> controllers;
     
+    private DropDownUserMenu userMenu;
+    
     @FXML
     private AnchorPane mainPane;
     @FXML
     private AnchorPane onlineUserPane;
     @FXML
-    private AnchorPane contentPane;;
+    private AnchorPane contentPane;
     @FXML
     private StackPane dialogPane;
     @FXML
-    private Label greetLabel;
-    @FXML
-    private JFXButton logoutBtn;
+    private Button userMenuBtn;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         initPages();
         showPage(pages.get("Dashboard"));
         
-        // Sets the greeting message.
-        User current = Session.getInstance().getCurrentUser();
-        greetLabel.setText(String.format("Welcome, %s", current.getFullname()));
         
-        // Initializes OnlineUserListView.
+        // Initialize OnlineUserListView.
         this.onlineUserPane.getChildren().add(new OnlineUserListView());
+        
+        // Initialize user menu.
+        User currentUser = Session.getInstance().getCurrentUser();
+        this.userMenuBtn.setText(String.format("%s ", currentUser.getFullname()));
+        
+        this.userMenu = new DropDownUserMenu();
+        
+        this.userMenu.add(new Label("Profile"), (MouseEvent event) -> {
+            this.userMenu.hide();
+        });
+        
+        this.userMenu.add(new Label("Settings"), (MouseEvent event) -> {
+            this.userMenu.hide();
+        });
+        
+        this.userMenu.add(new Label("About"), (MouseEvent event) -> {
+            this.userMenu.hide();
+        });
+        
+        this.userMenu.add(new Label("Logout"), (MouseEvent event) -> {
+            this.userMenu.hide();
+            this.logout();
+        });
     }
     
     private void initPages() {
@@ -89,21 +111,24 @@ public class StudentController implements Initializable, MainController {
         }
     }
     
-    
     @FXML
-    public void logout(ActionEvent event) {
-        ConfirmDialog dialog = new ConfirmDialog(
+    public void showUserMenu(ActionEvent event) {
+        this.userMenu.show(this.userMenuBtn);
+    }
+    
+    private void logout() {
+        ConfirmDialog confirm = new ConfirmDialog(
                 "Logout",
                 "You are about to be logged out. Are you sure?"
         );
         
-        dialog.getConfirmBtn().setOnAction((ActionEvent e) -> {
+        confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
             Response logout = Session.getInstance().getCurrentUser().logout();
             
             if (logout.success()) {
                 String loginFXML = FXMLTable.getInstance().get("Login");
                 Utils.loadStage(new FXMLLoader(getClass().getResource(loginFXML)));
-                logoutBtn.getScene().getWindow().hide();
+                userMenuBtn.getScene().getWindow().hide();
                 
                 Session.getInstance().clear();
                 EventManager.getInstance().clearEventHandlers();
@@ -111,7 +136,7 @@ public class StudentController implements Initializable, MainController {
             }
         });
         
-        dialog.show();
+        confirm.show();
     }
     
     

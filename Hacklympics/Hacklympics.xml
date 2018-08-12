@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for Project Hacklympics">
+    <!--this file was created by Eclipse Runnable JAR Export Wizard-->
+    <!--ANT 1.7 is required                                        -->
+    <!--define folder properties-->
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.workspace" value="${dir.buildfile}/.."/>
+    <property name="dir.jarfile" value="${dir.buildfile}/dist"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.jarfile}/Hacklympics.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="hacklympics.login.Main"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <fileset dir="${dir.buildfile}/bin"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/diffutils-1.2.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/fontawesomefx-8.9.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/gson-2.8.2.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/jfoenix-8.0.1.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/okhttp-3.10.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/okio-1.14.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/richtextfx-fat-0.9.0.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/terminalfx-1.0.5.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/thumbnailator-0.4.8.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/HacklympicsAPI/dist/HacklympicsAPI.jar"/>
+        </jar>
+    </target>
+</project>

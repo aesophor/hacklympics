@@ -21,6 +21,7 @@ import com.jfoenix.controls.JFXProgressBar;
 import hacklympics.teacher.TeacherController;
 import hacklympics.common.dialog.AlertDialog;
 import hacklympics.common.dialog.ConfirmDialog;
+import hacklympics.utility.CodePatch;
 import hacklympics.utility.Utils;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
@@ -466,20 +467,25 @@ public class ProctorController implements Initializable {
         // Execute a new thread for keystroke playback, since we will
         // need to call Thread.sleep() during playback.
         // If we call Thread.sleep() on JavaFX thread, the UI will hang.
-        List<String> keystrokeHistory = selectedBox.getKeystrokeHistory();
+        List<String> patches = selectedBox.getPatches();
         
         new Thread(new Runnable() {
             @Override
             public void run() {
-                for (int i = 0; i < keystrokeHistory.size(); i++) {
-                    double currentProgress = ((double) i) / keystrokeHistory.size();
-                    int currentIndex = i;
+                for (int i = 0; i < patches.size(); i++) {
+                    double currentProgress = ((double) i) / patches.size();
                     
-                    Platform.runLater(() -> {
-                        codeArea.setText(keystrokeHistory.get(currentIndex));
-                        keystrokePlaybackBar.setProgress(currentProgress);
-                    });
-                
+					try {
+						CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
+						
+						Platform.runLater(() -> {
+	                    	codeArea.setText(patch.applyTo(codeArea.getText()));
+	                        keystrokePlaybackBar.setProgress(currentProgress);
+	                    });
+					} catch (ClassNotFoundException | IOException e) {
+						e.printStackTrace();
+					}
+                    
                     try {
                         // playback speed * 1000.
                         Thread.sleep(100);

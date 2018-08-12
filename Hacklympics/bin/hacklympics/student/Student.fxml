@@ -3,7 +3,11 @@
 <?import com.jfoenix.controls.JFXButton?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
@@ -152,9 +156,32 @@
                   <Font size="14.0" />
                </font>
             </Label>
-            <JFXButton fx:id="logoutBtn" buttonType="RAISED" layoutX="955.0" layoutY="16.0" onAction="#logout" styleClass="lightBlueBtn" text="Logout" textFill="WHITE" />
+            <Group layoutX="800.0" layoutY="13.0">
+               <children>
+                  <HBox alignment="TOP_RIGHT" prefHeight="34.0" prefWidth="230.0">
+                     <children>
+                        <ImageView fitHeight="36.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../resources/Images/DefaultAvatar.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets right="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <Button fx:id="userMenuBtn" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#showUserMenu" prefHeight="36.0" styleClass="transparentBtn" text="User ">
+                           <graphic>
+                              <FontAwesomeIconView glyphName="ANGLE_DOWN" size="18.0" wrappingWidth="14.571428298950195" />
+                           </graphic>
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </Group>
          </children>
       </AnchorPane>
-      <StackPane fx:id="dialogPane" layoutX="368.0" mouseTransparent="true" prefHeight="135.0" prefWidth="351.0" />
+      <StackPane fx:id="dialogPane" layoutX="368.0" layoutY="252.0" mouseTransparent="true" prefHeight="135.0" prefWidth="359.0" />
    </children>
 </AnchorPane>

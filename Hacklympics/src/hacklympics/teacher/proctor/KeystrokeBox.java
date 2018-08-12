@@ -1,14 +1,17 @@
 package hacklympics.teacher.proctor;
 
 import java.util.List;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.application.Platform;
 import com.jfoenix.controls.JFXRadioButton;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.proctor.Keystroke;
-import javafx.application.Platform;
+import hacklympics.utility.CodePatch;
+import hacklympics.utility.Utils;
 
 public class KeystrokeBox extends StudentBox<Keystroke> {
     
@@ -21,7 +24,8 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
     private static final int TIMELABEL_LAYOUT_Y = 115;
     private static final int FINISH_LABEL_LAYOUT_X = 65;
     
-    private List<String> keystrokeHistory;
+    private final List<String> patches;
+    private int lastAppliedPatchIndex;
     
     private final JFXRadioButton radioBtn;
     private final TextArea codeArea;
@@ -30,7 +34,7 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
     public KeystrokeBox(Student student) {
         super(student);
         
-        this.keystrokeHistory = new ArrayList<>();
+        this.patches = new ArrayList<>();
         
         this.radioBtn = new JFXRadioButton(student.getFullname());
         
@@ -52,15 +56,23 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
     
     @Override
     public void update(Keystroke keystroke) {
-        this.keystrokeHistory = keystroke.getHistory();
+        this.patches.addAll(keystroke.getHistory());
         
-        if (this.keystrokeHistory.size() > 0) {
-            int lastIndex = this.keystrokeHistory.size() - 1;
+        if (this.patches.size() > 0) {
+            int lastIndex = this.patches.size() - 1;
             
-            Platform.runLater(() -> {
-                this.codeArea.setText(this.keystrokeHistory.get(lastIndex));
-                this.timestamp.setText(keystroke.getTimestamp());
-            });
+            try {
+            	for (int i = this.lastAppliedPatchIndex; i <= lastIndex; i++) {
+            		CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
+            		
+            		Platform.runLater(() -> {
+    					codeArea.setText(patch.applyTo(codeArea.getText()));
+    	                this.timestamp.setText(keystroke.getTimestamp());
+    	            });
+            	}
+			} catch (ClassNotFoundException | IOException e) {
+				e.printStackTrace();
+			}
         }
     }
     
@@ -73,8 +85,8 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
         });
     }
     
-    public List<String> getKeystrokeHistory() {
-        return this.keystrokeHistory;
+    public List<String> getPatches() {
+        return this.patches;
     }
     
     public JFXRadioButton getRadioBtn() {
