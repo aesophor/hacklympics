@@ -18,8 +18,9 @@ public class Test {
         List<String> revised  = new ArrayList<>();
         
         revised.add("Hello World");
+        revised.add("Jim doge");
         revised.add("foo bar");
-        revised.add("1234");
+        revised.add("123");
 
         // Compute diff. Get the Patch object. Patch is the container for computed deltas.
         Patch patch = DiffUtils.diff(original, revised);

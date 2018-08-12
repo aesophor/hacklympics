@@ -36,6 +36,7 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
         super(student);
         
         this.patches = new ArrayList<>();
+        this.lastAppliedPatchIndex = -1;
         
         this.radioBtn = new JFXRadioButton(student.getFullname());
         
@@ -64,7 +65,7 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
             int lastIndex = this.patches.size() - 1;
             
             try {
-            	for (int i = this.lastAppliedPatchIndex; i <= lastIndex; i++) {
+            	for (int i = this.lastAppliedPatchIndex + 1; i <= lastIndex; i++) {
             		CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
             		
             		Platform.runLater(() -> {
@@ -72,6 +73,9 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
     	                this.timestamp.setText(keystroke.getTimestamp());
     	            });
             	}
+            	
+            	// Update the last applied patch index.
+            	this.lastAppliedPatchIndex = lastIndex;
 			} catch (ClassNotFoundException | IOException e) {
 				e.printStackTrace();
 			}
