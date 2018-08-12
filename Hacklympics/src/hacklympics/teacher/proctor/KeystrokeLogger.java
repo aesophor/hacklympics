@@ -54,16 +54,19 @@ public class KeystrokeLogger implements Runnable {
 
         while (running) {
             try {
-            	// Send all keystroke patches to the server.
-                Keystroke.sync(
-                        currentExam.getCourseID(),
-                        currentExam.getExamID(),
-                        currentUser.getUsername(),
-                        cc.getSelectedFileTab().getPatches()
-                );
-                
-                // Clears the CodeArea patches of current selected tab.
-                cc.getSelectedFileTab().clearPatches();
+            	// If there are changes unsynchronized, 
+            	// send all keystroke patches to the server.
+            	if (!cc.getSelectedFileTab().getPatches().isEmpty()) {
+            		Keystroke.sync(
+                            currentExam.getCourseID(),
+                            currentExam.getExamID(),
+                            currentUser.getUsername(),
+                            cc.getSelectedFileTab().getPatches()
+                    );
+                    
+                    // Clears the CodeArea patches of current selected tab.
+                    cc.getSelectedFileTab().clearPatches();
+            	}
 
                 Thread.sleep(frequency * 1000);
             } catch (InterruptedException ex) {
