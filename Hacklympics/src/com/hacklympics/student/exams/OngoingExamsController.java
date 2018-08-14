@@ -25,12 +25,12 @@ import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.dialog.AlertDialog;
-import com.hacklympics.common.dialog.ConfirmDialog;
 import com.hacklympics.student.StudentController;
 import com.hacklympics.student.code.CodeController;
-import com.hacklympics.teacher.proctor.KeystrokeLogger;
-import com.hacklympics.teacher.proctor.SnapshotManager;
+import com.hacklympics.teacher.proctor.logging.KeystrokeLogger;
+import com.hacklympics.teacher.proctor.logging.ScreenRecorder;
+import com.hacklympics.utility.ui.dialog.AlertDialog;
+import com.hacklympics.utility.ui.dialog.ConfirmDialog;
 
 public class OngoingExamsController implements Initializable {
     
@@ -171,7 +171,7 @@ public class OngoingExamsController implements Initializable {
             switch (attend.getStatusCode()) {
                 case SUCCESS:
                     // Execute the snapshot and keystroke logging thread.
-                    Session.getInstance().getExecutor().execute(SnapshotManager.getInstance());
+                    Session.getInstance().getExecutor().execute(ScreenRecorder.getInstance());
                     Session.getInstance().getExecutor().execute(KeystrokeLogger.getInstance());
                     
                     // Setup session data, examLabel and problemBox

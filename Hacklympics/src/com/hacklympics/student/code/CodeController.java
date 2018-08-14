@@ -37,12 +37,12 @@ import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.dialog.AlertDialog;
-import com.hacklympics.common.dialog.ConfirmDialog;
 import com.hacklympics.student.StudentController;
-import com.hacklympics.teacher.proctor.KeystrokeLogger;
-import com.hacklympics.teacher.proctor.SnapshotManager;
+import com.hacklympics.teacher.proctor.logging.KeystrokeLogger;
+import com.hacklympics.teacher.proctor.logging.ScreenRecorder;
 import com.hacklympics.utility.Utils;
+import com.hacklympics.utility.ui.dialog.AlertDialog;
+import com.hacklympics.utility.ui.dialog.ConfirmDialog;
 
 public class CodeController implements Initializable {
 
@@ -92,7 +92,7 @@ public class CodeController implements Initializable {
         setOnHaltExam((HaltExamEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
                 // Shutdown the snapshot and keystroke logging thread.
-                SnapshotManager.getInstance().shutdown();
+                ScreenRecorder.getInstance().shutdown();
                 KeystrokeLogger.getInstance().shutdown();
                     
                 // Reset the Proctor Page to its original state.
@@ -116,8 +116,8 @@ public class CodeController implements Initializable {
         setOnAdjustSnapshotParam((AdjustSnapshotParamEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
                 // Set the parameters.
-                SnapshotManager.getInstance().setQuality(event.getQuality());
-                SnapshotManager.getInstance().setFrequency(event.getFrequency());
+                ScreenRecorder.getInstance().setQuality(event.getQuality());
+                ScreenRecorder.getInstance().setFrequency(event.getFrequency());
             }
         });
         
@@ -431,7 +431,7 @@ public class CodeController implements Initializable {
             switch (leave.getStatusCode()) {
                 case SUCCESS:
                     // Shutdown the snapshot and keystroke logging thread.
-                    SnapshotManager.getInstance().shutdown();
+                    ScreenRecorder.getInstance().shutdown();
                     KeystrokeLogger.getInstance().shutdown();
                     
                     // Clear session data and reset the Code Page to

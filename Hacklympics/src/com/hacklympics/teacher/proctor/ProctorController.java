@@ -35,10 +35,12 @@ import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.dialog.AlertDialog;
-import com.hacklympics.common.dialog.ConfirmDialog;
 import com.hacklympics.teacher.TeacherController;
+import com.hacklympics.teacher.proctor.logging.KeystrokeLogger;
+import com.hacklympics.teacher.proctor.logging.ScreenRecorder;
 import com.hacklympics.utility.Utils;
+import com.hacklympics.utility.ui.dialog.AlertDialog;
+import com.hacklympics.utility.ui.dialog.ConfirmDialog;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
 import com.jfoenix.controls.JFXTextArea;
@@ -183,8 +185,8 @@ public class ProctorController implements Initializable {
         groupBox.getItems().add(SnapshotGroup.SPECIAL);
 
         // Populate the imgQualityBox and imgFrequencyBox.
-        imgQualityBox.getItems().addAll(SnapshotManager.QUALITY_OPTIONS);
-        imgFrequencyBox.getItems().addAll(SnapshotManager.FREQUENCY_OPTIONS);
+        imgQualityBox.getItems().addAll(ScreenRecorder.QUALITY_OPTIONS);
+        imgFrequencyBox.getItems().addAll(ScreenRecorder.FREQUENCY_OPTIONS);
         
         // When user selects a certain group, display the corresponding parameters.
         groupBox.getSelectionModel().selectedItemProperty().addListener(

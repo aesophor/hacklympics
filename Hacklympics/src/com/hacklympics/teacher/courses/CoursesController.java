@@ -30,12 +30,12 @@ import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Role;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.UserListView;
-import com.hacklympics.common.dialog.AlertDialog;
-import com.hacklympics.common.dialog.ConfirmDialog;
-import com.hacklympics.common.dialog.FormDialog;
 import com.hacklympics.teacher.TeacherController;
 import com.hacklympics.teacher.proctor.ProctorController;
+import com.hacklympics.utility.ui.dialog.AlertDialog;
+import com.hacklympics.utility.ui.dialog.ConfirmDialog;
+import com.hacklympics.utility.ui.dialog.FormDialog;
+import com.hacklympics.utility.ui.listview.UserListView;
 import com.hacklympics.api.user.Teacher;
 
 public class CoursesController implements Initializable {
@@ -445,7 +445,7 @@ public class CoursesController implements Initializable {
             JFXTextField nameField = (JFXTextField) form.get("Name");
             JFXTextField semesterField = (JFXTextField) form.get("Semester");
             String teacher = Session.getInstance().getCurrentUser().getUsername();
-            List<User> selectedStudents = studentsList.getSelected();
+            List<User> selectedStudents = studentsList.getSelectionModel().getSelectedItems();
             
             List<String> students = new ArrayList<>();
             for (User user : selectedStudents) {
@@ -541,7 +541,7 @@ public class CoursesController implements Initializable {
         form.addDeleteBtn("deleteBtn");
         
         for (String username : course.getStudents()) {
-            for (User user : studentsList.getAllItems()) {
+            for (User user : studentsList.getItems()) {
                 if (username.equals(user.getUsername())) {
                     studentsList.getSelectionModel().select(user);
                 }
@@ -552,7 +552,7 @@ public class CoursesController implements Initializable {
             JFXTextField nameField = (JFXTextField) form.get("Name");
             JFXTextField semesterField = (JFXTextField) form.get("Semester");
             String teacher = Session.getInstance().getCurrentUser().getUsername();
-            List<User> s = studentsList.getSelected();
+            List<User> s = studentsList.getSelectionModel().getSelectedItems();
 
             List<String> students = new ArrayList<>();
             for (User user : s) {

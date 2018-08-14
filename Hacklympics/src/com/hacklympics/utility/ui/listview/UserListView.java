@@ -1,4 +1,4 @@
-package com.hacklympics.common;
+package com.hacklympics.utility.ui.listview;
 
 import java.util.List;
 import javafx.scene.control.SelectionMode;
@@ -41,15 +41,6 @@ public class UserListView extends JFXListView<User> {
             default:
                 break;
         }
-    }
-    
-    
-    public List<User> getSelected() {
-        return getSelectionModel().getSelectedItems();
-    }
-    
-    public List<User> getAllItems() {
-        return users;
     }
     
 }

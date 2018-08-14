@@ -1,4 +1,4 @@
-package com.hacklympics.common.dialog;
+package com.hacklympics.utility.ui.dialog;
 
 import java.util.Map;
 import java.util.HashMap;

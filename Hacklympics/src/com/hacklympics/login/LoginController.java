@@ -13,7 +13,7 @@ import com.hacklympics.api.communication.StatusCode;
 import com.hacklympics.api.communication.SocketServer;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.FXMLTable;
+import com.hacklympics.utility.FXMLTable;
 import com.hacklympics.utility.Utils;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.Teacher;

@@ -8,7 +8,6 @@ import com.hacklympics.api.user.User;
 public class Session {
     
     private static Session session;
-    
     private ExecutorService executor;
     private MainController mainController;
     private User currentUser;
@@ -64,7 +63,7 @@ public class Session {
     
     
     public boolean isInExam() {
-        return (this.currentExam != null);
+        return this.currentExam != null;
     }
     
 }

@@ -1,4 +1,4 @@
-package com.hacklympics.user;
+package com.hacklympics.common;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;

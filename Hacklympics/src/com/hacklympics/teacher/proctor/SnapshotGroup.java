@@ -1,9 +1,9 @@
 package com.hacklympics.teacher.proctor;
 
-import static com.hacklympics.teacher.proctor.SnapshotManager.GENERIC_GRP_DEFAULT_FREQUENCY;
-import static com.hacklympics.teacher.proctor.SnapshotManager.GENERIC_GRP_DEFAULT_QUALITY;
-import static com.hacklympics.teacher.proctor.SnapshotManager.SPECIAL_GRP_DEFAULT_FREQUENCY;
-import static com.hacklympics.teacher.proctor.SnapshotManager.SPECIAL_GRP_DEFAULT_QUALITY;
+import static com.hacklympics.teacher.proctor.logging.ScreenRecorder.GENERIC_GRP_DEFAULT_FREQUENCY;
+import static com.hacklympics.teacher.proctor.logging.ScreenRecorder.GENERIC_GRP_DEFAULT_QUALITY;
+import static com.hacklympics.teacher.proctor.logging.ScreenRecorder.SPECIAL_GRP_DEFAULT_FREQUENCY;
+import static com.hacklympics.teacher.proctor.logging.ScreenRecorder.SPECIAL_GRP_DEFAULT_QUALITY;
 
 public enum SnapshotGroup {
     

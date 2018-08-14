@@ -1,7 +1,7 @@
 package com.hacklympics.login;
 
 import com.hacklympics.api.communication.Config;
-import com.hacklympics.common.FXMLTable;
+import com.hacklympics.utility.FXMLTable;
 import com.hacklympics.utility.Utils;
 
 import javafx.application.Application;

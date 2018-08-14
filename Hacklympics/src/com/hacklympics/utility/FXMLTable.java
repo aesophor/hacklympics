@@ -1,4 +1,4 @@
-package com.hacklympics.common;
+package com.hacklympics.utility;
 
 import java.util.Map;
 import java.util.HashMap;

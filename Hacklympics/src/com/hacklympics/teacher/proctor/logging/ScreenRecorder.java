@@ -1,5 +1,4 @@
-package com.hacklympics.teacher.proctor;
-
+package com.hacklympics.teacher.proctor.logging;
 
 import com.hacklympics.api.proctor.Snapshot;
 import java.util.List;
@@ -11,7 +10,7 @@ import java.awt.image.BufferedImage;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.utility.ImageUtils;
 
-public class SnapshotManager implements Runnable {
+public class ScreenRecorder implements Runnable {
     
     public static final List<Double> QUALITY_OPTIONS = new ArrayList<>();
     public static final List<Integer> FREQUENCY_OPTIONS = new ArrayList<>();
@@ -39,24 +38,24 @@ public class SnapshotManager implements Runnable {
     }
     
     
-    private static SnapshotManager snapshotManager;
+    private static ScreenRecorder screenRecorder;
     
     private boolean running;
     private double quality;
     private int frequency;
     
-    private SnapshotManager() {
+    private ScreenRecorder() {
         // All students will be placed in Generic Group initially.
         quality = GENERIC_GRP_DEFAULT_QUALITY;
         frequency = GENERIC_GRP_DEFAULT_FREQUENCY;
     }
     
-    public static SnapshotManager getInstance() {
-        if (snapshotManager == null) {
-            snapshotManager = new SnapshotManager();
+    public static ScreenRecorder getInstance() {
+        if (screenRecorder == null) {
+            screenRecorder = new ScreenRecorder();
         }
         
-        return snapshotManager;
+        return screenRecorder;
     }
 
     

@@ -1,4 +1,4 @@
-package com.hacklympics.teacher.proctor;
+package com.hacklympics.teacher.proctor.logging;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class KeystrokeLogger implements Runnable {
         FREQUENCY_OPTIONS.add(10);
     }
 
-    private static KeystrokeLogger keystrokeManager;
+    private static KeystrokeLogger keystrokeLogger;
 
     private boolean running;
     private int frequency;
@@ -33,13 +33,14 @@ public class KeystrokeLogger implements Runnable {
     }
 
     public static KeystrokeLogger getInstance() {
-        if (keystrokeManager == null) {
-            keystrokeManager = new KeystrokeLogger();
+        if (keystrokeLogger == null) {
+            keystrokeLogger = new KeystrokeLogger();
         }
 
-        return keystrokeManager;
+        return keystrokeLogger;
     }
 
+    
     @Override
     public void run() {
         System.out.println("[*] Started keystroke logging thread.");

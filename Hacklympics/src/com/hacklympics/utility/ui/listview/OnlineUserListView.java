@@ -1,4 +1,4 @@
-package com.hacklympics.common;
+package com.hacklympics.utility.ui.listview;
 
 import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.EventManager;
@@ -33,24 +33,15 @@ public class OnlineUserListView extends JFXListView<User> {
         // the SocketServer receives events of user login/logout.
         setOnLogin((LoginEvent event) -> {
             Platform.runLater(() -> {
-                add(event.getLoggedInUser());
+                users.add(event.getLoggedInUser());
             });
         });
                 
         setOnLogout((LogoutEvent event) -> {
             Platform.runLater(() -> {
-                remove(event.getLoggedOutUser());
+                users.add(event.getLoggedOutUser());
             });
         });
-    }
-    
-    
-    public void add(User user) {
-        users.add(user);
-    }
-    
-    public void remove(User user) {
-        users.remove(user);
     }
     
     
