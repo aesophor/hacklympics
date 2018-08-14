@@ -42,7 +42,6 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
         radioBtn = new JFXRadioButton(student.getFullname());
         
         codeArea = new TextArea();
-        codeArea.setText(Language.JAVA.getSampleCode());
         codeArea.setEditable(false);
         codeArea.setFont(Font.font("System", 8.0));
         codeArea.setPrefWidth(CODEAREA_WIDTH);

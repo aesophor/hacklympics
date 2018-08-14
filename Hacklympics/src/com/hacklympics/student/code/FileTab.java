@@ -52,11 +52,7 @@ public class FileTab extends Tab {
 					codeArea.setStyleSpans(0, CodeAreaUtils.computeHighlighting(currentLang, codeArea.getText()));
 		});
         
-        
-        // Add sample code to the CodeArea.
-        codeArea.replaceText(0, 0, currentLang.getSampleCode());
-        
-        // Whenever there's a change to the CodeArea, we compute the diff,
+     // Whenever there's a change to the CodeArea, we compute the diff,
         // create a patch and add that patch to keystrokeHistory.
         // Later on we can send these patches to the teacher's client.
         // Make sure to mark current tab as unsaved as well.
@@ -84,6 +80,10 @@ public class FileTab extends Tab {
 			}
         	
         });
+        
+        // Add sample code to the CodeArea.
+        codeArea.replaceText(0, 0, currentLang.getSampleCode());
+        
         
         // Add the code area we just created into a VBox.
         vbox = new VBox();
