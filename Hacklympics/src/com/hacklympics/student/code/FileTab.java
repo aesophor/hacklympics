@@ -51,25 +51,39 @@ public class FileTab extends Tab {
 				.subscribe(ignore -> {
 					codeArea.setStyleSpans(0, CodeAreaUtils.computeHighlighting(currentLang, codeArea.getText()));
 		});
-
+        
+        
+        // Add sample code to the CodeArea.
+        codeArea.replaceText(0, 0, currentLang.getSampleCode());
+        
         // Whenever there's a change to the CodeArea, we compute the diff,
         // create a patch and add that patch to keystrokeHistory.
         // Later on we can send these patches to the teacher's client.
         // Make sure to mark current tab as unsaved as well.
         codeArea.textProperty().addListener((observable, original, revised) -> {
         	Patch patch = DiffUtils.diff(original, revised);
-        	
+        	String sp = "";
         	try {
-        		addPatch(Utils.serialize(patch));
+        		sp = Utils.serialize(patch);
+        		addPatch(sp);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			} finally {
 				markAsUnsaved();
 			}
+        	
+        	try {
+				Patch p = (Patch) Utils.deserialize(sp);
+				System.out.println(p.applyTo(original));
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (PatchFailedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
         });
-        
-        // Add sample code to the CodeArea.
-        codeArea.replaceText(0, 0, currentLang.getSampleCode());
         
         // Add the code area we just created into a VBox.
         vbox = new VBox();
