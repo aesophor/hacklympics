@@ -39,7 +39,7 @@ public class OnlineUserListView extends JFXListView<User> {
                 
         setOnLogout((LogoutEvent event) -> {
             Platform.runLater(() -> {
-                users.add(event.getLoggedOutUser());
+                users.remove(event.getLoggedOutUser());
             });
         });
     }

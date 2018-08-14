@@ -20,6 +20,7 @@ import com.hacklympics.utility.Utils;
 
 import difflib.DiffUtils;
 import difflib.Patch;
+import difflib.PatchFailedException;
 
 public class FileTab extends Tab {
 	

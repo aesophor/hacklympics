@@ -58,6 +58,7 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
     
     @Override
     public void update(Keystroke keystroke) {
+    	System.out.println("Applying " + keystroke.getPatches().size() + " patches...");
         patches.addAll(keystroke.getPatches());
         
         if (patches.size() > 0) {
