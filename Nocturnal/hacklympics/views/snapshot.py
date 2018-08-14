@@ -11,7 +11,7 @@ from datetime import datetime
 import base64
 import json
 
-def create(request, c_id, e_id):
+def sync(request, c_id, e_id):
     response_data = {"statusCode": StatusCode.SUCCESS}
 
     try:

@@ -1,9 +1,6 @@
 package com.hacklympics.teacher.proctor;
 
 import java.util.List;
-
-import static com.hacklympics.student.code.FileTab.SAMPLE_CODE;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import javafx.scene.text.Font;
@@ -45,7 +42,6 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
         
         codeArea = new TextArea();
         codeArea.setEditable(false);
-        codeArea.setText(SAMPLE_CODE);
         codeArea.setFont(Font.font("System", 8.0));
         codeArea.setPrefWidth(CODEAREA_WIDTH);
         codeArea.setPrefHeight(CODEAREA_HEIGHT);

@@ -22,8 +22,8 @@ public class Snapshot implements ProctorMedium {
     }
     
     
-    public static Response create(int courseID, int examID, String student, String b64image) {
-        String uri = String.format("course/%d/exam/%d/snapshot/create", courseID, examID);
+    public static Response sync(int courseID, int examID, String student, String b64image) {
+        String uri = String.format("course/%d/exam/%d/snapshot/sync", courseID, examID);
         
         JsonObject json = new JsonObject();
         json.addProperty("student", student);

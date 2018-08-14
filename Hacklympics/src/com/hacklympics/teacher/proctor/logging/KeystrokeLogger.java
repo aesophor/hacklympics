@@ -16,6 +16,7 @@ public class KeystrokeLogger implements Runnable {
     public static final int DEFAULT_FREQUENCY = 4;
 
     static {
+    	// Available frequency options (frequency of sending keystroke patches).
         FREQUENCY_OPTIONS.add(2);
         FREQUENCY_OPTIONS.add(4);
         FREQUENCY_OPTIONS.add(6);
@@ -24,7 +25,6 @@ public class KeystrokeLogger implements Runnable {
     }
 
     private static KeystrokeLogger keystrokeLogger;
-
     private boolean running;
     private int frequency;
 

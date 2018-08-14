@@ -15,3 +15,4 @@ class EventType(IntEnum):
     ADJUST_SNAPSHOT_PARAM = 8
 
     NEW_KEYSTROKE = 9
+    ADJUST_KEYSTROKE_PARAM = 10

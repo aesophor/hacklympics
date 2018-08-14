@@ -4,9 +4,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
 import java.util.ArrayList;
-
-import static com.hacklympics.student.code.FileTab.SAMPLE_CODE;
-
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -481,7 +478,6 @@ public class ProctorController implements Initializable {
             public void run() {
             	// Clears the codeArea for keystroke playback.
                 codeArea.clear();
-                codeArea.setText(SAMPLE_CODE);
                 
                 for (int i = 0; i < patches.size(); i++) {
                     double currentProgress = ((double) i) / patches.size();

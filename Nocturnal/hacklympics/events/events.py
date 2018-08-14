@@ -243,3 +243,20 @@ class NewKeystrokeEvent(Event):
         }
         
         return json.dumps(event)
+
+
+class AdjustKeystrokeParamEvent(Event):
+    def __init__(self, exam: Exam, frequency: int):
+        super(AdjustKeystrokeParamEvent, self).__init__(EventType.ADJUST_KEYSTROKE_PARAM)
+        self.exam = exam
+        self.frequency = frequency
+
+    def __str__(self):
+        event = {"eventType": self.event_type}
+        
+        event["content"] = {
+            "examID": self.exam.id,
+            "frequency": self.frequency
+        }
+        
+        return json.dumps(event)

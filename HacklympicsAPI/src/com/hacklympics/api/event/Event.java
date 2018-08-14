@@ -4,7 +4,6 @@ import java.util.Map;
 import java.util.HashMap;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.utility.NetworkUtils;
-
 import java.lang.reflect.InvocationTargetException;
 
 public class Event {

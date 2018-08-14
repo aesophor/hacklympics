@@ -482,20 +482,6 @@ public class CodeController implements Initializable {
             closeFile(null);
         });
         
-        
-        // Whenever there's a change to the CodeArea, we compute the diff,
-        // create a patch and add that patch to keystrokeHistory.
-        // Later on we can send these patches to the teacher's client.
-        tab.getCodeArea().textProperty().addListener((observable, original, revised) -> {
-        	Patch patch = DiffUtils.diff(original, revised);
-        	
-        	try {
-        		tab.addPatch(Utils.serialize(patch));
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-        });
-        
         return tab;
     }
 

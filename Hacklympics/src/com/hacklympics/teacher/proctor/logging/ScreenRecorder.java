@@ -29,7 +29,7 @@ public class ScreenRecorder implements Runnable {
         QUALITY_OPTIONS.add(0.75);
         QUALITY_OPTIONS.add(1.00);
         
-        // Available frequency options (snapshot per sec).
+        // Available frequency options (take one snapshot every x sec).
         FREQUENCY_OPTIONS.add(3);
         FREQUENCY_OPTIONS.add(5);
         FREQUENCY_OPTIONS.add(8);
@@ -39,7 +39,6 @@ public class ScreenRecorder implements Runnable {
     
     
     private static ScreenRecorder screenRecorder;
-    
     private boolean running;
     private double quality;
     private int frequency;
@@ -71,7 +70,7 @@ public class ScreenRecorder implements Runnable {
                 byte[] imgByteArray = ImageUtils.bufferedImage2ByteArray(img);
                 String base64img = Base64.getEncoder().encodeToString(imgByteArray);
                 
-                Snapshot.create(
+                Snapshot.sync(
                         Session.getInstance().getCurrentExam().getCourseID(),
                         Session.getInstance().getCurrentExam().getExamID(),
                         Session.getInstance().getCurrentUser().getUsername(),
