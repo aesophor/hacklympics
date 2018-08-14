@@ -2,8 +2,9 @@ package com.hacklympics.api.event;
 
 import java.util.Map;
 import java.util.HashMap;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.hacklympics.api.utility.NetworkUtils;
+
 import java.lang.reflect.InvocationTargetException;
 
 public class Event {
@@ -15,11 +16,11 @@ public class Event {
         eventType = EventType.values()[json.get("eventType").getAsInt()];
         
         JsonObject rawContent = json.getAsJsonObject("content");
-        content = new Gson().fromJson(rawContent, HashMap.class);
+        content = NetworkUtils.getGson().fromJson(rawContent, HashMap.class);
     }
     
     public Event(String rawJson) {
-        this(new Gson().fromJson(rawJson, JsonObject.class));
+        this(NetworkUtils.getGson().fromJson(rawJson, JsonObject.class));
     }
     
     
@@ -42,7 +43,7 @@ public class Event {
     
     /**
      * Converts this Event instance to its concrete event type.
-     * @return the effective event type of this Event.
+     * @return the concrete (effective) event type of this Event.
      */
     public Event toConcreteEvent() {
         Event event = null;
@@ -69,10 +70,8 @@ public class Event {
     @Override
     public String toString() {
         JsonObject json = new JsonObject();
-        
         json.addProperty("eventType", eventType.ordinal());
-        json.add("content", new Gson().toJsonTree(content));
-        
+        json.add("content", NetworkUtils.getGson().toJsonTree(content));
         return json.toString();
     }
     

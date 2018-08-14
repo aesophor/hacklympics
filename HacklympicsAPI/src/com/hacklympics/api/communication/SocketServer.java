@@ -21,7 +21,7 @@ public class SocketServer implements Runnable {
 
     public static SocketServer getInstance() {
         if (server == null) {
-            server = new SocketServer(Config.getEventListenerPort());
+            server = new SocketServer(Config.EVENT_LISTENER_PORT);
         }
         
         return server;

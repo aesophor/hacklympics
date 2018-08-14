@@ -2,8 +2,8 @@ package com.hacklympics.api.communication;
 
 import java.util.Map;
 import java.util.HashMap;
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
+import com.hacklympics.api.utility.NetworkUtils;
 
 public class Response {
     
@@ -15,25 +15,26 @@ public class Response {
         
         if (statusCode == StatusCode.SUCCESS) {
             // Maps the "content" part to a HashMap.
-            JsonObject rawContent = json.getAsJsonObject("content");
-            content = new Gson().fromJson(rawContent, HashMap.class);
+            JsonObject rawContentJson = json.getAsJsonObject("content");
+            content = NetworkUtils.getGson().fromJson(rawContentJson, HashMap.class);
         }
     }
     
     public Response(String rawJson) {
-        this(new Gson().fromJson(rawJson, JsonObject.class));
+        this(NetworkUtils.getGson().fromJson(rawJson, JsonObject.class));
     }
     
     public Response(StatusCode statusCode) {
         this.statusCode = statusCode;
     }
     
+    
     /**
      * Checks if the status code of this response is 'SUCCESS'.
      * @return true if the status code is 'SUCCESS'.
      */
     public boolean success() {
-        return (statusCode == StatusCode.SUCCESS);
+        return statusCode == StatusCode.SUCCESS;
     }
     
     /**
@@ -57,8 +58,8 @@ public class Response {
     public String toString() {
         JsonObject json = new JsonObject();
         json.addProperty("statusCode", statusCode.ordinal());
-        json.add("content", new Gson().toJsonTree(content));
+        json.add("content", NetworkUtils.getGson().toJsonTree(content));
         return json.toString();
     }
-    
+   
 }

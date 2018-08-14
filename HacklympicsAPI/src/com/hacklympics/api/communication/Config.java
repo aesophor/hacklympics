@@ -10,22 +10,22 @@ public final class Config {
     
     private static final String CONFIG_PATH = "config.properties";
     
-    private static final String SERVER_HOSTNAME;
-    private static final int SERVER_PORT;
-    private static final int EVENT_LISTENER_PORT;
+    public static final String SERVER_HOSTNAME;
+    public static final int SERVER_PORT;
+    public static final int EVENT_LISTENER_PORT;
     
     static {
         File propertiesFile = new File(CONFIG_PATH);
-        Properties prop = new Properties();
+        Properties properties = new Properties();
         
         // If the properties file does not exist, create one.
         if (!propertiesFile.exists()) {
-            prop.setProperty("Server.hostname", "127.0.0.1");
-            prop.setProperty("Server.port", "8000");
-            prop.setProperty("EventListener.port", "8001");
+            properties.setProperty("Server.hostname", "127.0.0.1");
+            properties.setProperty("Server.port", "8000");
+            properties.setProperty("EventListener.port", "8001");
 
             try {
-                prop.store(new FileWriter(propertiesFile), "Hacklympics client properties");
+                properties.store(new FileWriter(propertiesFile), "Hacklympics client properties");
             } catch (IOException ioe) {
                 ioe.printStackTrace();
             }
@@ -33,15 +33,15 @@ public final class Config {
         
         // Read the properties file.
         try {
-            prop.load(new FileReader(propertiesFile));
+            properties.load(new FileReader(propertiesFile));
         } catch (IOException ioe) {
             ioe.printStackTrace();
         }
         
         // Load server hostname, server port and event listener port from properties.
-        SERVER_HOSTNAME = prop.getProperty("Server.hostname");
-        SERVER_PORT = Integer.parseInt(prop.getProperty("Server.port"));
-        EVENT_LISTENER_PORT = Integer.parseInt(prop.getProperty("EventListener.port"));
+        SERVER_HOSTNAME = properties.getProperty("Server.hostname");
+        SERVER_PORT = Integer.parseInt(properties.getProperty("Server.port"));
+        EVENT_LISTENER_PORT = Integer.parseInt(properties.getProperty("EventListener.port"));
     }
     
     private Config() {
@@ -51,10 +51,6 @@ public final class Config {
     
     public static String getURL() {
         return String.format("http://%s:%s", SERVER_HOSTNAME, SERVER_PORT);
-    }
-    
-    public static int getEventListenerPort() {
-        return EVENT_LISTENER_PORT;
     }
     
 }

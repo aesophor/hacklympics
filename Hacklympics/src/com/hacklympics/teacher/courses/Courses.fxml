@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hacklympics.teacher.courses.CoursesController">
+   <children>
+      <JFXTabPane id="tabPane" fx:id="tabPane" prefHeight="674.0" prefWidth="776.0">
+          <tabs>
+          <Tab id="coursesTab" fx:id="courseTab" closable="false" text="Courses">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="courseTable" layoutX="32.0" layoutY="80.0" prefHeight="530.0" prefWidth="712.0">
+                          <columns>
+                            <TableColumn fx:id="courseSemesterCol" prefWidth="128.0" text="Semester" />
+                            <TableColumn fx:id="courseNameCol" prefWidth="241.0" text="Name" />
+                              <TableColumn fx:id="courseTeacherCol" prefWidth="340.0" text="Teacher" />
+                          </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+            <Tab id="examsTab" fx:id="examTab" closable="false" text="Exams">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="examTable" layoutX="32.0" layoutY="80.0" prefHeight="530.0" prefWidth="712.0">
+                           <columns>
+                              <TableColumn fx:id="examTitleCol" prefWidth="256.0" text="Title" />
+                              <TableColumn fx:id="examDurationCol" prefWidth="104.0" text="Duration" />
+                              <TableColumn fx:id="examDescCol" prefWidth="350.0" text="Description" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab id="problemsTab" fx:id="problemTab" closable="false" text="Problems">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <TableView fx:id="problemTable" layoutX="32.0" layoutY="80.0" prefHeight="530.0" prefWidth="712.0">
+                           <columns>
+                              <TableColumn fx:id="probTitleCol" prefWidth="160.0" text="Title" />
+                              <TableColumn fx:id="probDescCol" prefWidth="245.0" text="Desc" />
+                              <TableColumn fx:id="probInputCol" minWidth="0.0" prefWidth="150.0" text="Input" />
+                              <TableColumn fx:id="probOutputCol" minWidth="0.0" prefWidth="150.0" text="Output" />
+                           </columns>
+                        </TableView>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+        </tabs>
+      </JFXTabPane>
+      
+      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="34.0" layoutY="73.0" onKeyReleased="#search" prefHeight="27.0" prefWidth="547.0" promptText="Filter" />
+      <JFXButton defaultButton="true" layoutX="593.0" layoutY="75.0" onAction="#edit" prefHeight="31.0" prefWidth="75.0" styleClass="transparentBtn" text=" Edit">
+         <graphic>
+            <FontAwesomeIconView glyphName="EDIT" size="20.0" text="" translateY="2.0" />
+         </graphic>
+      </JFXButton>
+      <JFXButton defaultButton="true" layoutX="669.0" layoutY="75.0" onAction="#add" prefHeight="31.0" prefWidth="75.0" styleClass="transparentBtn" text=" Add">
+         <graphic>
+            <FontAwesomeIconView glyphName="PLUS_SQUARE" size="20" translateY="1.0" />
+         </graphic></JFXButton>
+      
+      <JFXButton fx:id="launchExamBtn" buttonType="RAISED" layoutX="695.0" layoutY="595.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onAction="#launchExam" prefHeight="50.0" prefWidth="50.0" styleClass="roundBtn">
+         <font>
+            <Font size="22.0" />
+         </font>
+         <graphic>
+            <FontAwesomeIconView fill="WHITE" glyphName="ROCKET" size="20" translateX="-1.0" />
+         </graphic>
+      </JFXButton>
+      <StackPane fx:id="formPane" layoutX="140.0" layoutY="89.0" mouseTransparent="true" prefHeight="250.0" prefWidth="328.0" />
+      <StackPane fx:id="dialogPane" layoutX="140.0" layoutY="230.0" mouseTransparent="true" prefHeight="140.0" prefWidth="328.0" />
+   </children>
+</AnchorPane>

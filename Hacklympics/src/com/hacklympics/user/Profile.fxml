@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="674.0" prefWidth="776.0" styleClass="mainFxmlClass" stylesheets="@../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hacklympics.user.ProfileController">
+   <children>
+      <AnchorPane layoutY="35.0" minHeight="0.0" minWidth="0.0" prefHeight="639.0" prefWidth="776.0">
+         <children>
+            
+                                                      <JFXTextField fx:id="keywordField" labelFloat="true" layoutX="33.0" layoutY="179.0" onKeyReleased="#search" prefHeight="27.0" prefWidth="708.0" promptText="Filter" />
+            <Circle fx:id="avatarCircle" fill="#d4d4d477" layoutX="106.0" layoutY="89.0" radius="62.0" stroke="TRANSPARENT" strokeType="INSIDE" />
+            
+                        <JFXButton fx:id="launchExamBtn" buttonType="RAISED" layoutX="138.0" layoutY="114.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="34.0" minWidth="34.0" onAction="#launchExam" prefHeight="30.0" prefWidth="30.0" styleClass="uploadAvatarBtn">
+               <font>
+                  <Font size="22.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="15" translateX="-1.0" translateY="1.0" />
+               </graphic>
+            </JFXButton>
+            <Label layoutX="204.0" layoutY="40.0" prefHeight="26.0" prefWidth="290.0" text="Marco Wang">
+               <font>
+                  <Font name="System Bold" size="18.0" />
+               </font>
+            </Label>
+            <Label alignment="TOP_LEFT" layoutX="205.0" layoutY="72.0" prefHeight="26.0" prefWidth="290.0" text="Student (Class of 2019)">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TableView fx:id="courseTable" layoutX="34.0" layoutY="230.0" prefHeight="377.0" prefWidth="708.0">
+              <columns>
+                <TableColumn fx:id="courseSemesterCol" prefWidth="128.0" text="Semester" />
+                <TableColumn fx:id="courseNameCol" prefWidth="241.0" text="Name" />
+                  <TableColumn fx:id="courseTeacherCol" prefWidth="340.0" text="Teacher" />
+              </columns>
+            </TableView>
+            <Label alignment="TOP_LEFT" layoutX="205.0" layoutY="116.0" prefHeight="26.0" prefWidth="290.0" text="1080630202@mil.edu.tw">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
