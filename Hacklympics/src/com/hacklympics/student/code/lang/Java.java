@@ -26,7 +26,7 @@ public class Java {
         "        // write your code right here.",
         "    }",
         "",
-        "}\n"
+        "}"
     });
     
     

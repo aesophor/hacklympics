@@ -21,8 +21,8 @@
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/richtextfx-fat-0.9.0.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/terminalfx-1.0.5.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/thumbnailator-0.4.8.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/java-diff-utils-1.2.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.workspace}/HacklympicsAPI/dist/HacklympicsAPI.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.buildfile}/libs/java-diff-utils-1.3.0-SNAPSHOT.jar"/>
         </jar>
     </target>
 </project>
