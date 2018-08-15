@@ -27,6 +27,7 @@ public class PendingCodePatches {
 	
 	public synchronized void add(String serializedPatch) {
 		patches.add(serializedPatch);
+		System.out.println(patches);
 	}
 	
 	public synchronized void clear() {

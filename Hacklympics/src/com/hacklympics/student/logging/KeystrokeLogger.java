@@ -72,6 +72,8 @@ public class KeystrokeLogger implements Runnable {
                 	}
             	}
             	
+            	System.out.println("Patch report complete");
+            	
                 Thread.sleep(frequency * 1000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
