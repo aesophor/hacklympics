@@ -17,8 +17,8 @@
   > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)    
 
  * Design Patterns used
-  > Singleton    
-  > Observer    
+   > Singleton    
+   > Observer    
 
 * Libraries used
   
@@ -57,18 +57,19 @@ Supports for more langugages will be added over time.
 ## Gallery
 Please visit [imgur](https://imgur.com/a/wuw9Yaa) for more screenshots.
 <div align="center">
-    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/teacher/EditMaterials - Course.png" alt="edit"><br>`Editing a Course` 
+    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/teacher/EditMaterials - Course.png" alt="scrot1"><br>Editing a Course
     <br><br>
-    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/teacher/Proctor - Snapshots.png" alt="edit"><br>`Student screens in real time` 
+    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/teacher/Proctor - Snapshots.png" alt="scrot2"><br>Student screens in real time
     <br><br>
-    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/teacher/Proctor - Keystrokes.png" alt="edit"><br>`Syncing keylogs & playback` 
+    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/teacher/Proctor - Keystrokes.png" alt="scrot3"><br>Syncing keylogs & playback
     <br><br>
-    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/student/TakeExam - Code.png" alt="edit"><br>`Full-fledged code editor for students` 
+    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/student/TakeExam - Code.png" alt="scrot4"><br>Full-fledged code editor for students
     <br><br>
-    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/student/TakeExam - OnlineJudge.png" alt="edit"><br>`Passing an exam with Online Judge` 
+    <img src="https://github.com/aesophor/Hacklympics/raw/master/assets/student/TakeExam - OnlineJudge.png" alt="scrot5"><br>Passing an exam with Online Judge
     <br><br>
 
 </div>
 
 ## License
 Available under [Mozilla Public License 2.0](https://github.com/aesophor/hacklympics/blob/master/LICENSE).
+
