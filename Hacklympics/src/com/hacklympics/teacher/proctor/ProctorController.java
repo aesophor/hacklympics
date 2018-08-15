@@ -474,7 +474,7 @@ public class ProctorController implements Initializable {
         // If we call Thread.sleep() on JavaFX thread, the UI will hang.
         List<String> patches = selectedBox.getPatches();
         
-        new Thread(new Runnable() {
+        Session.getInstance().getExecutor().execute(new Runnable() {
             @Override
             public void run() {
             	// Clears the codeArea for keystroke playback.
@@ -507,7 +507,7 @@ public class ProctorController implements Initializable {
                     }
                 }
             }
-        }).start();
+        });
     }
     
     

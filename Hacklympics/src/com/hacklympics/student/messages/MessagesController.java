@@ -13,6 +13,7 @@ import com.hacklympics.api.event.message.NewMessageEvent;
 import com.hacklympics.api.message.Message;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.common.ui.dialog.AlertDialog;
+import com.hacklympics.student.StudentController;
 import com.hacklympics.api.event.EventHandler;
 
 import javafx.scene.layout.StackPane;
@@ -29,14 +30,13 @@ public class MessagesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setOnNewMessage((NewMessageEvent event) -> {
+        	String message = event.getMessage().toString();
+        	
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
-                messageBoard.appendText(event.getMessage() + "\n");
+                messageBoard.appendText(message + "\n");
+                Session.getInstance().getMainController().pushNotification(message);
             }
         });
-    }
-    
-    public void setOnNewMessage(EventHandler<NewMessageEvent> listener) {
-        EventManager.getInstance().addEventHandler(EventType.NEW_MESSAGE, listener);
     }
     
     
@@ -66,6 +66,10 @@ public class MessagesController implements Initializable {
             
             inputArea.clear();
         }
+    }
+    
+    public void setOnNewMessage(EventHandler<NewMessageEvent> listener) {
+        EventManager.getInstance().addEventHandler(EventType.NEW_MESSAGE, listener);
     }
     
 }

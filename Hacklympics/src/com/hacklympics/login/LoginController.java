@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 import com.jfoenix.controls.JFXPasswordField;
+import com.jfoenix.controls.JFXSpinner;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
 import com.hacklympics.api.communication.SocketServer;
@@ -30,6 +31,10 @@ public class LoginController {
     private JFXPasswordField passwordField;
     @FXML
     private JFXButton loginBtn;
+    @FXML
+    private JFXButton exitBtn;
+    @FXML
+    private JFXSpinner spinner;
     
     
     @FXML
@@ -41,7 +46,7 @@ public class LoginController {
             Response login = User.login(username, password);
             
             if (login.success()) {
-                // Note that the SocketServer will only start after the user has
+            	// Note that the SocketServer will only start after the user has
                 // SUCCESSFULLY logged in.
                 Session.getInstance().getExecutor().execute(SocketServer.getInstance());
                 

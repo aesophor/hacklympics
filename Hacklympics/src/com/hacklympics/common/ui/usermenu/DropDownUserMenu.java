@@ -50,7 +50,7 @@ public class DropDownUserMenu {
                 JFXPopup.PopupVPosition.TOP,
                 JFXPopup.PopupHPosition.LEFT,
                 - (triggeringBtn.getWidth() / 3),
-                triggeringBtn.getHeight()
+                triggeringBtn.getHeight() + 3
         );
         
         showingMenu = true;

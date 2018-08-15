@@ -12,7 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.Label;
-import javafx.scene.control.Button;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.scene.input.MouseEvent;
 import com.hacklympics.api.communication.Response;
@@ -26,6 +26,8 @@ import com.hacklympics.common.ui.listview.OnlineUserListView;
 import com.hacklympics.common.ui.usermenu.DropDownUserMenu;
 import com.hacklympics.utility.FXMLTable;
 import com.hacklympics.utility.Utils;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXSnackbar;
 
 public class TeacherController implements Initializable, MainController {
     
@@ -43,7 +45,8 @@ public class TeacherController implements Initializable, MainController {
     @FXML
     private StackPane dialogPane;
     @FXML
-    private Button userMenuBtn;
+    private JFXButton userMenuBtn;
+    
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -187,5 +190,12 @@ public class TeacherController implements Initializable, MainController {
     public StackPane getDialogPane() {
         return dialogPane;
     }
+    
+    @Override
+	public void pushNotification(String message) {
+		Platform.runLater(() -> {
+    		new JFXSnackbar(mainPane).show(message, 5000);
+    	});
+	}
     
 }

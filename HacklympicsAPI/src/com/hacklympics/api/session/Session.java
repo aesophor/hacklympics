@@ -12,9 +12,12 @@ public class Session {
     private MainController mainController;
     private User currentUser;
     private Exam currentExam;
+    private boolean showNotification;
     
     private Session() {
         executor = Executors.newCachedThreadPool();
+        
+        showNotification = true;
     }
     
     public static Session getInstance() {
@@ -48,6 +51,10 @@ public class Session {
         return executor;
     }
     
+    public boolean showNotification() {
+    	return showNotification;
+    }
+    
     
     public void setMainController(MainController mainController) {
         this.mainController = mainController;
@@ -59,6 +66,10 @@ public class Session {
     
     public void setCurrentExam(Exam exam) {
         this.currentExam = exam;
+    }
+    
+    public void setShowNotification(boolean option) {
+    	showNotification = option;
     }
     
     

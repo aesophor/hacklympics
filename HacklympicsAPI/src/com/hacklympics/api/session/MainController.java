@@ -22,5 +22,10 @@ public interface MainController {
      * @return the dialogPane of current user's MainController.
      */
     public StackPane getDialogPane();
+    
+    /**
+     * Push a notification to the user.
+     */
+    public void pushNotification(String message);
 
 }

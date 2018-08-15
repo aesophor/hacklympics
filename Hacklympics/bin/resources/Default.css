@@ -338,6 +338,21 @@
 }
 
 
+/* message */
+.jfx-toggle-button {
+    -jfx-toggle-color: -fx-lightblue;
+}
+
+.jfx-snackbar-content {
+	-fx-background-color: -fx-lightblue;
+	-fx-pref-width: 400.0px;
+}
+
+.jfx-snackbar-toast {
+	-fx-text-fill: -fx-white;
+}
+
+
 /* proctor */
 .finish-label {
     -fx-text-fill: -fx-green;
