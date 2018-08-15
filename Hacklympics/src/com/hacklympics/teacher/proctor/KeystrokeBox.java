@@ -11,7 +11,6 @@ import difflib.Patch;
 import difflib.PatchFailedException;
 import com.jfoenix.controls.JFXRadioButton;
 import com.hacklympics.api.user.Student;
-import com.hacklympics.student.code.lang.Language;
 import com.hacklympics.utility.Utils;
 import com.hacklympics.api.proctor.Keystroke;
 
@@ -71,6 +70,7 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
             		
             		Platform.runLater(() -> {
     					try {
+    						System.out.println("Previous text length: " + codeArea.getText().length());
 							codeArea.setText(patch.applyTo(codeArea.getText()));
 						} catch (PatchFailedException e) {
 							e.printStackTrace();

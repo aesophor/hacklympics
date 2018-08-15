@@ -17,8 +17,6 @@ import org.fxmisc.richtext.LineNumberFactory;
 import com.hacklympics.student.code.lang.Language;
 import com.hacklympics.utility.CodeAreaUtils;
 import com.hacklympics.utility.Utils;
-
-import difflib.Delta;
 import difflib.DiffUtils;
 import difflib.Patch;
 import difflib.PatchFailedException;
@@ -58,19 +56,35 @@ public class FileTab extends Tab {
         // Later on we can send these patches to the teacher's client.
         // Make sure to mark current tab as unsaved as well.
         codeArea.textProperty().addListener((observable, original, revised) -> {
+        	System.out.println("Effective text len: " + codeArea.getText().length());
         	Patch patch = DiffUtils.diff(original, revised);
-        	
+        	String sp = "";
         	try {
-        		addPatch(Utils.serialize(patch));
+        		sp = Utils.serialize(patch);
+        		addPatch(sp);
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			} finally {
 				markAsUnsaved();
 			}
+        	
+        	try {
+				Patch p = (Patch) Utils.deserialize(sp);
+			} catch (ClassNotFoundException | IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} try {
+				System.out.println("Patched text len: " + patch.applyTo(original).length());
+				System.out.println(revised.equals(patch.applyTo(original)));
+			} catch (PatchFailedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
         });
         
         // Add sample code to the CodeArea.
-        codeArea.replaceText(0, 0, currentLang.getSampleCode());
+        codeArea.replaceText(currentLang.getSampleCode());
         
         
         // Add the code area we just created into a VBox.
