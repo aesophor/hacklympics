@@ -46,8 +46,6 @@ import com.hacklympics.student.logging.ScreenRecorder;
 import com.hacklympics.utility.Utils;
 
 public class CodeController implements Initializable {
-
-	private List<String> pendingCodePatches;
 	
     private TerminalConfig terminalConfig;
     private TerminalBuilder terminalBuilder;
@@ -72,8 +70,6 @@ public class CodeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    	pendingCodePatches = new ArrayList<>();
-    	
         terminalConfig = new TerminalConfig();
         terminalConfig.setBackgroundColor("#eff1f5");
 
@@ -87,17 +83,19 @@ public class CodeController implements Initializable {
         fileTabPane.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldTab, newTab) -> {
                 	// Compute diff between the texts in the old and new tabs.
-                	String oldTabText = ((FileTab) oldTab).getCodeArea().getText();
-                	String newTabText = ((FileTab) newTab).getCodeArea().getText();
-                	CodePatch patch = CodeUtils.diff(oldTabText, newTabText);
-                	
-                	try {
-                		synchronized (pendingCodePatches) {
-                			pendingCodePatches.add(Utils.serialize(patch));
-                		}
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+                	if (oldTab != null && newTab != null) {
+                		String oldTabText = ((FileTab) oldTab).getStyledCodeArea().getText();
+                    	String newTabText = ((FileTab) newTab).getStyledCodeArea().getText();
+                    	CodePatch patch = CodeUtils.diff(oldTabText, newTabText);
+                    	
+                    	try {
+                    		synchronized (PendingCodePatches.getInstance()) {
+                    			PendingCodePatches.getInstance().add(Utils.serialize(patch));
+                    		}
+    					} catch (IOException e) {
+    						e.printStackTrace();
+    					}
+                	}
                 	
                     updateFilepathLabel();
         });
@@ -268,7 +266,7 @@ public class CodeController implements Initializable {
 
         showTerminal();
 
-        String location = getSelectedFileTab().getLocation();
+        String location = getSelectedFileTab().getFileLocation();
         String filepath = getSelectedFileTab().getAbsoluteFilePath();
 
         terminal.onTerminalFxReady(() -> {
@@ -280,7 +278,7 @@ public class CodeController implements Initializable {
     public void execute(ActionEvent event) {
         showTerminal();
 
-        String location = getSelectedFileTab().getLocation();
+        String location = getSelectedFileTab().getFileLocation();
         String className = getSelectedFileTab().getFilename().split("[.]")[0];
 
         terminal.onTerminalFxReady(() -> {
@@ -343,7 +341,7 @@ public class CodeController implements Initializable {
                     selectedExam.getExamID(),
                     selectedProblem.getProblemID(),
                     getSelectedFileTab().getFilename(),
-                    getSelectedFileTab().getCodeArea().getText(),
+                    getSelectedFileTab().getStyledCodeArea().getText(),
                     student.getUsername()
             );
 

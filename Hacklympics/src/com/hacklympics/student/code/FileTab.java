@@ -6,12 +6,9 @@ import java.io.FileWriter;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.time.Duration;
 import javafx.scene.control.Tab;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
-import org.fxmisc.richtext.CodeArea;
-import org.fxmisc.richtext.LineNumberFactory;
+import javafx.scene.layout.AnchorPane;
 import com.hacklympics.common.code.CodePatch;
 import com.hacklympics.common.code.CodeUtils;
 import com.hacklympics.common.code.lang.Language;
@@ -19,35 +16,24 @@ import com.hacklympics.utility.Utils;
 
 public class FileTab extends Tab {
 	
-	private final static Language DEFAULT_LANG = Language.JAVA;
-    private Language language;
-    
     private final AnchorPane anchorPane;
     private final VBox vbox;
-    private final CodeArea codeArea;
+    private final StyledCodeArea styledCodeArea;
+    
     private File file;
     private boolean unsaved;
 
     public FileTab() {
         super("Untitled.java");
         
-        language = DEFAULT_LANG;
-        
-        codeArea = new CodeArea();
-        codeArea.getStyleClass().add("code-area");
-        codeArea.getStylesheets().add(language.getCSSFilepath());
-        codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
-        codeArea.multiPlainChanges()
-				.successionEnds(Duration.ofMillis(100))
-				.subscribe(ignore -> {
-					codeArea.setStyleSpans(0, CodeUtils.computeHighlighting(language, codeArea.getText()));
-		});
+        // Initialize a styled CodeArea in current tab.
+        styledCodeArea = new StyledCodeArea(Language.JAVA);
         
         // Whenever there's a change to the CodeArea, we compute the diff,
         // create a patch and add that patch to keystrokeHistory.
         // Later on we can send these patches to the teacher's client.
         // Make sure to mark current tab as unsaved as well.
-        codeArea.textProperty().addListener((observable, original, revised) -> {
+        textProperty().addListener((observable, original, revised) -> {
 			CodePatch patch = CodeUtils.diff(original, revised);
         	
         	try {
@@ -60,13 +46,12 @@ public class FileTab extends Tab {
         });
         
         // Then add sample code to the CodeArea.
-        codeArea.replaceText(language.getSampleCode());
-        
+        styledCodeArea.replaceText(styledCodeArea.getCurrentLanguage().getSampleCode());
         
         // Add the code area we just created into a VBox.
         vbox = new VBox();
         vbox.getStyleClass().add("code-vbox");
-        vbox.getChildren().add(codeArea);
+        vbox.getChildren().add(styledCodeArea);
 
         // Add the vbox into the AnchorPane.
         anchorPane = new AnchorPane();
@@ -74,6 +59,7 @@ public class FileTab extends Tab {
         anchorPane.getChildren().add(vbox);
         setContent(anchorPane);
         
+        // Spice up the tab with css.
         getStyleClass().add("minimal-tab");
         markAsUnsaved();
     }
@@ -81,7 +67,6 @@ public class FileTab extends Tab {
 
     /**
      * Opens the specified file in the tab.
-     *
      * @throws IOException if an input or output exception occurred.
      */
     public void open(File file) throws IOException {
@@ -99,7 +84,7 @@ public class FileTab extends Tab {
             line = br.readLine();
         }
 
-        codeArea.replaceText(content.toString());
+        styledCodeArea.replaceText(content.toString());
         unsaved = false;
         br.close();
         
@@ -108,23 +93,30 @@ public class FileTab extends Tab {
 
     /**
      * Saves the content in the tab into a file.
-     *
      * @throws IOException if an input or output exception occurred.
      */
     public void save() throws IOException {
         BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-        bw.write(codeArea.getText());
+        bw.write(styledCodeArea.getText());
         bw.flush();
         bw.close();
 
         setText(getFilename());
         unsaved = false;
     }
-    
+
     
     /**
-     * Marks current file as unsaved, prepending the title of this tab with a
-     * "*" character.
+     * Gets whether this file has unsaved changes.
+     * @return whether this file is unsaved.
+     */
+    public boolean unsaved() {
+        return unsaved;
+    }
+    
+    /**
+     * Marks current file as unsaved, prepending the title of 
+     * this tab with a "*" character.
      */
     private void markAsUnsaved() {
         if (unsaved == false) {
@@ -134,18 +126,33 @@ public class FileTab extends Tab {
         }
     }
 
+    
     /**
-     * Gets whether this file has unsaved changes.
-     *
-     * @return whether this file is unsaved.
+     * Gets the file opened in this tab.
+     * @return file opened.
      */
-    public boolean unsaved() {
-        return unsaved;
+    public File getFile() {
+        return file;
     }
-
+    
+    /**
+     * Sets the file opened in this tab.
+     * @param file opened.
+     */
+    public void setFile(File file) {
+        this.file = file;
+    }
+    
+    /**
+     * Gets the absolute path of the file opened in this tab.
+     * @return absolute path of the file.
+     */
+    public String getAbsoluteFilePath() {
+        return (file == null) ? "Unsaved file" : file.getAbsolutePath();
+    }
+    
     /**
      * Gets the filename of the file opened in this tab.
-     *
      * @return filename (with extension).
      */
     public String getFilename() {
@@ -159,10 +166,9 @@ public class FileTab extends Tab {
     
     /**
      * Gets the extension of the file opened in this tab.
-     * 
-     * @return extension
+     * @return extension.
      */
-    public String getExtension() {
+    public String getFileExtension() {
     	if (getFilename().contains(".")) {
     		return getFilename().split("[.]")[1];
     	} else {
@@ -171,33 +177,20 @@ public class FileTab extends Tab {
     }
 
     /**
-     * Gets the absolute path of the file opened in this tab.
-     *
-     * @return absolute path of the file.
-     */
-    public String getAbsoluteFilePath() {
-        return (file == null) ? "Unsaved file" : file.getAbsolutePath();
-    }
-
-    /**
      * Gets the location of the file opened in this tab.
-     *
      * @return the directory in which the file is saved.
      */
-    public String getLocation() {
+    public String getFileLocation() {
         return file.getAbsoluteFile().getParent();
     }
     
-    public CodeArea getCodeArea() {
-        return codeArea;
-    }
-
-    public File getFile() {
-        return file;
-    }
-
-    public void setFile(File file) {
-        this.file = file;
+    
+    /**
+     * Gets the StyledCodeArea embedded in this tab.
+     * @return the StyledCodeArea.
+     */
+    public StyledCodeArea getStyledCodeArea() {
+        return styledCodeArea;
     }
 
 }
