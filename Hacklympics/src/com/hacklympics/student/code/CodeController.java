@@ -84,7 +84,6 @@ public class CodeController implements Initializable {
                 (observable, oldTab, newTab) -> {
                 	// Compute diff between the texts in the old and new tabs.
                 	if (oldTab != null && newTab != null) {
-                		System.out.println("patching");
                 		String oldTabText = ((FileTab) oldTab).getStyledCodeArea().getText();
                     	String newTabText = ((FileTab) newTab).getStyledCodeArea().getText();
                     	CodePatch patch = CodeUtils.diff(oldTabText, newTabText);

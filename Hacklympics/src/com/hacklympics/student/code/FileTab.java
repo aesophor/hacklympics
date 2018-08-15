@@ -33,9 +33,9 @@ public class FileTab extends Tab {
         // create a patch and add that patch to keystrokeHistory.
         // Later on we can send these patches to the teacher's client.
         // Make sure to mark current tab as unsaved as well.
-        textProperty().addListener((observable, original, revised) -> {
+        styledCodeArea.textProperty().addListener((observable, original, revised) -> {
 			CodePatch patch = CodeUtils.diff(original, revised);
-        	
+			
         	try {
         		PendingCodePatches.getInstance().add(Utils.serialize(patch));
 			} catch (IOException ex) {
