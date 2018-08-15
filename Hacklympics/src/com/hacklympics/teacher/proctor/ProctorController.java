@@ -32,12 +32,13 @@ import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
+import com.hacklympics.common.code.CodePatch;
+import com.hacklympics.common.ui.dialog.AlertDialog;
+import com.hacklympics.common.ui.dialog.ConfirmDialog;
+import com.hacklympics.student.logging.KeystrokeLogger;
+import com.hacklympics.student.logging.ScreenRecorder;
 import com.hacklympics.teacher.TeacherController;
-import com.hacklympics.teacher.proctor.logging.KeystrokeLogger;
-import com.hacklympics.teacher.proctor.logging.ScreenRecorder;
 import com.hacklympics.utility.Utils;
-import com.hacklympics.utility.ui.dialog.AlertDialog;
-import com.hacklympics.utility.ui.dialog.ConfirmDialog;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
 import com.jfoenix.controls.JFXTextArea;
@@ -483,7 +484,7 @@ public class ProctorController implements Initializable {
                     double currentProgress = ((double) i) / patches.size();
                     
 					try {
-						Patch patch = (Patch) Utils.deserialize(patches.get(i));
+						CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
 						
 						Platform.runLater(() -> {
 	                    	try {

@@ -3,6 +3,7 @@ package com.hacklympics.student.code;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.List;
+import java.util.ArrayList;
 import java.io.File;
 import java.io.IOException;
 import javafx.fxml.FXML;
@@ -18,8 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import difflib.Patch;
-import difflib.DiffUtils;
 import com.jfoenix.controls.JFXComboBox;
 import com.kodedu.terminalfx.TerminalTab;
 import com.kodedu.terminalfx.TerminalBuilder;
@@ -37,15 +36,19 @@ import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.User;
+import com.hacklympics.common.code.CodePatch;
+import com.hacklympics.common.code.CodeUtils;
+import com.hacklympics.common.ui.dialog.AlertDialog;
+import com.hacklympics.common.ui.dialog.ConfirmDialog;
 import com.hacklympics.student.StudentController;
-import com.hacklympics.teacher.proctor.logging.KeystrokeLogger;
-import com.hacklympics.teacher.proctor.logging.ScreenRecorder;
+import com.hacklympics.student.logging.KeystrokeLogger;
+import com.hacklympics.student.logging.ScreenRecorder;
 import com.hacklympics.utility.Utils;
-import com.hacklympics.utility.ui.dialog.AlertDialog;
-import com.hacklympics.utility.ui.dialog.ConfirmDialog;
 
 public class CodeController implements Initializable {
 
+	private List<String> pendingCodePatches;
+	
     private TerminalConfig terminalConfig;
     private TerminalBuilder terminalBuilder;
     private TerminalTab terminal;
@@ -69,6 +72,8 @@ public class CodeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+    	pendingCodePatches = new ArrayList<>();
+    	
         terminalConfig = new TerminalConfig();
         terminalConfig.setBackgroundColor("#eff1f5");
 
@@ -77,9 +82,23 @@ public class CodeController implements Initializable {
         terminal.getStyleClass().add("minimal-tab");
         terminalTabPane.getTabs().add(terminal);
 
-        // Update filepath label whenever the selected tab is changed.
+        // Whenever the student switch to a new tab, compute the diff between
+        // the texts in oldtab and newtab, and then update the filepath label.
         fileTabPane.getSelectionModel().selectedItemProperty().addListener(
-                (obs, oldSelection, newSelection) -> {
+                (observable, oldTab, newTab) -> {
+                	// Compute diff between the texts in the old and new tabs.
+                	String oldTabText = ((FileTab) oldTab).getCodeArea().getText();
+                	String newTabText = ((FileTab) newTab).getCodeArea().getText();
+                	CodePatch patch = CodeUtils.diff(oldTabText, newTabText);
+                	
+                	try {
+                		synchronized (pendingCodePatches) {
+                			pendingCodePatches.add(Utils.serialize(patch));
+                		}
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+                	
                     updateFilepathLabel();
         });
 
@@ -250,7 +269,7 @@ public class CodeController implements Initializable {
         showTerminal();
 
         String location = getSelectedFileTab().getLocation();
-        String filepath = getSelectedFileTab().getFilepath();
+        String filepath = getSelectedFileTab().getAbsoluteFilePath();
 
         terminal.onTerminalFxReady(() -> {
             terminal.command(String.join(" ", "javac", "-cp", location, filepath, "\r"));
@@ -498,7 +517,7 @@ public class CodeController implements Initializable {
      */
     private void updateFilepathLabel() {
         FileTab current = getSelectedFileTab();
-        filepathLabel.setText((current == null) ? "" : current.getFilepath());
+        filepathLabel.setText((current == null) ? "" : current.getAbsoluteFilePath());
     }
 
     /**

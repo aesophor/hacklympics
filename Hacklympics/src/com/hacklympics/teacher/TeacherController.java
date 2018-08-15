@@ -21,11 +21,11 @@ import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.session.MainController;
 import com.hacklympics.api.user.User;
+import com.hacklympics.common.ui.dialog.ConfirmDialog;
+import com.hacklympics.common.ui.listview.OnlineUserListView;
+import com.hacklympics.common.ui.usermenu.DropDownUserMenu;
 import com.hacklympics.utility.FXMLTable;
 import com.hacklympics.utility.Utils;
-import com.hacklympics.utility.ui.dialog.ConfirmDialog;
-import com.hacklympics.utility.ui.listview.OnlineUserListView;
-import com.hacklympics.utility.ui.usermenu.DropDownUserMenu;
 
 public class TeacherController implements Initializable, MainController {
     

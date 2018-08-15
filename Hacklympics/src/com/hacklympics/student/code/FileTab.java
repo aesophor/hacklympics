@@ -7,26 +7,20 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
-import com.hacklympics.student.code.lang.Language;
-import com.hacklympics.utility.CodeAreaUtils;
+import com.hacklympics.common.code.CodePatch;
+import com.hacklympics.common.code.CodeUtils;
+import com.hacklympics.common.code.lang.Language;
 import com.hacklympics.utility.Utils;
-import difflib.DiffUtils;
-import difflib.Patch;
-import difflib.PatchFailedException;
 
 public class FileTab extends Tab {
 	
 	private final static Language DEFAULT_LANG = Language.JAVA;
-    
-	private Language currentLang;
-    private final List<String> patches;
+    private Language language;
     
     private final AnchorPane anchorPane;
     private final VBox vbox;
@@ -37,18 +31,16 @@ public class FileTab extends Tab {
     public FileTab() {
         super("Untitled.java");
         
-        currentLang = DEFAULT_LANG;
-        
-        patches = new ArrayList<>();
+        language = DEFAULT_LANG;
         
         codeArea = new CodeArea();
         codeArea.getStyleClass().add("code-area");
-        codeArea.getStylesheets().add(currentLang.getCSSFilepath());
+        codeArea.getStylesheets().add(language.getCSSFilepath());
         codeArea.setParagraphGraphicFactory(LineNumberFactory.get(codeArea));
         codeArea.multiPlainChanges()
 				.successionEnds(Duration.ofMillis(100))
 				.subscribe(ignore -> {
-					codeArea.setStyleSpans(0, CodeAreaUtils.computeHighlighting(currentLang, codeArea.getText()));
+					codeArea.setStyleSpans(0, CodeUtils.computeHighlighting(language, codeArea.getText()));
 		});
         
         // Whenever there's a change to the CodeArea, we compute the diff,
@@ -56,35 +48,19 @@ public class FileTab extends Tab {
         // Later on we can send these patches to the teacher's client.
         // Make sure to mark current tab as unsaved as well.
         codeArea.textProperty().addListener((observable, original, revised) -> {
-        	System.out.println("Effective text len: " + codeArea.getText().length());
-        	Patch patch = DiffUtils.diff(original, revised);
-        	String sp = "";
+			CodePatch patch = CodeUtils.diff(original, revised);
+        	
         	try {
-        		sp = Utils.serialize(patch);
-        		addPatch(sp);
+        		PendingCodePatches.getInstance().add(Utils.serialize(patch));
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			} finally {
 				markAsUnsaved();
 			}
-        	
-        	try {
-				Patch p = (Patch) Utils.deserialize(sp);
-			} catch (ClassNotFoundException | IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} try {
-				System.out.println("Patched text len: " + patch.applyTo(original).length());
-				System.out.println(revised.equals(patch.applyTo(original)));
-			} catch (PatchFailedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-        	
         });
         
-        // Add sample code to the CodeArea.
-        codeArea.replaceText(currentLang.getSampleCode());
+        // Then add sample code to the CodeArea.
+        codeArea.replaceText(language.getSampleCode());
         
         
         // Add the code area we just created into a VBox.
@@ -166,18 +142,6 @@ public class FileTab extends Tab {
     public boolean unsaved() {
         return unsaved;
     }
-    
-    public synchronized List<String> getPatches() {
-    	return patches;
-    }
-    
-    public synchronized void addPatch(String patch) {
-    	patches.add(patch);
-    }
-    
-    public synchronized void clearPatches() {
-    	patches.clear();
-    }
 
     /**
      * Gets the filename of the file opened in this tab.
@@ -211,7 +175,7 @@ public class FileTab extends Tab {
      *
      * @return absolute path of the file.
      */
-    public String getFilepath() {
+    public String getAbsoluteFilePath() {
         return (file == null) ? "Unsaved file" : file.getAbsolutePath();
     }
 

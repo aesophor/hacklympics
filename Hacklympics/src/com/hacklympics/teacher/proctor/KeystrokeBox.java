@@ -7,10 +7,10 @@ import javafx.scene.text.Font;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.application.Platform;
-import difflib.Patch;
 import difflib.PatchFailedException;
 import com.jfoenix.controls.JFXRadioButton;
 import com.hacklympics.api.user.Student;
+import com.hacklympics.common.code.CodePatch;
 import com.hacklympics.utility.Utils;
 import com.hacklympics.api.proctor.Keystroke;
 
@@ -58,7 +58,6 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
     
     @Override
     public void update(Keystroke keystroke) {
-    	System.out.println("Applying " + keystroke.getPatches().size() + " patches...");
         patches.addAll(keystroke.getPatches());
         
         if (patches.size() > 0) {
@@ -66,11 +65,10 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
             
             try {
             	for (int i = lastAppliedPatchIndex + 1; i <= lastIndex; i++) {
-            		Patch patch = (Patch) Utils.deserialize(patches.get(i));
+            		CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
             		
             		Platform.runLater(() -> {
     					try {
-    						System.out.println("Previous text length: " + codeArea.getText().length());
 							codeArea.setText(patch.applyTo(codeArea.getText()));
 						} catch (PatchFailedException e) {
 							e.printStackTrace();

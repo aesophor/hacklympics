@@ -25,12 +25,12 @@ import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.user.User;
+import com.hacklympics.common.ui.dialog.AlertDialog;
+import com.hacklympics.common.ui.dialog.ConfirmDialog;
 import com.hacklympics.student.StudentController;
 import com.hacklympics.student.code.CodeController;
-import com.hacklympics.teacher.proctor.logging.KeystrokeLogger;
-import com.hacklympics.teacher.proctor.logging.ScreenRecorder;
-import com.hacklympics.utility.ui.dialog.AlertDialog;
-import com.hacklympics.utility.ui.dialog.ConfirmDialog;
+import com.hacklympics.student.logging.KeystrokeLogger;
+import com.hacklympics.student.logging.ScreenRecorder;
 
 public class OngoingExamsController implements Initializable {
     
