@@ -5,7 +5,6 @@ import com.hacklympics.api.event.Event;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.event.ExamRelated;
 
-
 public class AdjustKeystrokeParamEvent extends Event implements ExamRelated {
     
     private final int examID;
@@ -15,7 +14,6 @@ public class AdjustKeystrokeParamEvent extends Event implements ExamRelated {
         super(rawJson);
         
         Map<String, Object> content = this.getContent();
-        
         
         // Extract examID and new keystroke frequency from json content.
         this.examID = (int) Double.parseDouble(content.get("examID").toString());

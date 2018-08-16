@@ -354,6 +354,18 @@
 
 
 /* proctor */
+.jfx-slider .thumb{
+	-fx-background-color: -fx-lightblue;
+}
+
+.jfx-slider .track {
+	-fx-background-color: -fx-lightgrey;
+}
+
+.jfx-slider StackPane{
+    -fx-background-color: -fx-lightblue;
+}﻿
+
 .finish-label {
     -fx-text-fill: -fx-green;
 }

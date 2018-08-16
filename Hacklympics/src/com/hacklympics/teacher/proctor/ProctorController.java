@@ -18,6 +18,7 @@ import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXProgressBar;
+import com.jfoenix.controls.JFXSlider;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
 import com.hacklympics.api.event.EventHandler;
@@ -81,7 +82,7 @@ public class ProctorController implements Initializable {
     @FXML
     private JFXTextArea codeArea;
     @FXML
-    private JFXProgressBar keystrokePlaybackBar;
+    private JFXSlider keystrokePlaybackSlider;
     @FXML
     private JFXComboBox keyFrequencyBox;
 
@@ -493,7 +494,7 @@ public class ProctorController implements Initializable {
 								e.printStackTrace();
 							}
 	                    	
-	                        keystrokePlaybackBar.setProgress(currentProgress);
+	                        keystrokePlaybackSlider.setValue(currentProgress);
 	                    });
 					} catch (ClassNotFoundException | IOException e) {
 						e.printStackTrace();

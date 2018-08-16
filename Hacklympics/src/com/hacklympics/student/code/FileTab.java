@@ -37,7 +37,9 @@ public class FileTab extends Tab {
 			CodePatch patch = CodeUtils.diff(original, revised);
 			
         	try {
-        		PendingCodePatches.getInstance().add(Utils.serialize(patch));
+        		synchronized (PendingCodePatches.getInstance()) {
+        			PendingCodePatches.getInstance().add(Utils.serialize(patch));
+        		}
 			} catch (IOException ex) {
 				ex.printStackTrace();
 			} finally {

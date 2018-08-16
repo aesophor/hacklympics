@@ -1,6 +1,7 @@
 package com.hacklympics.student.code;
 
 import java.util.List;
+
 import java.util.ArrayList;
 
 public class PendingCodePatches {
@@ -21,19 +22,19 @@ public class PendingCodePatches {
 	}
 	
 	
-	public synchronized boolean isEmpty() {
+	public boolean isEmpty() {
 		return patches.isEmpty();
 	}
 	
-	public synchronized void add(String serializedPatch) {
+	public void add(String serializedPatch) {
 		patches.add(serializedPatch);
 	}
 	
-	public synchronized void clear() {
+	public void clear() {
 		patches.clear();
 	}
 	
-	public synchronized List<String> getPatches() {
+	public List<String> getPatches() {
 		return patches;
 	}
 	

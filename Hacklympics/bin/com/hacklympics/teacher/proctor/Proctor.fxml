@@ -2,7 +2,7 @@
 
 <?import com.jfoenix.controls.JFXButton?>
 <?import com.jfoenix.controls.JFXComboBox?>
-<?import com.jfoenix.controls.JFXProgressBar?>
+<?import com.jfoenix.controls.JFXSlider?>
 <?import com.jfoenix.controls.JFXTabPane?>
 <?import com.jfoenix.controls.JFXTextArea?>
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
@@ -132,7 +132,7 @@
                                           <Font name="System Bold" size="12.0" />
                                        </font>
                                     </Label>
-                                    <JFXProgressBar fx:id="keystrokePlaybackBar" layoutX="400.0" layoutY="526.0" prefHeight="5.0" prefWidth="355.0" progress="0.0" />
+                                    <JFXSlider fx:id="keystrokePlaybackSlider" layoutX="400.0" layoutY="520.0" prefHeight="16.0" prefWidth="356.0" />
                                     <JFXButton fx:id="keystrokePlayBtn" layoutX="560.0" layoutY="542.0" onAction="#playKeystroke" styleClass="lightBlueBtn" text=" ">
                                        <graphic>
                                           <FontAwesomeIconView fill="WHITE" glyphName="PLAY" translateX="5.0" />
