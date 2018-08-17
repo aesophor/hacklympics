@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -22,9 +23,10 @@ import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.session.MainController;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.ui.dialog.ConfirmDialog;
-import com.hacklympics.common.ui.listview.OnlineUserListView;
-import com.hacklympics.common.ui.usermenu.DropDownUserMenu;
+import com.hacklympics.common.dialog.AlertDialog;
+import com.hacklympics.common.dialog.ConfirmDialog;
+import com.hacklympics.common.listview.OnlineUserListView;
+import com.hacklympics.common.usermenu.DropDownUserMenu;
 import com.hacklympics.utility.FXMLTable;
 import com.hacklympics.utility.Utils;
 import com.jfoenix.controls.JFXSnackbar;
@@ -71,7 +73,13 @@ public class StudentController implements Initializable, MainController {
         });
         
         userMenu.add(new Label("About"), (MouseEvent event) -> {
-            userMenu.hide();
+        	userMenu.hide();
+        	
+        	String aboutFXML = FXMLTable.getInstance().get("About");
+            Scene aboutScene = Utils.loadStage(new FXMLLoader(getClass().getResource(aboutFXML)));
+            
+        	AlertDialog aboutDialog = new AlertDialog("About", aboutScene.lookup("#aboutPane"));
+        	aboutDialog.show();
         });
         
         userMenu.add(new Label("Logout"), (MouseEvent event) -> {
@@ -129,7 +137,7 @@ public class StudentController implements Initializable, MainController {
             
             if (logout.success()) {
                 String loginFXML = FXMLTable.getInstance().get("Login");
-                Utils.loadStage(new FXMLLoader(getClass().getResource(loginFXML)));
+                Utils.showStage(new FXMLLoader(getClass().getResource(loginFXML)));
                 userMenuBtn.getScene().getWindow().hide();
                 
                 Session.getInstance().clear();

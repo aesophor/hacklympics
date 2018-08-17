@@ -57,7 +57,7 @@ public class LoginController {
                         Session.getInstance().setCurrentUser(user);
                         
                         String studentFXML = FXMLTable.getInstance().get("Student");
-                        Utils.loadUserStage(new FXMLLoader(getClass().getResource(studentFXML)));
+                        Utils.showUserStage(new FXMLLoader(getClass().getResource(studentFXML)));
                         
                         loginBtn.getScene().getWindow().hide();
                         break;
@@ -67,7 +67,7 @@ public class LoginController {
                         Session.getInstance().setCurrentUser(user);
                         
                         String teacherFXML = FXMLTable.getInstance().get("Teacher");
-                        Utils.loadUserStage(new FXMLLoader(getClass().getResource(teacherFXML)));
+                        Utils.showUserStage(new FXMLLoader(getClass().getResource(teacherFXML)));
                         
                         loginBtn.getScene().getWindow().hide();
                         break;
@@ -103,7 +103,7 @@ public class LoginController {
     @FXML
     public void register(ActionEvent e) {
         String registerFXML = FXMLTable.getInstance().get("Register");
-        Utils.loadStage(new FXMLLoader(getClass().getResource(registerFXML)));
+        Utils.showStage(new FXMLLoader(getClass().getResource(registerFXML)));
         
         loginBtn.getScene().getWindow().hide();
     }

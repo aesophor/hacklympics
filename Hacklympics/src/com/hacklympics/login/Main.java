@@ -1,12 +1,11 @@
 package com.hacklympics.login;
 
-import com.hacklympics.api.communication.Config;
-import com.hacklympics.utility.FXMLTable;
-import com.hacklympics.utility.Utils;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
+import com.hacklympics.api.communication.Config;
+import com.hacklympics.utility.FXMLTable;
+import com.hacklympics.utility.Utils;
 
 public class Main extends Application {
     
@@ -19,7 +18,7 @@ public class Main extends Application {
         
         // Load and display Login stage.
         String loginFXML = FXMLTable.getInstance().get("Login");
-        Utils.loadStage(new FXMLLoader(getClass().getResource(loginFXML)));
+        Utils.showStage(new FXMLLoader(getClass().getResource(loginFXML)));
     }
 
     public static void main(String[] args) {

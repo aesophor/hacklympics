@@ -25,8 +25,8 @@ import com.hacklympics.api.event.exam.HaltExamEvent;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.ui.dialog.AlertDialog;
-import com.hacklympics.common.ui.dialog.ConfirmDialog;
+import com.hacklympics.common.dialog.AlertDialog;
+import com.hacklympics.common.dialog.ConfirmDialog;
 import com.hacklympics.teacher.TeacherController;
 import com.hacklympics.teacher.proctor.ProctorController;
 

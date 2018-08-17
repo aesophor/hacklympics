@@ -13,6 +13,7 @@ public class FXMLTable {
         
         table.put("Login",                "/com/hacklympics/login/Login.fxml");
         table.put("Register",             "/com/hacklympics/login/Register.fxml");
+        table.put("About",                "/com/hacklympics/common/About.fxml");
         
         table.put("Student",              "/com/hacklympics/student/Student.fxml");
         table.put("Student/Dashboard",    "/com/hacklympics/student/dashboard/Dashboard.fxml");

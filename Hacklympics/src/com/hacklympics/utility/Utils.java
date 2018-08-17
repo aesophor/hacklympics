@@ -21,7 +21,31 @@ public class Utils {
     }
     
     
-    public static void loadStage(FXMLLoader loader) {
+    /**
+     * Loads the specified FXMLLoader but does not show the stage and scene.
+     * @param loader.
+     * @return fxml resources.
+     */
+    public static Scene loadStage(FXMLLoader loader) {
+    	Scene scene;
+    	
+    	try {
+            Parent root = loader.load();
+            Stage stage = new Stage();
+            scene = new Scene(root);
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+            return null;
+        }
+    	
+    	return scene;
+    }
+    
+    /**
+     * Shows a new window with the specified FXML layout.
+     * @param loader.
+     */
+    public static void showStage(FXMLLoader loader) {
         try {
             Parent root = loader.load();
             Stage stage = new Stage();
@@ -36,8 +60,12 @@ public class Utils {
         }
     }
     
-    public static void loadUserStage(FXMLLoader loader) {
-        loadStage(loader);
+    /**
+     * Shows the MainController window of either student or teacher.
+     * @param loader of a MainController.
+     */
+    public static void showUserStage(FXMLLoader loader) {
+        showStage(loader);
         Session.getInstance().setMainController(loader.getController());
     }
     
