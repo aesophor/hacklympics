@@ -12,8 +12,8 @@ import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.message.NewMessageEvent;
 import com.hacklympics.api.message.Message;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.common.dialog.AlertDialog;
 import com.hacklympics.student.StudentController;
+import com.hacklympics.utility.dialog.AlertDialog;
 import com.hacklympics.api.event.EventHandler;
 
 import javafx.scene.layout.StackPane;

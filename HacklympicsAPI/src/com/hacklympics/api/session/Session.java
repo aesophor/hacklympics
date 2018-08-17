@@ -9,7 +9,7 @@ public class Session {
     
     private static Session session;
     private ExecutorService executor;
-    private MainController mainController;
+    private UserController mainController;
     private User currentUser;
     private Exam currentExam;
     private boolean showNotification;
@@ -35,7 +35,7 @@ public class Session {
         currentExam = null;
     }
     
-    public MainController getMainController() {
+    public UserController getMainController() {
         return mainController;
     }
     
@@ -56,7 +56,7 @@ public class Session {
     }
     
     
-    public void setMainController(MainController mainController) {
+    public void setMainController(UserController mainController) {
         this.mainController = mainController;
     }
     

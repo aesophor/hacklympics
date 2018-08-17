@@ -10,8 +10,8 @@ import javafx.application.Platform;
 import difflib.PatchFailedException;
 import com.jfoenix.controls.JFXRadioButton;
 import com.hacklympics.api.user.Student;
-import com.hacklympics.common.code.CodePatch;
 import com.hacklympics.utility.Utils;
+import com.hacklympics.utility.code.CodePatch;
 import com.hacklympics.api.proctor.Keystroke;
 
 public class KeystrokeBox extends StudentBox<Keystroke> {

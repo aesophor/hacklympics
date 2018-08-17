@@ -30,11 +30,11 @@ import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Role;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.dialog.AlertDialog;
-import com.hacklympics.common.dialog.ConfirmDialog;
-import com.hacklympics.common.dialog.FormDialog;
 import com.hacklympics.teacher.TeacherController;
 import com.hacklympics.teacher.proctor.ProctorController;
+import com.hacklympics.utility.dialog.AlertDialog;
+import com.hacklympics.utility.dialog.ConfirmDialog;
+import com.hacklympics.utility.dialog.FormDialog;
 import com.hacklympics.api.user.Teacher;
 
 public class CoursesController implements Initializable {

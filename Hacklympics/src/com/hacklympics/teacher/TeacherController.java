@@ -1,96 +1,19 @@
 package com.hacklympics.teacher;
 
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.Map;
 import java.util.HashMap;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.control.Label;
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.scene.input.MouseEvent;
-import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.communication.SocketServer;
-import com.hacklympics.api.event.EventManager;
-import com.hacklympics.api.session.Session;
-import com.hacklympics.api.session.MainController;
-import com.hacklympics.api.user.User;
-import com.hacklympics.common.dialog.AlertDialog;
-import com.hacklympics.common.dialog.ConfirmDialog;
-import com.hacklympics.common.listview.OnlineUserListView;
-import com.hacklympics.common.usermenu.DropDownUserMenu;
+import com.hacklympics.api.session.UserController;
+import com.hacklympics.common.MainController;
 import com.hacklympics.utility.FXMLTable;
-import com.hacklympics.utility.Utils;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXSnackbar;
 
-public class TeacherController implements Initializable, MainController {
-    
-    private Map<String, AnchorPane> pages;
-    private Map<String, Object> controllers;
-    
-    private DropDownUserMenu userMenu;
-    
-    @FXML
-    private AnchorPane mainPane;
-    @FXML
-    private AnchorPane onlineUserPane;
-    @FXML
-    private AnchorPane contentPane;
-    @FXML
-    private StackPane dialogPane;
-    @FXML
-    private JFXButton userMenuBtn;
-    
+public class TeacherController extends MainController implements Initializable, UserController {
     
     @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        initPages();
-        showPage(pages.get("Dashboard"));
-        
-        
-        // Initialize OnlineUserListView.
-        onlineUserPane.getChildren().add(new OnlineUserListView());
-        
-        // Initialize user menu.
-        User currentUser = Session.getInstance().getCurrentUser();
-        userMenuBtn.setText(String.format("%s ", currentUser.getFullname()));
-        
-        userMenu = new DropDownUserMenu();
-        
-        userMenu.add(new Label("Profile"), (MouseEvent event) -> {
-            userMenu.hide();
-        });
-        
-        userMenu.add(new Label("Settings"), (MouseEvent event) -> {
-            userMenu.hide();
-        });
-        
-        userMenu.add(new Label("About"), (MouseEvent event) -> {
-        	userMenu.hide();
-        	
-        	String aboutFXML = FXMLTable.getInstance().get("About");
-            Scene aboutScene = Utils.loadStage(new FXMLLoader(getClass().getResource(aboutFXML)));
-            
-        	AlertDialog aboutDialog = new AlertDialog("About", aboutScene.lookup("#aboutPane"));
-        	aboutDialog.show();
-        });
-        
-        userMenu.add(new Label("Logout"), (MouseEvent event) -> {
-            userMenu.hide();
-            logout();
-        });
-    }
-    
-    
-    private void initPages() {
+    protected void initPages() {
         pages = new HashMap<>();
         controllers = new HashMap<>();
         
@@ -125,45 +48,6 @@ public class TeacherController implements Initializable, MainController {
     
     
     @FXML
-    public void showUserMenu(ActionEvent event) {
-        userMenu.show(userMenuBtn);
-    }
-    
-    private void logout() {
-        ConfirmDialog confirm = new ConfirmDialog(
-                "Logout",
-                "You are about to be logged out. Are you sure?"
-        );
-        
-        confirm.getConfirmBtn().setOnAction((ActionEvent e) -> {
-            Response logout = Session.getInstance().getCurrentUser().logout();
-            
-            if (logout.success()) {
-                String loginFXML = FXMLTable.getInstance().get("Login");
-                Utils.showStage(new FXMLLoader(getClass().getResource(loginFXML)));
-                userMenuBtn.getScene().getWindow().hide();
-                
-                Session.getInstance().clear();
-                EventManager.getInstance().clearEventHandlers();
-                SocketServer.getInstance().shutdown();
-            }
-        });
-        
-        confirm.show();
-    }
-    
-    
-    private void showPage(Node node) {
-        contentPane.getChildren().clear();
-        contentPane.getChildren().add(node);
-    }
-    
-    @FXML
-    public void showDashboard(ActionEvent event) {
-        showPage(pages.get("Dashboard"));
-    }
-    
-    @FXML
     public void showCourses(ActionEvent event) {
         showPage(pages.get("Courses"));
     }
@@ -182,28 +66,5 @@ public class TeacherController implements Initializable, MainController {
     public void showProctor(ActionEvent event) {
         showPage(pages.get("Proctor"));
     }
-    
-    
-    public Map<String, Object> getControllers() {
-        return controllers;
-    }
-    
-    
-    @Override
-    public AnchorPane getMainPane() {
-        return mainPane;
-    }
-    
-    @Override
-    public StackPane getDialogPane() {
-        return dialogPane;
-    }
-    
-    @Override
-	public void pushNotification(String message) {
-		Platform.runLater(() -> {
-    		new JFXSnackbar(mainPane).show(message, 5000);
-    	});
-	}
     
 }

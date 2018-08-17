@@ -9,10 +9,11 @@ import java.io.IOException;
 import javafx.scene.control.Tab;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.AnchorPane;
-import com.hacklympics.common.code.CodePatch;
-import com.hacklympics.common.code.CodeUtils;
-import com.hacklympics.common.code.lang.Language;
+
 import com.hacklympics.utility.Utils;
+import com.hacklympics.utility.code.CodePatch;
+import com.hacklympics.utility.code.CodeUtils;
+import com.hacklympics.utility.code.lang.Language;
 
 public class FileTab extends Tab {
 	

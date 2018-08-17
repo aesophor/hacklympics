@@ -3,8 +3,9 @@ package com.hacklympics.student.code;
 import java.time.Duration;
 import org.fxmisc.richtext.CodeArea;
 import org.fxmisc.richtext.LineNumberFactory;
-import com.hacklympics.common.code.CodeUtils;
-import com.hacklympics.common.code.lang.Language;
+
+import com.hacklympics.utility.code.CodeUtils;
+import com.hacklympics.utility.code.lang.Language;
 
 public class StyledCodeArea extends CodeArea {
 	

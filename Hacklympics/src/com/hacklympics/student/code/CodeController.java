@@ -35,14 +35,14 @@ import com.hacklympics.api.material.Problem;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.user.User;
-import com.hacklympics.common.code.CodePatch;
-import com.hacklympics.common.code.CodeUtils;
-import com.hacklympics.common.dialog.AlertDialog;
-import com.hacklympics.common.dialog.ConfirmDialog;
 import com.hacklympics.student.StudentController;
-import com.hacklympics.student.logging.KeystrokeLogger;
-import com.hacklympics.student.logging.ScreenRecorder;
+import com.hacklympics.student.code.logging.KeystrokeLogger;
+import com.hacklympics.student.code.logging.ScreenRecorder;
 import com.hacklympics.utility.Utils;
+import com.hacklympics.utility.code.CodePatch;
+import com.hacklympics.utility.code.CodeUtils;
+import com.hacklympics.utility.dialog.AlertDialog;
+import com.hacklympics.utility.dialog.ConfirmDialog;
 
 public class CodeController implements Initializable {
 	
