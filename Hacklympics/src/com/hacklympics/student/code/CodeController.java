@@ -45,7 +45,7 @@ import com.hacklympics.utility.dialog.AlertDialog;
 import com.hacklympics.utility.dialog.ConfirmDialog;
 
 public class CodeController implements Initializable {
-	
+    
     private TerminalConfig terminalConfig;
     private TerminalBuilder terminalBuilder;
     private TerminalTab terminal;
@@ -81,21 +81,21 @@ public class CodeController implements Initializable {
         // the texts in oldtab and newtab, and then update the filepath label.
         fileTabPane.getSelectionModel().selectedItemProperty().addListener(
                 (observable, oldTab, newTab) -> {
-                	// Compute diff between the texts in the old and new tabs.
-                	if (oldTab != null && newTab != null) {
-                		String oldTabText = ((FileTab) oldTab).getStyledCodeArea().getText();
-                    	String newTabText = ((FileTab) newTab).getStyledCodeArea().getText();
-                    	CodePatch patch = CodeUtils.diff(oldTabText, newTabText);
-                    	
-                    	try {
-                    		synchronized (PendingCodePatches.getInstance()) {
-                    			PendingCodePatches.getInstance().add(Utils.serialize(patch));
-                    		}
-    					} catch (IOException e) {
-    						e.printStackTrace();
-    					}
-                	}
-                	
+                    // Compute diff between the texts in the old and new tabs.
+                    if (oldTab != null && newTab != null) {
+                        String oldTabText = ((FileTab) oldTab).getStyledCodeArea().getText();
+                        String newTabText = ((FileTab) newTab).getStyledCodeArea().getText();
+                        CodePatch patch = CodeUtils.diff(oldTabText, newTabText);
+                        
+                        try {
+                            synchronized (PendingCodePatches.getInstance()) {
+                                PendingCodePatches.getInstance().add(Utils.serialize(patch));
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    
                     updateFilepathLabel();
         });
 

@@ -29,8 +29,8 @@ public class MessagesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setOnNewMessage((NewMessageEvent event) -> {
-        	String message = event.getMessage().toString();
-        	
+            String message = event.getMessage().toString();
+            
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
                 messageBoard.appendText(message + "\n");
                 Session.getInstance().getMainController().pushNotification(message);

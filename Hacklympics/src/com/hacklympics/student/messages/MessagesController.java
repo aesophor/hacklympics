@@ -12,7 +12,6 @@ import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.message.NewMessageEvent;
 import com.hacklympics.api.message.Message;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.student.StudentController;
 import com.hacklympics.utility.dialog.AlertDialog;
 import com.hacklympics.api.event.EventHandler;
 
@@ -30,8 +29,8 @@ public class MessagesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         setOnNewMessage((NewMessageEvent event) -> {
-        	String message = event.getMessage().toString();
-        	
+            String message = event.getMessage().toString();
+            
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
                 messageBoard.appendText(message + "\n");
                 Session.getInstance().getMainController().pushNotification(message);

@@ -14,8 +14,9 @@ public class FXMLTable {
         table.put("Login",                "/com/hacklympics/common/login/Login.fxml");
         table.put("Register",             "/com/hacklympics/common/register/Register.fxml");
         
-        table.put("About",                "/com/hacklympics/common/about/About.fxml");
         table.put("Profile",              "/com/hacklympics/common/profile/Profile.fxml");
+        table.put("Preference",           "/com/hacklympics/common/preference/Preference.fxml");
+        table.put("About",                "/com/hacklympics/common/about/About.fxml");
         
         table.put("Student",              "/com/hacklympics/student/Student.fxml");
         table.put("Student/Dashboard",    "/com/hacklympics/student/dashboard/Dashboard.fxml");

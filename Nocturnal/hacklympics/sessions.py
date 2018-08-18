@@ -1,7 +1,8 @@
 from hacklympics.exceptions import *
 from hacklympics.events.events import *
-from hacklympics.events.dispatcher import *
-from hacklympics.models import *
+from hacklympics.events.dispatcher import dispatch
+from hacklympics.models import User, Exam
+from hacklympics.config import Config
 from threading import Timer
 
 import time
@@ -133,6 +134,14 @@ class ExamData:
         
         self.timer = None
         self.start_time = None
+        
+        self.gen_snapshot_quality = Config.default_gen_snapshot_quality
+        self.gen_snapshot_frequency = Config.default_gen_snapshot_frequency
+        
+        self.spe_snapshot_quality = Config.default_spe_snapshot_quality
+        self.spe_snapshot_frequency = Config.default_spe_snapshot_frequency
+        
+        self.keystroke_frequency = Config.default_keystroke_frequency
 
     def add(self, user: User):
         if not self.has(user):

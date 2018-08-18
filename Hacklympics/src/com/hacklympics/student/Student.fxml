@@ -36,7 +36,7 @@
                      <children>
                         <Label prefHeight="76.0" prefWidth="265.0" text="NAVIGATION" textFill="#aeaeae">
                            <padding>
-                              <Insets left="25.0" top="15.0" />
+                              <Insets left="25.0" top="10.0" />
                            </padding>
                         </Label>
                      </children>
@@ -131,14 +131,14 @@
                         </JFXButton>
                      </children>
                   </HBox>
-                  <VBox prefHeight="200.0" prefWidth="100.0">
+                  <VBox prefHeight="226.0" prefWidth="266.0">
                      <children>
                         <AnchorPane prefHeight="325.0" prefWidth="266.0">
                            <children>
                               <AnchorPane fx:id="onlineUserPane" layoutX="24.0" layoutY="116.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="171.0" prefWidth="200.0" />
-                              <Label layoutX="14.0" layoutY="313.0" text="Hacklympics Beta (15082018)" textFill="#aeaeae" />
+                              <Label layoutX="14.0" layoutY="313.0" text="Hacklympics Beta (17082018)" textFill="#aeaeae" />
                               <Label layoutX="25.0" layoutY="78.0" text="ONLINE USERS" textFill="#b1b1b1" />
-                              <Line endX="100.0" layoutX="125.0" layoutY="69.0" startX="-100.0" stroke="#b1b1b1" />
+                              <Line endX="100.0" layoutX="125.0" layoutY="102.0" startX="-100.0" stroke="#b1b1b1" />
                            </children>
                            <opaqueInsets>
                               <Insets />
@@ -148,6 +148,7 @@
                   </VBox>
                </children>
             </VBox>
+            <Line endX="100.0" layoutX="125.0" layoutY="100.0" startX="-100.0" stroke="#b1b1b1" />
             <Label fx:id="greetLabel" alignment="CENTER_RIGHT" layoutX="719.0" layoutY="21.0" prefHeight="18.0" prefWidth="213.0">
                <font>
                   <Font size="14.0" />

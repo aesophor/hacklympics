@@ -52,7 +52,7 @@ public class Session {
     }
     
     public boolean showNotification() {
-    	return showNotification;
+        return showNotification;
     }
     
     
@@ -69,7 +69,7 @@ public class Session {
     }
     
     public void setShowNotification(boolean option) {
-    	showNotification = option;
+        showNotification = option;
     }
     
     

@@ -2,7 +2,7 @@ package com.hacklympics.utility.code.lang;
 
 public class Java {
 
-	public static final String COLORSCHEME = "/resources/JavaKeywords.css";
+    public static final String COLORSCHEME = "/resources/JavaKeywords.css";
 
     public static final String[] KEYWORDS = new String[]{
         "abstract", "assert", "boolean", "break", "byte",
@@ -31,7 +31,7 @@ public class Java {
     
     
     private Java() {
-    	
+        
     }
-	
+    
 }

@@ -17,7 +17,7 @@ public class KeystrokeLogger implements Runnable {
     public static final int DEFAULT_FREQUENCY = 4;
 
     static {
-    	// Available frequency options (frequency of sending keystroke patches).
+        // Available frequency options (frequency of sending keystroke patches).
         FREQUENCY_OPTIONS.add(2);
         FREQUENCY_OPTIONS.add(4);
         FREQUENCY_OPTIONS.add(6);
@@ -56,11 +56,11 @@ public class KeystrokeLogger implements Runnable {
 
         while (running) {
             try {
-            	synchronized (PendingCodePatches.getInstance()) {
-            		// If there are changes unsynchronized, 
-                	// send all keystroke patches to the server.
-                	if (!PendingCodePatches.getInstance().isEmpty()) {
-                		Keystroke.sync(
+                synchronized (PendingCodePatches.getInstance()) {
+                    // If there are changes unsynchronized, 
+                    // send all keystroke patches to the server.
+                    if (!PendingCodePatches.getInstance().isEmpty()) {
+                        Keystroke.sync(
                                 currentExam.getCourseID(),
                                 currentExam.getExamID(),
                                 currentUser.getUsername(),
@@ -69,9 +69,9 @@ public class KeystrokeLogger implements Runnable {
                         
                         // Clears the CodeArea patches of current selected tab.
                         PendingCodePatches.getInstance().clear();
-                	}
-            	}
-            	
+                    }
+                }
+                
                 Thread.sleep(frequency * 1000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();

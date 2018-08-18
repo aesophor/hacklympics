@@ -17,8 +17,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.StackPane;
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
-import com.jfoenix.controls.JFXProgressBar;
 import com.jfoenix.controls.JFXSlider;
+import com.jfoenix.controls.JFXTextArea;
+import difflib.PatchFailedException;
 import com.hacklympics.api.communication.Response;
 import com.hacklympics.api.communication.StatusCode;
 import com.hacklympics.api.event.EventHandler;
@@ -33,6 +34,8 @@ import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
+import com.hacklympics.api.user.Student;
+import com.hacklympics.api.session.Session;
 import com.hacklympics.student.code.logging.KeystrokeLogger;
 import com.hacklympics.student.code.logging.ScreenRecorder;
 import com.hacklympics.teacher.TeacherController;
@@ -40,12 +43,6 @@ import com.hacklympics.utility.Utils;
 import com.hacklympics.utility.code.CodePatch;
 import com.hacklympics.utility.dialog.AlertDialog;
 import com.hacklympics.utility.dialog.ConfirmDialog;
-import com.hacklympics.api.user.Student;
-import com.hacklympics.api.session.Session;
-import com.jfoenix.controls.JFXTextArea;
-
-import difflib.Patch;
-import difflib.PatchFailedException;
 
 public class ProctorController implements Initializable {
 
@@ -478,27 +475,27 @@ public class ProctorController implements Initializable {
         Session.getInstance().getExecutor().execute(new Runnable() {
             @Override
             public void run() {
-            	// Clears the codeArea for keystroke playback.
+                // Clears the codeArea for keystroke playback.
                 codeArea.clear();
                 
                 for (int i = 0; i < patches.size(); i++) {
                     double currentProgress = ((double) i) / patches.size();
                     
-					try {
-						CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
-						
-						Platform.runLater(() -> {
-	                    	try {
-								codeArea.setText(patch.applyTo(codeArea.getText()));
-							} catch (PatchFailedException e) {
-								e.printStackTrace();
-							}
-	                    	
-	                        keystrokePlaybackSlider.setValue(currentProgress);
-	                    });
-					} catch (ClassNotFoundException | IOException e) {
-						e.printStackTrace();
-					}
+                    try {
+                        CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
+                        
+                        Platform.runLater(() -> {
+                            try {
+                                codeArea.setText(patch.applyTo(codeArea.getText()));
+                            } catch (PatchFailedException e) {
+                                e.printStackTrace();
+                            }
+                            
+                            keystrokePlaybackSlider.setValue(currentProgress);
+                        });
+                    } catch (ClassNotFoundException | IOException e) {
+                        e.printStackTrace();
+                    }
                     
                     try {
                         // playback speed * 1000.

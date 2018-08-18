@@ -30,9 +30,11 @@ import com.hacklympics.utility.listview.OnlineUserListView;
 import com.jfoenix.controls.JFXSnackbar;
 
 public abstract class MainController implements Initializable, UserController {
-	
-	protected Map<String, AnchorPane> pages;
-	protected Map<String, Object> controllers;
+    
+
+    
+    protected Map<String, AnchorPane> pages;
+    protected Map<String, Object> controllers;
     
     protected UserMenu userMenu;
     
@@ -66,18 +68,24 @@ public abstract class MainController implements Initializable, UserController {
             userMenu.hide();
         });
         
-        userMenu.add(new Label("Settings"), (MouseEvent event) -> {
+        userMenu.add(new Label("Preference"), (MouseEvent event) -> {
             userMenu.hide();
+            
+            String preferenceFXML = FXMLTable.getInstance().get("Preference");
+            Scene preferenceScene = Utils.loadStage(new FXMLLoader(getClass().getResource(preferenceFXML)));
+            
+            AlertDialog preferenceDialog = new AlertDialog("Preference", preferenceScene.lookup("#preferencePane"));
+            preferenceDialog.show();
         });
         
         userMenu.add(new Label("About"), (MouseEvent event) -> {
-        	userMenu.hide();
-        	
-        	String aboutFXML = FXMLTable.getInstance().get("About");
+            userMenu.hide();
+            
+            String aboutFXML = FXMLTable.getInstance().get("About");
             Scene aboutScene = Utils.loadStage(new FXMLLoader(getClass().getResource(aboutFXML)));
             
-        	AlertDialog aboutDialog = new AlertDialog("About", aboutScene.lookup("#aboutPane"));
-        	aboutDialog.show();
+            AlertDialog aboutDialog = new AlertDialog("About", aboutScene.lookup("#aboutPane"));
+            aboutDialog.show();
         });
         
         userMenu.add(new Label("Logout"), (MouseEvent event) -> {
@@ -85,10 +93,10 @@ public abstract class MainController implements Initializable, UserController {
             logout();
         });
     }
-	
-	protected abstract void initPages();
-	
-	@FXML
+    
+    protected abstract void initPages();
+    
+    @FXML
     public void showUserMenu(ActionEvent event) {
         userMenu.show(userMenuBtn);
     }
@@ -143,11 +151,11 @@ public abstract class MainController implements Initializable, UserController {
         return dialogPane;
     }
 
-	@Override
-	public void pushNotification(String message) {
-		Platform.runLater(() -> {
-    		new JFXSnackbar(mainPane).show(message, 5000);
-    	});
-	}
+    @Override
+    public void pushNotification(String message) {
+        Platform.runLater(() -> {
+            new JFXSnackbar(mainPane).show(message, 5000);
+        });
+    }
 
 }

@@ -46,7 +46,7 @@ public class LoginController {
             Response login = User.login(username, password);
             
             if (login.success()) {
-            	// Note that the SocketServer will only start after the user has
+                // Note that the SocketServer will only start after the user has
                 // SUCCESSFULLY logged in.
                 Session.getInstance().getExecutor().execute(SocketServer.getInstance());
                 

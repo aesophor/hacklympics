@@ -13,13 +13,13 @@ import com.hacklympics.utility.code.lang.Language;
 import difflib.DiffUtils;
 
 public class CodeUtils {
-	
-	private CodeUtils() {
-		
-	}
-	
-	
-	public static StyleSpans<Collection<String>> computeHighlighting(Language lang, String text) {
+    
+    private CodeUtils() {
+        
+    }
+    
+    
+    public static StyleSpans<Collection<String>> computeHighlighting(Language lang, String text) {
         Matcher matcher = lang.getPattern().matcher(text);
         int lastKwEnd = 0;
         StyleSpansBuilder<Collection<String>> spansBuilder = new StyleSpansBuilder<>();
@@ -43,20 +43,20 @@ public class CodeUtils {
         spansBuilder.add(Collections.emptyList(), text.length() - lastKwEnd);
         return spansBuilder.create();
     }
-	
-	
-	/**
+    
+    
+    /**
      * Compute the difference between the original and revised texts with default diff algorithm
      * 
      * @param original the original text (String)
      * @param revised the revised text (String)
      * @return the code patch, which is a wrapper of the patch describing the difference between
-     * 		   the original and revised texts
+     *         the original and revised texts
      */
     public static CodePatch diff(String original, String revised) {
-    	List<String> originalLines = Arrays.asList(original.split("\\n"));
-    	List<String> revisedLines = Arrays.asList(revised.split("\\n"));
-    	
-    	return new CodePatch(DiffUtils.diff(originalLines, revisedLines));
+        List<String> originalLines = Arrays.asList(original.split("\\n"));
+        List<String> revisedLines = Arrays.asList(revised.split("\\n"));
+        
+        return new CodePatch(DiffUtils.diff(originalLines, revisedLines));
     }
 }

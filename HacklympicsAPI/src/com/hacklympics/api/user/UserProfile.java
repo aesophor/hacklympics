@@ -1,6 +1,5 @@
 package com.hacklympics.api.user;
 
-import java.util.Objects;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 

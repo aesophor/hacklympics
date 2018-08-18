@@ -64,25 +64,25 @@ public class KeystrokeBox extends StudentBox<Keystroke> {
             int lastIndex = patches.size() - 1;
             
             try {
-            	for (int i = lastAppliedPatchIndex + 1; i <= lastIndex; i++) {
-            		CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
-            		
-            		Platform.runLater(() -> {
-    					try {
-							codeArea.setText(patch.applyTo(codeArea.getText()));
-						} catch (PatchFailedException e) {
-							e.printStackTrace();
-						}
-    					
-    	                timestamp.setText(keystroke.getTimestamp());
-    	            });
-            	}
-            	
-            	// Update the last applied patch index.
-            	lastAppliedPatchIndex = lastIndex;
-			} catch (ClassNotFoundException | IOException e) {
-				e.printStackTrace();
-			}
+                for (int i = lastAppliedPatchIndex + 1; i <= lastIndex; i++) {
+                    CodePatch patch = (CodePatch) Utils.deserialize(patches.get(i));
+                    
+                    Platform.runLater(() -> {
+                        try {
+                            codeArea.setText(patch.applyTo(codeArea.getText()));
+                        } catch (PatchFailedException e) {
+                            e.printStackTrace();
+                        }
+                        
+                        timestamp.setText(keystroke.getTimestamp());
+                    });
+                }
+                
+                // Update the last applied patch index.
+                lastAppliedPatchIndex = lastIndex;
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
         }
     }
     

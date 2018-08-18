@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXToggleButton?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="preferencePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="64.0" prefWidth="335.0" style="-fx-background-color: #ffffff;" stylesheets="@../../../../resources/Default.css" xmlns="http://javafx.com/javafx/8.0.172" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.hacklympics.common.preference.PreferenceController">
+   <children>
+      <JFXToggleButton alignment="CENTER_LEFT" contentDisplay="RIGHT" prefHeight="46.0" prefWidth="345.0" selected="true" text="Notification when new messages arrive?" />
+   </children>
+</AnchorPane>

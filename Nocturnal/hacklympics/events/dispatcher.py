@@ -3,9 +3,10 @@ from hacklympics.events.events import *
 
 import socket
 import json
+import time
 
 
-def dispatch(event: Event, users: list):    
+def dispatch(event: Event, users: list, interval=0):
     print("[*] dispatching ev: ", event, " to ", users)
     
     for user in users:
@@ -16,3 +17,5 @@ def dispatch(event: Event, users: list):
         s.connect((user.last_login_ip, 8001))
         s.send(evmsg.encode("utf-8"))
         s.close()
+        
+        time.sleep(interval)

@@ -16,12 +16,12 @@ public class AlertDialog extends Dialog {
     }
     
     public AlertDialog(String title, Node body) {
-    	super(title);
-    	
-    	content.setBody(body);
-    	buttons.remove("confirmBtn");
-    	
-    	content.setActions(new ArrayList<>(buttons.values()));
+        super(title);
+        
+        content.setBody(body);
+        buttons.remove("confirmBtn");
+        
+        content.setActions(new ArrayList<>(buttons.values()));
     }
     
 }

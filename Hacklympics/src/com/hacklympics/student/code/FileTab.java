@@ -16,7 +16,7 @@ import com.hacklympics.utility.code.CodeUtils;
 import com.hacklympics.utility.code.lang.Language;
 
 public class FileTab extends Tab {
-	
+    
     private final AnchorPane anchorPane;
     private final VBox vbox;
     private final StyledCodeArea styledCodeArea;
@@ -35,17 +35,17 @@ public class FileTab extends Tab {
         // Later on we can send these patches to the teacher's client.
         // Make sure to mark current tab as unsaved as well.
         styledCodeArea.textProperty().addListener((observable, original, revised) -> {
-			CodePatch patch = CodeUtils.diff(original, revised);
-			
-        	try {
-        		synchronized (PendingCodePatches.getInstance()) {
-        			PendingCodePatches.getInstance().add(Utils.serialize(patch));
-        		}
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			} finally {
-				markAsUnsaved();
-			}
+            CodePatch patch = CodeUtils.diff(original, revised);
+            
+            try {
+                synchronized (PendingCodePatches.getInstance()) {
+                    PendingCodePatches.getInstance().add(Utils.serialize(patch));
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } finally {
+                markAsUnsaved();
+            }
         });
         
         // Then add sample code to the CodeArea.
@@ -172,11 +172,11 @@ public class FileTab extends Tab {
      * @return extension.
      */
     public String getFileExtension() {
-    	if (getFilename().contains(".")) {
-    		return getFilename().split("[.]")[1];
-    	} else {
-    		return "";
-    	}
+        if (getFilename().contains(".")) {
+            return getFilename().split("[.]")[1];
+        } else {
+            return "";
+        }
     }
 
     /**

@@ -16,11 +16,11 @@ public class AboutController implements Initializable {
     @FXML
     private Hyperlink githubHyperlink;
 
-	@Override
-	public void initialize(URL location, ResourceBundle resources) {
-		githubHyperlink.setOnAction((ActionEvent event) -> {
-			// Open url here.
-		});
-	}
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        githubHyperlink.setOnAction((ActionEvent event) -> {
+            // Open url here.
+        });
+    }
     
 }

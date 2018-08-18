@@ -27,9 +27,9 @@ public class Utils {
      * @return fxml resources.
      */
     public static Scene loadStage(FXMLLoader loader) {
-    	Scene scene;
-    	
-    	try {
+        Scene scene;
+        
+        try {
             Parent root = loader.load();
             Stage stage = new Stage();
             scene = new Scene(root);
@@ -37,8 +37,8 @@ public class Utils {
             ioe.printStackTrace();
             return null;
         }
-    	
-    	return scene;
+        
+        return scene;
     }
     
     /**
@@ -76,21 +76,21 @@ public class Utils {
     
     
     public static String serialize(Serializable o) throws IOException {
-    	ByteArrayOutputStream baos = new ByteArrayOutputStream();
-    	ObjectOutputStream oos = new ObjectOutputStream(baos);
-    	oos.writeObject(o);
-    	oos.close();
-    	
-    	return Base64.getEncoder().encodeToString(baos.toByteArray());
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ObjectOutputStream oos = new ObjectOutputStream(baos);
+        oos.writeObject(o);
+        oos.close();
+        
+        return Base64.getEncoder().encodeToString(baos.toByteArray());
     }
     
     public static Object deserialize(String s) throws IOException, ClassNotFoundException {
-    	byte[] data = Base64.getDecoder().decode(s);
-    	ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
-    	Object o = ois.readObject();
-    	ois.close();
-    	
-    	return o;
+        byte[] data = Base64.getDecoder().decode(s);
+        ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(data));
+        Object o = ois.readObject();
+        ois.close();
+        
+        return o;
     }
     
 }

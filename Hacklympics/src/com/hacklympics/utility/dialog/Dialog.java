@@ -35,7 +35,7 @@ public abstract class Dialog {
         buttons = new HashMap<>();
         content = new JFXDialogLayout();
         dialog = new JFXDialog(
-        		container,
+                container,
                 content,
                 JFXDialog.DialogTransition.TOP
         );
@@ -69,7 +69,7 @@ public abstract class Dialog {
             // When user clicks on a border of the dialog window,
             // the dialog will close but it will not invoke this.close();
             // This EventHandler deals with this problem.
-            if (!showing) {
+            if (showing) {
                 container.setMouseTransparent(true);
                 mainPane.setMouseTransparent(false);
                 mainPane.setEffect(null);

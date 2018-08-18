@@ -8,15 +8,15 @@ import com.hacklympics.utility.code.CodeUtils;
 import com.hacklympics.utility.code.lang.Language;
 
 public class StyledCodeArea extends CodeArea {
-	
-	private Language currentLanguage;
-	
-	public StyledCodeArea(Language language) {
-		// This part needs to be reworked!
-		currentLanguage = language;
-		
-		// Spice up the CodeArea with css.
-		getStyleClass().add("code-area");
+    
+    private Language currentLanguage;
+    
+    public StyledCodeArea(Language language) {
+        // This part needs to be reworked!
+        currentLanguage = language;
+        
+        // Spice up the CodeArea with css.
+        getStyleClass().add("code-area");
         getStylesheets().add(language.getCSSFilepath());
         
         // Enable line numbers.
@@ -24,18 +24,18 @@ public class StyledCodeArea extends CodeArea {
         
         // Enable highlight computing.
         multiPlainChanges()
-				.successionEnds(Duration.ofMillis(100))
-				.subscribe(ignore -> setStyleSpans(0, CodeUtils.computeHighlighting(language, getText())));
-	}
-	
-	
-	
-	public Language getCurrentLanguage() {
-		return currentLanguage;
-	}
-	
-	public void setCurrentLanguage(Language language) {
-		currentLanguage = language;
-	}
-	
+                .successionEnds(Duration.ofMillis(100))
+                .subscribe(ignore -> setStyleSpans(0, CodeUtils.computeHighlighting(language, getText())));
+    }
+    
+    
+    
+    public Language getCurrentLanguage() {
+        return currentLanguage;
+    }
+    
+    public void setCurrentLanguage(Language language) {
+        currentLanguage = language;
+    }
+    
 }
