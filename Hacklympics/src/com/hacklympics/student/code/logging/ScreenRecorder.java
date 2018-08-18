@@ -1,12 +1,14 @@
 package com.hacklympics.student.code.logging;
 
-import com.hacklympics.api.proctor.Snapshot;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.io.IOException;
 import java.awt.AWTException;
 import java.awt.image.BufferedImage;
+
+import com.hacklympics.api.preference.Config;
+import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.utility.ImageUtils;
 
@@ -14,12 +16,6 @@ public class ScreenRecorder implements Runnable {
     
     public static final List<Double> QUALITY_OPTIONS = new ArrayList<>();
     public static final List<Integer> FREQUENCY_OPTIONS = new ArrayList<>();
-    
-    public static final double GENERIC_GRP_DEFAULT_QUALITY = 0.25;
-    public static final int GENERIC_GRP_DEFAULT_FREQUENCY = 5;
-    
-    public static final double SPECIAL_GRP_DEFAULT_QUALITY = 0.50;
-    public static final int SPECIAL_GRP_DEFAULT_FREQUENCY = 3;
     
     static {
         // Available quality options (scale of original snapshot).
@@ -45,8 +41,8 @@ public class ScreenRecorder implements Runnable {
     
     private ScreenRecorder() {
         // All students will be placed in Generic Group initially.
-        quality = GENERIC_GRP_DEFAULT_QUALITY;
-        frequency = GENERIC_GRP_DEFAULT_FREQUENCY;
+        quality = Config.getInstance().getGenGrpSnapshotQuality();
+        frequency = Config.getInstance().getGenGrpSnapshotFrequency();
     }
     
     public static ScreenRecorder getInstance() {

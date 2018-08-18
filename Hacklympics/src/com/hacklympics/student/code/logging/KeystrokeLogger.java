@@ -3,6 +3,7 @@ package com.hacklympics.student.code.logging;
 import java.util.List;
 import java.util.ArrayList;
 import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.preference.Config;
 import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Student;
@@ -13,8 +14,6 @@ import com.hacklympics.student.code.PendingCodePatches;
 public class KeystrokeLogger implements Runnable {
 
     public static final List<Integer> FREQUENCY_OPTIONS = new ArrayList<>();
-
-    public static final int DEFAULT_FREQUENCY = 4;
 
     static {
         // Available frequency options (frequency of sending keystroke patches).
@@ -30,7 +29,7 @@ public class KeystrokeLogger implements Runnable {
     private int frequency;
 
     private KeystrokeLogger() {
-        frequency = DEFAULT_FREQUENCY;
+        frequency = Config.getInstance().getKeystrokeFrequency();
     }
 
     public static KeystrokeLogger getInstance() {

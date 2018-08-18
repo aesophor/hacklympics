@@ -179,6 +179,15 @@ def launch(request, c_id):
         req_body = json.loads(request.body.decode("utf-8"))
         
         e_id = req_body["examID"]
+       
+        # Groupings should better off be independent of the server...
+        gen_grp_snapshot_quality = req_body["genGrpSnapshotQuality"]
+        gen_grp_snapshot_frequency = req_body["genGrpSnapshotFrequency"]
+        
+        spe_grp_snapshot_quality = req_body["speGrpSnapshotQuality"]
+        spe_grp_snapshot_frequency = req_body["speGrpSnapshotFrequency"]
+        
+        keystroke_frequency = req_body["keystrokeFrequency"]
         
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         teacher = exam.course.teacher

@@ -4,6 +4,7 @@ import java.net.*;
 import java.io.*;
 import com.hacklympics.api.event.Event;
 import com.hacklympics.api.event.EventManager;
+import com.hacklympics.api.preference.Config;
 
 public class SocketServer implements Runnable {
     
@@ -21,7 +22,7 @@ public class SocketServer implements Runnable {
 
     public static SocketServer getInstance() {
         if (server == null) {
-            server = new SocketServer(Config.EVENT_LISTENER_PORT);
+            server = new SocketServer(Config.getInstance().eventListenerPort);
         }
         
         return server;

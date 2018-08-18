@@ -31,8 +31,6 @@ import com.jfoenix.controls.JFXSnackbar;
 
 public abstract class MainController implements Initializable, UserController {
     
-
-    
     protected Map<String, AnchorPane> pages;
     protected Map<String, Object> controllers;
     

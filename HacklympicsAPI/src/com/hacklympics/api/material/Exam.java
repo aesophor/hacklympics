@@ -9,6 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonElement;
 import com.hacklympics.api.communication.Response;
+import com.hacklympics.api.preference.Config;
 import com.hacklympics.api.user.Teacher;
 import com.hacklympics.api.utility.NetworkUtils;
 
@@ -94,6 +95,12 @@ public class Exam {
         JsonObject json = new JsonObject();
         json.addProperty("examID", this.data.getExamID());
         
+        json.addProperty("genGrpSnapshotQuality", Config.getInstance().getGenGrpSnapshotQuality());
+        json.addProperty("genGrpSnapshotFrequency", Config.getInstance().getGenGrpSnapshotFrequency());
+        json.addProperty("speGrpSnapshotQuality", Config.getInstance().getSpeGrpSnapshotQuality());
+        json.addProperty("speGrpSnapshotFrequency", Config.getInstance().getSpeGrpSnapshotFrequency());
+        json.addProperty("keystrokeFrequency", Config.getInstance().getKeystrokeFrequency());
+                
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
     

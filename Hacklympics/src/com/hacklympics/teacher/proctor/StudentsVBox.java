@@ -1,17 +1,17 @@
 package com.hacklympics.teacher.proctor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import static javafx.scene.layout.Region.USE_PREF_SIZE;
+import com.hacklympics.api.proctor.ProctorMedium;
 
 public abstract class StudentsVBox extends VBox {
     
     private static final int COL_SIZE = 2;
     
-    protected List<StudentBox> studentBoxes;
+    protected List<StudentBox<? extends ProctorMedium>> studentBoxes;
     
     public StudentsVBox() {
         studentBoxes = new ArrayList<>();

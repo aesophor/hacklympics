@@ -1,14 +1,14 @@
 package com.hacklympics.teacher.proctor;
 
-import static com.hacklympics.student.code.logging.ScreenRecorder.GENERIC_GRP_DEFAULT_FREQUENCY;
-import static com.hacklympics.student.code.logging.ScreenRecorder.GENERIC_GRP_DEFAULT_QUALITY;
-import static com.hacklympics.student.code.logging.ScreenRecorder.SPECIAL_GRP_DEFAULT_FREQUENCY;
-import static com.hacklympics.student.code.logging.ScreenRecorder.SPECIAL_GRP_DEFAULT_QUALITY;
+import static com.hacklympics.api.preference.Config.DEFAULT_GENGRP_SNAPSHOT_QUALITY;
+import static com.hacklympics.api.preference.Config.DEFAULT_GENGRP_SNAPSHOT_FREQUENCY;
+import static com.hacklympics.api.preference.Config.DEFAULT_SPEGRP_SNAPSHOT_QUALITY;
+import static com.hacklympics.api.preference.Config.DEFAULT_SPEGRP_SNAPSHOT_FREQUENCY;
 
 public enum SnapshotGroup {
     
-    GENERIC("Generic", GENERIC_GRP_DEFAULT_QUALITY, GENERIC_GRP_DEFAULT_FREQUENCY),
-    SPECIAL("Special", SPECIAL_GRP_DEFAULT_QUALITY, SPECIAL_GRP_DEFAULT_FREQUENCY);
+    GENERIC("Generic", DEFAULT_GENGRP_SNAPSHOT_QUALITY, DEFAULT_GENGRP_SNAPSHOT_FREQUENCY),
+    SPECIAL("Special", DEFAULT_SPEGRP_SNAPSHOT_QUALITY, DEFAULT_SPEGRP_SNAPSHOT_FREQUENCY);
     
     
     private final SnapshotGrpVBox snapshotGrpVBox;
