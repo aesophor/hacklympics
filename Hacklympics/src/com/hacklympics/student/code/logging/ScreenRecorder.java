@@ -41,8 +41,8 @@ public class ScreenRecorder implements Runnable {
     
     private ScreenRecorder() {
         // All students will be placed in Generic Group initially.
-        quality = Config.getInstance().getGenGrpSnapshotQuality();
-        frequency = Config.getInstance().getGenGrpSnapshotFrequency();
+        quality = Config.getInstance().getSnapshotGenGrpQuality();
+        frequency = Config.getInstance().getSnapshotGenGrpFrequency();
     }
     
     public static ScreenRecorder getInstance() {
@@ -100,8 +100,8 @@ public class ScreenRecorder implements Runnable {
         this.quality = quality;
     }
     
-    public void setFrequency(int freq) {
-        this.frequency = freq;
+    public void setFrequency(int frequency) {
+        this.frequency = frequency;
     }
     
 }

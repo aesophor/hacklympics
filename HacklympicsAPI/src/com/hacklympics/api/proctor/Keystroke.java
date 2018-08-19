@@ -37,7 +37,7 @@ public class Keystroke implements ProctorMedium {
         return new Response(NetworkUtils.post(uri, json.toString()));
     }
     
-    public static Response adjustParam(int courseID, int examID, List<Student> students, int frequency) {
+    public static Response adjustParam(int courseID, int examID, int snapshotGroupOrdinal, int frequency, List<Student> students) {
         String uri = String.format("course/%d/exam/%d/keystroke/adjust_param", courseID, examID);
         
         JsonArray studentsJsonArray = new JsonArray();
@@ -46,6 +46,7 @@ public class Keystroke implements ProctorMedium {
         }
         
         JsonObject json = new JsonObject();
+        json.addProperty("snapshotGroupOrdinal", snapshotGroupOrdinal);
         json.addProperty("frequency", frequency);
         json.add("students", studentsJsonArray);
         

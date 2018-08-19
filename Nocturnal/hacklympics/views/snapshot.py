@@ -46,15 +46,19 @@ def adjust_param(request, c_id, e_id):
         students = req_body["students"]
         quality = req_body["quality"]
         frequency = req_body["frequency"]
+        snapshot_group_ordinal = req_body["snapshotGroupOrdinal"]
         
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         students = User.objects.filter(username__in=students)
         
-        # Update the parameters in OngoingExams here.
-        # But wait... I do not know the incoming parameters here
-        # is for gengrp or spegrp? Enum?
-        #OngoingExams.exams[exam].
+        # Update the data needed for traffic dispersal.
+        group = OngoingExams.exams[exam].snapshot_grp[SnapshotGroup(snapshot_group_ordinal)]
+        group.students = students
+        group.quality = quality
+        group.frequency = frequency
         
+        # Tell the student clients in the specified group to
+        # adjust their snapshot parameters.
         dispatch(AdjustSnapshotParamEvent(exam, quality, frequency), OngoingExams.get(exam).students)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
@@ -64,4 +68,3 @@ def adjust_param(request, c_id, e_id):
         print(e)
 
     return JsonResponse(response_data)
-

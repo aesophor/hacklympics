@@ -95,10 +95,10 @@ public class Exam {
         JsonObject json = new JsonObject();
         json.addProperty("examID", this.data.getExamID());
         
-        json.addProperty("genGrpSnapshotQuality", Config.getInstance().getGenGrpSnapshotQuality());
-        json.addProperty("genGrpSnapshotFrequency", Config.getInstance().getGenGrpSnapshotFrequency());
-        json.addProperty("speGrpSnapshotQuality", Config.getInstance().getSpeGrpSnapshotQuality());
-        json.addProperty("speGrpSnapshotFrequency", Config.getInstance().getSpeGrpSnapshotFrequency());
+        json.addProperty("snapshotGenGrpQuality", Config.getInstance().getSnapshotGenGrpQuality());
+        json.addProperty("snapshotGenGrpFrequency", Config.getInstance().getSnapshotGenGrpFrequency());
+        json.addProperty("snapshotSpeGrpQuality", Config.getInstance().getSnapshotSpeGrpQuality());
+        json.addProperty("snapshotSpeGrpFrequency", Config.getInstance().getSnapshotSpeGrpFrequency());
         json.addProperty("keystrokeFrequency", Config.getInstance().getKeystrokeFrequency());
                 
         return new Response(NetworkUtils.post(uri, json.toString()));

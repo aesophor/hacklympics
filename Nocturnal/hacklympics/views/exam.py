@@ -181,12 +181,10 @@ def launch(request, c_id):
         e_id = req_body["examID"]
        
         # Groupings should better off be independent of the server...
-        gen_grp_snapshot_quality = req_body["genGrpSnapshotQuality"]
-        gen_grp_snapshot_frequency = req_body["genGrpSnapshotFrequency"]
-        
-        spe_grp_snapshot_quality = req_body["speGrpSnapshotQuality"]
-        spe_grp_snapshot_frequency = req_body["speGrpSnapshotFrequency"]
-        
+        snapshot_gengrp_quality = req_body["snapshotGenGrpQuality"]
+        snapshot_gengrp_frequency = req_body["snapshotGenGrpFrequency"]
+        snapshot_spegrp_quality = req_body["snapshotSpeGrpQuality"]
+        snapshot_spegrp_frequency = req_body["snapshotSpeGrpFrequency"]
         keystroke_frequency = req_body["keystrokeFrequency"]
         
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
@@ -194,7 +192,10 @@ def launch(request, c_id):
         
         # Add this exam to OngoingExams.
         # The teacher launching the exam will be the first proctor.
-        OngoingExams.add(exam)
+        OngoingExams.add(exam, snapshot_gengrp_quality, snapshot_gengrp_frequency,
+                               snapshot_spegrp_quality, snapshot_spegrp_frequency,
+                               keystroke_frequency)
+        
         OngoingExams.get(exam).add(teacher)
         OngoingExams.show()
     except AlreadyLaunched:

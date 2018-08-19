@@ -44,6 +44,11 @@ def adjust_param(request, c_id, e_id):
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         students = User.objects.filter(username__in=students)
         
+        # Update the data need for traffic dispersal.
+        OngoingExams.exams[exam].keystroke_frequency = frequency
+        
+        # Tell the student clients in the specified group to
+        # adjust their snapshot parameters.
         dispatch(AdjustKeystrokeParamEvent(exam, frequency), OngoingExams.get(exam).students)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS

@@ -30,10 +30,10 @@ public class Config {
     public final int eventListenerPort;
     
     // Proctor-related properties.
-    private double genGrpSnapshotQuality;
-    private int genGrpSnapshotFrequency;
-    private double speGrpSnapshotQuality;
-    private int speGrpSnapshotFrequency;
+    private double snapshotGenGrpQuality;
+    private int snapshotGenGrpFrequency;
+    private double snapshotSpeGrpQuality;
+    private int snapshotSpeGrpFrequency;
     private int keystrokeFrequency;
     
     private Config() {
@@ -64,10 +64,10 @@ public class Config {
         eventListenerPort = Integer.parseInt(properties.getProperty("EventListener.port"));
         
         // Load proctor configuration.
-        genGrpSnapshotQuality = Double.parseDouble(properties.getProperty("Snapshot.genGrpQuality"));
-        genGrpSnapshotFrequency = Integer.parseInt(properties.getProperty("Snapshot.genGrpFrequency"));
-        speGrpSnapshotQuality = Double.parseDouble(properties.getProperty("Snapshot.speGrpQuality"));
-        speGrpSnapshotFrequency = Integer.parseInt(properties.getProperty("Snapshot.speGrpFrequency"));
+        snapshotGenGrpQuality = Double.parseDouble(properties.getProperty("Snapshot.genGrpQuality"));
+        snapshotGenGrpFrequency = Integer.parseInt(properties.getProperty("Snapshot.genGrpFrequency"));
+        snapshotSpeGrpQuality = Double.parseDouble(properties.getProperty("Snapshot.speGrpQuality"));
+        snapshotSpeGrpFrequency = Integer.parseInt(properties.getProperty("Snapshot.speGrpFrequency"));
         keystrokeFrequency = Integer.parseInt(properties.getProperty("Keystroke.patchReportFrequency"));
     }
     
@@ -87,10 +87,10 @@ public class Config {
      * @param f file to write to.
      */
     public void save(File f) {
-        properties.setProperty("Snapshot.genGrpQuality", Double.toString(genGrpSnapshotQuality));
-        properties.setProperty("Snapshot.genGrpFrequency", Integer.toString(genGrpSnapshotFrequency));
-        properties.setProperty("Snapshot.speGrpQuality", Double.toString(speGrpSnapshotQuality));
-        properties.setProperty("Snapshot.speGrpFrequency", Integer.toString(speGrpSnapshotFrequency));
+        properties.setProperty("Snapshot.genGrpQuality", Double.toString(snapshotGenGrpQuality));
+        properties.setProperty("Snapshot.genGrpFrequency", Integer.toString(snapshotGenGrpFrequency));
+        properties.setProperty("Snapshot.speGrpQuality", Double.toString(snapshotSpeGrpQuality));
+        properties.setProperty("Snapshot.speGrpFrequency", Integer.toString(snapshotSpeGrpFrequency));
         properties.setProperty("Keystroke.patchReportFrequency", Integer.toString(keystrokeFrequency));
         
         try {
@@ -130,32 +130,32 @@ public class Config {
      * Gets snapshot quality of the generic group.
      * @return snapshot quality of the generic group.
      */
-    public double getGenGrpSnapshotQuality() {
-        return genGrpSnapshotQuality;
+    public double getSnapshotGenGrpQuality() {
+        return snapshotGenGrpQuality;
     }
     
     /**
      * Gets snapshot frequency of the generic group.
      * @return snapshot frequency of the generic group.
      */
-    public int getGenGrpSnapshotFrequency() {
-        return genGrpSnapshotFrequency;
+    public int getSnapshotGenGrpFrequency() {
+        return snapshotGenGrpFrequency;
     }
     
     /**
      * Gets snapshot quality of the special group.
      * @return snapshot quality of the special group.
      */
-    public double getSpeGrpSnapshotQuality() {
-        return speGrpSnapshotQuality;
+    public double getSnapshotSpeGrpQuality() {
+        return snapshotSpeGrpQuality;
     }
     
     /**
      * Gets snapshot frequency of the special group.
      * @return snapshot frequency of the special group.
      */
-    public int getSpeGrpSnapshotFrequency() {
-        return speGrpSnapshotFrequency;
+    public int getSnapshotSpeGrpFrequency() {
+        return snapshotSpeGrpFrequency;
     }
     
     /**
@@ -168,18 +168,18 @@ public class Config {
     
     /**
      * Updates all properties related to snapshot.
-     * @param genGrpSnapshotQuality snapshot quality of the generic group.
-     * @param genGrpSnapshotFrequency snapshot frequency of the generic group.
-     * @param speGrpSnapshotQuality snapshot quality of the special group.
-     * @param speGrpSnapshotFrequency snapshot frequency of the special group.
+     * @param snapshotGenGrpQuality snapshot quality of the generic group.
+     * @param snapshotGenGrpFrequency snapshot frequency of the generic group.
+     * @param snapshotSpeGrpQuality snapshot quality of the special group.
+     * @param snapshotSpeGrpFrequency snapshot frequency of the special group.
      * @param keystrokeFrequency keystroke frequency.
      */
-    public void setSnapshotProperties(double genGrpSnapshotQuality, int genGrpSnapshotFrequency,
-                                      double speGrpSnapshotQuality, int speGrpSnapshotFrequency) {
-        this.genGrpSnapshotQuality = genGrpSnapshotQuality;
-        this.genGrpSnapshotFrequency = genGrpSnapshotFrequency;
-        this.speGrpSnapshotQuality = speGrpSnapshotQuality;
-        this.speGrpSnapshotFrequency = speGrpSnapshotFrequency;
+    public void setSnapshotProperties(double snapshotGenGrpQuality, int snapshotGenGrpFrequency,
+                                      double snapshotSpeGrpQuality, int snapshotSpeGrpFrequency) {
+        this.snapshotGenGrpQuality = snapshotGenGrpQuality;
+        this.snapshotGenGrpFrequency = snapshotGenGrpFrequency;
+        this.snapshotSpeGrpQuality = snapshotSpeGrpQuality;
+        this.snapshotSpeGrpFrequency = snapshotSpeGrpFrequency;
     }
     
     /**

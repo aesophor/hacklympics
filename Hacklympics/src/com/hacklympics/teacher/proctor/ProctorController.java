@@ -425,8 +425,9 @@ public class ProctorController implements Initializable {
         Response adjustParam = Keystroke.adjustParam(
                 Session.getInstance().getCurrentExam().getCourseID(),
                 Session.getInstance().getCurrentExam().getExamID(),
-                keystrokeStudentsVBox.getStudents(),
-                selectedFrequency
+                ((SnapshotGroup) groupBox.getSelectionModel().getSelectedItem()).ordinal(),
+                selectedFrequency,
+                keystrokeStudentsVBox.getStudents()
         );
 
         if (adjustParam.getStatusCode() == StatusCode.SUCCESS) {
