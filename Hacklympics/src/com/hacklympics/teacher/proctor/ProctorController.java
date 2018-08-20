@@ -31,13 +31,13 @@ import com.hacklympics.api.event.exam.LeaveExamEvent;
 import com.hacklympics.api.event.proctor.NewKeystrokeEvent;
 import com.hacklympics.api.event.proctor.NewSnapshotEvent;
 import com.hacklympics.api.proctor.Keystroke;
+import com.hacklympics.api.proctor.ProctorMedium;
 import com.hacklympics.api.material.Exam;
+import com.hacklympics.api.preference.Config;
 import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.user.User;
 import com.hacklympics.api.user.Student;
 import com.hacklympics.api.session.Session;
-import com.hacklympics.student.code.logging.KeystrokeLogger;
-import com.hacklympics.student.code.logging.ScreenRecorder;
 import com.hacklympics.teacher.TeacherController;
 import com.hacklympics.utility.Utils;
 import com.hacklympics.utility.code.CodePatch;
@@ -66,11 +66,11 @@ public class ProctorController implements Initializable {
     @FXML
     private ScrollPane snapshotSpeGrpPane;
     @FXML
-    private JFXComboBox groupBox;
+    private JFXComboBox<SnapshotGroup> groupBox;
     @FXML
-    private JFXComboBox imgQualityBox;
+    private JFXComboBox<Double> snapshotQualityBox;
     @FXML
-    private JFXComboBox imgFrequencyBox;
+    private JFXComboBox<Integer> syncFrequencyBox;
     
     @FXML
     private ScrollPane keystrokeStudentsPane;
@@ -80,8 +80,6 @@ public class ProctorController implements Initializable {
     private JFXTextArea codeArea;
     @FXML
     private JFXSlider keystrokePlaybackSlider;
-    @FXML
-    private JFXComboBox keyFrequencyBox;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -132,21 +130,6 @@ public class ProctorController implements Initializable {
         // Remove the SnapshotBox for the student who just left.
         setOnLeaveExam((LeaveExamEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
-                /*
-                // Remove the SnapshotBox of the event-specified student from LiveScreen Tab.
-                SnapshotBox snapshotBox = snapshotGenGrpVBox.get((Student) event.getUser());
-                snapshotGenGrpVBox.remove(snapshotBox);
-
-                // Remove the KeystrokeBox from Keystroke Tab also.
-                KeystrokeBox keystrokeBox = keystrokeStudentsVBox.get((Student) event.getUser());
-                keystrokeStudentsVBox.remove(keystrokeBox);
-                
-                Platform.runLater(() -> {
-                    snapshotGenGrpVBox.rearrange();
-                    keystrokeStudentsVBox.rearrange();
-                });
-                */
-                
                 // Set the timestamp label to "Finished" when a student
                 // leaves the exam.
                 SnapshotBox snapshotBox = snapshotGenGrpVBox.get((Student) event.getUser());
@@ -173,16 +156,16 @@ public class ProctorController implements Initializable {
         
         
         // Add the generic and special group VBoxes to the groupBox.
-        // This part is tricky: we cannot simply add a VBox to a combobox
+        // This part is tricky: we cannot simply add SnapshotGrpVBoxes to combobox
         // as its content (since SnapshotGrpVBox extends VBox), 
         // toString method won't be fully functional! you may try it out
-        // for yourself. So I created an enum to wrap the SnapshotGrpVBox.
+        // yourself. That's why I created an enum which wraps SnapshotGrpVBox.
         groupBox.getItems().add(SnapshotGroup.GENERIC);
         groupBox.getItems().add(SnapshotGroup.SPECIAL);
 
         // Populate the imgQualityBox and imgFrequencyBox.
-        imgQualityBox.getItems().addAll(ScreenRecorder.QUALITY_OPTIONS);
-        imgFrequencyBox.getItems().addAll(ScreenRecorder.FREQUENCY_OPTIONS);
+        snapshotQualityBox.getItems().addAll(Config.getInstance().getSnapshotQualityOptions());
+        syncFrequencyBox.getItems().addAll(Config.getInstance().getSyncFrequencyOptions());
         
         // When user selects a certain group, display the corresponding parameters.
         groupBox.getSelectionModel().selectedItemProperty().addListener(
@@ -190,8 +173,8 @@ public class ProctorController implements Initializable {
                     SnapshotGroup selectedGroup = (SnapshotGroup) groupBox.getSelectionModel().getSelectedItem();
                     SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
                     
-                    imgQualityBox.getSelectionModel().select((Double) vbox.getQuality());
-                    imgFrequencyBox.getSelectionModel().select((Integer) vbox.getFrequency());
+                    snapshotQualityBox.getSelectionModel().select((Double) vbox.getSnapshotQuality());
+                    syncFrequencyBox.getSelectionModel().select((Integer) vbox.getSyncFrequency());
                 }
         );
         
@@ -214,9 +197,6 @@ public class ProctorController implements Initializable {
     }
     
     private void initKeystrokeTab() {
-        // Populate the keyFrequencyBox.
-        keyFrequencyBox.getItems().addAll(KeystrokeLogger.FREQUENCY_OPTIONS);
-        
         // Updates the KeystrokeBox when a NewKeystrokeEvent arrives.
         setOnNewKeystroke((NewKeystrokeEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
@@ -260,7 +240,6 @@ public class ProctorController implements Initializable {
         // Move them from generic group to special group.
         snapshotGenGrpVBox.removeAll(genGrpSelectedBoxes);
         snapshotSpeGrpVBox.addAll(genGrpSelectedBoxes);
-
         snapshotGenGrpVBox.rearrange();
         snapshotSpeGrpVBox.rearrange();
 
@@ -272,12 +251,12 @@ public class ProctorController implements Initializable {
             students.add(box.getStudent());
         }
 
-        Snapshot.adjustParam(
+        ProctorMedium.adjustParam(
                 Session.getInstance().getCurrentExam().getCourseID(),
                 Session.getInstance().getCurrentExam().getExamID(),
-                students,
-                snapshotSpeGrpVBox.getQuality(),
-                snapshotSpeGrpVBox.getFrequency()
+                snapshotSpeGrpVBox.getSnapshotQuality(),
+                snapshotSpeGrpVBox.getSyncFrequency(),
+                students
         );
     }
 
@@ -311,7 +290,6 @@ public class ProctorController implements Initializable {
         // Move them from generic group to special group.
         snapshotSpeGrpVBox.removeAll(speGrpSelectedBoxes);
         snapshotGenGrpVBox.addAll(speGrpSelectedBoxes);
-
         snapshotSpeGrpVBox.rearrange();
         snapshotGenGrpVBox.rearrange();
 
@@ -323,18 +301,18 @@ public class ProctorController implements Initializable {
             students.add(box.getStudent());
         }
 
-        Snapshot.adjustParam(
+        ProctorMedium.adjustParam(
                 Session.getInstance().getCurrentExam().getCourseID(),
                 Session.getInstance().getCurrentExam().getExamID(),
-                students,
-                snapshotGenGrpVBox.getQuality(),
-                snapshotGenGrpVBox.getFrequency()
+                snapshotGenGrpVBox.getSnapshotQuality(),
+                snapshotGenGrpVBox.getSyncFrequency(),
+                students
         );
     }
 
     
     @FXML
-    public void adjustLiveScreensParam(ActionEvent event) {
+    public void adjustParameters(ActionEvent event) {
         // If the user tries to broadcast the command to adjust snapshot
         // parameters to all students in the exam, but the user is currently
         // not in any exam, block this attempt and alert the user.
@@ -367,22 +345,22 @@ public class ProctorController implements Initializable {
         // If everything is fine, then we will proceed.
         // Get the parameters from the ComboBoxes.
         SnapshotGrpVBox vbox = selectedGroup.getSnapshotGrpVBox();
-        Double selectedQuality = (Double) imgQualityBox.getSelectionModel().getSelectedItem();
-        Integer selectedFrequency = (Integer) imgFrequencyBox.getSelectionModel().getSelectedItem();
+        Double selectedQuality = (Double) snapshotQualityBox.getSelectionModel().getSelectedItem();
+        Integer selectedFrequency = (Integer) syncFrequencyBox.getSelectionModel().getSelectedItem();
 
         // Broadcast the command to adjust snapshot parameters
         // to the students within the user-selected group.
-        Response adjustParam = Snapshot.adjustParam(
+        Response adjustParam = ProctorMedium.adjustParam(
                 Session.getInstance().getCurrentExam().getCourseID(),
                 Session.getInstance().getCurrentExam().getExamID(),
-                vbox.getStudents(),
                 selectedQuality,
-                selectedFrequency
+                selectedFrequency,
+                vbox.getStudents()
         );
 
         if (adjustParam.getStatusCode() == StatusCode.SUCCESS) {
-            vbox.setQuality(selectedQuality);
-            vbox.setFrequency(selectedFrequency);
+            vbox.setSnapshotQuality(selectedQuality);
+            vbox.setSyncFrequency(selectedFrequency);
 
             AlertDialog alert = new AlertDialog(
                     "Parameters Adjusted",
@@ -401,56 +379,7 @@ public class ProctorController implements Initializable {
         }
     }
     
-    @FXML
-    public void adjustKeystrokesParam(ActionEvent event) {
-        // If the user tries to broadcast the command to adjust snapshot
-        // parameters to all students in the exam, but the user is currently
-        // not in any exam, block this attempt and alert the user.
-        if (!Session.getInstance().isInExam()) {
-            AlertDialog alert = new AlertDialog(
-                    "Alert",
-                    "You can only adjust parameters while in exam."
-            );
-
-            alert.show();
-            return;
-        }
-        
-        // If everything is fine, then we will proceed.
-        // Get the parameters from the ComboBoxes.
-        Integer selectedFrequency = (Integer) keyFrequencyBox.getSelectionModel().getSelectedItem();
-
-        // Broadcast the command to adjust snapshot parameters
-        // to the students within the user-selected group.
-        Response adjustParam = Keystroke.adjustParam(
-                Session.getInstance().getCurrentExam().getCourseID(),
-                Session.getInstance().getCurrentExam().getExamID(),
-                ((SnapshotGroup) groupBox.getSelectionModel().getSelectedItem()).ordinal(),
-                selectedFrequency,
-                keystrokeStudentsVBox.getStudents()
-        );
-
-        if (adjustParam.getStatusCode() == StatusCode.SUCCESS) {
-            keystrokeStudentsVBox.setFrequency(selectedFrequency);
-
-            AlertDialog alert = new AlertDialog(
-                    "Parameters Adjusted",
-                    "The keystroke parameters has been adjusted."
-            );
-
-            alert.show();
-        } else {
-            AlertDialog alert = new AlertDialog(
-                    "Alert",
-                    "Failed to adjust the keystroke parameters.\n\n"
-                  + "Error code:" + adjustParam.getStatusCode().toString() 
-            );
-
-            alert.show();
-        }
-    }
     
-
     @FXML
     public void playKeystroke(ActionEvent event) throws InterruptedException {
         // If the user has not selected any student for playback,

@@ -27,8 +27,7 @@ import com.hacklympics.api.event.EventHandler;
 import com.hacklympics.api.event.EventManager;
 import com.hacklympics.api.event.EventType;
 import com.hacklympics.api.event.exam.HaltExamEvent;
-import com.hacklympics.api.event.proctor.AdjustKeystrokeParamEvent;
-import com.hacklympics.api.event.proctor.AdjustSnapshotParamEvent;
+import com.hacklympics.api.event.proctor.AdjustProctorParamsEvent;
 import com.hacklympics.api.material.Answer;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.material.Problem;
@@ -127,25 +126,17 @@ public class CodeController implements Initializable {
             }
         });
         
-        // Adjust the snapshot parameters and restart the snapshot thread
+        // Adjust proctor parameters (ScreenRecorder and KeystrokeLogger)
         // upon receiving an AdjustSnapshotParamEvent.
-        setOnAdjustSnapshotParam((AdjustSnapshotParamEvent event) -> {
+        setOnAdjustProctorParams((AdjustProctorParamsEvent event) -> {
             if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
                 // Set the parameters.
-                ScreenRecorder.getInstance().setQuality(event.getQuality());
-                ScreenRecorder.getInstance().setFrequency(event.getFrequency());
+                ScreenRecorder.getInstance().setSnapshotQuality(event.getSnapshotQuality());
+                ScreenRecorder.getInstance().setSyncFrequency(event.getSyncFrequency());
+                KeystrokeLogger.getInstance().setSyncFrequency(event.getSyncFrequency());
             }
         });
         
-        // Adjust the keystroke parameters and restart the keystroke logging
-        // thread upon receiving an AdjustKeystrokeParamEvent.
-        setOnAdjustKeystrokeParam((AdjustKeystrokeParamEvent event) -> {
-            if (Session.getInstance().isInExam() && event.isForCurrentExam()) {
-                // Set the parameters.
-                KeystrokeLogger.getInstance().setFrequency(event.getFrequency());
-            }
-        });
-
         
         createFileTab();
     }
@@ -598,12 +589,8 @@ public class CodeController implements Initializable {
         EventManager.getInstance().addEventHandler(EventType.HALT_EXAM, listener);
     }
     
-    private void setOnAdjustSnapshotParam(EventHandler<AdjustSnapshotParamEvent> listener) {
-        EventManager.getInstance().addEventHandler(EventType.ADJUST_SNAPSHOT_PARAM, listener);
-    }
-    
-    private void setOnAdjustKeystrokeParam(EventHandler<AdjustKeystrokeParamEvent> listener) {
-        EventManager.getInstance().addEventHandler(EventType.ADJUST_KEYSTROKE_PARAM, listener);
+    private void setOnAdjustProctorParams(EventHandler<AdjustProctorParamsEvent> handler) {
+        EventManager.getInstance().addEventHandler(EventType.ADJUST_PROCTOR_PARAMS, handler);
     }
 
 }

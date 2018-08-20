@@ -15,7 +15,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from hacklympics.views import user, course, exam, problem, answer, message, snapshot, keystroke
+from hacklympics.views import user, course, exam, problem, answer, message, proctor
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -48,14 +48,12 @@ urlpatterns = [
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)$', exam.get),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/owner$', exam.get_owner),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/remaining_time$', exam.get_remaining_time),
-    
+
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/message/create$', message.create),
 
-    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/snapshot/sync$', snapshot.sync),
-    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/snapshot/adjust_param$', snapshot.adjust_param),
-    
-    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/keystroke/sync$', keystroke.sync),
-    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/keystroke/adjust_param$', keystroke.adjust_param),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/proctor/sync_snapshot$', proctor.sync_snapshot),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/proctor/sync_keytrokes$', proctor.sync_keystrokes),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/proctor/adjust_params$', proctor.adjust_params),
 
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem$', problem.list),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem/create$', problem.create),

@@ -1,14 +1,14 @@
 package com.hacklympics.teacher.proctor;
 
 import static com.hacklympics.api.preference.Config.DEFAULT_GENGRP_SNAPSHOT_QUALITY;
-import static com.hacklympics.api.preference.Config.DEFAULT_GENGRP_SNAPSHOT_FREQUENCY;
 import static com.hacklympics.api.preference.Config.DEFAULT_SPEGRP_SNAPSHOT_QUALITY;
-import static com.hacklympics.api.preference.Config.DEFAULT_SPEGRP_SNAPSHOT_FREQUENCY;
+import static com.hacklympics.api.preference.Config.DEFAULT_GENGRP_SYNC_FREQUENCY;
+import static com.hacklympics.api.preference.Config.DEFAULT_SPEGRP_SYNC_FREQUENCY;
 
 public enum SnapshotGroup {
     
-    GENERIC("Generic", DEFAULT_GENGRP_SNAPSHOT_QUALITY, DEFAULT_GENGRP_SNAPSHOT_FREQUENCY),
-    SPECIAL("Special", DEFAULT_SPEGRP_SNAPSHOT_QUALITY, DEFAULT_SPEGRP_SNAPSHOT_FREQUENCY);
+    GENERIC("Generic", DEFAULT_GENGRP_SNAPSHOT_QUALITY, DEFAULT_GENGRP_SYNC_FREQUENCY),
+    SPECIAL("Special", DEFAULT_SPEGRP_SNAPSHOT_QUALITY, DEFAULT_SPEGRP_SYNC_FREQUENCY);
     
     
     private final SnapshotGrpVBox snapshotGrpVBox;

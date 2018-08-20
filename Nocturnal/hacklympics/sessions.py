@@ -2,7 +2,6 @@ from hacklympics.exceptions import *
 from hacklympics.events.events import *
 from hacklympics.events.dispatcher import dispatch
 from hacklympics.models import User, Exam
-from hacklympics.snapshot_group import SnapshotGroup, SnapshotGroupData
 
 from threading import Timer
 import time
@@ -76,14 +75,10 @@ class OngoingExams:
     exams = {}
 
     @staticmethod
-    def add(exam: Exam, gengrp_snapshot_quality: int, gengrp_snapshot_frequency: int, 
-                        spegrp_snapshot_quality: int, spegrp_snapshot_frequency: int, 
-                        keystroke_frequency: int):
+    def add(exam: Exam):
         if not OngoingExams.has(exam):                        
             # Create an empty student list for this exam.
-            OngoingExams.exams[exam] = ExamData(exam, gengrp_snapshot_quality, gengrp_snapshot_frequency, 
-                                                      spegrp_snapshot_quality, spegrp_snapshot_frequency,
-                                                      keystroke_frequency)
+            OngoingExams.exams[exam] = ExamData(exam)
             # Start the timer of this exam.
             # Also record the start_time of timer for evaluating remaining time later.
             OngoingExams.exams[exam].timer = Timer(exam.duration * 60, OngoingExams.remove, args=[exam])
@@ -126,23 +121,15 @@ class OngoingExams:
 
 
 class ExamData:
-    # ExamData = two lists of participants (Students and Teachers) + timer.
-    
     # A participant of an exam can either be a student or a teacher.
     # Students take the exam while teacher proctor the exam.
-    def __init__(self, exam: Exam, snapshot_gengrp_quality: int, snapshot_gengrp_frequency: int, 
-                                   snapshot_spegrp_quality: int, snapshot_spegrp_frequency: int, 
-                                   keystroke_frequency: int):
+    def __init__(self, exam: Exam):
         self.exam = exam
         self.students = []
         self.teachers = []
         
         self.timer = None
         self.start_time = None
-       
-        self.snapshot_grp = {SnapshotGroup.GENERIC: SnapshotGroupData(snapshot_gengrp_quality, snapshot_gengrp_frequency), 
-                             SnapshotGroup.SPECIAL: SnapshotGroupData(snapshot_spegrp_quality, snapshot_spegrp_frequency)}
-        self.keystroke_frequency = keystroke_frequency
 
     def add(self, user: User):
         if not self.has(user):

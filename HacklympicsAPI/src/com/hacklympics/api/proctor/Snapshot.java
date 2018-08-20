@@ -1,10 +1,7 @@
 package com.hacklympics.api.proctor;
 
-import java.util.List;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.user.Student;
 import com.hacklympics.api.utility.NetworkUtils;
 
 public class Snapshot implements ProctorMedium {
@@ -23,27 +20,11 @@ public class Snapshot implements ProctorMedium {
     
     
     public static Response sync(int courseID, int examID, String student, String b64image) {
-        String uri = String.format("course/%d/exam/%d/snapshot/sync", courseID, examID);
+        String uri = String.format("course/%d/exam/%d/proctor/sync_snapshot", courseID, examID);
         
         JsonObject json = new JsonObject();
         json.addProperty("student", student);
         json.addProperty("image", b64image);
-        
-        return new Response(NetworkUtils.post(uri, json.toString()));
-    }
-    
-    public static Response adjustParam(int courseID, int examID, List<Student> students, double quality, int frequency) {
-        String uri = String.format("course/%d/exam/%d/snapshot/adjust_param", courseID, examID);
-        
-        JsonArray studentsJsonArray = new JsonArray();
-        for (Student student : students) {
-            studentsJsonArray.add(student.getUsername());
-        }
-        
-        JsonObject json = new JsonObject();
-        json.addProperty("quality", quality);
-        json.addProperty("frequency", frequency);
-        json.add("students", studentsJsonArray);
         
         return new Response(NetworkUtils.post(uri, json.toString()));
     }

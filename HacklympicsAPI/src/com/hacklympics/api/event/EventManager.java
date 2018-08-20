@@ -27,13 +27,10 @@ public class EventManager {
         this.handlers.put(EventType.ATTEND_EXAM, new ArrayList<>());
         this.handlers.put(EventType.LEAVE_EXAM, new ArrayList<>());
         
-        // List of handlers for events of new snapshots arrival.
+        // List of handlers for proctor-related events.
         this.handlers.put(EventType.NEW_SNAPSHOT, new ArrayList<>());
-        this.handlers.put(EventType.ADJUST_SNAPSHOT_PARAM, new ArrayList<>());
-        
-        // List of handlers for events of new keystrokes arrival.
         this.handlers.put(EventType.NEW_KEYSTROKE, new ArrayList<>());
-        this.handlers.put(EventType.ADJUST_KEYSTROKE_PARAM, new ArrayList<>());
+        this.handlers.put(EventType.ADJUST_PROCTOR_PARAMS, new ArrayList<>());
     }
     
     public static EventManager getInstance() {

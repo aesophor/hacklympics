@@ -6,14 +6,14 @@ import com.hacklympics.api.user.Student;
 
 public class SnapshotGrpVBox extends StudentsVBox {
 
-    private double quality;
-    private int frequency;
+    private double snapshotQuality;
+    private int syncFrequency;
     
-    public SnapshotGrpVBox(double quality, int frequency) {
+    public SnapshotGrpVBox(double snapshotQuality, int syncFrequency) {
         super();
         
-        this.quality = quality;
-        this.frequency = frequency;
+        this.snapshotQuality = snapshotQuality;
+        this.syncFrequency = syncFrequency;
     }
 
 
@@ -129,20 +129,20 @@ public class SnapshotGrpVBox extends StudentsVBox {
     }
 
     
-    public double getQuality() {
-        return quality;
+    public double getSnapshotQuality() {
+        return snapshotQuality;
     }
     
-    public int getFrequency() {
-        return frequency;
+    public int getSyncFrequency() {
+        return syncFrequency;
     }
     
-    public void setQuality(double quality) {
-        this.quality = quality;
+    public void setSnapshotQuality(double snapshotQuality) {
+        this.snapshotQuality = snapshotQuality;
     }
     
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
+    public void setSyncFrequency(int syncFrequency) {
+        this.syncFrequency = syncFrequency;
     }
     
 }

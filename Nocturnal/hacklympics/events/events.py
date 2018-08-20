@@ -205,31 +205,12 @@ class NewSnapshotEvent(Event):
         return json.dumps(event)
 
 
-class AdjustSnapshotParamEvent(Event):
-    def __init__(self, exam: Exam, quality: float, frequency: int):
-        super(AdjustSnapshotParamEvent, self).__init__(EventType.ADJUST_SNAPSHOT_PARAM)
-        self.exam = exam
-        self.quality = quality
-        self.frequency = frequency
-
-    def __str__(self):
-        event = {"eventType": self.event_type}
-        
-        event["content"] = {
-            "examID": self.exam.id,
-            "quality": self.quality,
-            "frequency": self.frequency
-        }
-        
-        return json.dumps(event)
-
-
 class NewKeystrokeEvent(Event):
-    def __init__(self, exam: Exam, student: str, history: list, timestamp: str):
+    def __init__(self, exam: Exam, student: str, patches: list, timestamp: str):
         super(NewKeystrokeEvent, self).__init__(EventType.NEW_KEYSTROKE)
         self.exam = exam
         self.student = student
-        self.history = history
+        self.patches = patches
         self.timestamp = timestamp
 
     def __str__(self):
@@ -238,25 +219,27 @@ class NewKeystrokeEvent(Event):
         event["content"] = {
             "examID": self.exam.id,
             "student": self.student,
-            "history": self.history,
+            "patches": self.patches,
             "timestamp": self.timestamp
         }
         
         return json.dumps(event)
 
 
-class AdjustKeystrokeParamEvent(Event):
-    def __init__(self, exam: Exam, frequency: int):
-        super(AdjustKeystrokeParamEvent, self).__init__(EventType.ADJUST_KEYSTROKE_PARAM)
+class AdjustProctorParamsEvent(Event):
+    def __init__(self, exam: Exam, snapshotQuality: float, syncFrequency: int):
+        super(AdjustProctorParamsEvent, self).__init__(EventType.ADJUST_PROCTOR_PARAMS)
         self.exam = exam
-        self.frequency = frequency
+        self.snapshotQuality = snapshotQuality
+        self.syncFrequency = syncFrequency
 
     def __str__(self):
         event = {"eventType": self.event_type}
         
         event["content"] = {
             "examID": self.exam.id,
-            "frequency": self.frequency
+            "snapshotQuality": self.snapshotQuality,
+            "syncFrequency": self.syncFrequency
         }
         
         return json.dumps(event)

@@ -14,35 +14,15 @@ import com.hacklympics.api.utility.ImageUtils;
 
 public class ScreenRecorder implements Runnable {
     
-    public static final List<Double> QUALITY_OPTIONS = new ArrayList<>();
-    public static final List<Integer> FREQUENCY_OPTIONS = new ArrayList<>();
-    
-    static {
-        // Available quality options (scale of original snapshot).
-        QUALITY_OPTIONS.add(0.15);
-        QUALITY_OPTIONS.add(0.25);
-        QUALITY_OPTIONS.add(0.50);
-        QUALITY_OPTIONS.add(0.75);
-        QUALITY_OPTIONS.add(1.00);
-        
-        // Available frequency options (take one snapshot every x sec).
-        FREQUENCY_OPTIONS.add(3);
-        FREQUENCY_OPTIONS.add(5);
-        FREQUENCY_OPTIONS.add(8);
-        FREQUENCY_OPTIONS.add(10);
-        FREQUENCY_OPTIONS.add(15);
-    }
-    
-    
     private static ScreenRecorder screenRecorder;
     private volatile boolean running;
-    private double quality;
-    private int frequency;
+    private double snapshotQuality;
+    private int syncFrequency;
     
     private ScreenRecorder() {
         // All students will be placed in Generic Group initially.
-        quality = Config.getInstance().getSnapshotGenGrpQuality();
-        frequency = Config.getInstance().getSnapshotGenGrpFrequency();
+        snapshotQuality = Config.getInstance().getGenGrpSnapshotQuality();
+        syncFrequency = Config.getInstance().getGenGrpSyncFrequency();
     }
     
     public static ScreenRecorder getInstance() {
@@ -62,7 +42,7 @@ public class ScreenRecorder implements Runnable {
         
         while (running) {
             try {
-                BufferedImage img = ImageUtils.takeSnapshot(quality);
+                BufferedImage img = ImageUtils.takeSnapshot(snapshotQuality);
                 byte[] imgByteArray = ImageUtils.bufferedImage2ByteArray(img);
                 String base64img = Base64.getEncoder().encodeToString(imgByteArray);
                 
@@ -73,7 +53,7 @@ public class ScreenRecorder implements Runnable {
                         base64img
                 );
                 
-                Thread.sleep(frequency * 1000);
+                Thread.sleep(syncFrequency * 1000);
             } catch (AWTException | IOException | InterruptedException ex) {
                 ex.printStackTrace();
                 running = false;
@@ -88,20 +68,20 @@ public class ScreenRecorder implements Runnable {
     }
     
     
-    public double getQuality() {
-        return quality;
+    public double getSnapshotQuality() {
+        return snapshotQuality;
     }
     
-    public int getFrequency() {
-        return frequency;
+    public int getSyncFrequency() {
+        return syncFrequency;
     }
     
-    public void setQuality(double quality) {
-        this.quality = quality;
+    public void setSnapshotQuality(double snapshotQuality) {
+        this.snapshotQuality = snapshotQuality;
     }
     
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
+    public void setSyncFrequency(int syncFrequency) {
+        this.syncFrequency = syncFrequency;
     }
     
 }

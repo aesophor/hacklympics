@@ -28,11 +28,11 @@ public class NewKeystrokeEvent extends Event implements ExamRelated {
         String studentUsername = content.get("student").toString();
         
         // Extract student's keystroke history from json content.
-        String rawHistoryJson = NetworkUtils.getGson().toJson(content.get("history"));
-        JsonArray historyJsonArray = NetworkUtils.getGson().fromJson(rawHistoryJson, JsonArray.class);
+        String rawPatchesJson = NetworkUtils.getGson().toJson(content.get("patches"));
+        JsonArray patchesJsonArray = NetworkUtils.getGson().fromJson(rawPatchesJson, JsonArray.class);
         
         List<String> history = new ArrayList<>();
-        for (JsonElement e : historyJsonArray) {
+        for (JsonElement e : patchesJsonArray) {
             history.add(e.getAsString());
         }
         

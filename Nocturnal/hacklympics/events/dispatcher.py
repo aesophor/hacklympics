@@ -6,7 +6,7 @@ import json
 import time
 
 
-def dispatch(event: Event, users: list, interval=0):
+def dispatch(event: Event, users: list):
     print("[*] dispatching ev: ", event, " to ", users)
     
     for user in users:
@@ -17,5 +17,3 @@ def dispatch(event: Event, users: list, interval=0):
         s.connect((user.last_login_ip, 8001))
         s.send(evmsg.encode("utf-8"))
         s.close()
-        
-        time.sleep(interval)

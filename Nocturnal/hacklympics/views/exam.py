@@ -179,22 +179,13 @@ def launch(request, c_id):
         req_body = json.loads(request.body.decode("utf-8"))
         
         e_id = req_body["examID"]
-       
-        # Groupings should better off be independent of the server...
-        snapshot_gengrp_quality = req_body["snapshotGenGrpQuality"]
-        snapshot_gengrp_frequency = req_body["snapshotGenGrpFrequency"]
-        snapshot_spegrp_quality = req_body["snapshotSpeGrpQuality"]
-        snapshot_spegrp_frequency = req_body["snapshotSpeGrpFrequency"]
-        keystroke_frequency = req_body["keystrokeFrequency"]
         
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         teacher = exam.course.teacher
         
         # Add this exam to OngoingExams.
         # The teacher launching the exam will be the first proctor.
-        OngoingExams.add(exam, snapshot_gengrp_quality, snapshot_gengrp_frequency,
-                               snapshot_spegrp_quality, snapshot_spegrp_frequency,
-                               keystroke_frequency)
+        OngoingExams.add(exam)
         
         OngoingExams.get(exam).add(teacher)
         OngoingExams.show()

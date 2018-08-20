@@ -1,10 +1,9 @@
 package com.hacklympics.api.proctor;
 
-import com.google.gson.JsonArray;
 import java.util.List;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.hacklympics.api.communication.Response;
-import com.hacklympics.api.user.Student;
 import com.hacklympics.api.utility.NetworkUtils;
 
 public class Keystroke implements ProctorMedium {
@@ -22,33 +21,17 @@ public class Keystroke implements ProctorMedium {
     }
     
     
-    public static Response sync(int courseID, int examID, String student, List<String> history) {
-        String uri = String.format("course/%d/exam/%d/keystroke/sync", courseID, examID);
+    public static Response sync(int courseID, int examID, String student, List<String> patches) {
+        String uri = String.format("course/%d/exam/%d/proctor/sync_keystrokes", courseID, examID);
         
-        JsonArray historyJsonArray = new JsonArray();
-        for (String moment : history) {
-            historyJsonArray.add(moment);
+        JsonArray patchJsonArray = new JsonArray();
+        for (String patch : patches) {
+            patchJsonArray.add(patch);
         }
         
         JsonObject json = new JsonObject();
         json.addProperty("student", student);
-        json.add("history", historyJsonArray);
-        
-        return new Response(NetworkUtils.post(uri, json.toString()));
-    }
-    
-    public static Response adjustParam(int courseID, int examID, int snapshotGroupOrdinal, int frequency, List<Student> students) {
-        String uri = String.format("course/%d/exam/%d/keystroke/adjust_param", courseID, examID);
-        
-        JsonArray studentsJsonArray = new JsonArray();
-        for (Student student : students) {
-            studentsJsonArray.add(student.getUsername());
-        }
-        
-        JsonObject json = new JsonObject();
-        json.addProperty("snapshotGroupOrdinal", snapshotGroupOrdinal);
-        json.addProperty("frequency", frequency);
-        json.add("students", studentsJsonArray);
+        json.add("patches", patchJsonArray);
         
         return new Response(NetworkUtils.post(uri, json.toString()));
     }

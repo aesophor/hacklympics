@@ -2,21 +2,19 @@ package com.hacklympics.api.event;
 
 public enum EventType {
     
-    LOGIN("com.hacklympics.api.event.user.LoginEvent"),                                     //  0
-    LOGOUT("com.hacklympics.api.event.user.LogoutEvent"),                                   //  1
+    LOGIN("com.hacklympics.api.event.user.LoginEvent"),                                     // 0
+    LOGOUT("com.hacklympics.api.event.user.LogoutEvent"),                                   // 1
     
-    NEW_MESSAGE("com.hacklympics.api.event.message.NewMessageEvent"),                       //  2
+    NEW_MESSAGE("com.hacklympics.api.event.message.NewMessageEvent"),                       // 2
     
-    LAUNCH_EXAM("com.hacklympics.api.event.exam.LaunchExamEvent"),                          //  3
-    HALT_EXAM("com.hacklympics.api.event.exam.HaltExamEvent"),                              //  4 
-    ATTEND_EXAM("com.hacklympics.api.event.exam.AttendExamEvent"),                          //  5
-    LEAVE_EXAM("com.hacklympics.api.event.exam.LeaveExamEvent"),                            //  6
+    LAUNCH_EXAM("com.hacklympics.api.event.exam.LaunchExamEvent"),                          // 3
+    HALT_EXAM("com.hacklympics.api.event.exam.HaltExamEvent"),                              // 4 
+    ATTEND_EXAM("com.hacklympics.api.event.exam.AttendExamEvent"),                          // 5
+    LEAVE_EXAM("com.hacklympics.api.event.exam.LeaveExamEvent"),                            // 6
     
-    NEW_SNAPSHOT("com.hacklympics.api.event.proctor.NewSnapshotEvent"),                     //  7
-    ADJUST_SNAPSHOT_PARAM("com.hacklympics.api.event.proctor.AdjustSnapshotParamEvent"),    //  8
-    
-    NEW_KEYSTROKE("com.hacklympics.api.event.proctor.NewKeystrokeEvent"),                   //  9
-    ADJUST_KEYSTROKE_PARAM("com.hacklympics.api.event.proctor.AdjustKeystrokeParamEvent");  // 10
+    NEW_SNAPSHOT("com.hacklympics.api.event.proctor.NewSnapshotEvent"),                     // 7
+    NEW_KEYSTROKE("com.hacklympics.api.event.proctor.NewKeystrokeEvent"),                   // 8
+    ADJUST_PROCTOR_PARAMS("com.hacklympics.api.event.proctor.AdjustProctorParamsEvent");    // 9
     
     
     private final String classname;

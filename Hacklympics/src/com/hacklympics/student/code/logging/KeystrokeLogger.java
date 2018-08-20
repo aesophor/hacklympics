@@ -1,7 +1,5 @@
 package com.hacklympics.student.code.logging;
 
-import java.util.List;
-import java.util.ArrayList;
 import com.hacklympics.api.material.Exam;
 import com.hacklympics.api.preference.Config;
 import com.hacklympics.api.proctor.Keystroke;
@@ -13,23 +11,13 @@ import com.hacklympics.student.code.PendingCodePatches;
 
 public class KeystrokeLogger implements Runnable {
 
-    public static final List<Integer> FREQUENCY_OPTIONS = new ArrayList<>();
-
-    static {
-        // Available frequency options (frequency of sending keystroke patches).
-        FREQUENCY_OPTIONS.add(2);
-        FREQUENCY_OPTIONS.add(4);
-        FREQUENCY_OPTIONS.add(6);
-        FREQUENCY_OPTIONS.add(8);
-        FREQUENCY_OPTIONS.add(10);
-    }
-
     private static KeystrokeLogger keystrokeLogger;
     private volatile boolean running;
-    private int frequency;
+    private int syncFrequency;
 
     private KeystrokeLogger() {
-        frequency = Config.getInstance().getKeystrokeFrequency();
+        // All students are placed in general group by default.
+        syncFrequency = Config.getInstance().getGenGrpSyncFrequency();
     }
 
     public static KeystrokeLogger getInstance() {
@@ -55,6 +43,8 @@ public class KeystrokeLogger implements Runnable {
 
         while (running) {
             try {
+                // We must make sure no new patches can be added while
+                // "flushing" (i.e., sync() & clear()) pending patches to the server. 
                 synchronized (PendingCodePatches.getInstance()) {
                     // If there are changes unsynchronized, 
                     // send all keystroke patches to the server.
@@ -71,7 +61,7 @@ public class KeystrokeLogger implements Runnable {
                     }
                 }
                 
-                Thread.sleep(frequency * 1000);
+                Thread.sleep(syncFrequency * 1000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
                 running = false;
@@ -85,12 +75,12 @@ public class KeystrokeLogger implements Runnable {
         running = false;
     }
 
-    public int getFrequency() {
-        return frequency;
+    public int getSyncFrequency() {
+        return syncFrequency;
     }
 
-    public void setFrequency(int frequency) {
-        this.frequency = frequency;
+    public void setSyncFrequency(int syncFrequency) {
+        this.syncFrequency = syncFrequency;
     }
 
 }

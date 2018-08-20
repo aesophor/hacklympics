@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 public class Config {
@@ -15,10 +17,12 @@ public class Config {
     public static final int DEFAULT_EVENT_LISTENER_PORT = 8001;
     
     public static final double DEFAULT_GENGRP_SNAPSHOT_QUALITY = 0.25;
-    public static final int DEFAULT_GENGRP_SNAPSHOT_FREQUENCY = 5;
     public static final double DEFAULT_SPEGRP_SNAPSHOT_QUALITY = 0.50;
-    public static final int DEFAULT_SPEGRP_SNAPSHOT_FREQUENCY = 3;
-    public static final int DEFAULT_KEYSTROKE_FREQUENCY = 4;
+    public static final int DEFAULT_GENGRP_SYNC_FREQUENCY = 5;
+    public static final int DEFAULT_SPEGRP_SYNC_FREQUENCY = 3;
+    
+    private final List<Double> snapshotQualityOptions;
+    private final List<Integer> syncFrequencyOptions;
     
     private static Config config;
     private File propertiesFile;
@@ -29,28 +33,28 @@ public class Config {
     public final int serverPort;
     public final int eventListenerPort;
     
-    // Proctor-related properties.
-    private double snapshotGenGrpQuality;
-    private int snapshotGenGrpFrequency;
-    private double snapshotSpeGrpQuality;
-    private int snapshotSpeGrpFrequency;
-    private int keystrokeFrequency;
+    // Snapshot image quality.
+    private double genGrpSnapshotQuality;
+    private double speGrpSnapshotQuality;
+    
+    // Snapshot & keystroke patches syncing frequency.
+    private int genGrpSyncFrequency;
+    private int speGrpSyncFrequency;
     
     private Config() {
         propertiesFile = new File(CONFIG_FILENAME);
-        properties = new Properties();
         
         // If the properties file does not exist, create one.
         if (!propertiesFile.exists()) {
+            properties = new Properties();
             properties.setProperty("Server.hostname", DEFAULT_SERVER_HOSTNAME);
             properties.setProperty("Server.port", Integer.toString(DEFAULT_SERVER_PORT));
             properties.setProperty("EventListener.port", Integer.toString(DEFAULT_EVENT_LISTENER_PORT));
             
-            properties.setProperty("Snapshot.genGrpQuality", Double.toString(DEFAULT_GENGRP_SNAPSHOT_QUALITY));
-            properties.setProperty("Snapshot.genGrpFrequency", Integer.toString(DEFAULT_GENGRP_SNAPSHOT_FREQUENCY));
-            properties.setProperty("Snapshot.speGrpQuality", Double.toString(DEFAULT_SPEGRP_SNAPSHOT_QUALITY));
-            properties.setProperty("Snapshot.speGrpFrequency", Integer.toString(DEFAULT_SPEGRP_SNAPSHOT_FREQUENCY));
-            properties.setProperty("Keystroke.patchReportFrequency", Integer.toString(DEFAULT_KEYSTROKE_FREQUENCY));
+            properties.setProperty("GeneralGroup.snapshotQuality", Double.toString(DEFAULT_GENGRP_SNAPSHOT_QUALITY));
+            properties.setProperty("SpecialGroup.snapshotQuality", Double.toString(DEFAULT_SPEGRP_SNAPSHOT_QUALITY));
+            properties.setProperty("GeneralGroup.syncFrequency", Integer.toString(DEFAULT_GENGRP_SYNC_FREQUENCY));
+            properties.setProperty("SpecialGroup.syncFrequency", Integer.toString(DEFAULT_SPEGRP_SYNC_FREQUENCY));
             
             save(propertiesFile);
         }
@@ -64,11 +68,27 @@ public class Config {
         eventListenerPort = Integer.parseInt(properties.getProperty("EventListener.port"));
         
         // Load proctor configuration.
-        snapshotGenGrpQuality = Double.parseDouble(properties.getProperty("Snapshot.genGrpQuality"));
-        snapshotGenGrpFrequency = Integer.parseInt(properties.getProperty("Snapshot.genGrpFrequency"));
-        snapshotSpeGrpQuality = Double.parseDouble(properties.getProperty("Snapshot.speGrpQuality"));
-        snapshotSpeGrpFrequency = Integer.parseInt(properties.getProperty("Snapshot.speGrpFrequency"));
-        keystrokeFrequency = Integer.parseInt(properties.getProperty("Keystroke.patchReportFrequency"));
+        genGrpSnapshotQuality = Double.parseDouble(properties.getProperty("GeneralGroup.snapshotQuality"));
+        speGrpSnapshotQuality = Double.parseDouble(properties.getProperty("SpecialGroup.snapshotQuality"));
+        genGrpSyncFrequency = Integer.parseInt(properties.getProperty("GeneralGroup.syncFrequency"));
+        speGrpSyncFrequency = Integer.parseInt(properties.getProperty("SpecialGroup.syncFrequency"));
+        
+        
+        // Populate available options of snapshot quality and sync frequency.
+        snapshotQualityOptions = new ArrayList<>();
+        syncFrequencyOptions = new ArrayList<>();
+        
+        snapshotQualityOptions.add(0.15);
+        snapshotQualityOptions.add(0.25);
+        snapshotQualityOptions.add(0.35);
+        snapshotQualityOptions.add(0.50);
+        snapshotQualityOptions.add(0.75);
+        
+        syncFrequencyOptions.add(3);
+        syncFrequencyOptions.add(5);
+        syncFrequencyOptions.add(8);
+        syncFrequencyOptions.add(10);
+        syncFrequencyOptions.add(13);
     }
     
     public static Config getInstance() {
@@ -87,11 +107,10 @@ public class Config {
      * @param f file to write to.
      */
     public void save(File f) {
-        properties.setProperty("Snapshot.genGrpQuality", Double.toString(snapshotGenGrpQuality));
-        properties.setProperty("Snapshot.genGrpFrequency", Integer.toString(snapshotGenGrpFrequency));
-        properties.setProperty("Snapshot.speGrpQuality", Double.toString(snapshotSpeGrpQuality));
-        properties.setProperty("Snapshot.speGrpFrequency", Integer.toString(snapshotSpeGrpFrequency));
-        properties.setProperty("Keystroke.patchReportFrequency", Integer.toString(keystrokeFrequency));
+        properties.setProperty("GeneralGroup.snapshotQuality", Double.toString(genGrpSnapshotQuality));
+        properties.setProperty("SpecialGroup.snapshotQuality", Double.toString(speGrpSnapshotQuality));
+        properties.setProperty("GeneralGroup.syncFrequency", Integer.toString(genGrpSyncFrequency));
+        properties.setProperty("SpecialGroup.syncFrequency", Integer.toString(speGrpSyncFrequency));
         
         try {
             properties.store(new FileWriter(f), "Hacklympics client properties");
@@ -106,7 +125,7 @@ public class Config {
      * @return properties loaded from the file.
      */
     public Properties load(File f) {
-        Properties p = null;
+        Properties p = new Properties();
         
         try {
             p.load(new FileReader(f));
@@ -126,68 +145,84 @@ public class Config {
         return String.format("http://%s:%s", serverHostname, serverPort);
     }
     
+    
+    public List<Double> getSnapshotQualityOptions() {
+        return snapshotQualityOptions;
+    }
+    
+    public List<Integer> getSyncFrequencyOptions() {
+        return syncFrequencyOptions;
+    }
+    
+    
     /**
      * Gets snapshot quality of the generic group.
      * @return snapshot quality of the generic group.
      */
-    public double getSnapshotGenGrpQuality() {
-        return snapshotGenGrpQuality;
-    }
-    
-    /**
-     * Gets snapshot frequency of the generic group.
-     * @return snapshot frequency of the generic group.
-     */
-    public int getSnapshotGenGrpFrequency() {
-        return snapshotGenGrpFrequency;
+    public double getGenGrpSnapshotQuality() {
+        return genGrpSnapshotQuality;
     }
     
     /**
      * Gets snapshot quality of the special group.
      * @return snapshot quality of the special group.
      */
-    public double getSnapshotSpeGrpQuality() {
-        return snapshotSpeGrpQuality;
+    public double getSpeGrpSnapshotQuality() {
+        return speGrpSnapshotQuality;
+    }
+    
+    
+    /**
+     * Gets syncing frequency of the generic group
+     * (shared by both snapshots and keystroke patches).
+     * @return syncing frequency of the generic group.
+     */
+    public int getGenGrpSyncFrequency() {
+        return genGrpSyncFrequency;
     }
     
     /**
-     * Gets snapshot frequency of the special group.
-     * @return snapshot frequency of the special group.
+     * Gets syncing frequency of the special group.
+     * (shared by both snapshots and keystroke patches).
+     * @return syncing frequency of the special group.
      */
-    public int getSnapshotSpeGrpFrequency() {
-        return snapshotSpeGrpFrequency;
+    public int getSpeGrpSyncFrequency() {
+        return speGrpSyncFrequency;
     }
     
     /**
-     * Gets keystroke frequency.
-     * @return keystroke frequency.
+     * Sets snapshot quality of the generic group.
+     * @param genGrpSnapshotQuality new snapshot quality of the generic group.
      */
-    public int getKeystrokeFrequency() {
-        return keystrokeFrequency;
+    public void setGenGrpSnapshotQuality(double genGrpSnapshotQuality) {
+        this.genGrpSnapshotQuality = genGrpSnapshotQuality;
     }
     
     /**
-     * Updates all properties related to snapshot.
-     * @param snapshotGenGrpQuality snapshot quality of the generic group.
-     * @param snapshotGenGrpFrequency snapshot frequency of the generic group.
-     * @param snapshotSpeGrpQuality snapshot quality of the special group.
-     * @param snapshotSpeGrpFrequency snapshot frequency of the special group.
-     * @param keystrokeFrequency keystroke frequency.
+     * Gets snapshot quality of the special group.
+     * @param speGrpSnapshotQuality new snapshot quality of the special group.
      */
-    public void setSnapshotProperties(double snapshotGenGrpQuality, int snapshotGenGrpFrequency,
-                                      double snapshotSpeGrpQuality, int snapshotSpeGrpFrequency) {
-        this.snapshotGenGrpQuality = snapshotGenGrpQuality;
-        this.snapshotGenGrpFrequency = snapshotGenGrpFrequency;
-        this.snapshotSpeGrpQuality = snapshotSpeGrpQuality;
-        this.snapshotSpeGrpFrequency = snapshotSpeGrpFrequency;
+    public void getSpeGrpSnapshotQuality(double speGrpSnapshotQuality) {
+        this.speGrpSnapshotQuality = speGrpSnapshotQuality;
+    }
+    
+    
+    /**
+     * Gets syncing frequency of the generic group
+     * (shared by both snapshots and keystroke patches).
+     * @param genGrpSyncFrequency new syncing frequency of the generic group.
+     */
+    public void getGenGrpSyncFrequency(int genGrpSyncFrequency) {
+        this.genGrpSyncFrequency = genGrpSyncFrequency;
     }
     
     /**
-     * Updates all properties related to keystroke.
-     * @param keystrokeFrequency
+     * Gets syncing frequency of the special group.
+     * (shared by both snapshots and keystroke patches).
+     * @param speGrpSyncFrequency new syncing frequency of the special group.
      */
-    public void setKeystrokeProperties(int keystrokeFrequency) {
-        this.keystrokeFrequency = keystrokeFrequency;
+    public void getSpeGrpSyncFrequency(int speGrpSyncFrequency) {
+        this.speGrpSyncFrequency = speGrpSyncFrequency;
     }
     
 }
