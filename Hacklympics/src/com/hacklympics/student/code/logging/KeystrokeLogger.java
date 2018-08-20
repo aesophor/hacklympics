@@ -5,9 +5,8 @@ import com.hacklympics.api.preference.Config;
 import com.hacklympics.api.proctor.Keystroke;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.user.Student;
-import com.hacklympics.student.StudentController;
-import com.hacklympics.student.code.CodeController;
 import com.hacklympics.student.code.PendingCodePatches;
+import com.hacklympics.utility.Utils;
 
 public class KeystrokeLogger implements Runnable {
 
@@ -32,14 +31,11 @@ public class KeystrokeLogger implements Runnable {
     @Override
     public void run() {
         System.out.println("[*] Started keystroke logging thread.");
-
+        
+        running = true;
+        
         Exam currentExam = Session.getInstance().getCurrentExam();
         Student currentUser = (Student) Session.getInstance().getCurrentUser();
-
-        StudentController sc = (StudentController) Session.getInstance().getMainController();
-        CodeController cc = (CodeController) sc.getControllers().get("Code");
-
-        running = true;
 
         while (running) {
             try {
@@ -61,7 +57,9 @@ public class KeystrokeLogger implements Runnable {
                     }
                 }
                 
-                Thread.sleep(syncFrequency * 1000);
+                // Extra sleep time is to disperse students request,
+                // which prevents the server from being overloaded.
+                Thread.sleep(syncFrequency * 1000 + Utils.randomInt(0, 2000));
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
                 running = false;

@@ -1,6 +1,7 @@
 package com.hacklympics.utility;
 
 import java.util.Base64;
+import java.util.concurrent.ThreadLocalRandom;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -67,6 +68,11 @@ public class Utils {
     public static void showUserStage(FXMLLoader loader) {
         showStage(loader);
         Session.getInstance().setMainController(loader.getController());
+    }
+    
+    
+    public static int randomInt(int min, int max) {
+        return ThreadLocalRandom.current().nextInt(min, max + 1);
     }
     
     

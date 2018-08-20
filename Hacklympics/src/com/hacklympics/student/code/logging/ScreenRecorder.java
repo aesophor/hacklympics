@@ -8,6 +8,7 @@ import com.hacklympics.api.preference.Config;
 import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.session.Session;
 import com.hacklympics.api.utility.ImageUtils;
+import com.hacklympics.utility.Utils;
 
 public class ScreenRecorder implements Runnable {
     
@@ -50,7 +51,9 @@ public class ScreenRecorder implements Runnable {
                         base64img
                 );
                 
-                Thread.sleep(syncFrequency * 1000);
+                // Extra sleep time is to disperse students request,
+                // which prevents the server from being overloaded.
+                Thread.sleep(syncFrequency * 1000 + Utils.randomInt(0, 2000));
             } catch (AWTException | IOException | InterruptedException ex) {
                 ex.printStackTrace();
                 running = false;
