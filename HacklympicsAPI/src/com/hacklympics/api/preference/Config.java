@@ -107,11 +107,6 @@ public class Config {
      * @param f file to write to.
      */
     public void save(File f) {
-        properties.setProperty("GeneralGroup.snapshotQuality", Double.toString(genGrpSnapshotQuality));
-        properties.setProperty("SpecialGroup.snapshotQuality", Double.toString(speGrpSnapshotQuality));
-        properties.setProperty("GeneralGroup.syncFrequency", Integer.toString(genGrpSyncFrequency));
-        properties.setProperty("SpecialGroup.syncFrequency", Integer.toString(speGrpSyncFrequency));
-        
         try {
             properties.store(new FileWriter(f), "Hacklympics client properties");
         } catch (IOException ioe) {

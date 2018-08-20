@@ -44,12 +44,12 @@ def sync_keystrokes(request, c_id, e_id):
         req_body = json.loads(request.body.decode("utf-8"))
         
         student = req_body["student"]
-        history = req_body["patches"]
+        patches = req_body["patches"]
         
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         timestamp = datetime.now().strftime("%Y/%m/%d %H:%M")
         
-        dispatch(NewKeystrokeEvent(exam, student, history, timestamp), OngoingExams.get(exam).teachers)
+        dispatch(NewKeystrokeEvent(exam, student, patches, timestamp), OngoingExams.get(exam).teachers)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:

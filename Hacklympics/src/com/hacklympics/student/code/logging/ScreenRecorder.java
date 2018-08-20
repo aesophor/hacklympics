@@ -1,12 +1,9 @@
 package com.hacklympics.student.code.logging;
 
-import java.util.List;
-import java.util.ArrayList;
 import java.util.Base64;
 import java.io.IOException;
 import java.awt.AWTException;
 import java.awt.image.BufferedImage;
-
 import com.hacklympics.api.preference.Config;
 import com.hacklympics.api.proctor.Snapshot;
 import com.hacklympics.api.session.Session;

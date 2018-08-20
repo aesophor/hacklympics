@@ -52,7 +52,7 @@ urlpatterns = [
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/message/create$', message.create),
 
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/proctor/sync_snapshot$', proctor.sync_snapshot),
-    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/proctor/sync_keytrokes$', proctor.sync_keystrokes),
+    url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/proctor/sync_keystrokes$', proctor.sync_keystrokes),
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/proctor/adjust_params$', proctor.adjust_params),
 
     url(r'^course/(?P<c_id>\d+)/exam/(?P<e_id>\d+)/problem$', problem.list),
