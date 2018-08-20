@@ -71,7 +71,7 @@ def adjust_params(request, c_id, e_id):
         exam = Course.objects.get(id=c_id).exam_set.get(id=e_id)
         students = User.objects.filter(username__in=students)
         
-        dispatch(AdjustProctorParamsEvent(exam, snapshotQuality, syncFrequency), OngoingExams.get(exam).students)
+        dispatch(AdjustProctorParamsEvent(exam, snapshotQuality, syncFrequency), students)
     except KeyError:
         response_data["statusCode"] = StatusCode.INSUFFICIENT_ARGS
     except ObjectDoesNotExist:
