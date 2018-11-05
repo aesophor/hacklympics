@@ -10,6 +10,11 @@
 * This is my former undergraduate CS project when I was still a cadet @ National Defense University.
 * A  complete rewrite of [its predecessor](https://github.com/Max-Projects).
 
+```
+> cat `find . -name "*.java" -o -name "*.py"` | wc -l
+10630
+```
+
 ## Overview
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
   > **Hacklympics** - Frontend (Java 8)    
