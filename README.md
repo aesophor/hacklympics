@@ -10,6 +10,7 @@
 * This is my former undergraduate CS project when I was still a cadet @ National Defense University.
 * A  complete rewrite of [its predecessor](https://github.com/Max-Projects).
 
+10630 Lines of code (Last tested on Nov 05, 2018)
 ```
 > cat `find . -name "*.java" -o -name "*.py"` | wc -l
 10630
