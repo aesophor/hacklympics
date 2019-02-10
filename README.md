@@ -9,12 +9,6 @@
 * This is my former undergraduate project while I was a cadet at NDU (National Defense University)
 * A complete rewrite of [its predecessor](https://github.com/Max-Projects) written by six of my seniors
 
-10630 Lines of code (Last tested on Nov 05, 2018)
-```
-> cat `find . -name "*.java" -o -name "*.py"` | wc -l
-10630
-```
-
 ## Overview
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
   > **Hacklympics** - Client (Java FX)    
