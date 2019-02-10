@@ -6,9 +6,8 @@
 </div>
 
 ## Disclaimer
-* Kindly open an issue or send me a pull request if you've found bugs :)
-* This is my former undergraduate CS project when I was still a cadet @ National Defense University.
-* A  complete rewrite of [its predecessor](https://github.com/Max-Projects).
+* This is my former undergraduate project while I was a cadet at NDU (National Defense University)
+* A complete rewrite of [its predecessor](https://github.com/Max-Projects) written by six of my seniors
 
 10630 Lines of code (Last tested on Nov 05, 2018)
 ```
