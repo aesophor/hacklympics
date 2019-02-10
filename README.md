@@ -8,6 +8,7 @@
 ## What's This
 * This is my former undergraduate project while I was a cadet at NDU (National Defense University)
 * My complete rewrite of [its predecessor](https://github.com/Max-Projects) which was written by six of my seniors
+* A programming exam platform with **online judge and anticheat**
 * Prevents students from cheating (using StackOverflow, LINE, etc) with keylogging and continuous screen capture
 
 ## Overview
