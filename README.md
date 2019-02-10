@@ -7,7 +7,7 @@
 
 ## Disclaimer
 * This is my former undergraduate project while I was a cadet at NDU (National Defense University)
-* A complete rewrite of [its predecessor](https://github.com/Max-Projects) written by six of my seniors
+* My complete rewrite of [its predecessor](https://github.com/Max-Projects) which was written by six of my seniors
 
 ## Overview
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
