@@ -5,7 +5,7 @@
 `OnlineJudge` `Keylogging` `ScreenRecording` `REST` `Java8` `Python3` `Django1.8` `Material UI`
 </div>
 
-## Disclaimer
+## What's This
 * This is my former undergraduate project while I was a cadet at NDU (National Defense University)
 * My complete rewrite of [its predecessor](https://github.com/Max-Projects) which was written by six of my seniors
 
