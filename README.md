@@ -5,20 +5,15 @@
 `OnlineJudge` `Keylogging` `ScreenRecording` `REST` `Java8` `Python3` `Django1.8` `Material UI`
 </div>
 
-## Disclaimer
-* Kindly open an issue or send me a pull request if you've found bugs :)
-* This is my former undergraduate CS project when I was still a cadet @ National Defense University.
-* A  complete rewrite of [its predecessor](https://github.com/Max-Projects).
-
-10630 Lines of code (Last tested on Nov 05, 2018)
-```
-> cat `find . -name "*.java" -o -name "*.py"` | wc -l
-10630
-```
+## What's This
+* This is my former undergraduate project while I was a cadet at NDU (National Defense University)
+* My complete rewrite of [its predecessor](https://github.com/Max-Projects) which was written by six of my seniors
+* A programming exam platform with **online judge and anticheat**
+* Prevents students from cheating (using StackOverflow, LINE, etc) with keylogging and continuous screen capture
 
 ## Overview
 * Three-tier [REST architecture](https://en.wikipedia.org/wiki/Representational_state_transfer)
-  > **Hacklympics** - Frontend (Java 8)    
+  > **Hacklympics** - Client (Java FX)    
   > **HacklympicsAPI** - RESTful API (Java 8)    
   > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)    
 
