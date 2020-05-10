@@ -55,6 +55,27 @@
 Supports for more langugages will be added over time.
 
 
+## Usage
+1. Clone this repo
+```
+$ git clone https://github.com/aesophor/hacklympics
+$ cd hacklympics
+```
+
+2. Start the django server on 0.0.0.0:8000
+```
+$ cd Nocturnal && ./start_server.sh
+```
+
+3. Open another terminal, cd to hacklympics directory, and run the desktop client.
+```
+$ cd Hacklympics/dist
+$ java -jar Hacklympics.jar
+```
+
+Note: Please edit `Hacklympics/dist/config.properties` to change where the desktop client will connect to.
+
+
 ## Gallery
 Please visit [imgur](https://imgur.com/a/wuw9Yaa) for more screenshots.
 <div align="center">
