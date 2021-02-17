@@ -17,9 +17,15 @@
   > **HacklympicsAPI** - RESTful API (Java 8)    
   > **Nocturnal** - Backend (Python 3.5 + Django 1.8.18)    
 
- * Design Patterns used
-   > Singleton    
-   > Observer    
+* [Event-driven Architecture](https://en.wikipedia.org/wiki/Event-driven_architecture)    
+  When there's a change in state at the server side, the server will notify all relevant clients by "dispatching events" to them.
+  When a client receives an event from the server, it will take appropriate actions in order to reflect the changes to the user.    
+  > server-side event dispatcher: [dispatcher.py](https://github.com/aesophor/hacklympics/blob/master/Nocturnal/hacklympics/events/dispatcher.py)    
+  > client-side event manager: [EventManager.java](https://github.com/aesophor/hacklympics/blob/master/HacklympicsAPI/src/com/hacklympics/api/event/EventManager.java)     
+
+* Design Patterns used
+  > Singleton    
+  > Observer    
 
 * Libraries used
   
