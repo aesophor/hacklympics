@@ -8,7 +8,7 @@
 <br>
 
 ## What's This
-* This was my undergraduate project while I was a [military cadet](https://en.wikipedia.org/wiki/Cadet) at [National Defense University](https://zh.wikipedia.org/wiki/%E5%9C%8B%E9%98%B2%E5%A4%A7%E5%AD%B8_(%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B)) (Jun. 2015 ~ Jun. 2018)
+* This was my undergrad project while I was a [cadet](https://en.wikipedia.org/wiki/Cadet) at [National Defense University](https://zh.wikipedia.org/wiki/%E5%9C%8B%E9%98%B2%E5%A4%A7%E5%AD%B8_(%E4%B8%AD%E8%8F%AF%E6%B0%91%E5%9C%8B)) (Jun. 2015 ~ Jun. 2018)
 * I left the R.O.C. army in Jun. 2018 due to my disappointment in them.
 * I transfer to University of Taipei in Aug. 2018, and got admitted to NCTU in Nov. 2019
 * This is my complete rewrite of [its predecessor](https://github.com/Max-Projects) which was written by six of my seniors
